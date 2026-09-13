@@ -7752,6 +7752,44 @@ html[data-ios-standalone="true"] .intro-copy {
   content: none;
 }
 
+/* 하단 내비 상호작용.
+
+   활성 탭에 짧은 선(::after)을 얹어 본 적이 있다. 색만으로는 어느 탭이 열려
+   있는지 약하다고 봤는데(자두 #4e345e 와 회갈 #756a5f 는 밝기가 비슷하다),
+   실제로 보니 금색 hairline 을 끊고 들어와 하단이 시끄러워졌다. 걷어냈다.
+   활성 표시는 색과 굵기(700)로만 한다. */
+
+/* 호버는 배경 면 대신 색으로.
+   예전에는 버튼 사각형(높이 52px, 폭 1/3) 전체에 자두 5% 를 깔았다. 종이결
+   위에 각진 색 블록이 생겨 결이 끊겼다. 색만 자두 쪽으로 당긴다.
+   #5f5163 은 --nav-inactive(#756a5f)와 --deep-plum(#4e345e)의 중간값이다. */
+@media (hover: hover) {
+  .app-bottom-navigation button:not(.is-active):hover {
+    background: transparent;
+    color: #5f5163;
+  }
+}
+
+/* 누름 피드백. 버튼 전체가 1px 내려앉는 것은 전역 규칙이 이미 한다
+   (.mobile-prototype button:not(:disabled):active). 여기서는 아이콘만 한 번 더
+   줄여, 터치 기기에서도 눌린 것이 보이게 한다 - 터치에는 호버가 없어서
+   이 두 가지가 유일한 피드백이다. */
+@media (prefers-reduced-motion: no-preference) {
+  .app-bottom-navigation .app-nav-mark {
+    transition: transform 180ms ease;
+  }
+
+  .app-bottom-navigation button:active .app-nav-mark {
+    transform: scale(0.94);
+  }
+}
+
+/* 키보드 포커스. 안쪽으로 넣어(-4px) 내비 윗선과 겹치지 않게 한다. */
+.app-bottom-navigation button:focus-visible {
+  outline: 2px solid rgba(var(--deep-plum-rgb), var(--a72));
+  outline-offset: -4px;
+}
+
 /* Development-only journey verification board. */
 .journey-lab { display: flex; min-height: var(--app-viewport-height, 100dvh); flex-direction: column; background: var(--paper); }.journey-lab .letter-flow-scroll { padding-bottom: 34px; }.journey-lab-intro { padding: var(--scroll-top) var(--gutter) 24px; }.journey-lab-intro p { margin: 0 0 12px; color: var(--deep-plum); font: 700 12px var(--font-sans); }.journey-lab-intro h1 { margin: 0; font: 400 27px/1.35 var(--font-serif); letter-spacing: -0.035em; }.journey-lab-intro span { display: block; margin-top: 13px; color: var(--muted-ink); font: 12px/1.7 var(--font-sans); }.journey-lab-section { padding: 22px 24px; border-top: 1px solid rgba(var(--gold-rgb), var(--a33)); }.journey-lab-section h2 { margin: 0 0 12px; color: var(--deep-plum); font: 600 14px var(--font-serif); }.journey-lab-section > div { display: grid; gap: 8px; }.journey-lab-section button { display: flex; min-height: 58px; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid rgba(var(--gold-rgb), var(--a50)); background: rgba(var(--surface-card-rgb), var(--a60)); color: var(--ink); text-align: left; cursor: pointer; }.journey-lab-section button strong { font: 500 var(--fs-body-sm)/1.45 var(--font-serif); }.journey-lab-section button span { color: var(--deep-plum); font: 700 12px var(--font-sans); white-space: nowrap; }
 /* Active waiting-letter reader — selected C reading language */
