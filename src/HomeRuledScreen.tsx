@@ -124,7 +124,7 @@ export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }:
           ))}
         </section>
 
-        {isRefined && <div className={refined.scene} aria-hidden="true" />}
+        {(isRefined || useRefinedCards) && <div className={refined.scene} aria-hidden="true" />}
 
       <p className={`${styles.footer} ${styles.scrollFooter}${useRefinedCards ? ` ${refined.footer}` : ""}`}>
           <img src="/assets/home-footer-star-divider1.svg" alt="" />

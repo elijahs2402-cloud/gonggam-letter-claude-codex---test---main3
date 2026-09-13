@@ -1495,7 +1495,7 @@
   right: 36px;
   bottom: 28px;
   min-height: var(--btn-h);
-  border: 1px solid rgba(var(--paper-rgb), var(--a72));
+  border: 0;
   border-radius: 0;
   background: rgba(49, 35, 55, var(--a95));
   color: #fffaf0;
@@ -7215,7 +7215,7 @@ html[data-ios-standalone="true"] .intro-copy {
 .reply-compose-screen--figma .letter-compose-field-heading .reply-compose-recipient { margin: 0; padding: 0; border: 0; color: var(--action-primary); font-family: var(--font-serif); font-size: var(--fs-letter); font-weight: 500; line-height: var(--lh-tight); letter-spacing: -0.035em; }
 .reply-compose-screen--figma .flow-notice--reply { min-height: 0; margin: 0 0 5px; padding: 0; color: #a15847; font-size: 12px; line-height: 18px; }
 .reply-compose-screen--figma .flow-notice--reply:empty { display: none; }
-.reply-compose-screen--figma .reply-compose-writing textarea { min-height: 410px; height: auto; margin-top: 0; padding: 30px 0 27px; resize: none; overflow: hidden; border-top: 1px solid rgba(var(--gold-rgb), var(--a40)); border-bottom: 0; background-position: 0 0; scroll-margin-bottom: calc(100px + env(safe-area-inset-bottom)); }
+.reply-compose-screen--figma .reply-compose-writing textarea { min-height: 260px; height: auto; margin-top: 0; padding: 30px 0 27px; resize: none; overflow: hidden; border-top: 1px solid rgba(var(--gold-rgb), var(--a40)); border-bottom: 0; background-position: 0 0; scroll-margin-bottom: calc(100px + env(safe-area-inset-bottom)); }
 .reply-compose-screen--figma .reply-compose-writing { overflow-anchor: none; }
 .reply-compose-screen--figma .reply-compose-writing > small { scroll-margin-bottom: calc(100px + env(safe-area-inset-bottom)); }
 .reply-compose-screen--figma .reply-compose-letter-actions { margin-top: 18px; }
@@ -7430,8 +7430,10 @@ html[data-ios-standalone="true"] .intro-copy {
 .figma-report-screen fieldset label.is-selected span { color: var(--deep-plum); font-weight: 700; }
 .figma-report-detail { position: relative; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(var(--gold-rgb), var(--a20)); }
 .figma-report-detail > label { display: block; margin-bottom: 20px; }
-/* 신고 사유의 안내·입력 텍스트를 같은 14px 조판으로 맞춘다. */
-.figma-report-detail textarea { box-sizing: border-box; width: 100%; height: 85px; padding: 12px; resize: vertical; border: 1px solid rgba(var(--gold-rgb), var(--a50)); border-radius: 0; outline: 0; background: rgba(var(--surface-card-rgb), var(--a50)); color: var(--ink); font: 400 14px/1.55 var(--font-sans); }
+/* iPhone은 16px 미만의 입력 글자를 자동 확대한다. 입력 중 글자는
+   16px으로 유지하고, 안내 문구만 14px으로 두어 포커스 시 화면 확대를 막는다. */
+.figma-report-detail textarea { box-sizing: border-box; width: 100%; height: 85px; padding: 12px; resize: vertical; border: 1px solid rgba(var(--gold-rgb), var(--a50)); border-radius: 0; outline: 0; background: rgba(var(--surface-card-rgb), var(--a50)); color: var(--ink); font: 400 16px/1.55 var(--font-sans); }
+.figma-report-detail textarea::placeholder { font-size: 14px; }
 .figma-report-detail textarea:focus { border-color: var(--deep-plum); }
 .figma-report-detail small { display: block; margin-top: 5px; color: var(--faint-ink); font-size: 12px; text-align: right; }
 .figma-report-setting { display: flex; gap: 12px; margin-top: 10px; padding: 14px; border: 1px solid rgba(var(--gold-rgb), var(--a20)); border-radius: 0; background: rgba(var(--surface-card-rgb), var(--a50)); cursor: pointer; }
@@ -7444,6 +7446,13 @@ html[data-ios-standalone="true"] .intro-copy {
 .figma-report-setting.is-selected strong { color: var(--deep-plum); }
 .figma-report-setting small { color: var(--faint-ink); font-size: 12px; line-height: var(--lh-snug); }
 .figma-report-action .flow-primary-button { width: 100%; }
+
+/* 신고 화면도 편지쓰기와 같은 키보드 배치 방식을 사용한다.
+   버튼을 셸의 마지막 flex 항목으로 두고 키보드 높이만큼 아래 여백을 더해,
+   키보드가 열리면 본문만 줄어들고 버튼은 키보드 바로 위에 유지한다. */
+.figma-report-letter-screen { position: relative; height: var(--app-viewport-height, 100dvh); min-height: 0; overflow: hidden; }
+.figma-report-letter-screen .letter-flow-scroll { padding-bottom: 24px; scroll-padding-bottom: calc(100px + env(safe-area-inset-bottom) + var(--app-keyboard-inset, 0px)); }
+.figma-report-letter-screen .flow-fixed-action { position: static; flex: 0 0 auto; margin-bottom: var(--app-keyboard-inset, 0px); }
 
 @media (prefers-reduced-motion: no-preference) {
   .figma-report-screen fieldset label,
@@ -10445,6 +10454,27 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
   flex-direction: column;
 }
 .write-letter-screen--figma .letter-compose-writing textarea {
+  flex: 1 0 auto;
+}
+
+/* 답장 쓰기 편지지도 같은 방식으로 남는 공간을 채운다.
+
+   답장만 입력창 최소 높이가 410px 로 고정이라 편지지가 180px 더 길었다
+   (실측 390x844: 편지 366 / 답장 546). 시작하는 자리는 439 로 같은데 끝나는
+   자리만 달라, 같은 '편지지'인데 화면마다 크기가 달랐다.
+
+   감싸는 범위는 두 화면이 다르다 — 편지 쓰기는 .letter-compose-writing 이
+   제목까지 감싸고, 답장은 제목이 편지지 바로 아래 형제로 있고
+   .reply-compose-writing 은 입력창과 글자 수만 감싼다. 그래서 선택자를
+   그대로 복사하지 않고 답장 구조에 맞춰 쓴다. 세로로 쌓이는 것은 같으므로
+   제목은 제자리에 두고 쓰는 영역만 늘어난다. */
+.reply-compose-screen--figma .reply-compose-paper,
+.reply-compose-screen--figma .reply-compose-writing {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+.reply-compose-screen--figma .reply-compose-writing textarea {
   flex: 1 0 auto;
 }
 
