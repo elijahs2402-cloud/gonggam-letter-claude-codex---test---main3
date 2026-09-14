@@ -15,7 +15,7 @@
 | `build` 스크립트 `tsc -b && vite build` (규격 §22) | 지금은 `vite build` | 기존 TypeScript 오류 31개 때문에 적용하면 빌드가 실패한다 |
 | React Router (규격 §12) | 아직 없음. 주소별 분기(`src/App.tsx`) + 페이지 새로고침 이동(`src/utils/navigation.ts`) | 전환 예정 |
 | CSS Modules (규격 §6) | 일부만 적용. 대부분 `src/styles/global.css`(약 1.6만 줄) | 화면별 전환 예정 |
-| Tailwind CSS (규격 §3 금지) | 유틸리티 클래스는 쓰지 않고, `@import "tailwindcss"` 의 기본 스타일 초기화(Preflight)만 쓰는 중 | 초기화 규칙을 옮긴 뒤 제거 예정 |
+| `globals.css` 의 옛 Tailwind 유틸리티 17개 | Tailwind 는 제거했다. 대신 Tailwind 가 만들던 CSS 를 `src/styles/globals.css` 에 그대로 옮겼는데, 그중 유틸리티 18개(`.flex`, `.hidden`, `.border` 등) 가운데 확인된 사용은 `.sr-only` 뿐이다 | 나머지 17개는 사용 여부를 확인한 뒤 정리 |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
 | lint 경고 17건 | 오류는 0. React Compiler 기준 규칙 6 · Hook 의존성 6 · Fast Refresh 5 | 규칙을 경고로 둔 이유는 `eslint.config.ts` 주석 참고 |
 | 이미지·폰트 라이선스 | "9. Asset 출처" 의 "확인 필요" 항목 | |
@@ -37,7 +37,7 @@
 | 빌드 도구 | Vite | 8.2.2 |
 | UI | React · React DOM | 19.2.8 |
 | 언어 | TypeScript | 5.9.3 |
-| 스타일 | 전역 CSS + 일부 CSS Modules (Tailwind 는 기본 초기화만) | tailwindcss 4.3.3 |
+| 스타일 | 전역 CSS + 일부 CSS Modules (CSS 도구·프레임워크 없음) | — |
 | 앱 포장 | Capacitor | 8.5.2 |
 | 검사 · 정리 | ESLint · Prettier | 10.10.0 · 3.9.6 |
 
@@ -71,8 +71,9 @@
 │   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
 │   ├── utils/             # 화면 이동 · 화면 높이 · 키보드 · 상태 표시줄 · 날짜 · QA 모드 · 개발용 도구
 │   ├── styles/
-│   │   ├── common.css     # 폰트 · 디자인 토큰(:root 변수)
-│   │   └── global.css     # 전역 스타일 (common.css 를 불러옴)
+│   │   ├── global.css     # 전역 스타일 — main.tsx 가 불러옴 (맨 위에서 common.css 를 불러옴)
+│   │   ├── common.css     # 외부 폰트 · 디자인 토큰(:root 변수) (globals.css 를 불러옴)
+│   │   └── globals.css    # 기본 스타일 초기화(Preflight) · @layer 구조 — 옛 Tailwind 생성 결과
 │   ├── assets/            # 코드에서 쓰지 않는 이미지 14개 (정리 후보)
 │   └── _archive/          # 보관용 옛 CSS (빌드에 쓰이지 않음)
 ├── capacitor.config.ts
@@ -86,7 +87,8 @@
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
   - 한 파일에 여러 화면이 들어 있는 경우가 있다(예: `pages/Letter/LetterFlowScreens.tsx` 에 20여 개). 규격의 `pages/[Page]/[Page].tsx` 형태로 나누는 일은 CSS Modules 전환 때 화면별로 한다.
   - `routes/AppRoutes.tsx` 는 아직 없다. React Router 전환 때 만든다.
-  - `styles/` 는 아직 `common.css` · `global.css` 두 파일이다. 규격의 `globals.css` · `variables.css` · `fonts.css` 로 나누는 일은 Tailwind 제거 · CSS Modules 전환 때 한다.
+  - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 1.6만 줄)는 CSS Modules 전환 때 화면별로 옮기고, 남는 전역 규칙은 `globals.css` 로 합친다. 토큰·폰트는 그때 `variables.css` · `fonts.css` 로 나눈다.
+  - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.
 
 ## 4. 설치 방법
@@ -144,7 +146,6 @@ npm run preview   # 빌드 결과 미리보기 (포트 8443)
 | `@capacitor/core` | Capacitor 런타임 (아직 앱 코드에서 불러오지 않음) |
 | `@capacitor/cli` | `npx cap` 명령 (개발용) |
 | `vite`, `@vitejs/plugin-react` | 개발 서버 · 빌드 |
-| `tailwindcss`, `@tailwindcss/vite` | 기본 스타일 초기화(Preflight)만 사용 — 제거 예정 |
 | `eslint`, `@eslint/js`, `typescript-eslint`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `globals`, `eslint-config-prettier`, `jiti` | lint (`jiti` 는 `eslint.config.ts` 를 읽기 위해 필요) |
 | `prettier` | 코드 정리 |
 
