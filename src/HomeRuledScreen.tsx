@@ -41,7 +41,9 @@ const CHOICES = [
 
 export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }: { isRefined?: boolean; refinedCardsOnly?: boolean }) {
   const useRefinedCards = isRefined || refinedCardsOnly
-  const homePath = isRefined ? "/home-ruled-refined" : refinedCardsOnly ? "/home-ruled-refined-cards" : "/home-ruled"
+  // 소식 닫기 후 돌아갈 주소. refinedCardsOnly 는 지금 /home 이 쓰는 모습이다
+  // (/home-ruled-refined-cards 주소는 실험 라우트 정리 때 지웠다).
+  const homePath = isRefined ? "/home-ruled-refined" : refinedCardsOnly ? "/home" : "/home-ruled"
   const [isScrolled, setIsScrolled] = useState(false)
   const userId = getCurrentUserId()
   const name = getCurrentAnonymousName()
