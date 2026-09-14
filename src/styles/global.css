@@ -751,9 +751,6 @@
 .nickname-settings-actions .auth-primary {
   width: 100%;
 }
-.anonymous-name-actions .auth-secondary {
-  white-space: nowrap;
-}
 .anonymous-name-screen {
   --page-exit-duration: 420ms;
   position: relative;
@@ -762,13 +759,6 @@
 .anonymous-name-screen.is-completing .anonymous-name-actions {
   opacity: 0.56;
   transition: opacity 0.18s ease;
-}
-.anonymous-name-actions .auth-primary.is-completing {
-  transform: translateY(1px);
-  opacity: 0.82;
-  transition:
-    transform 0.18s ease,
-    opacity 0.18s ease;
 }
 
 /* Direct nickname entry — a focused alternative to the existing random-name flow. */
@@ -1067,9 +1057,6 @@
   font-size: 12px;
   font-weight: 700;
 }
-.home-priority-card .flow-text-button {
-  width: 100%;
-}
 .home-partial-error {
   margin: 17px 0 -3px;
   padding: 10px 12px;
@@ -1261,14 +1248,6 @@
 .notification-test button {
   flex: 0 0 auto;
   padding: 0 7px;
-}
-.push-guide-card .flow-secondary-button {
-  width: 100%;
-  min-height: 40px;
-  font-size: 12px;
-}
-.push-guide-card .flow-text-button {
-  width: 100%;
 }
 .notification-settings-list {
   border-top: 0;
@@ -1666,11 +1645,6 @@
   cursor: pointer;
 }
 
-.mailbox-tabs button.is-active {
-  border-bottom-color: var(--deep-plum);
-  color: var(--deep-plum);
-}
-
 .mailbox-letter-item {
   width: 100%;
   min-height: 111px;
@@ -1894,9 +1868,6 @@
 }
 .detail-reply-arrival button {
   width: 100%;
-}
-.mailbox-list-lab .subpage-heading {
-  margin-bottom: 26px;
 }
 
 .my-space-menu {
@@ -2231,12 +2202,6 @@ html[data-ios-standalone="true"] .intro-copy {
     650px auto;
 }
 
-.a-choice.is-selected {
-  border-color: #eee7e9;
-  background: #eee7e9;
-  box-shadow: inset 0 0 0 1px rgba(var(--deep-plum-rgb), var(--a72));
-}
-
 .a-choice.is-selected .a-choice-index,
 .a-choice.is-selected strong {
   color: var(--deep-plum);
@@ -2244,23 +2209,7 @@ html[data-ios-standalone="true"] .intro-copy {
 
 /* Direction B */
 
-.b-option.is-selected {
-  border-color: rgba(var(--surface-card-rgb), var(--a95));
-  background: rgba(var(--plum-rgb), var(--a05));
-  box-shadow: inset 0 0 0 1px rgba(var(--deep-plum-rgb), var(--a72));
-}
-
-.b-option.is-selected strong {
-  color: var(--deep-plum);
-}
-
 /* Direction C */
-
-.c-option.is-selected {
-  box-shadow: inset 4px 0 0 var(--terracotta);
-  background: rgba(var(--plum-rgb), var(--a05));
-  padding-left: 14px;
-}
 
 .c-option.is-selected .c-number,
 .c-option.is-selected strong {
@@ -2296,12 +2245,6 @@ html[data-ios-standalone="true"] .intro-copy {
   display: none;
 }
 
-.state-lab__options button.is-active {
-  border-color: var(--deep-plum);
-  background: rgba(var(--plum-rgb), var(--a10));
-  color: var(--deep-plum);
-}
-
 .letter-preview,
 .expression-warning {
   width: 100%;
@@ -2324,14 +2267,6 @@ html[data-ios-standalone="true"] .intro-copy {
   letter-spacing: -0.03em;
 }
 
-.letter-preview .letter-button {
-  width: 100%;
-}
-
-.write-variant-a .letter-preview {
-  font-family: var(--font-sans);
-}
-
 .write-variant-a .letter-preview .letter-kicker,
 .write-variant-a .letter-preview .variant-send-complete-copy {
   font-family: var(--font-sans);
@@ -2340,16 +2275,6 @@ html[data-ios-standalone="true"] .intro-copy {
 .write-variant-a .letter-preview h2,
 .write-variant-a .letter-preview .preview-body {
   font-family: var(--font-serif);
-}
-
-.write-variant-a .letter-preview .preview-byline {
-  margin-bottom: 0;
-}
-
-.write-variant-a .letter-preview .preview-body {
-  margin: 30px 0 26px;
-  padding-top: 27px;
-  border-top: 1px solid rgba(var(--deep-plum-rgb), var(--a15));
 }
 
 .write-variant-a .letter-preview .preview-body::before,
@@ -2363,40 +2288,17 @@ html[data-ios-standalone="true"] .intro-copy {
   white-space: normal;
 }
 
-.write-variant-a .letter-preview .preview-body::before {
-  content: "“";
-  margin-bottom: 17px;
-  text-align: left;
-}
-
-.write-variant-a .letter-preview .preview-body::after {
-  content: "”";
-  margin-top: 19px;
-  text-align: right;
-}
-
 /* Reading */
 
 /* Reply */
 
 /* Write-letter structural explorations: /write-letter-a, /write-letter-b, /write-letter-c */
 
-.variant-privacy.is-emphasized {
-  border-left-color: var(--terracotta);
-  outline: 1px solid rgba(var(--terracotta-rgb), var(--a50));
-  outline-offset: 3px;
-  background: rgba(var(--terracotta-rgb), var(--a10));
-}
-
 /* A — one continuous writing sheet */
 
 /* B — functional editorial hierarchy */
 
 /* C — quiet full-screen composition */
-
-.c-fold.is-emphasized {
-  border-color: rgba(var(--terracotta-rgb), var(--a40));
-}
 
 /* Received-letter structural explorations: /read-letter-a, /read-letter-b, /read-letter-c */
 
@@ -2407,23 +2309,6 @@ html[data-ios-standalone="true"] .intro-copy {
 /* Read C — quiet room and separate reading plane */
 
 /* Reply-writing structural explorations: /write-reply-a, /write-reply-b, /write-reply-c */
-
-.reply-variant-intro.is-compact h1 {
-  max-width: 286px;
-  font-size: 24px;
-}
-
-.reply-variant-intro.is-compact > p {
-  margin-top: 10px;
-  font-size: 12px;
-}
-
-.reply-variant-privacy.is-emphasized {
-  border-left-color: var(--terracotta);
-  outline: 1px solid rgba(var(--terracotta-rgb), var(--a50));
-  outline-offset: 3px;
-  background: rgba(var(--terracotta-rgb), var(--a10));
-}
 
 /* Reply A: recipient-led letter paper */
 
@@ -4161,10 +4046,6 @@ html[data-ios-standalone="true"] .intro-copy {
   /* Direction A enters as one quiet editorial sequence: heading, choices, then footer.
      이 블록 전체가 prefers-reduced-motion: no-preference 안이라, 동작 줄이기를 켠
      기기에서는 움직이지 않는다. */
-  .direction-a .a-footer-group {
-    animation: app-content-rise-in 480ms cubic-bezier(0.22, 1, 0.36, 1) 140ms
-      both;
-  }
 
   /* 홈도 같은 순서로 든다 — 인사말(0ms) - 카드 01(90ms) - 카드 02(150ms) - 아래 문구(240ms).
      실기기에서 5px/480ms(app-content-rise-in)가 거의 안 보인다는 피드백을 받아,
@@ -5264,9 +5145,6 @@ html[data-ios-standalone="true"] .intro-copy {
   width: 100%;
   margin-top: 9px;
 }
-.assign-question .flow-text-button {
-  width: 100%;
-}
 
 .assign-confirm {
   min-height: 490px;
@@ -5444,20 +5322,6 @@ html[data-ios-standalone="true"] .intro-copy {
   font-size: var(--fs-caption);
   line-height: 1.75;
 }
-.reply-compose-letter-actions .flow-text-button {
-  width: 100%;
-  min-height: 36px;
-  margin: 0;
-  padding: 8px 4px;
-  color: #7a6f5a;
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.reply-compose-letter-actions .flow-text-button + .flow-text-button {
-  border-left: 1px solid rgba(var(--gold-rgb), var(--a33));
-}
 .reply-flow-fixed-action {
   position: static;
   z-index: 5;
@@ -5561,9 +5425,6 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 .reply-compose-screen--figma .reply-compose-writing > small {
   scroll-margin-bottom: calc(100px + env(safe-area-inset-bottom));
-}
-.reply-compose-screen--figma .reply-compose-letter-actions {
-  margin-top: 18px;
 }
 .write-letter-screen--figma .flow-header .reply-read-letter-button {
   /* 오른쪽 칸(3번째)에 둔다. 제목(strong)이 position:absolute 로 칸에서 빠져,
@@ -5980,12 +5841,6 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 
 /* 2. Letter state, journey, and waiting protection */
-.home-limit-note .flow-primary-button {
-  width: 100%;
-}
-.home-limit-note .flow-text-button {
-  width: 100%;
-}
 
 .detail-status-card {
   margin-top: 22px;
@@ -7190,21 +7045,6 @@ html[data-ios-standalone="true"] .intro-copy {
   width: 100%;
   margin-top: 9px;
 }
-.name-candidate .flow-text-button {
-  display: block;
-  margin: 16px auto 0;
-}
-.name-candidate .flow-notice {
-  display: grid;
-  gap: 5px;
-  margin: 18px 0 0;
-}
-.name-candidate .flow-notice button {
-  justify-self: start;
-  border: 0;
-  background: transparent;
-  color: var(--deep-plum);
-}
 .account-state-card {
   margin-top: 30px;
   padding: 20px 0;
@@ -8011,9 +7851,6 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 
 /* Development-only journey verification board. */
-.journey-lab .letter-flow-scroll {
-  padding-bottom: 34px;
-}
 /* Active waiting-letter reader — selected C reading language */
 .letter-flow-screen--active-reader,
 .letter-flow-screen--active-reader .flow-header,
@@ -9570,26 +9407,10 @@ html[data-ios-standalone="true"] .intro-copy {
    기존 /home 은 건드리지 않는다.
    ========================================================================== */
 
-.home-scene-screen .home-heading-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 /* 방 — 벽·바닥이 이어진 한 장. 화면 끝까지 꽉 채운다. */
-
-.home-scene-screen .home-choice-footer {
-  margin-top: 20px;
-}
 
 /* SE(667px)처럼 짧은 화면에서는 한 화면에 담기지 않는다.
    글자 크기는 체계라 건드리지 않고, 여백만 조여 47px 을 회수한다. */
-@media (max-height: 700px) {
-  .home-scene-screen .home-choice-footer {
-    margin-top: 12px;
-    margin-bottom: 8px;
-  }
-}
 
 /* ==========================================================================
    편지함 · 나의 공간 · 분류 칩 — 통합 정리
@@ -10359,10 +10180,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
    h1 을 올리면 아래 부제와 카드가 함께 따라 올라온다.
    바닥 문구는 margin-top:auto 라 그대로 바닥에 남는다. */
 /* 같은 이유로 .home-screen .home-heading h1 (0,3,0) 을 이겨야 한다 */
-
-.home-cards-heading .home-heading-helper {
-  margin-top: 16px;
-}
 
 /* 두 장을 같은 폭으로. Figma 는 165px 두 칸 + 12px 간격 = 342px 로
    좌우 여백 24px 을 뺀 폭과 정확히 맞는다. */
