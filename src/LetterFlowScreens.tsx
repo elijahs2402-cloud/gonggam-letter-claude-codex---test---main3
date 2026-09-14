@@ -353,7 +353,15 @@ export function WriteReplyFlowScreen({ letterId }: { letterId?: string }) {
       lastStatusChangedAt: now,
     });
   }
-  const initial = useMemo(() => letterId ? getReplyDraft(letterId, currentUserId) : undefined, [letterId, currentUserId]);
+  if (letter?.status === "withdrawn") return <FocusShell title="답장 쓰기" fallback="/home"><section className="flow-message"><h1>편지의 주인이<br />편지를 거두었어요</h1><p>더 이상 답장을 쓸 수 없어요.</p><button className="flow-primary-button" type="button" onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}>다른 편지 만나기</button></section></FocusShell>;
+  if (letter && getLetterReturn(letter.id, currentUserId)) return <FocusShell title="답장 쓰기" fallback="/home"><section className="flow-message"><h1>{RETURNED_LETTER_TITLE}</h1><p>{RETURNED_LETTER_BODY}</p><button className="flow-primary-button" type="button" onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}>다른 편지 만나기</button><button className="flow-text-button" type="button" onClick={() => navigateTo("/home")}>홈으로 돌아가기</button></section></FocusShell>;
+  if (!letter || letter.assignedReaderId !== currentUserId || !["assigned", "read", "waiting_for_reply"].includes(letter.status)) return <MissingLetterScreen fallback="/home" />;
+  return <WriteReplyForm letter={letter} currentUserId={currentUserId} />;
+}
+
+// Hook 은 조건에 따라 호출하면 안 되므로, 위의 편지 확인·조기 반환과 Hook 을 쓰는 본문을 나눴다.
+function WriteReplyForm({ letter, currentUserId }: { letter: Letter; currentUserId: string }) {
+  const initial = useMemo(() => getReplyDraft(letter.id, currentUserId), [letter.id, currentUserId]);
   const [content, setContent] = useState(initial?.content ?? "");
   const [notice, setNotice] = useState("");
   const [showExit, setShowExit] = useState(false); const [showSource, setShowSource] = useState(false);
@@ -362,9 +370,6 @@ export function WriteReplyFlowScreen({ letterId }: { letterId?: string }) {
   const replyContentInputRef = useRef<HTMLTextAreaElement>(null);
   const replyCharacterCountRef = useRef<HTMLElement>(null);
   const meaningfulReplyLength = content.replace(/\s/g, "").length;
-  if (letter?.status === "withdrawn") return <FocusShell title="답장 쓰기" fallback="/home"><section className="flow-message"><h1>편지의 주인이<br />편지를 거두었어요</h1><p>더 이상 답장을 쓸 수 없어요.</p><button className="flow-primary-button" type="button" onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}>다른 편지 만나기</button></section></FocusShell>;
-  if (letter && getLetterReturn(letter.id, currentUserId)) return <FocusShell title="답장 쓰기" fallback="/home"><section className="flow-message"><h1>{RETURNED_LETTER_TITLE}</h1><p>{RETURNED_LETTER_BODY}</p><button className="flow-primary-button" type="button" onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}>다른 편지 만나기</button><button className="flow-text-button" type="button" onClick={() => navigateTo("/home")}>홈으로 돌아가기</button></section></FocusShell>;
-  if (!letter || letter.assignedReaderId !== currentUserId || !["assigned", "read", "waiting_for_reply"].includes(letter.status)) return <MissingLetterScreen fallback="/home" />;
   useEffect(() => { if (letter.status === "assigned") transitionLetterStatus(letter.id, "waiting_for_reply", currentUserId, { waitingForReplyAt: new Date().toISOString() }); }, [letter.id, letter.status, currentUserId]);
   useLayoutEffect(() => {
     const input = replyContentInputRef.current;
@@ -384,7 +389,21 @@ export function WriteReplyFlowScreen({ letterId }: { letterId?: string }) {
     if (scroll && previousScrollTop !== undefined) scroll.scrollTop = previousScrollTop;
   }, [content]);
   const { saveNow, cancel: cancelAutosave } = useDraftAutosave({ content }, (value) => Boolean(updateReplyDraft(letter.id, currentUserId, { ...value, stage: "writing", letterStatusAtSave: letter.status })));
-  /** 답장을 쓰다가 원문을 잠깐 들춰보는 전체화면 시트. 페이지를 떠나지 않으므로 초안이 유지된다. */
+  function saveReplyNow() { const saved = saveNow(); setReplyWriteState(saved ? "saved" : "error"); return saved; }
+  function next() { if (meaningfulReplyLength < 10) { setNotice("마음을 10자 이상 적어주세요."); return; } const draft = updateReplyDraft(letter.id, currentUserId, { content, stage: "review", letterStatusAtSave: letter.status }); if (!draft) { setNotice("임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요."); return; } navigateTo(`/reply-review/${encodeURIComponent(letter.id)}`); }
+  // 뒤로가기는 되돌아가는 것이지, 새 화면을 밀어 넣는 것이 아니다.
+  //
+  // 예전에는 초안이 비었을 때 navigateTo(`/assigned-letter/:id`) 로 편지 읽기
+  // 화면을 '앞으로' 밀어 넣었다. 그런데 그 화면의 뒤로가기는 history.back() 이라
+  // 다시 이 화면으로 돌아오고, 여기서 또 밀어 넣어 —
+  // 답장 쓰기 → 편지 읽기 → 답장 쓰기 → … 가 끝없이 반복됐다.
+  // 히스토리를 되감으면 온 길 그대로 나가므로 순환이 생기지 않는다.
+  const leave = () => { if (content.trim()) setShowExit(true); else navigateBack("/home"); };
+  const replyActions = <div className="flow-fixed-action flow-fixed-action--split reply-flow-fixed-action"><button type="button" className="flow-secondary-button" onClick={() => { if (!saveReplyNow()) setNotice("임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요."); }}>임시 저장</button><button type="button" className="flow-primary-button" onClick={next} disabled={meaningfulReplyLength < 10}>보내기 전 미리보기</button></div>;
+  return <FocusShell title="답장 쓰기" onBack={leave} className="write-letter-screen--figma reply-compose-screen--figma" headerAction={<button className="reply-read-letter-button" type="button" onClick={() => setShowSource(true)} aria-haspopup="dialog" aria-expanded={showSource}><span>원문 보기</span></button>} action={replyActions}><section className="reply-compose-intro"><h1><strong>{letter.anonymousName}</strong>님에게<br />마음을 전해주세요</h1><p>읽는 동안 떠오른 말이면 충분해요.</p><img src="/assets/write-letter-object-reframed.png" alt="펜과 편지지, 잉크병" /></section><aside className="reply-compose-guidance"><strong>✻ <span>마음을 전하기 전에</span></strong><p>상대방을 판단하거나 해결책을 서두르기보다,<br />편지를 읽으며 느낀 마음을 천천히 전해주세요.</p></aside><section className="reply-compose-paper"><div className="letter-compose-field-heading"><label className="reply-compose-recipient" htmlFor="reply-content">{letter.anonymousName}님에게</label><small className={`letter-write-state is-${replyWriteState}`} role="status">{replyWriteState === "saved" ? "임시 저장 완료" : replyWriteState === "error" ? "저장하지 못했어요" : replyWriteState === "writing" ? "작성 중" : "작성 전"}</small></div><p className="flow-notice flow-notice--reply" role="status">{notice}</p><div className="reply-compose-writing"><textarea ref={replyContentInputRef} id="reply-content" aria-label="답장 내용" value={content} onChange={(event) => { const nextContent = event.target.value; setContent(nextContent); setNotice(""); setReplyWriteState(nextContent.trim() ? "writing" : "empty"); }} placeholder="마음을 10자 이상 적어주세요." rows={1} /><small ref={replyCharacterCountRef}>글자 수 {meaningfulReplyLength}자</small></div></section>{showSource && <ReplySourceSheet letter={letter} onClose={() => setShowSource(false)} />}{showExit && <DraftExitDialog kind="reply" isSaving={isSavingReplyAndLeaving} onContinue={() => setShowExit(false)} onSaveAndLeave={() => { if (isSavingReplyAndLeaving) return; setIsSavingReplyAndLeaving(true); window.setTimeout(() => { if (!saveReplyNow()) { setNotice("임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요."); setIsSavingReplyAndLeaving(false); return; } window.sessionStorage.setItem("gonggam-letter:draft-saved-toast", "reply-saved"); window.localStorage.setItem("gonggam-letter:draft-saved-toast-pending", "reply-saved"); navigateTo("/home?toast=reply-saved"); }, 640); }} onDiscardAndLeave={() => { cancelAutosave(); deleteReplyDraft(letter.id, currentUserId); navigateTo("/home"); }} />}</FocusShell>;
+}
+
+/** 답장을 쓰다가 원문을 잠깐 들춰보는 전체화면 시트. 페이지를 떠나지 않으므로 초안이 유지된다. */
 function ReplySourceSheet({ letter, onClose }: { letter: Letter; onClose: () => void }) {
   // 시트가 열리면 초점을 시트 자체로 옮긴다. 예전에는 닫기 버튼에 옮겼는데,
   // 전역 규칙 button:focus-visible 이 금색 사각 테두리를 그려서 실기기에서
@@ -442,20 +461,6 @@ function ReplySourceSheet({ letter, onClose }: { letter: Letter; onClose: () => 
       </div>
     </div>
   );
-}
-
-function saveReplyNow() { const saved = saveNow(); setReplyWriteState(saved ? "saved" : "error"); return saved; }
-  function next() { if (meaningfulReplyLength < 10) { setNotice("마음을 10자 이상 적어주세요."); return; } const draft = updateReplyDraft(letter.id, currentUserId, { content, stage: "review", letterStatusAtSave: letter.status }); if (!draft) { setNotice("임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요."); return; } navigateTo(`/reply-review/${encodeURIComponent(letter.id)}`); }
-  // 뒤로가기는 되돌아가는 것이지, 새 화면을 밀어 넣는 것이 아니다.
-  //
-  // 예전에는 초안이 비었을 때 navigateTo(`/assigned-letter/:id`) 로 편지 읽기
-  // 화면을 '앞으로' 밀어 넣었다. 그런데 그 화면의 뒤로가기는 history.back() 이라
-  // 다시 이 화면으로 돌아오고, 여기서 또 밀어 넣어 —
-  // 답장 쓰기 → 편지 읽기 → 답장 쓰기 → … 가 끝없이 반복됐다.
-  // 히스토리를 되감으면 온 길 그대로 나가므로 순환이 생기지 않는다.
-  const leave = () => { if (content.trim()) setShowExit(true); else navigateBack("/home"); };
-  const replyActions = <div className="flow-fixed-action flow-fixed-action--split reply-flow-fixed-action"><button type="button" className="flow-secondary-button" onClick={() => { if (!saveReplyNow()) setNotice("임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요."); }}>임시 저장</button><button type="button" className="flow-primary-button" onClick={next} disabled={meaningfulReplyLength < 10}>보내기 전 미리보기</button></div>;
-  return <FocusShell title="답장 쓰기" onBack={leave} className="write-letter-screen--figma reply-compose-screen--figma" headerAction={<button className="reply-read-letter-button" type="button" onClick={() => setShowSource(true)} aria-haspopup="dialog" aria-expanded={showSource}><span>원문 보기</span></button>} action={replyActions}><section className="reply-compose-intro"><h1><strong>{letter.anonymousName}</strong>님에게<br />마음을 전해주세요</h1><p>읽는 동안 떠오른 말이면 충분해요.</p><img src="/assets/write-letter-object-reframed.png" alt="펜과 편지지, 잉크병" /></section><aside className="reply-compose-guidance"><strong>✻ <span>마음을 전하기 전에</span></strong><p>상대방을 판단하거나 해결책을 서두르기보다,<br />편지를 읽으며 느낀 마음을 천천히 전해주세요.</p></aside><section className="reply-compose-paper"><div className="letter-compose-field-heading"><label className="reply-compose-recipient" htmlFor="reply-content">{letter.anonymousName}님에게</label><small className={`letter-write-state is-${replyWriteState}`} role="status">{replyWriteState === "saved" ? "임시 저장 완료" : replyWriteState === "error" ? "저장하지 못했어요" : replyWriteState === "writing" ? "작성 중" : "작성 전"}</small></div><p className="flow-notice flow-notice--reply" role="status">{notice}</p><div className="reply-compose-writing"><textarea ref={replyContentInputRef} id="reply-content" aria-label="답장 내용" value={content} onChange={(event) => { const nextContent = event.target.value; setContent(nextContent); setNotice(""); setReplyWriteState(nextContent.trim() ? "writing" : "empty"); }} placeholder="마음을 10자 이상 적어주세요." rows={1} /><small ref={replyCharacterCountRef}>글자 수 {meaningfulReplyLength}자</small></div></section>{showSource && <ReplySourceSheet letter={letter} onClose={() => setShowSource(false)} />}{showExit && <DraftExitDialog kind="reply" isSaving={isSavingReplyAndLeaving} onContinue={() => setShowExit(false)} onSaveAndLeave={() => { if (isSavingReplyAndLeaving) return; setIsSavingReplyAndLeaving(true); window.setTimeout(() => { if (!saveReplyNow()) { setNotice("임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요."); setIsSavingReplyAndLeaving(false); return; } window.sessionStorage.setItem("gonggam-letter:draft-saved-toast", "reply-saved"); window.localStorage.setItem("gonggam-letter:draft-saved-toast-pending", "reply-saved"); navigateTo("/home?toast=reply-saved"); }, 640); }} onDiscardAndLeave={() => { cancelAutosave(); deleteReplyDraft(letter.id, currentUserId); navigateTo("/home"); }} />}</FocusShell>;
 }
 
 function ensureReplyReviewTestLetter(userId: string) {

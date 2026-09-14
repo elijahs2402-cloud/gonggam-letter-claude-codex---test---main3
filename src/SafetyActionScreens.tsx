@@ -16,6 +16,11 @@ const reportReasons: ReadonlyArray<[ReportReason, string]> = [["abusive", "모�
 export function ReplyReportScreen({ letterId, complete = false, existingDemo = false, completeDemo = false }: { letterId?: string; complete?: boolean; existingDemo?: boolean; completeDemo?: boolean }) {
   if (existingDemo) return <Shell title="편지 신고" fallback="/mailbox" showBackButton={false}><section className="flow-message"><h1>이미 신고한 편지예요</h1><p>신고 내역은 차단 및 신고 관리에서 확인할 수 있어요.</p><button className="flow-primary-button" type="button" onClick={() => navigateTo("/safety-management")}>신고 내역 확인</button><button className="flow-text-button" type="button" onClick={() => navigateTo("/home")}>홈으로 돌아가기</button></section></Shell>;
   if (completeDemo) return <Shell title="신고 접수" fallback="/mailbox" showBackButton={false}><section className="flow-message"><h1>신고를 접수했어요</h1><p>신고 내역은 차단 및 신고 관리에서 확인할 수 있어요.</p><button className="flow-primary-button" type="button" onClick={() => navigateTo("/safety-management")}>신고 내역 확인</button><button className="flow-text-button" type="button" onClick={() => navigateTo("/home")}>홈으로 돌아가기</button></section></Shell>;
+  return <ReplyReportForm letterId={letterId} complete={complete} />;
+}
+
+// Hook 은 조건에 따라 호출하면 안 되므로, 위의 데모 분기(조기 반환)와 Hook 을 쓰는 본문을 나눴다.
+function ReplyReportForm({ letterId, complete }: { letterId?: string; complete: boolean }) {
   const userId = getCurrentUserId(); const letter = letterId ? getLetterById(letterId) : undefined; const reply = letter?.reply;
   const existing = reply ? getReportForTarget(userId, "reply", reply.id) : undefined;
   const [reason, setReason] = useState<ReportReason | undefined>(); const [detail, setDetail] = useState(""); const [withBlock, setWithBlock] = useState(false); const [status, setStatus] = useState<"ready" | "submitting" | "failed" | "complete">(complete || existing ? "complete" : "ready");
