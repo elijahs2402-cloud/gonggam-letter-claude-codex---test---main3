@@ -137,12 +137,16 @@ function ReplyReportForm({
   const existing = reply
     ? getReportForTarget(userId, "reply", reply.id)
     : undefined;
+  // '이미 신고한 편지'인지는 화면을 열 때 한 번만 판단한다.
+  // 매번 새로 읽으면, 이 화면에서 신고를 접수한 직후 다시 그릴 때 방금 만든
+  // 신고가 '이전 신고'로 잡혀 완료 화면 대신 '이미 신고한 편지예요'가 떴다.
+  const [reportedBeforeOpening] = useState(() => Boolean(existing));
   const [reason, setReason] = useState<ReportReason | undefined>();
   const [detail, setDetail] = useState("");
   const [withBlock, setWithBlock] = useState(false);
   const [status, setStatus] = useState<
     "ready" | "submitting" | "failed" | "complete"
-  >(complete || existing ? "complete" : "ready");
+  >(complete || reportedBeforeOpening ? "complete" : "ready");
   if (!letter || !reply || letter.senderId !== userId)
     return (
       <Shell title="편지 신고" fallback="/mailbox">
@@ -159,7 +163,7 @@ function ReplyReportForm({
       </Shell>
     );
   const returnTo = `/mailbox/my/${encodeURIComponent(letter.id)}`;
-  if (existing && !complete)
+  if (reportedBeforeOpening && !complete)
     return (
       <Shell title="편지 신고" fallback={returnTo}>
         <section className="flow-message">
