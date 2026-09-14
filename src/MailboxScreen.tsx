@@ -4,7 +4,6 @@ import { AppBottomNavigation } from "./AppBottomNavigation";
 import { getCurrentUserId, getLettersRepliedByUser, getMyLetters, type Letter } from "./letters";
 import { getSentLetterDisplayStatus, sortSentLettersByActivity } from "./mailboxStatus";
 import { formatDate } from "./datetime";
-import { getListenEntryPath } from "./waitingLetters";
 
 export type MailboxKey = "sent" | "replied" | "favorite";
 
@@ -74,18 +73,6 @@ function getMailboxDemoRecords(href: string): UnifiedMailboxRecord[] {
     { id: "demo-sent-1", href: "/mailbox-replied-demo", status: "sent", label: "답장 보냄", nickname: "따뜻한차한잔을건네는마음", activityAt: "2026-08-23T16:20:00.000Z" , preview: "당신의 이야기를 천천히 읽었어요."},
     { id: "demo-waiting-2", href, status: "waiting", label: "기다리는 중", nickname: "새벽공기를좋아하는한사람", activityAt: "2026-08-22T10:10:00.000Z" , preview: "괜찮다고 말해왔는데, 사실은 아니었어요."},
     { id: "demo-arrived-2", href, status: "arrived", label: "답장 도착", nickname: "오늘도천천히걷는한마음씨", activityAt: "2026-08-21T08:40:00.000Z", isUnread: true },
-  ];
-}
-
-// 편지함에서 상태별 흐름을 확인할 수 있도록 표시하는 예시 편지다.
-function getMailboxPreviewRecords(): UnifiedMailboxRecord[] {
-  return [
-    { id: "preview-waiting-1", href: "/mailbox-demo", status: "waiting", label: "기다리는 중", nickname: "나의 편지", activityAt: "2026-09-01T09:20:00.000Z" , preview: "요즘 잠이 잘 안 와서 새벽에 이 편지를 씁니다."},
-    { id: "preview-arrived-unread", href: "/mailbox-demo", status: "arrived", label: "답장 도착", nickname: "고요한 새벽", activityAt: "2026-08-31T18:10:00.000Z", isUnread: true },
-    { id: "preview-sent-1", href: "/mailbox-demo", status: "sent", label: "답장 보냄", nickname: "따뜻한 오후", activityAt: "2026-08-30T15:40:00.000Z" , preview: "천천히 읽었어요. 무슨 말을 드릴지 오래 골랐습니다."},
-    { id: "preview-arrived-read", href: "/mailbox-demo", status: "arrived", label: "답장 도착", nickname: "비 오는 창가", activityAt: "2026-08-29T11:25:00.000Z" , preview: "비 오는 날의 이야기, 저에게도 비슷한 기억이 있어요."},
-    { id: "preview-waiting-2", href: "/mailbox-demo", status: "waiting", label: "기다리는 중", nickname: "나의 편지", activityAt: "2026-08-28T08:50:00.000Z" , preview: "이직을 앞두고 마음이 자꾸 흔들립니다."},
-    { id: "preview-sent-2", href: "/mailbox-demo", status: "sent", label: "답장 보냄", nickname: "작은 별", activityAt: "2026-08-27T14:05:00.000Z" },
   ];
 }
 
@@ -169,11 +156,6 @@ function MailboxStatusIllustration({ status, variant }: { status: Exclude<Mailbo
   return <span className="mailbox-status-illustration" aria-label={label}><img src={source} alt="" /></span>;
 }
 
-function formatFigmaMailboxDate(date: string) {
-  const value = new Date(date);
-  return `${value.getFullYear()}년 ${value.getMonth() + 1}월 ${value.getDate()}일`;
-}
-
 function getDirectionMark(status: Exclude<MailboxFilter, "all">) {
   return status === "arrived" ? "←" : status === "sent" ? "→" : "–";
 }
@@ -183,8 +165,6 @@ function getDirectionMark(status: Exclude<MailboxFilter, "all">) {
 function UnifiedMailboxEmpty() {
   return <section className="mailbox-letter-empty mailbox-letter-empty--unified"><p>아직 편지가 없어요</p><span>새로운 마음이 오면<br />이곳에 차분히 기록할게요.</span><button type="button" onClick={() => navigateTo("/write-letter")}>편지 쓰기</button></section>;
 }
-
-function MailboxEmpty({ mode }: { mode: "mine" | "replied" }) { const mine = mode === "mine"; return <section className="mailbox-letter-empty"><p>{mine ? "아직 보낸 편지가 없어요." : "아직 답장을 전한 편지가 없어요."}</p><span>{mine ? "마음을 남기면 한 사람이 읽고 답장을 전해요." : "기다리는 마음을 만나 천천히 답장을 전해보세요."}</span><button type="button" onClick={() => navigateTo(mine ? "/write-letter" : getListenEntryPath(getCurrentUserId()))}>{mine ? "편지 쓰기" : "기다리는 편지 보기"}</button></section>; }
 
 export function MailboxLetterListItem({ letter, mode, userId, onClick, statusOverride, previewOverride }: { letter: Letter; mode: "mine" | "replied"; userId: string; onClick: () => void; statusOverride?: string; previewOverride?: string }) {
   const date = formatDate(letter.updatedAt);

@@ -152,7 +152,6 @@ function FixedActions({
 }
 
 function ListenEntryFrame({
-  variant,
   className,
   // B and C remain pinned to the single sample letter they were designed against.
   meetPath = "/read-letter/sample-waiting-letter-one",

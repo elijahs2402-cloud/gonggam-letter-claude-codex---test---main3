@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { getCurrentAppSearchParams, navigateBack, navigateTo } from "./navigation";
-import { buildGuidedLetterDraft, ensureEmotionJourney, getEmotionRecord, hasGuidedAnswer, readEmotionJourney, saveEmotionRecord, updateEmotionJourney, type EmotionJourney, type EmotionType } from "./emotionJourney";
+import { buildGuidedLetterDraft, ensureEmotionJourney, getEmotionRecord, readEmotionJourney, saveEmotionRecord, updateEmotionJourney, type EmotionJourney, type EmotionType } from "./emotionJourney";
 
 const CATEGORIES = [
   ["family", "가족이나 연인과 있었던 일", ["내 말을 제대로 들어주지 않았어요", "서운한 말이나 행동이 있었어요", "다투거나 오해가 생겼어요", "관계가 멀어진 것 같아요", "함께 좋은 시간을 보냈어요", "고맙거나 따뜻한 일이 있었어요"]],

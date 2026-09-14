@@ -1,7 +1,7 @@
 import { getReplyDraftsByWriter } from "./letterDraft";
 import { getLetterDraft } from "./letterDraft";
 import { getOpenDeliveryIssues, type DeliveryIssue } from "./deliveryIssues";
-import { getLetters, getMyLetters, getUnreadReplyLettersByUser, type Letter } from "./letters";
+import { getLetters, getUnreadReplyLettersByUser, type Letter } from "./letters";
 
 export type MailboxAttentionReason = "safety-review" | "unread-replies" | "delivery-failure" | "assigned-letter" | "reply-draft" | "letter-draft";
 

@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { getCurrentAppSearchParams, navigateBack, navigateTo } from "./navigation";
-import { assignLetterToReader, createLetter, getCurrentUserId, getLetterById, getLetters, markReplyOpened, saveLetter, sendReply, transitionLetterStatus, type Letter } from "./letters";
+import { assignLetterToReader, createLetter, getCurrentUserId, getLetterById, markReplyOpened, saveLetter, sendReply, transitionLetterStatus, type Letter } from "./letters";
 import { getCurrentAnonymousName } from "./mockAuth";
-import { clearLetterDraft, clearReplyDraft, deleteLetterDraft, deleteReplyDraft, getLetterDraft, getReplyDraft, hasMeaningfulLetterDraft, hasMeaningfulReplyDraft, updateLetterDraft, updateReplyDraft } from "./letterDraft";
+import { clearLetterDraft, clearReplyDraft, deleteLetterDraft, deleteReplyDraft, getLetterDraft, getReplyDraft, updateLetterDraft, updateReplyDraft } from "./letterDraft";
 import { seedSampleLetters } from "./sampleLetters";
-import { getLetterStatusDate, getLetterStatusDescription, getLetterStatusLabel } from "./letterStatus";
+import { getLetterStatusDescription } from "./letterStatus";
 import { useDraftAutosave } from "./draftGuards";
 import { shouldFailDraftOperation } from "./draftDevTools";
 import { isUserBlocked } from "./blocks";
@@ -12,7 +12,6 @@ import { SealedReply } from "./SealedReply";
 import { getSentLetterDisplayStatus } from "./mailboxStatus";
 import { isContentHidden, revealContent } from "./contentVisibility";
 import { getLetterReturn } from "./letterReturns";
-import { getReportForTarget } from "./reports";
 import { recordDeliveryIssue, resolveDeliveryIssues } from "./deliveryIssues";
 import { acceptReaderGuidance, hasAcceptedReaderGuidance } from "./readerGuidance";
 import { getAvailableWaitingLetters, markWaitingLetterViewed, refreshWaitingLetterOrder, waitingLetterPreview, waitingLetterTimeText } from "./waitingLetters";
@@ -23,10 +22,6 @@ import { formatDateTime } from "./datetime";
 import { RETURNED_LETTER_BODY, RETURNED_LETTER_TITLE } from "./copy";
 import { getListenEntryPath } from "./waitingLetters";
 import { LetterReturnSheet } from "./SafetyActionScreens";
-
-function FlowHeader({ title, fallback = "/home" }: { title: string; fallback?: string }) {
-  return <header className="flow-header"><button type="button" onClick={() => navigateBack(fallback)} aria-label="이전으로 돌아가기">←</button><strong>{title}</strong><span aria-hidden="true" /></header>;
-}
 
 function FocusShell({ title, children, fallback, onBack, action, headerAction, hideBack = false, className = "", scrollClassName = "" }: { title: string; children: React.ReactNode; fallback?: string; onBack?: () => void; action?: React.ReactNode; headerAction?: React.ReactNode; hideBack?: boolean; className?: string; scrollClassName?: string }) {
   return <main className={`mobile-prototype letter-flow-screen ${className}`.trim()}><header className={`flow-header${headerAction ? " flow-header--action" : ""}`}>{hideBack ? <span aria-hidden="true" /> : <button type="button" onClick={onBack ?? (() => navigateBack(fallback ?? "/home"))} aria-label="이전으로 돌아가기">←</button>}<strong>{title}</strong>{headerAction ?? <span aria-hidden="true" />}</header><div className={`letter-flow-scroll ${scrollClassName}`.trim()}>{children}</div>{action}</main>;
@@ -46,11 +41,6 @@ function formatLetterReadTime(value: string) {
   const hour = date.getHours();
   const meridiem = hour >= 12 ? "pm" : "am";
   return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${meridiem} ${hour % 12 || 12}:${String(date.getMinutes()).padStart(2, "0")}`;
-}
-
-function excerpt(value: string, length = 92) {
-  const normalized = value.trim().replace(/\s+/g, " ");
-  return normalized.length > length ? `${normalized.slice(0, length)}…` : normalized;
 }
 
 type PreviewSafetyMatch = ReturnType<typeof reviewLetterSafety>["matches"][number];
@@ -198,7 +188,7 @@ export function WaitingLettersScreen() {
 
 export function WaitingLetterCard({ letter, onOpen }: { letter: Letter; onOpen: () => void }) { const preview = waitingLetterPreview(letter.content); const time = waitingLetterTimeText(letter.createdAt); const displayName = letter.isPrototypeFixture ? `${letter.anonymousName || "이름 없는 마음"}님` : "기다리는 편지"; return <button type="button" onClick={onOpen} aria-label={`${time}, ${displayName}, ${preview}`}><span><strong>{displayName}</strong><time dateTime={letter.createdAt}>{time}</time></span><p>{preview}</p><small>편지 열어보기</small></button>; }
 
-function ensureWaitingListTestLetters(userId: string) {
+function ensureWaitingListTestLetters(_userId: string) {
   const shortLetterContent = `요즘 회사에서 내가 하는 일이 아무 의미가 없는 것처럼 느껴져요.
 
 열심히 해도 달라지는 건 없고, 새로운 일을 시작할 힘도 없는 것 같아요. 주변에서는 조금만 더 버티라고 하지만, 언제까지 버텨야 하는지도 모르겠어요.
@@ -522,7 +512,7 @@ export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
   }
   const draft = letterId ? getReplyDraft(letterId, currentUserId) : undefined;
   const [notice, setNotice] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting] = useState(false);
   if (letter && getLetterReturn(letter.id, currentUserId)) return <FocusShell title="보내기 전 점검" fallback="/home"><section className="flow-message"><h1>{RETURNED_LETTER_TITLE}</h1><p>{RETURNED_LETTER_BODY}</p><button className="flow-primary-button" type="button" onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}>다른 편지 만나기</button></section></FocusShell>;
   if (!letter || !draft?.content.trim() || letter.assignedReaderId !== currentUserId || !["assigned", "read", "waiting_for_reply"].includes(letter.status)) return <MissingLetterScreen fallback="/home" />;
   if (draft.stage !== "review") updateReplyDraft(letter.id, currentUserId, { stage: "review", letterStatusAtSave: letter.status });
@@ -678,9 +668,4 @@ export function RepliedLetterDetailScreen({ letterId }: { letterId?: string }) {
   const letter = letterId ? getLetterById(letterId) : undefined;
   if (!letter?.reply || letter.reply.writerId !== getCurrentUserId()) return <MissingLetterScreen />;
   return <FocusShell title="내가 답한 편지" fallback="/mailbox" className="my-letter-waiting-screen my-letter-replied-demo-screen" scrollClassName="my-letter-waiting-scroll"><section className="my-letter-waiting replied-letter-detail" aria-label="내가 답한 편지"><header className="my-letter-waiting-heading"><h1>마음을 담아<br /><strong>답장</strong>을 전했어요</h1><img src="/assets/reply-sent-paper-airplane.png" alt="날아가는 종이비행기" /></header><article className="my-letter-waiting-paper"><header className="my-letter-waiting-paper-heading"><span>상대가 보낸 편지</span><time dateTime={letter.createdAt}>{formatDateWithYear(letter.createdAt)}</time></header><span className="my-letter-waiting-quote my-letter-waiting-quote--open" aria-hidden="true">“</span><blockquote>{letter.content}</blockquote><span className="my-letter-waiting-quote my-letter-waiting-quote--close" aria-hidden="true">”</span><p>— {letter.anonymousName || "이름 없는 편지"}</p></article><div className="my-letter-reply-connector" aria-hidden="true"><span /></div><article className="my-letter-waiting-paper my-letter-reply-paper"><header className="my-letter-waiting-paper-heading"><span>내가 보낸 답장</span><time dateTime={letter.reply.createdAt}>{formatDateWithYear(letter.reply.createdAt)}</time></header><span className="my-letter-waiting-quote my-letter-waiting-quote--open" aria-hidden="true">“</span><blockquote>{letter.reply.content}</blockquote><span className="my-letter-waiting-quote my-letter-waiting-quote--close" aria-hidden="true">”</span><p>— {letter.reply.anonymousName || "이름 없는 편지"}</p></article></section></FocusShell>;
-}
-
-function getLettersForReading(userId: string) {
-  seedSampleLetters();
-  return getLetters().filter((letter) => letter.status === "waiting_for_reader" && letter.safetyStatus !== "high_risk" && letter.safetyStatus !== "needs_revision" && letter.safetyStatus !== "under_review" && letter.safetyStatus !== "blocked" && [undefined, "clear"].includes(letter.safetyStatus) && [undefined, "not_required", "approved"].includes(letter.moderationStatus) && !letter.assignedReaderId && letter.senderId !== userId && !isUserBlocked(userId, letter.senderId) && !isUserBlocked(letter.senderId, userId) && !isContentHidden(userId, "letter", letter.id) && !getReportForTarget(userId, "letter", letter.id));
 }

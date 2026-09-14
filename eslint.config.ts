@@ -23,6 +23,10 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // 일부러 버리는 값은 허용한다: `_` 로 시작하는 인자, 나머지(...rest)를 얻으려고 꺼낸 형제 속성
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", ignoreRestSiblings: true }],
+    },
   },
   // 코드 모양(줄바꿈·따옴표 등)은 Prettier 가 맡으므로, 겹치는 ESLint 규칙을 끈다. 반드시 마지막에 둔다.
   prettierConfig,

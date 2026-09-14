@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getBlockedUsers, isUserBlocked } from "./blocks";
 import { isContentHidden } from "./contentVisibility";
-import { getCurrentUserId, getLetterById, getWaitingReplyLettersByUser, getReceivedRepliesByUser, markReplyOpened, type Letter } from "./letters";
+import { getCurrentUserId, getWaitingReplyLettersByUser, getReceivedRepliesByUser, markReplyOpened, type Letter } from "./letters";
 import { deleteMockAccount, generateAnonymousName, getCurrentAnonymousName, getMockAuthSnapshot, logoutMockAccount, updateAnonymousName } from "./mockAuth";
 import { navigateBack, navigateTo } from "./navigation";
 import { isPrototypeQaMode } from "./prototypeQa";

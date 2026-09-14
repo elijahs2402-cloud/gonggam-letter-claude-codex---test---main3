@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   acceptTerms,
   beginMockLogin,
@@ -12,7 +12,7 @@ import {
   setMockLoginMode,
   type MockAuthProvider,
 } from "./mockAuth";
-import { getCurrentAppSearchParams, navigateBack, navigateTo, replaceRoute } from "./navigation";
+import { navigateBack, navigateTo, replaceRoute } from "./navigation";
 import { isPrototypeQaMode } from "./prototypeQa";
 
 function AuthShell({ children, className = "" }: { children: React.ReactNode; className?: string }) {
