@@ -14,7 +14,7 @@
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 43곳 · TSX 56곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
 | `build` 스크립트 `tsc -b && vite build` (규격 §22) | 지금은 `vite build` | 기존 TypeScript 오류 31개 때문에 적용하면 빌드가 실패한다 |
 | React Router (규격 §12) | 아직 없음. 주소별 분기(`src/App.tsx`) + 페이지 새로고침 이동(`src/utils/navigation.ts`) | 전환 예정 |
-| CSS Modules (규격 §6) | 일부만 적용. 대부분 `src/styles/global.css`(약 1.1만 줄, 규칙 1,467개) | 화면별 전환 예정 |
+| CSS Modules (규격 §6) | 홈 · 알림 화면만 적용. 나머지는 `src/styles/global.css`(약 1.07만 줄) | 화면별 전환 중 |
 | `globals.css` 의 옛 Tailwind 유틸리티 17개 | Tailwind 는 제거했다. 대신 Tailwind 가 만들던 CSS 를 `src/styles/globals.css` 에 그대로 옮겼는데, 그중 유틸리티 18개(`.flex`, `.hidden`, `.border` 등) 가운데 확인된 사용은 `.sr-only` 뿐이다 | 나머지 17개는 사용 여부를 확인한 뒤 정리 |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
 | lint 경고 17건 | 오류는 0. React Compiler 기준 규칙 6 · Hook 의존성 6 · Fast Refresh 5 | 규칙을 경고로 둔 이유는 `eslint.config.ts` 주석 참고 |
@@ -252,6 +252,8 @@ npx cap open ios
 - 가로 모드 미대응, 시스템 푸시 없음(앱 안 목록만).
 - 알림 설정에 "편지 맡음" 알림을 끄는 스위치가 없다(코드는 `letterUpdates` 로 제어).
 - 홈 하단 소식 카드는 `/home` 에 실제 데이터가 연결되지 않았다(`/home-backup` 의 `HomeScreen` 에만 로직이 있음).
+- **답장 속 문장 "간직하기"에 정상 흐름으로 들어갈 수 없다.** 편지함 상세(`MyLetterDetailScreen`)는 답장이 있으면 새 레이아웃을 쓰는데, 문장 선택·저장 UI(`src/components/letter/SealedReply.tsx`)는 옛 레이아웃(제한 상태 등)에만 남아 있다. 이미 간직한 문구의 "원래 답장 보기"도 강조 표시 없이 열린다.
+- CSS Modules 로 옮긴 화면(현재 홈 · 알림)은 JSX 에 기존 전역 class 이름과 모듈 class 를 함께 쓴다. 모듈 CSS 는 `global.css` 보다 **먼저** 불러와지므로(`main.tsx` 의 import 순서), 전역의 같은 우선순위 규칙과 겹치는 규칙은 `global.css` 에 남겨 두었다.
 - TypeScript 검사(`npx tsc --noEmit`) 오류 31개가 남아 있다(빌드는 성공).
 
 ### 검증 방법
