@@ -11,6 +11,9 @@ import {
 import { navigateBack, navigateTo } from "../../utils/navigation";
 import { isPrototypeQaMode } from "../../utils/prototypeQa";
 import { formatDate } from "../../utils/datetime";
+// CSS Modules 시범 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
+// (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
+import styles from "./NotificationScreens.module.css";
 
 function Header({ title, fallback }: { title: string; fallback: string }) {
   return (
@@ -73,26 +76,33 @@ export function NotificationsScreen({
   };
   return (
     <main
-      className={`mobile-prototype notification-screen${stageClassName ? ` ${stageClassName}` : ""}`}
+      className={`mobile-prototype notification-screen ${styles["notification-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
       data-version={version}
     >
       <Header title="알림" fallback="/home" />
-      <div className="notification-scroll">
+      <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         {notices.length ? (
-          <section className="notification-list" aria-label="알림 목록">
+          <section
+            className={`notification-list ${styles["notification-list"]}`}
+            aria-label="알림 목록"
+          >
             {notices.map((notice) => (
               <button
                 key={notice.id}
-                className={`notification-row${notice.isRead ? "" : " is-unread"}`}
+                className={`notification-row ${styles["notification-row"]}${notice.isRead ? "" : " is-unread"}`}
                 type="button"
                 onClick={() => open(notice)}
               >
-                <span className="notification-row-copy">
-                  <span className="notification-row-title">
+                <span
+                  className={`notification-row-copy ${styles["notification-row-copy"]}`}
+                >
+                  <span
+                    className={`notification-row-title ${styles["notification-row-title"]}`}
+                  >
                     {notice.title}
                     {!notice.isRead && (
                       <i
-                        className="notification-row-dot"
+                        className={`notification-row-dot ${styles["notification-row-dot"]}`}
                         aria-label="읽지 않은 알림"
                       />
                     )}
@@ -104,7 +114,9 @@ export function NotificationsScreen({
             ))}
           </section>
         ) : (
-          <section className="notification-empty">
+          <section
+            className={`notification-empty ${styles["notification-empty"]}`}
+          >
             <h1>아직 새로운 알림이 없어요</h1>
             <p>
               편지의 소식이 도착하면
@@ -121,7 +133,9 @@ export function NotificationsScreen({
           </section>
         )}
         {qaMode && (
-          <details className="prototype-test-panel notification-test">
+          <details
+            className={`prototype-test-panel notification-test ${styles["notification-test"]}`}
+          >
             <summary>프로토타입 테스트</summary>
             <p>알림 목록 상태를 바꿔 확인할 수 있어요.</p>
             <div>
@@ -210,12 +224,12 @@ export function NotificationSettingsScreen({
   };
   return (
     <main
-      className={`mobile-prototype notification-settings-screen${stageClassName ? ` ${stageClassName}` : ""}`}
+      className={`mobile-prototype notification-settings-screen ${styles["notification-settings-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
     >
       <Header title="알림 설정" fallback="/my-space" />
-      <div className="notification-scroll">
+      <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         <section
-          className="notification-settings-list"
+          className={`notification-settings-list ${styles["notification-settings-list"]}`}
           aria-label="알림 종류 설정"
         >
           {settingRows.map(([key, title, description]) => (
