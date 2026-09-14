@@ -10373,6 +10373,11 @@ html[data-ios-standalone="true"] .intro-copy {
   margin-top: 18px;
 }
 .write-letter-screen--figma .flow-header .reply-read-letter-button {
+  /* 오른쪽 칸(3번째)에 둔다. 제목(strong)이 position:absolute 로 칸에서 빠져,
+     이 버튼이 가운데 1fr 칸으로 밀려 들어가 폭이 298px 까지 넓어졌고,
+     그 가운데를 위에 그려진 제목이 덮어 버튼 가운데를 눌러도 반응하지 않았다.
+     칸 사이 간격이 없어 글자 위치는 그대로다. */
+  grid-column: 3;
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
