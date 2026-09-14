@@ -84,7 +84,10 @@ const MY_SPACE_DETAIL_CLASSES = [
 
 function markPushTransition(page: HTMLElement | null, destination: string) {
   if (!page) return;
-  if (page.classList.contains("my-space-screen") && MY_SPACE_DETAIL_PATHS.has(destination)) {
+  if (
+    page.classList.contains("my-space-screen") &&
+    MY_SPACE_DETAIL_PATHS.has(destination)
+  ) {
     page.classList.add("is-pushed-away");
   }
 }
@@ -93,9 +96,15 @@ function markPushTransition(page: HTMLElement | null, destination: string) {
 // 계정 관리 → 계정 삭제(/account-withdrawal)도 같은 구조다: 상세 화면을
 // 나와 정확히 이 fallback 으로 돌아갈 때만 반대 방향(pop)을 쓴다.
 // fromClasses 는 그 상세 화면 루트에 붙는 클래스명들이다.
-const POP_PAIRS: ReadonlyArray<{ fallbackPath: string; fromClasses: readonly string[] }> = [
+const POP_PAIRS: ReadonlyArray<{
+  fallbackPath: string;
+  fromClasses: readonly string[];
+}> = [
   { fallbackPath: "/my-space", fromClasses: MY_SPACE_DETAIL_CLASSES },
-  { fallbackPath: "/account-settings", fromClasses: ["account-withdrawal-screen"] },
+  {
+    fallbackPath: "/account-settings",
+    fromClasses: ["account-withdrawal-screen"],
+  },
 ];
 
 // 나의 공간 상세 화면(또는 계정 삭제 화면)을 떠나 각각의 짝이 되는 목록으로
@@ -104,7 +113,9 @@ const POP_PAIRS: ReadonlyArray<{ fallbackPath: string; fromClasses: readonly str
 function isPoppingBack(page: HTMLElement | null, fallbackPath: string) {
   if (!page) return false;
   return POP_PAIRS.some(
-    (pair) => pair.fallbackPath === fallbackPath && pair.fromClasses.some((cls) => page.classList.contains(cls)),
+    (pair) =>
+      pair.fallbackPath === fallbackPath &&
+      pair.fromClasses.some((cls) => page.classList.contains(cls)),
   );
 }
 
@@ -157,7 +168,10 @@ function isCurrentDestination(path: string) {
   }
 
   const destination = new URL(path, window.location.origin);
-  return destination.pathname === window.location.pathname && destination.search === window.location.search;
+  return (
+    destination.pathname === window.location.pathname &&
+    destination.search === window.location.search
+  );
 }
 
 function canGoBackInApp() {
@@ -259,7 +273,11 @@ export function replaceAppState(state: string) {
   if (window.location.protocol === "file:") {
     const params = getCurrentAppSearchParams();
     params.set("state", state);
-    window.history.replaceState({}, "", `#${getCurrentAppPath()}?${params.toString()}`);
+    window.history.replaceState(
+      {},
+      "",
+      `#${getCurrentAppPath()}?${params.toString()}`,
+    );
     return;
   }
 

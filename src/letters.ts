@@ -69,61 +69,83 @@ const LETTERS_KEY = "gonggam_letters_v1";
 const CURRENT_USER_KEY = "gonggam_current_user_v1";
 
 function createId(prefix: string) {
-  const randomPart = typeof crypto?.randomUUID === "function"
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const randomPart =
+    typeof crypto?.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   return `${prefix}-${randomPart}`;
 }
 
 function isLetterStatus(value: unknown): value is LetterStatus {
-  return typeof value === "string" && [
-    "submitted",
-    "waiting_for_reader",
-    "assigned",
-    "read",
-    "waiting_for_reply",
-    "replied",
-    "withdrawn",
-  ].includes(value);
+  return (
+    typeof value === "string" &&
+    [
+      "submitted",
+      "waiting_for_reader",
+      "assigned",
+      "read",
+      "waiting_for_reply",
+      "replied",
+      "withdrawn",
+    ].includes(value)
+  );
 }
 
 function isLetter(value: unknown): value is Letter {
   if (!value || typeof value !== "object") return false;
   const letter = value as Partial<Letter>;
-  return typeof letter.id === "string"
-    && typeof letter.senderId === "string"
-    && typeof letter.anonymousName === "string"
-    && typeof letter.content === "string"
-    && typeof letter.createdAt === "string"
-    && typeof letter.updatedAt === "string"
-    && isLetterStatus(letter.status)
-    && typeof letter.retryCount === "number";
+  return (
+    typeof letter.id === "string" &&
+    typeof letter.senderId === "string" &&
+    typeof letter.anonymousName === "string" &&
+    typeof letter.content === "string" &&
+    typeof letter.createdAt === "string" &&
+    typeof letter.updatedAt === "string" &&
+    isLetterStatus(letter.status) &&
+    typeof letter.retryCount === "number"
+  );
 }
 
 function normalizeLetter(letter: Letter): Letter {
-  const repairedStatus: LetterStatus = letter.reply && letter.status !== "replied"
-    ? "replied"
-    : !letter.reply && letter.status === "replied"
-      ? "waiting_for_reply"
-      : letter.status;
-  const statusChangedAt = letter.lastStatusChangedAt ?? statusDate({ ...letter, status: repairedStatus }) ?? letter.updatedAt;
-  const statusHistory = Array.isArray(letter.statusHistory) && letter.statusHistory.length > 0
-    ? letter.statusHistory.filter((item) => isLetterStatus(item.status) && typeof item.changedAt === "string")
-    : [{ status: repairedStatus, changedAt: statusChangedAt }];
-  return { ...letter, status: repairedStatus, statusHistory, lastStatusChangedAt: statusChangedAt };
+  const repairedStatus: LetterStatus =
+    letter.reply && letter.status !== "replied"
+      ? "replied"
+      : !letter.reply && letter.status === "replied"
+        ? "waiting_for_reply"
+        : letter.status;
+  const statusChangedAt =
+    letter.lastStatusChangedAt ??
+    statusDate({ ...letter, status: repairedStatus }) ??
+    letter.updatedAt;
+  const statusHistory =
+    Array.isArray(letter.statusHistory) && letter.statusHistory.length > 0
+      ? letter.statusHistory.filter(
+          (item) =>
+            isLetterStatus(item.status) && typeof item.changedAt === "string",
+        )
+      : [{ status: repairedStatus, changedAt: statusChangedAt }];
+  return {
+    ...letter,
+    status: repairedStatus,
+    statusHistory,
+    lastStatusChangedAt: statusChangedAt,
+  };
 }
 
 function statusDate(letter: Letter) {
   if (letter.status === "assigned") return letter.assignedAt;
   if (letter.status === "read") return letter.readAt;
-  if (letter.status === "waiting_for_reply") return letter.waitingForReplyAt ?? letter.readAt;
+  if (letter.status === "waiting_for_reply")
+    return letter.waitingForReplyAt ?? letter.readAt;
   if (letter.status === "replied") return letter.repliedAt;
   if (letter.status === "withdrawn") return letter.withdrawnAt;
   return undefined;
 }
 
 function canUseStorage() {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 /** 맡은 편지에 답장할 수 있는 기간. 이 시간이 지나면 편지는 자동으로 사라진다. */
@@ -135,9 +157,12 @@ export const REPLY_WINDOW_MS = 3 * 24 * 60 * 60 * 1000;
  * assignedAt 이 비어 있는 옛 기록은 기한을 계산할 수 없어 역시 undefined 다 —
  * 이때는 남은 시간을 감추고 문구만 보여주는 쪽이 틀린 숫자를 띄우는 것보다 낫다.
  */
-export function getReplyDeadline(letter: Pick<Letter, "status" | "assignedAt">) {
+export function getReplyDeadline(
+  letter: Pick<Letter, "status" | "assignedAt">,
+) {
   if (!letter.assignedAt) return undefined;
-  if (!["assigned", "read", "waiting_for_reply"].includes(letter.status)) return undefined;
+  if (!["assigned", "read", "waiting_for_reply"].includes(letter.status))
+    return undefined;
   const assigned = new Date(letter.assignedAt).getTime();
   if (!Number.isFinite(assigned)) return undefined;
   return assigned + REPLY_WINDOW_MS;
@@ -179,7 +204,13 @@ export function getLetters(includePrototypeFixtures = false): Letter[] {
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(isLetter).map(normalizeLetter).filter((letter) => includePrototypeFixtures || !letter.isPrototypeFixture).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    return parsed
+      .filter(isLetter)
+      .map(normalizeLetter)
+      .filter(
+        (letter) => includePrototypeFixtures || !letter.isPrototypeFixture,
+      )
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   } catch {
     return [];
   }
@@ -200,15 +231,25 @@ export function getLetterById(id: string) {
 
 export function saveLetter(letter: Letter) {
   const letters = getLetters(true);
-  const nextLetters = [letter, ...letters.filter((item) => item.id !== letter.id)];
+  const nextLetters = [
+    letter,
+    ...letters.filter((item) => item.id !== letter.id),
+  ];
   writeLetters(nextLetters);
   return letter;
 }
 
-export function updateLetter(id: string, changes: Partial<Omit<Letter, "id" | "createdAt">>) {
+export function updateLetter(
+  id: string,
+  changes: Partial<Omit<Letter, "id" | "createdAt">>,
+) {
   const letter = getLetterById(id);
   if (!letter) return undefined;
-  const updated: Letter = { ...letter, ...changes, updatedAt: new Date().toISOString() };
+  const updated: Letter = {
+    ...letter,
+    ...changes,
+    updatedAt: new Date().toISOString(),
+  };
   return saveLetter(updated);
 }
 
@@ -221,23 +262,47 @@ export function getOutgoingLettersByUser(userId: string) {
 }
 
 export function getActiveOutgoingLettersByUser(userId: string) {
-  const activeStatuses: LetterStatus[] = ["submitted", "waiting_for_reader", "assigned", "read", "waiting_for_reply"];
-  return getMyLetters(userId).filter((letter) => activeStatuses.includes(letter.status));
+  const activeStatuses: LetterStatus[] = [
+    "submitted",
+    "waiting_for_reader",
+    "assigned",
+    "read",
+    "waiting_for_reply",
+  ];
+  return getMyLetters(userId).filter((letter) =>
+    activeStatuses.includes(letter.status),
+  );
 }
 
 export function getWaitingReplyLettersByUser(userId: string) {
-  return getMyLetters(userId).filter((letter) => !letter.reply && !["replied", "withdrawn"].includes(letter.status));
+  return getMyLetters(userId).filter(
+    (letter) =>
+      !letter.reply && !["replied", "withdrawn"].includes(letter.status),
+  );
 }
 
 export function getUnreadReplyLettersByUser(userId: string) {
-  return getMyLetters(userId).filter((letter) => Boolean(letter.reply) && !letter.replyOpenedAt);
+  return getMyLetters(userId).filter(
+    (letter) => Boolean(letter.reply) && !letter.replyOpenedAt,
+  );
 }
 
 export function getOutgoingLetterStatusSummary(userId: string) {
-  return getMyLetters(userId).reduce<Record<LetterStatus, number>>((summary, letter) => {
-    summary[letter.status] += 1;
-    return summary;
-  }, { submitted: 0, waiting_for_reader: 0, assigned: 0, read: 0, waiting_for_reply: 0, replied: 0, withdrawn: 0 });
+  return getMyLetters(userId).reduce<Record<LetterStatus, number>>(
+    (summary, letter) => {
+      summary[letter.status] += 1;
+      return summary;
+    },
+    {
+      submitted: 0,
+      waiting_for_reader: 0,
+      assigned: 0,
+      read: 0,
+      waiting_for_reply: 0,
+      replied: 0,
+      withdrawn: 0,
+    },
+  );
 }
 
 export function getLettersRepliedByUser(userId: string) {
@@ -245,14 +310,26 @@ export function getLettersRepliedByUser(userId: string) {
 }
 
 export function getReceivedRepliesByUser(userId: string) {
-  return getMyLetters(userId).filter((letter) => Boolean(letter.reply)).sort((a, b) => (b.repliedAt ?? b.updatedAt).localeCompare(a.repliedAt ?? a.updatedAt));
+  return getMyLetters(userId)
+    .filter((letter) => Boolean(letter.reply))
+    .sort((a, b) =>
+      (b.repliedAt ?? b.updatedAt).localeCompare(a.repliedAt ?? a.updatedAt),
+    );
 }
 
-export function getReceivedReplyCount(userId: string) { return getReceivedRepliesByUser(userId).length; }
+export function getReceivedReplyCount(userId: string) {
+  return getReceivedRepliesByUser(userId).length;
+}
 
-export function createLetter(input: Pick<Letter, "senderId" | "anonymousName" | "content"> & { sourceDraftId?: string }) {
+export function createLetter(
+  input: Pick<Letter, "senderId" | "anonymousName" | "content"> & {
+    sourceDraftId?: string;
+  },
+) {
   if (input.sourceDraftId) {
-    const existing = getLetters().find((letter) => letter.sourceDraftId === input.sourceDraftId);
+    const existing = getLetters().find(
+      (letter) => letter.sourceDraftId === input.sourceDraftId,
+    );
     if (existing) return existing;
   }
   const now = new Date().toISOString();
@@ -268,25 +345,43 @@ export function createLetter(input: Pick<Letter, "senderId" | "anonymousName" | 
     moderationStatus: "not_required",
     retryCount: 0,
     sourceDraftId: input.sourceDraftId,
-    statusHistory: [{ status: "waiting_for_reader", changedAt: now, actorId: input.senderId }],
+    statusHistory: [
+      { status: "waiting_for_reader", changedAt: now, actorId: input.senderId },
+    ],
     lastStatusChangedAt: now,
   };
   return saveLetter(letter);
 }
 
-export function transitionLetterStatus(letterId: string, status: LetterStatus, actorId?: string, changes: Partial<Letter> = {}) {
+export function transitionLetterStatus(
+  letterId: string,
+  status: LetterStatus,
+  actorId?: string,
+  changes: Partial<Letter> = {},
+) {
   const latest = getLetterById(letterId);
   if (!latest) return undefined;
   const now = new Date().toISOString();
-  const history = [...(latest.statusHistory ?? []), { status, changedAt: now, ...(actorId ? { actorId } : {}) }];
-  return updateLetter(letterId, { ...changes, status, statusHistory: history, lastStatusChangedAt: now });
+  const history = [
+    ...(latest.statusHistory ?? []),
+    { status, changedAt: now, ...(actorId ? { actorId } : {}) },
+  ];
+  return updateLetter(letterId, {
+    ...changes,
+    status,
+    statusHistory: history,
+    lastStatusChangedAt: now,
+  });
 }
 
 export type AssignLetterResult =
   | { ok: true; letter: Letter }
   | { ok: false; reason: "not-found" | "already-assigned" | "own-letter" };
 
-export function assignLetterToReader(letterId: string, readerId: string): AssignLetterResult {
+export function assignLetterToReader(
+  letterId: string,
+  readerId: string,
+): AssignLetterResult {
   const latest = getLetterById(letterId);
   if (!latest) return { ok: false, reason: "not-found" };
   if (latest.senderId === readerId) return { ok: false, reason: "own-letter" };
@@ -306,11 +401,19 @@ export type SendReplyResult =
   | { ok: true; letter: Letter }
   | { ok: false; reason: "not-found" | "not-assigned" | "already-replied" };
 
-export function sendReply(letterId: string, writerId: string, content: string): SendReplyResult {
+export function sendReply(
+  letterId: string,
+  writerId: string,
+  content: string,
+): SendReplyResult {
   const latest = getLetterById(letterId);
   if (!latest) return { ok: false, reason: "not-found" };
-  if (latest.reply || latest.status === "replied") return { ok: false, reason: "already-replied" };
-  if (latest.assignedReaderId !== writerId || !["assigned", "read", "waiting_for_reply"].includes(latest.status)) {
+  if (latest.reply || latest.status === "replied")
+    return { ok: false, reason: "already-replied" };
+  if (
+    latest.assignedReaderId !== writerId ||
+    !["assigned", "read", "waiting_for_reply"].includes(latest.status)
+  ) {
     return { ok: false, reason: "not-assigned" };
   }
 
@@ -320,52 +423,122 @@ export function sendReply(letterId: string, writerId: string, content: string): 
     letterId,
     writerId,
     // The public name is captured at writing time. It must never be replaced by a later nickname change.
-    anonymousName: (() => { try { return JSON.parse(localStorage.getItem("gonggam_mock_auth_v1") ?? "{}").account?.anonymousName; } catch { return undefined; } })(),
+    anonymousName: (() => {
+      try {
+        return JSON.parse(localStorage.getItem("gonggam_mock_auth_v1") ?? "{}")
+          .account?.anonymousName;
+      } catch {
+        return undefined;
+      }
+    })(),
     content: content.trim(),
     createdAt: now,
   };
-  const letter = transitionLetterStatus(letterId, "replied", writerId, { reply, repliedAt: now });
+  const letter = transitionLetterStatus(letterId, "replied", writerId, {
+    reply,
+    repliedAt: now,
+  });
   return letter ? { ok: true, letter } : { ok: false, reason: "not-found" };
 }
 
 export function markLetterReadForReply(letterId: string, readerId: string) {
   const latest = getLetterById(letterId);
-  if (!latest || latest.assignedReaderId !== readerId || latest.status !== "assigned") return undefined;
+  if (
+    !latest ||
+    latest.assignedReaderId !== readerId ||
+    latest.status !== "assigned"
+  )
+    return undefined;
   const now = new Date().toISOString();
-  return transitionLetterStatus(letterId, "waiting_for_reply", readerId, { readAt: now, waitingForReplyAt: now });
+  return transitionLetterStatus(letterId, "waiting_for_reply", readerId, {
+    readAt: now,
+    waitingForReplyAt: now,
+  });
 }
 
 export function redistributeLetter(letterId: string, senderId: string) {
   const latest = getLetterById(letterId);
-  if (!latest || latest.senderId !== senderId || latest.status !== "waiting_for_reader") return undefined;
+  if (
+    !latest ||
+    latest.senderId !== senderId ||
+    latest.status !== "waiting_for_reader"
+  )
+    return undefined;
   const now = new Date().toISOString();
-  return transitionLetterStatus(letterId, "waiting_for_reader", senderId, { retryCount: latest.retryCount + 1, lastRedistributedAt: now, waitingExtendedAt: undefined });
+  return transitionLetterStatus(letterId, "waiting_for_reader", senderId, {
+    retryCount: latest.retryCount + 1,
+    lastRedistributedAt: now,
+    waitingExtendedAt: undefined,
+  });
 }
 
 export function extendLetterWaiting(letterId: string, senderId: string) {
   const latest = getLetterById(letterId);
-  if (!latest || latest.senderId !== senderId || ["replied", "withdrawn"].includes(latest.status)) return undefined;
-  return updateLetter(letterId, { waitingExtendedAt: new Date().toISOString() });
+  if (
+    !latest ||
+    latest.senderId !== senderId ||
+    ["replied", "withdrawn"].includes(latest.status)
+  )
+    return undefined;
+  return updateLetter(letterId, {
+    waitingExtendedAt: new Date().toISOString(),
+  });
 }
 
 export function withdrawLetter(letterId: string, senderId: string) {
   const latest = getLetterById(letterId);
-  if (!latest || latest.senderId !== senderId || latest.status === "replied" || latest.status === "withdrawn") return undefined;
+  if (
+    !latest ||
+    latest.senderId !== senderId ||
+    latest.status === "replied" ||
+    latest.status === "withdrawn"
+  )
+    return undefined;
   const now = new Date().toISOString();
-  return transitionLetterStatus(letterId, "withdrawn", senderId, { withdrawnAt: now, assignedReaderId: undefined, assignedAt: undefined });
+  return transitionLetterStatus(letterId, "withdrawn", senderId, {
+    withdrawnAt: now,
+    assignedReaderId: undefined,
+    assignedAt: undefined,
+  });
 }
 
 export function markReplyOpened(letterId: string, senderId: string) {
   const latest = getLetterById(letterId);
-  if (!latest || latest.senderId !== senderId || latest.status !== "replied" || latest.replyOpenedAt) return latest;
+  if (
+    !latest ||
+    latest.senderId !== senderId ||
+    latest.status !== "replied" ||
+    latest.replyOpenedAt
+  )
+    return latest;
   return updateLetter(letterId, { replyOpenedAt: new Date().toISOString() });
 }
 
-export function returnLetterToWaiting(letterId: string, readerId: string, reason = "unspecified") {
+export function returnLetterToWaiting(
+  letterId: string,
+  readerId: string,
+  reason = "unspecified",
+) {
   const latest = getLetterById(letterId);
-  if (!latest || latest.assignedReaderId !== readerId || !["assigned", "read", "waiting_for_reply"].includes(latest.status)) return undefined;
+  if (
+    !latest ||
+    latest.assignedReaderId !== readerId ||
+    !["assigned", "read", "waiting_for_reply"].includes(latest.status)
+  )
+    return undefined;
   const now = new Date().toISOString();
-  return transitionLetterStatus(letterId, "waiting_for_reader", readerId, { assignedReaderId: undefined, assignedAt: undefined, readAt: undefined, waitingForReplyAt: undefined, returnCount: (latest.returnCount ?? 0) + 1, lastReturnedAt: now, lastReturnReason: reason });
+  return transitionLetterStatus(letterId, "waiting_for_reader", readerId, {
+    assignedReaderId: undefined,
+    assignedAt: undefined,
+    readAt: undefined,
+    waitingForReplyAt: undefined,
+    returnCount: (latest.returnCount ?? 0) + 1,
+    lastReturnedAt: now,
+    lastReturnReason: reason,
+  });
 }
 
-export const letterStorageKeys = { letters: LETTERS_KEY, currentUser: CURRENT_USER_KEY } as const;
+export const letterStorageKeys = {
+  letters: LETTERS_KEY,
+  currentUser: CURRENT_USER_KEY,
+} as const;

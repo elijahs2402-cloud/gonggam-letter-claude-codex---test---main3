@@ -1,9 +1,9 @@
-import { useState } from "react"
-import { AppBottomNavigation } from "./AppBottomNavigation"
-import { getCurrentAnonymousName } from "./mockAuth"
-import { getCurrentUserId } from "./letters"
-import { unreadNotificationCount } from "./notifications"
-import { navigateTo } from "./navigation"
+import { useState } from "react";
+import { AppBottomNavigation } from "./AppBottomNavigation";
+import { getCurrentAnonymousName } from "./mockAuth";
+import { getCurrentUserId } from "./letters";
+import { unreadNotificationCount } from "./notifications";
+import { navigateTo } from "./navigation";
 import { getReadCardPath } from "./waitingLetters";
 import styles from "./HomeRuledScreen.module.css";
 import refined from "./HomeRuledRefinedScreen.module.css";
@@ -37,40 +37,74 @@ const CHOICES = [
     path: "/listen-entry-a",
     label: "누군가의 편지를 천천히 읽고 답하기",
   },
-] as const
+] as const;
 
-export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }: { isRefined?: boolean; refinedCardsOnly?: boolean }) {
-  const useRefinedCards = isRefined || refinedCardsOnly
+export function HomeRuledScreen({
+  isRefined = false,
+  refinedCardsOnly = false,
+}: {
+  isRefined?: boolean;
+  refinedCardsOnly?: boolean;
+}) {
+  const useRefinedCards = isRefined || refinedCardsOnly;
   // 소식 닫기 후 돌아갈 주소. refinedCardsOnly 는 지금 /home 이 쓰는 모습이다
   // (/home-ruled-refined-cards 주소는 실험 라우트 정리 때 지웠다).
-  const homePath = isRefined ? "/home-ruled-refined" : refinedCardsOnly ? "/home" : "/home-ruled"
-  const [isScrolled, setIsScrolled] = useState(false)
-  const userId = getCurrentUserId()
-  const name = getCurrentAnonymousName()
+  const homePath = isRefined
+    ? "/home-ruled-refined"
+    : refinedCardsOnly
+      ? "/home"
+      : "/home-ruled";
+  const [isScrolled, setIsScrolled] = useState(false);
+  const userId = getCurrentUserId();
+  const name = getCurrentAnonymousName();
   // 벨의 점은 벨을 눌렀을 때 열리는 알림 목록만 본다.
   // 예전에는 편지함 소식(getMailboxAttention)으로 켰는데, 알림 화면은
   // 그것과 아무 상관 없는 별도 저장소를 읽는다. 그래서 점을 보고 눌러도
   // '아직 새로운 알림이 없어요'만 나왔다.
-  const hasUnreadNotifications = unreadNotificationCount(userId) > 0
-  const noticePreview = new URLSearchParams(window.location.search).get("preview")
+  const hasUnreadNotifications = unreadNotificationCount(userId) > 0;
+  const noticePreview = new URLSearchParams(window.location.search).get(
+    "preview",
+  );
   const previewNotice =
     noticePreview === "notice-assigned"
-      ? { title: "맡은 편지에 답장을 전해주세요.", time: "1일 23:59:59 남음", action: "답장 쓰기", onAction: () => navigateTo("/write-reply/sample-waiting-letter-one") }
+      ? {
+          title: "맡은 편지에 답장을 전해주세요.",
+          time: "1일 23:59:59 남음",
+          action: "답장 쓰기",
+          onAction: () => navigateTo("/write-reply/sample-waiting-letter-one"),
+        }
       : noticePreview === "notice-expiring"
-        ? { title: "맡은 편지에 답장을 전해주세요.", time: "곧 사라져요 · 00:15:00 남음", action: "답장 쓰기", onAction: () => navigateTo("/write-reply/sample-waiting-letter-one") }
+        ? {
+            title: "맡은 편지에 답장을 전해주세요.",
+            time: "곧 사라져요 · 00:15:00 남음",
+            action: "답장 쓰기",
+            onAction: () =>
+              navigateTo("/write-reply/sample-waiting-letter-one"),
+          }
         : noticePreview === "notice-reply-arrived"
-          ? { title: "답장이 도착했어요.", time: undefined, action: "편지함 가기", onAction: () => navigateTo("/mailbox") }
-          : null
+          ? {
+              title: "답장이 도착했어요.",
+              time: undefined,
+              action: "편지함 가기",
+              onAction: () => navigateTo("/mailbox"),
+            }
+          : null;
 
   return (
-    <main className={`mobile-prototype home-screen home-ruled-screen ${styles.screen}${isRefined ? ` ${refined.screen}` : refinedCardsOnly ? ` ${refined.cardsOnly}` : ""}`}>
-      <div className={`home-heading-top ${styles.headingTop}${isScrolled ? ` ${styles.scrolled}` : ""}`}>
+    <main
+      className={`mobile-prototype home-screen home-ruled-screen ${styles.screen}${isRefined ? ` ${refined.screen}` : refinedCardsOnly ? ` ${refined.cardsOnly}` : ""}`}
+    >
+      <div
+        className={`home-heading-top ${styles.headingTop}${isScrolled ? ` ${styles.scrolled}` : ""}`}
+      >
         <p className="home-brand">공감편지</p>
         <button
           className="home-notification-button"
           type="button"
           onClick={() => navigateTo("/notifications")}
-          aria-label={hasUnreadNotifications ? "알림, 확인이 필요한 새 소식 있음" : "알림"}
+          aria-label={
+            hasUnreadNotifications ? "알림, 확인이 필요한 새 소식 있음" : "알림"
+          }
         >
           {hasUnreadNotifications && <i aria-hidden="true" />}
         </button>
@@ -78,13 +112,39 @@ export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }:
 
       {previewNotice && (
         <aside className="home-notice-card" role="status">
-          <button className="home-notice-dismiss" type="button" aria-label="소식 닫기" onClick={() => navigateTo(homePath)}>×</button>
+          <button
+            className="home-notice-dismiss"
+            type="button"
+            aria-label="소식 닫기"
+            onClick={() => navigateTo(homePath)}
+          >
+            ×
+          </button>
           <span className="home-notice-copy">
             <strong>{previewNotice.title}</strong>
-            {previewNotice.time && <span className={`home-notice-countdown${noticePreview === "notice-expiring" ? " is-over" : ""}`}>{previewNotice.time}</span>}
-            {!previewNotice.time && <span className="home-notice-countdown home-notice-countdown--placeholder" aria-hidden="true">시간 여백</span>}
+            {previewNotice.time && (
+              <span
+                className={`home-notice-countdown${noticePreview === "notice-expiring" ? " is-over" : ""}`}
+              >
+                {previewNotice.time}
+              </span>
+            )}
+            {!previewNotice.time && (
+              <span
+                className="home-notice-countdown home-notice-countdown--placeholder"
+                aria-hidden="true"
+              >
+                시간 여백
+              </span>
+            )}
           </span>
-          <button className="home-notice-action" type="button" onClick={previewNotice.onAction}>{previewNotice.action}</button>
+          <button
+            className="home-notice-action"
+            type="button"
+            onClick={previewNotice.onAction}
+          >
+            {previewNotice.action}
+          </button>
         </aside>
       )}
 
@@ -98,19 +158,30 @@ export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }:
             <br />
             오늘은 어떤 마음인가요?
           </h1>
-          <p className="home-heading-helper">지금 마음이 향하는 쪽을 골라주세요.</p>
+          <p className="home-heading-helper">
+            지금 마음이 향하는 쪽을 골라주세요.
+          </p>
         </header>
 
-        <section className={`${styles.choices}${useRefinedCards ? ` ${refined.choices}` : ""}`} aria-label="오늘의 선택">
+        <section
+          className={`${styles.choices}${useRefinedCards ? ` ${refined.choices}` : ""}`}
+          aria-label="오늘의 선택"
+        >
           {CHOICES.map((choice) => (
             <button
               key={choice.key}
               className={`${styles.choice}${useRefinedCards ? ` ${refined.choice}` : ""}`}
               type="button"
               aria-label={choice.label}
-              onClick={() => navigateTo(choice.key === "read" ? getReadCardPath(userId) : choice.path)}
+              onClick={() =>
+                navigateTo(
+                  choice.key === "read" ? getReadCardPath(userId) : choice.path,
+                )
+              }
             >
-              {!useRefinedCards && <img className={styles.icon} src={choice.icon} alt="" />}
+              {!useRefinedCards && (
+                <img className={styles.icon} src={choice.icon} alt="" />
+              )}
               <strong>
                 {choice.title[0]}
                 <br />
@@ -126,16 +197,22 @@ export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }:
           ))}
         </section>
 
-        {(isRefined || useRefinedCards) && <div className={refined.scene} aria-hidden="true" />}
+        {(isRefined || useRefinedCards) && (
+          <div className={refined.scene} aria-hidden="true" />
+        )}
 
-      <p className={`${styles.footer} ${styles.scrollFooter}${useRefinedCards ? ` ${refined.footer}` : ""}`}>
+        <p
+          className={`${styles.footer} ${styles.scrollFooter}${useRefinedCards ? ` ${refined.footer}` : ""}`}
+        >
           <img src="/assets/home-footer-star-divider1.svg" alt="" />
           <span>마음을 쓰고, 마음을 읽는 시간</span>
           <img src="/assets/home-footer-star-divider2.svg" alt="" />
         </p>
       </div>
 
-      <p className={`${styles.footer} ${styles.fixedFooter}${useRefinedCards ? ` ${refined.hidden}` : ""}`}>
+      <p
+        className={`${styles.footer} ${styles.fixedFooter}${useRefinedCards ? ` ${refined.hidden}` : ""}`}
+      >
         <img src="/assets/home-footer-star-divider1.svg" alt="" />
         <span>마음을 쓰고, 마음을 읽는 시간</span>
         <img src="/assets/home-footer-star-divider2.svg" alt="" />
@@ -143,5 +220,5 @@ export function HomeRuledScreen({ isRefined = false, refinedCardsOnly = false }:
 
       <AppBottomNavigation active="home" />
     </main>
-  )
+  );
 }

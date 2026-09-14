@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 export type DraftSaveState = "idle" | "saving" | "saved" | "error";
 
-export function useDraftAutosave<T>(value: T, save: (value: T) => boolean, enabled = true) {
+export function useDraftAutosave<T>(
+  value: T,
+  save: (value: T) => boolean,
+  enabled = true,
+) {
   const latest = useRef(value);
   const [state, setState] = useState<DraftSaveState>("idle");
   latest.current = value;
@@ -33,15 +37,24 @@ export function useDraftAutosave<T>(value: T, save: (value: T) => boolean, enabl
 
   useEffect(() => {
     if (!enabled) return;
-    const onVisibility = () => { if (document.visibilityState === "hidden") saveNow(); };
-    const onBeforeUnload = () => { saveNow(); };
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") saveNow();
+    };
+    const onBeforeUnload = () => {
+      saveNow();
+    };
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("beforeunload", onBeforeUnload);
-    return () => { document.removeEventListener("visibilitychange", onVisibility); window.removeEventListener("beforeunload", onBeforeUnload); };
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
   }, [enabled]);
 
   // 되돌릴 일이 없다 — 이 화면을 떠나기로 한 순간에만 부른다.
-  const cancel = () => { cancelled.current = true; };
+  const cancel = () => {
+    cancelled.current = true;
+  };
 
   return { state, saveNow, cancel };
 }

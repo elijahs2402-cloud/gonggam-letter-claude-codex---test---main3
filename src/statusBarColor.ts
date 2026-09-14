@@ -11,7 +11,9 @@
 const META_NAME = "theme-color";
 
 function getMeta(): HTMLMetaElement {
-  const found = document.querySelector<HTMLMetaElement>(`meta[name="${META_NAME}"]`);
+  const found = document.querySelector<HTMLMetaElement>(
+    `meta[name="${META_NAME}"]`,
+  );
   if (found) return found;
   const created = document.createElement("meta");
   created.name = META_NAME;
@@ -32,9 +34,16 @@ const PAPER_AVERAGE = [250, 247, 235];
 
 // "rgba(216, 208, 195, 0.4)" / "rgb(216, 208, 195)" 를 [r,g,b,a] 로 읽는다.
 function parseColor(value: string) {
-  const found = value.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)\s*(?:[,/]\s*([\d.]+)\s*)?\)/);
+  const found = value.match(
+    /rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)\s*(?:[,/]\s*([\d.]+)\s*)?\)/,
+  );
   if (!found) return undefined;
-  return [Number(found[1]), Number(found[2]), Number(found[3]), found[4] === undefined ? 1 : Number(found[4])];
+  return [
+    Number(found[1]),
+    Number(found[2]),
+    Number(found[3]),
+    found[4] === undefined ? 1 : Number(found[4]),
+  ];
 }
 
 // 종이결이 깔린 화면이면 실제로 보이는 합성색을 돌려준다.
@@ -45,7 +54,9 @@ function compositeColor(style: CSSStyleDeclaration) {
   const overlay = parseColor(style.backgroundImage);
   if (!overlay) return `rgb(${PAPER_AVERAGE.join(", ")})`;
   const alpha = overlay[3];
-  const mixed = PAPER_AVERAGE.map((paper, index) => Math.round(overlay[index] * alpha + paper * (1 - alpha)));
+  const mixed = PAPER_AVERAGE.map((paper, index) =>
+    Math.round(overlay[index] * alpha + paper * (1 - alpha)),
+  );
   return `rgb(${mixed.join(", ")})`;
 }
 
@@ -61,7 +72,11 @@ function readScreenColor(): string | undefined {
   if (composited) return composited;
   const color = style.backgroundColor;
   // 투명하면 이 요소가 아니라 조상이 칠하고 있다는 뜻이라 건너뛴다.
-  if (!color || color === "transparent" || color.startsWith("rgba(0, 0, 0, 0)")) {
+  if (
+    !color ||
+    color === "transparent" ||
+    color.startsWith("rgba(0, 0, 0, 0)")
+  ) {
     const root = document.getElementById("root");
     return root ? window.getComputedStyle(root).backgroundColor : undefined;
   }
@@ -93,5 +108,11 @@ export function installStatusBarColorSync() {
   // 모달·시트가 배경을 덮는 경우까지 따라가도록 클래스 변화도 지켜본다.
   const observer = new MutationObserver(() => requestAnimationFrame(sync));
   const root = document.getElementById("root");
-  if (root) observer.observe(root, { childList: true, subtree: false, attributes: true, attributeFilter: ["class"] });
+  if (root)
+    observer.observe(root, {
+      childList: true,
+      subtree: false,
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 }

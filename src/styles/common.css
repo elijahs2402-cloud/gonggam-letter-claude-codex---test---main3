@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Gelasio:wght@400;500;600;700&display=swap");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @font-face {
   font-family: "SUITE";
@@ -21,7 +21,9 @@
   /* Families. Serif carries brand, emotion and letter bodies; sans carries all UI
      chrome; SUITE is reserved for the small brand mark. */
   --font-serif: "Noto Serif KR", "Nanum Myeongjo", Batang, serif;
-  --font-sans: "Pretendard Variable", Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-sans:
+    "Pretendard Variable", Pretendard, "Noto Sans KR", "Malgun Gothic",
+    sans-serif;
   --font-brand: SUITE, "Pretendard Variable", Pretendard, sans-serif;
   /* 숫자와 인용부호 전용. Georgia 는 옛스타일 숫자와 인용부호가 좋아
      본문 글꼴과 섞어 쓰기에 맞는다. 한글은 포함하지 않으므로
@@ -76,13 +78,13 @@
 
   /* Disabled */
   --disabled-bg: #d8cfc1;
-  --disabled-text: #8d8378;  /* 비활성 글자 — 채움(#d8cfc1) 위 2.41:1, 종이 위 3.6:1 */
+  --disabled-text: #8d8378; /* 비활성 글자 — 채움(#d8cfc1) 위 2.41:1, 종이 위 3.6:1 */
   /* 버튼 체계 — 역할 4종의 공통 치수·색 */
-  --btn-h: 56px;                 /* 주요·보조 버튼 높이 (안정식당 실측 56pt 기준) */
-  --btn-h-text: var(--tap-min);  /* 텍스트 버튼 높이(터치 최소치 44px) */
+  --btn-h: 56px; /* 주요·보조 버튼 높이 (안정식당 실측 56pt 기준) */
+  --btn-h-text: var(--tap-min); /* 텍스트 버튼 높이(터치 최소치 44px) */
   --btn-pad-x: 18px;
   --fw-button: 600;
-  --action-on-primary: #fffaf0;  /* 자두색 채움 위 글자색 1종 */
+  --action-on-primary: #fffaf0; /* 자두색 채움 위 글자색 1종 */
   --disabled-border: rgba(78, 52, 94, 0.22);
 
   /* Rules */
@@ -120,15 +122,24 @@
 
   /* ── 알파 계단 12단 ───────────────────────────────────────
      기존 75종의 임의 알파값을 이 12단으로 수렴시킨다.       */
-  --a05: .05;  --a10: .10;  --a15: .15;  --a20: .20;
-  --a26: .26;  --a33: .33;  --a40: .40;  --a50: .50;
-  --a60: .60;  --a72: .72;  --a85: .85;  --a95: .95;
+  --a05: 0.05;
+  --a10: 0.1;
+  --a15: 0.15;
+  --a20: 0.2;
+  --a26: 0.26;
+  --a33: 0.33;
+  --a40: 0.4;
+  --a50: 0.5;
+  --a60: 0.6;
+  --a72: 0.72;
+  --a85: 0.85;
+  --a95: 0.95;
 
   /* ── 아이콘 크기 척도 ─────────────────────────────────────
      터치 영역은 아이콘 크기와 무관하게 --tap-min(44px) 유지  */
-  --icon-sm: 16px;   /* 행 안 보조 (화살표 등) */
-  --icon-md: 20px;   /* 기본 (닫기 등) */
-  --icon-lg: 24px;   /* 헤더 액션 (뒤로가기) */
+  --icon-sm: 16px; /* 행 안 보조 (화살표 등) */
+  --icon-md: 20px; /* 기본 (닫기 등) */
+  --icon-lg: 24px; /* 헤더 액션 (뒤로가기) */
 
   /* 조판 장식 — 아이콘이 아니라 큰 인용부호 */
   --fs-quote-mark: 52px;
@@ -141,7 +152,7 @@
   --fs-date: 12px;
   --fs-body-sm: 14px;
   --fs-body: 15px;
-  --fs-button: 16px;  /* 안정식당 전체폭 CTA 5개 실측 16pt 기준 */
+  --fs-button: 16px; /* 안정식당 전체폭 CTA 5개 실측 16pt 기준 */
   --fs-letter: 16px;
   --fs-letter-title: 17px;
   --fs-section: 18px;
@@ -149,7 +160,7 @@
      is the centred line that fills an empty, error or completion screen — a
      different job, so it gets its own size rather than borrowing the title's. */
   --fs-state-title: 21px;
-  --fs-title-sm: 24px;   /* 사용자 닉네임이 들어가는 인사말 제목 — 28px 는 12자에서 일러스트와 겹친다 */
+  --fs-title-sm: 24px; /* 사용자 닉네임이 들어가는 인사말 제목 — 28px 는 12자에서 일러스트와 겹친다 */
   --fs-title: 28px;
   --fs-display: 30px;
 
@@ -170,8 +181,8 @@
   --lh-snug: 1.5;
   --lh-normal: 1.7;
   --lh-relaxed: 1.75;
-  --lh-letter: 1.875;  /* 편지 본문 — 쓰기·읽기·원문 시트가 모두 이 값을 쓴다 (Figma 30px/16px) */
-  --lh-none: 1;       /* 조판 장식·아이콘 정렬용 — 줄 상자를 글자에 붙인다 */
+  --lh-letter: 1.875; /* 편지 본문 — 쓰기·읽기·원문 시트가 모두 이 값을 쓴다 (Figma 30px/16px) */
+  --lh-none: 1; /* 조판 장식·아이콘 정렬용 — 줄 상자를 글자에 붙인다 */
 
   /* Korean loses its shape below about -0.04em, so titles stop there. */
   --ls-display: -0.035em;
@@ -210,7 +221,9 @@
      때문이다. 인셋이 11px 을 넘을 때만 그 초과분을 더해 중복을 피한다.
        안드로이드(인셋 0):    80 + 0  = 80
        iPhone 12 Pro(인셋 34): 80 + 23 = 103  (기존 103 과 동일) */
-  --cta-h: calc(var(--cta-stack-h) + max(0px, env(safe-area-inset-bottom) - 11px));
+  --cta-h: calc(
+    var(--cta-stack-h) + max(0px, env(safe-area-inset-bottom) - 11px)
+  );
   /* 내비의 '내용' 높이 = 1(윗선) + 10(윗여백) + 52(버튼 최소높이).
      기기가 비워달라는 만큼(안전영역)은 여기에 더해지지, 여기에 들어 있지 않다. */
   --nav-stack-h: 63px;
@@ -271,7 +284,9 @@ body {
    좋은 화면에서만 본문 종이색으로 바꾼다. statusBarColor.ts 가
    화면별로 이 값을 다시 덮어쓴다(매트 배경인 편지 읽기 등). */
 @media (max-width: 479px) {
-  body { background-color: var(--paper); }
+  body {
+    background-color: var(--paper);
+  }
 }
 
 body {
@@ -324,4 +339,3 @@ button:focus-visible {
     height: min(var(--app-viewport-height, 100dvh), 844px);
   }
 }
-

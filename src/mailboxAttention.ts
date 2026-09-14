@@ -1,9 +1,19 @@
 import { getReplyDraftsByWriter } from "./letterDraft";
 import { getLetterDraft } from "./letterDraft";
 import { getOpenDeliveryIssues, type DeliveryIssue } from "./deliveryIssues";
-import { getLetters, getUnreadReplyLettersByUser, type Letter } from "./letters";
+import {
+  getLetters,
+  getUnreadReplyLettersByUser,
+  type Letter,
+} from "./letters";
 
-export type MailboxAttentionReason = "safety-review" | "unread-replies" | "delivery-failure" | "assigned-letter" | "reply-draft" | "letter-draft";
+export type MailboxAttentionReason =
+  | "safety-review"
+  | "unread-replies"
+  | "delivery-failure"
+  | "assigned-letter"
+  | "reply-draft"
+  | "letter-draft";
 
 export type MailboxAttention = {
   reasons: MailboxAttentionReason[];
@@ -15,23 +25,47 @@ export type MailboxAttention = {
   deliveryIssues: DeliveryIssue[];
 };
 
-export function getMailboxAttention(userId: string, hasLetterDraft = false): MailboxAttention {
+export function getMailboxAttention(
+  userId: string,
+  hasLetterDraft = false,
+): MailboxAttention {
   const unreadReplies = getUnreadReplyLettersByUser(userId);
-  const assignedLetters = getLetters().filter((letter) => letter.assignedReaderId === userId && ["assigned", "read", "waiting_for_reply"].includes(letter.status));
+  const assignedLetters = getLetters().filter(
+    (letter) =>
+      letter.assignedReaderId === userId &&
+      ["assigned", "read", "waiting_for_reply"].includes(letter.status),
+  );
   const replyDraftLetterIds = getReplyDraftsByWriter(userId)
-    .filter((draft) => draft.content.trim() && assignedLetters.some((letter) => letter.id === draft.letterId))
+    .filter(
+      (draft) =>
+        draft.content.trim() &&
+        assignedLetters.some((letter) => letter.id === draft.letterId),
+    )
     .map((draft) => draft.letterId);
   const allReplyDrafts = getReplyDraftsByWriter(userId);
-  const safetyNeedsReview = getLetterDraft(userId)?.lastSafetyStatus === "high_risk" || allReplyDrafts.some((draft) => draft.lastSafetyStatus === "high_risk");
+  const safetyNeedsReview =
+    getLetterDraft(userId)?.lastSafetyStatus === "high_risk" ||
+    allReplyDrafts.some((draft) => draft.lastSafetyStatus === "high_risk");
   const deliveryIssues = getOpenDeliveryIssues(userId);
   const reasons: MailboxAttentionReason[] = [];
   if (safetyNeedsReview) reasons.push("safety-review");
   if (unreadReplies.length) reasons.push("unread-replies");
   if (deliveryIssues.length) reasons.push("delivery-failure");
-  if (assignedLetters.some((letter) => !replyDraftLetterIds.includes(letter.id))) reasons.push("assigned-letter");
+  if (
+    assignedLetters.some((letter) => !replyDraftLetterIds.includes(letter.id))
+  )
+    reasons.push("assigned-letter");
   if (replyDraftLetterIds.length) reasons.push("reply-draft");
   if (hasLetterDraft) reasons.push("letter-draft");
-  return { reasons, unreadReplies, assignedLetters, replyDraftLetterIds, hasLetterDraft, safetyNeedsReview, deliveryIssues };
+  return {
+    reasons,
+    unreadReplies,
+    assignedLetters,
+    replyDraftLetterIds,
+    hasLetterDraft,
+    safetyNeedsReview,
+    deliveryIssues,
+  };
 }
 
 /**
@@ -49,5 +83,7 @@ export function getMailboxAttention(userId: string, hasLetterDraft = false): Mai
 const MAILBOX_VISIBLE_REASONS: MailboxAttentionReason[] = ["unread-replies"];
 
 export function hasMailboxAttention(userId: string, hasLetterDraft = false) {
-  return getMailboxAttention(userId, hasLetterDraft).reasons.some((reason) => MAILBOX_VISIBLE_REASONS.includes(reason));
+  return getMailboxAttention(userId, hasLetterDraft).reasons.some((reason) =>
+    MAILBOX_VISIBLE_REASONS.includes(reason),
+  );
 }

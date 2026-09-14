@@ -3,7 +3,11 @@ import {
   ListenEntryAScreen,
   ListenEntryEmptyScreen,
 } from "./ListenEntryVariants";
-import { MailboxEmptyDemoScreen, MailboxReplyArrivedDemoScreen, MailboxScreen } from "./MailboxScreen";
+import {
+  MailboxEmptyDemoScreen,
+  MailboxReplyArrivedDemoScreen,
+  MailboxScreen,
+} from "./MailboxScreen";
 import { TermsMockupScreen } from "./TermsMockup";
 import { HomeScreen } from "./HomeScreen";
 import { MySpaceScreen } from "./MySpaceScreen";
@@ -29,18 +33,56 @@ import {
   WriteLetterFlowScreen,
   WriteReplyFlowScreen,
 } from "./LetterFlowScreens";
-import { getCurrentAppPath, getCurrentAppSearchParams, navigateTo, replaceRoute } from "./navigation";
+import {
+  getCurrentAppPath,
+  getCurrentAppSearchParams,
+  navigateTo,
+  replaceRoute,
+} from "./navigation";
 import { LetterSafetyReviewScreen, UrgentSupportScreen } from "./SafetyScreens";
-import { LetterReportCompleteDemoScreen, LetterReportFigmaScreen, SafetyManagementScreen } from "./ReportScreens";
-import { AuthGateRedirect, DirectNicknameScreen, DormantAccountScreen, LoginScreen, OnboardingRedesignScreen, ReturningWelcomeScreen, TermsConsentScreen, getRequiredOnboardingPath } from "./AuthScreens";
+import {
+  LetterReportCompleteDemoScreen,
+  LetterReportFigmaScreen,
+  SafetyManagementScreen,
+} from "./ReportScreens";
+import {
+  AuthGateRedirect,
+  DirectNicknameScreen,
+  DormantAccountScreen,
+  LoginScreen,
+  OnboardingRedesignScreen,
+  ReturningWelcomeScreen,
+  TermsConsentScreen,
+  getRequiredOnboardingPath,
+} from "./AuthScreens";
 import { GratitudeScreen } from "./GratitudeScreen";
 import { HomeRuledScreen } from "./HomeRuledScreen";
-import { getMockAuthSnapshot, isMockAuthenticated, setPostLoginPath } from "./mockAuth";
-import { NotificationsScreen, NotificationSettingsScreen } from "./NotificationScreens";
+import {
+  getMockAuthSnapshot,
+  isMockAuthenticated,
+  setPostLoginPath,
+} from "./mockAuth";
+import {
+  NotificationsScreen,
+  NotificationSettingsScreen,
+} from "./NotificationScreens";
 import { LetterReturnScreen, ReplyReportScreen } from "./SafetyActionScreens";
 import { SavedExcerptsScreen } from "./SavedExcerptsScreen";
-import { AnonymousNameSettingsScreen, AppInfoScreen, GuideScreen, PolicyScreen, ReceivedRepliesScreen } from "./MySpaceDetails";
-import { AccountRestrictedScreen, AccountSettingsScreen, AccountWithdrawalScreen, DataAndPrivacyScreen, LoginInformationScreen, WithdrawalCompleteScreen } from "./AccountManagementScreens";
+import {
+  AnonymousNameSettingsScreen,
+  AppInfoScreen,
+  GuideScreen,
+  PolicyScreen,
+  ReceivedRepliesScreen,
+} from "./MySpaceDetails";
+import {
+  AccountRestrictedScreen,
+  AccountSettingsScreen,
+  AccountWithdrawalScreen,
+  DataAndPrivacyScreen,
+  LoginInformationScreen,
+  WithdrawalCompleteScreen,
+} from "./AccountManagementScreens";
 import { NotFoundScreen, ServiceStateScreen } from "./CommonStates";
 
 function goTo(path: string) {
@@ -111,7 +153,14 @@ function IntroScreen() {
 export function App() {
   const path = getCurrentAppPath();
   const systemState = getCurrentAppSearchParams().get("system");
-  if (systemState === "offline" || systemState === "maintenance" || systemState === "update_required" || systemState === "restricted" || systemState === "error") return <ServiceStateScreen variant={systemState} />;
+  if (
+    systemState === "offline" ||
+    systemState === "maintenance" ||
+    systemState === "update_required" ||
+    systemState === "restricted" ||
+    systemState === "error"
+  )
+    return <ServiceStateScreen variant={systemState} />;
 
   // Intro was formerly the fallback route; retain both direct and root entry.
   if (path === "/" || path === "/intro") return <IntroScreen />;
@@ -125,12 +174,14 @@ export function App() {
     return <LoginScreen />;
   }
   if (path === "/returning-welcome") {
-    if (!isMockAuthenticated()) return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
+    if (!isMockAuthenticated())
+      return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
     return <ReturningWelcomeScreen />;
   }
   if (path === "/terms-consent") {
     const next = getRequiredOnboardingPath();
-    if (next && next !== "/terms-consent") return <AuthGateRedirect to={next} />;
+    if (next && next !== "/terms-consent")
+      return <AuthGateRedirect to={next} />;
     return <TermsConsentScreen />;
   }
   // /anonymous-name 라우트를 지웠다. 이름 화면은 두 개면 된다 —
@@ -141,17 +192,68 @@ export function App() {
   if (path === "/nickname-entry") {
     const next = getRequiredOnboardingPath();
     // 지워진 /anonymous-name 과의 비교도 함께 뺀다 — 이제 갈 수 없는 곳이다.
-    if (next && next !== "/nickname-entry") return <AuthGateRedirect to={next} />;
+    if (next && next !== "/nickname-entry")
+      return <AuthGateRedirect to={next} />;
     return <DirectNicknameScreen />;
   }
   if (path === "/onboarding-complete") {
-    if (!isMockAuthenticated()) return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
+    if (!isMockAuthenticated())
+      return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
     return <AuthGateRedirect to="/home" />;
   }
 
-  const protectedPaths = new Set(["/home", "/home-backup", "/write-letter", "/listen-entry-a", "/waiting-letters", "/mailbox", "/my-space", "/saved-excerpts", "/received-replies", "/anonymous-name-settings", "/account-settings", "/login-information", "/data-and-privacy", "/account-withdrawal", "/notifications", "/notification-settings", "/safety-management", "/service-guide", "/safety-guide", "/privacy-policy", "/app-info", "/letter-safety-review"]);
-  const protectedFlowPrefixes = ["/gratitude/", "/report-reply/", "/return-letter/", "/reply-safety-review/", "/reply-sending/", "/report-letter/", "/read-letter/", "/assigned-letter/", "/assign-letter/", "/write-reply/", "/reply-review/", "/reply-sent/", "/letter-journey/", "/reply-arrived/", "/letter-withdrawn/", "/mailbox/my/", "/mailbox/replied/"];
-  const isProtectedServicePath = protectedPaths.has(path) || ["/letter-preview", "/letter-sent", "/reader-promise", "/urgent-support"].includes(path) || protectedFlowPrefixes.some((prefix) => path.startsWith(prefix));
+  const protectedPaths = new Set([
+    "/home",
+    "/home-backup",
+    "/write-letter",
+    "/listen-entry-a",
+    "/waiting-letters",
+    "/mailbox",
+    "/my-space",
+    "/saved-excerpts",
+    "/received-replies",
+    "/anonymous-name-settings",
+    "/account-settings",
+    "/login-information",
+    "/data-and-privacy",
+    "/account-withdrawal",
+    "/notifications",
+    "/notification-settings",
+    "/safety-management",
+    "/service-guide",
+    "/safety-guide",
+    "/privacy-policy",
+    "/app-info",
+    "/letter-safety-review",
+  ]);
+  const protectedFlowPrefixes = [
+    "/gratitude/",
+    "/report-reply/",
+    "/return-letter/",
+    "/reply-safety-review/",
+    "/reply-sending/",
+    "/report-letter/",
+    "/read-letter/",
+    "/assigned-letter/",
+    "/assign-letter/",
+    "/write-reply/",
+    "/reply-review/",
+    "/reply-sent/",
+    "/letter-journey/",
+    "/reply-arrived/",
+    "/letter-withdrawn/",
+    "/mailbox/my/",
+    "/mailbox/replied/",
+  ];
+  const isProtectedServicePath =
+    protectedPaths.has(path) ||
+    [
+      "/letter-preview",
+      "/letter-sent",
+      "/reader-promise",
+      "/urgent-support",
+    ].includes(path) ||
+    protectedFlowPrefixes.some((prefix) => path.startsWith(prefix));
   if (isProtectedServicePath && !isMockAuthenticated()) {
     setPostLoginPath(path);
     return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
@@ -165,7 +267,8 @@ export function App() {
   if (path === "/my-space") return <MySpaceScreen />;
   if (path === "/saved-excerpts") return <SavedExcerptsScreen />;
   if (path === "/received-replies") return <ReceivedRepliesScreen />;
-  if (path === "/anonymous-name-settings") return <AnonymousNameSettingsScreen />;
+  if (path === "/anonymous-name-settings")
+    return <AnonymousNameSettingsScreen />;
   if (path === "/account-settings") return <AccountSettingsScreen />;
   if (path === "/login-information") return <LoginInformationScreen />;
   if (path === "/data-and-privacy") return <DataAndPrivacyScreen />;
@@ -180,49 +283,159 @@ export function App() {
   if (path === "/write-letter") return <WriteLetterFlowScreen />;
   if (path === "/letter-preview") return <LetterPreviewScreen />;
   if (path === "/letter-safety-review") return <LetterSafetyReviewScreen />;
-  if (path.startsWith("/gratitude/")) return <GratitudeScreen letterId={decodeURIComponent(path.slice("/gratitude/".length))} />;
+  if (path.startsWith("/gratitude/"))
+    return (
+      <GratitudeScreen
+        letterId={decodeURIComponent(path.slice("/gratitude/".length))}
+      />
+    );
   if (path === "/report-reply-demo") return <ReplyReportScreen existingDemo />;
-  if (path === "/report-reply-complete-demo") return <ReplyReportScreen completeDemo />;
+  if (path === "/report-reply-complete-demo")
+    return <ReplyReportScreen completeDemo />;
   if (path.startsWith("/report-reply/")) {
     const suffix = path.slice("/report-reply/".length);
     const isComplete = suffix.endsWith("/complete");
-    const replyLetterId = decodeURIComponent(isComplete ? suffix.slice(0, -"/complete".length) : suffix);
+    const replyLetterId = decodeURIComponent(
+      isComplete ? suffix.slice(0, -"/complete".length) : suffix,
+    );
     return <ReplyReportScreen letterId={replyLetterId} complete={isComplete} />;
   }
-  if (path.startsWith("/return-letter/")) return <LetterReturnScreen letterId={decodeURIComponent(path.slice("/return-letter/".length))} />;
-  if (path.startsWith("/reply-safety-review/")) return <ReplySendingTransitionScreen letterId={decodeURIComponent(path.slice("/reply-safety-review/".length))} />;
-  if (path === "/urgent-support") return <UrgentSupportScreen kind="letter" returnTo="/write-letter" />;
+  if (path.startsWith("/return-letter/"))
+    return (
+      <LetterReturnScreen
+        letterId={decodeURIComponent(path.slice("/return-letter/".length))}
+      />
+    );
+  if (path.startsWith("/reply-safety-review/"))
+    return (
+      <ReplySendingTransitionScreen
+        letterId={decodeURIComponent(
+          path.slice("/reply-safety-review/".length),
+        )}
+      />
+    );
+  if (path === "/urgent-support")
+    return <UrgentSupportScreen kind="letter" returnTo="/write-letter" />;
   if (path === "/safety-management") return <SafetyManagementScreen />;
-  if (path === "/report-letter-demo") return <LetterReportFigmaScreen letterId="sample-waiting-letter-one" />;
-  if (path === "/report-letter-complete-demo") return <LetterReportCompleteDemoScreen />;
-  if (path.startsWith("/report-letter/")) return <LetterReportFigmaScreen letterId={decodeURIComponent(path.slice("/report-letter/".length))} />;
-  if (path === "/letter-sent") return <LetterSentScreen letterId={getCurrentAppSearchParams().get("id") ?? undefined} />;
+  if (path === "/report-letter-demo")
+    return <LetterReportFigmaScreen letterId="sample-waiting-letter-one" />;
+  if (path === "/report-letter-complete-demo")
+    return <LetterReportCompleteDemoScreen />;
+  if (path.startsWith("/report-letter/"))
+    return (
+      <LetterReportFigmaScreen
+        letterId={decodeURIComponent(path.slice("/report-letter/".length))}
+      />
+    );
+  if (path === "/letter-sent")
+    return (
+      <LetterSentScreen
+        letterId={getCurrentAppSearchParams().get("id") ?? undefined}
+      />
+    );
   if (path === "/waiting-letters") return <WaitingLettersScreen />;
-  if (path === "/reader-promise") return <ReaderPromiseScreen letterId={getCurrentAppSearchParams().get("id") ?? undefined} />;
-  if (path.startsWith("/assigned-letter/")) return <AssignedLetterFlowScreen letterId={decodeURIComponent(path.slice("/assigned-letter/".length))} />;
-  if (path.startsWith("/read-letter/")) return <ReadLetterFlowScreen letterId={decodeURIComponent(path.slice("/read-letter/".length))} />;
-  if (path.startsWith("/assign-letter/")) return <AssignLetterScreen letterId={decodeURIComponent(path.slice("/assign-letter/".length))} />;
-  if (path.startsWith("/write-reply/")) return <WriteReplyFlowScreen letterId={decodeURIComponent(path.slice("/write-reply/".length))} />;
-  if (path.startsWith("/reply-review/")) return <ReplyReviewScreen letterId={decodeURIComponent(path.slice("/reply-review/".length))} />;
-  if (path.startsWith("/reply-sending/")) return <ReplySendingTransitionScreen letterId={decodeURIComponent(path.slice("/reply-sending/".length))} />;
-  if (path.startsWith("/reply-sent/")) return <ReplySentScreen letterId={decodeURIComponent(path.slice("/reply-sent/".length))} />;
-  if (path.startsWith("/letter-journey/")) return <LetterJourneyScreen letterId={decodeURIComponent(path.slice("/letter-journey/".length))} />;
-  if (path.startsWith("/reply-arrived/")) return <ReplyArrivedScreen letterId={decodeURIComponent(path.slice("/reply-arrived/".length))} />;
-  if (path.startsWith("/letter-withdrawn/")) return <LetterWithdrawnScreen letterId={decodeURIComponent(path.slice("/letter-withdrawn/".length))} />;
+  if (path === "/reader-promise")
+    return (
+      <ReaderPromiseScreen
+        letterId={getCurrentAppSearchParams().get("id") ?? undefined}
+      />
+    );
+  if (path.startsWith("/assigned-letter/"))
+    return (
+      <AssignedLetterFlowScreen
+        letterId={decodeURIComponent(path.slice("/assigned-letter/".length))}
+      />
+    );
+  if (path.startsWith("/read-letter/"))
+    return (
+      <ReadLetterFlowScreen
+        letterId={decodeURIComponent(path.slice("/read-letter/".length))}
+      />
+    );
+  if (path.startsWith("/assign-letter/"))
+    return (
+      <AssignLetterScreen
+        letterId={decodeURIComponent(path.slice("/assign-letter/".length))}
+      />
+    );
+  if (path.startsWith("/write-reply/"))
+    return (
+      <WriteReplyFlowScreen
+        letterId={decodeURIComponent(path.slice("/write-reply/".length))}
+      />
+    );
+  if (path.startsWith("/reply-review/"))
+    return (
+      <ReplyReviewScreen
+        letterId={decodeURIComponent(path.slice("/reply-review/".length))}
+      />
+    );
+  if (path.startsWith("/reply-sending/"))
+    return (
+      <ReplySendingTransitionScreen
+        letterId={decodeURIComponent(path.slice("/reply-sending/".length))}
+      />
+    );
+  if (path.startsWith("/reply-sent/"))
+    return (
+      <ReplySentScreen
+        letterId={decodeURIComponent(path.slice("/reply-sent/".length))}
+      />
+    );
+  if (path.startsWith("/letter-journey/"))
+    return (
+      <LetterJourneyScreen
+        letterId={decodeURIComponent(path.slice("/letter-journey/".length))}
+      />
+    );
+  if (path.startsWith("/reply-arrived/"))
+    return (
+      <ReplyArrivedScreen
+        letterId={decodeURIComponent(path.slice("/reply-arrived/".length))}
+      />
+    );
+  if (path.startsWith("/letter-withdrawn/"))
+    return (
+      <LetterWithdrawnScreen
+        letterId={decodeURIComponent(path.slice("/letter-withdrawn/".length))}
+      />
+    );
   if (path === "/mailbox-my-replied-demo") return <MyLetterRepliedDemoScreen />;
   if (path === "/mailbox-my-waiting-demo") return <MyLetterWaitingDemoScreen />;
   if (path === "/mailbox-replied-demo") return <RepliedLetterDemoScreen />;
-  if (path.startsWith("/mailbox/my/")) return <MyLetterDetailScreen letterId={decodeURIComponent(path.slice("/mailbox/my/".length))} />;
-  if (path.startsWith("/mailbox/replied/")) return <RepliedLetterDetailScreen letterId={decodeURIComponent(path.slice("/mailbox/replied/".length))} />;
+  if (path.startsWith("/mailbox/my/"))
+    return (
+      <MyLetterDetailScreen
+        letterId={decodeURIComponent(path.slice("/mailbox/my/".length))}
+      />
+    );
+  if (path.startsWith("/mailbox/replied/"))
+    return (
+      <RepliedLetterDetailScreen
+        letterId={decodeURIComponent(path.slice("/mailbox/replied/".length))}
+      />
+    );
   // Legacy emotion-journey routes are preserved in source and storage only.
   // They are intentionally isolated from the active user service flow.
-  if (["/emotion-check-in", "/writing-method", "/guided-writing", "/emotion-after", "/emotion-summary", "/guided-summary"].includes(path)) return <RedirectToHome />;
+  if (
+    [
+      "/emotion-check-in",
+      "/writing-method",
+      "/guided-writing",
+      "/emotion-after",
+      "/emotion-summary",
+      "/guided-summary",
+    ].includes(path)
+  )
+    return <RedirectToHome />;
   // 답장 쓰기 확정본. 실제 흐름은 /write-reply/:letterId 로 들어오고,
   // 이름만 부른 /write-reply 는 시안 확인용으로 표본 편지를 띄운다.
   // (예전 /write-reply 시안 WriteReplyScreen 은 이 화면으로 대체되었다.)
-  if (path === "/write-reply") return <WriteReplyFlowScreen letterId="sample-waiting-letter-one" />;
+  if (path === "/write-reply")
+    return <WriteReplyFlowScreen letterId="sample-waiting-letter-one" />;
   if (path === "/mailbox-empty") return <MailboxEmptyDemoScreen />;
-  if (path === "/mailbox-reply-arrived-demo") return <MailboxReplyArrivedDemoScreen />;
+  if (path === "/mailbox-reply-arrived-demo")
+    return <MailboxReplyArrivedDemoScreen />;
   if (path === "/mailbox") return <MailboxScreen />;
   if (path === "/listen-entry-a") return <ListenEntryAScreen />;
   if (path === "/listen-entry-empty") return <ListenEntryEmptyScreen />;

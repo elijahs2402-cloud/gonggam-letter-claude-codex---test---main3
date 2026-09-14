@@ -32,7 +32,7 @@
 :is(.screen, .cardsOnly) .choice {
   min-height: 0;
   padding: 24px 16px 22px;
-  background: rgba(255, 254, 249, .44);
+  background: rgba(255, 254, 249, 0.44);
 }
 
 :is(.screen, .cardsOnly) .choice strong {
@@ -51,7 +51,7 @@
 }
 
 :is(.screen, .cardsOnly) .choice:active {
-  background: rgba(255, 254, 249, .85);
+  background: rgba(255, 254, 249, 0.85);
 }
 
 /* The room has its own layout row, so furniture cannot overlap the copy.
@@ -62,10 +62,17 @@
   min-height: 145px;
   max-height: 230px;
   margin: 18px -12px 0;
-  background: url("/assets/home-cards-room-02.jpg") center 77% / 100% auto no-repeat;
+  background: url("/assets/home-cards-room-02.jpg") center 77% / 100% auto
+    no-repeat;
   mix-blend-mode: multiply;
-  opacity: .9;
-  mask-image: linear-gradient(to bottom, transparent, #000 10px, #000 calc(100% - 10px), transparent);
+  opacity: 0.9;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 10px,
+    #000 calc(100% - 10px),
+    transparent
+  );
 }
 
 .screen .footer {
@@ -77,21 +84,41 @@
   gap: 7px;
 }
 
-.screen .hidden { display: none; }
-
-@media (max-height: 740px) {
-  .screen .scroll.scroll { padding-top: 70px !important; }
-  :is(.screen, .cardsOnly) .choices { margin-top: 22px; }
-  :is(.screen, .cardsOnly) .choice { padding-block: 18px; }
-  .scene { height: 145px; min-height: 145px; max-height: 145px; background-size: auto 540px; }
-  .screen .footer { padding-block: 16px; }
+.screen .hidden {
+  display: none;
 }
 
+@media (max-height: 740px) {
+  .screen .scroll.scroll {
+    padding-top: 70px !important;
+  }
+  :is(.screen, .cardsOnly) .choices {
+    margin-top: 22px;
+  }
+  :is(.screen, .cardsOnly) .choice {
+    padding-block: 18px;
+  }
+  .scene {
+    height: 145px;
+    min-height: 145px;
+    max-height: 145px;
+    background-size: auto 540px;
+  }
+  .screen .footer {
+    padding-block: 16px;
+  }
+}
 
 @media (max-width: 375px) {
-  :is(.screen, .cardsOnly) .choice { padding-inline: 12px; }
-  :is(.screen, .cardsOnly) .choice strong { font-size: 16px; }
-  .screen .footer img { width: 30px; }
+  :is(.screen, .cardsOnly) .choice {
+    padding-inline: 12px;
+  }
+  :is(.screen, .cardsOnly) .choice strong {
+    font-size: 16px;
+  }
+  .screen .footer img {
+    width: 30px;
+  }
 }
 
 /* Responsive card variant: copy, room and tagline share one scroll flow. */
@@ -117,9 +144,14 @@
      덮어야 패턴이 제대로 반복된다. 하나라도 빠지면 방 그림용 설정
      (no-repeat, 100% auto)이 패턴에 그대로 걸린다. */
   background-image:
-    linear-gradient(rgba(var(--paper-under), var(--a50)), rgba(var(--paper-under), var(--a50))),
+    linear-gradient(
+      rgba(var(--paper-under), var(--a50)),
+      rgba(var(--paper-under), var(--a50))
+    ),
     url("/assets/paper-pattern.jpg") !important;
-  background-size: auto, 650px auto !important;
+  background-size:
+    auto,
+    650px auto !important;
   background-position: center top !important;
   background-repeat: repeat !important;
 }
@@ -142,9 +174,15 @@
   overscroll-behavior-y: contain;
 }
 
-.cardsOnly .scroll::after { display: none; }
-.cardsOnly :global(.home-heading) { flex: none; }
-.cardsOnly :global(.home-heading h1) { margin-top: 0; }
+.cardsOnly .scroll::after {
+  display: none;
+}
+.cardsOnly :global(.home-heading) {
+  flex: none;
+}
+.cardsOnly :global(.home-heading h1) {
+  margin-top: 0;
+}
 /* 제목 크기를 화면 폭에 비례시킨다.
    공통값 --fs-title 은 28px 고정이라, 폭이 좁은 기기일수록 제목이 상대적으로
    커진다. 실측: 폭 360 에서 제목 줄이 화면의 79.9% 를 채우는데 폭 390 에서는
@@ -185,7 +223,7 @@
      자식의 배경 끝과 부모의 border 가 고밀도 화면(iPhone DPR 3)에서 서로 다른
      물리 픽셀로 반올림되며 머리카락 굵기 틈이 생겼고, 그 틈으로 종이 바탕이
      비쳐 아래 선이 어긋나 보였다. 갤럭시(A24)는 배율이 달라 증상이 안 났다. */
-  background: rgba(255, 254, 249, .44);
+  background: rgba(255, 254, 249, 0.44);
   margin-top: clamp(22px, 3dvh, 30px);
   /* 장면과의 최소 간격. 위 auto 마진이 0 이 되는 짧은 기기에서도 이만큼은 뜬다. */
   margin-bottom: clamp(26px, 4.2dvh, 46px);
@@ -226,34 +264,51 @@
    선택자를 .cardsOnly 두 번 쓴 것은 max-width:375 의
    :is(.screen, .cardsOnly) .choice strong { font-size: 16px } 을 이기기
    위해서다. 그 규칙은 /home-ruled(.screen)도 함께 쓰므로 지울 수 없다. */
-.cardsOnly.cardsOnly .choice strong { font-size: clamp(15px, 4.36vw, 18px); }
-.cardsOnly.cardsOnly .choice span { font-size: clamp(13px, 3.33vw, 14px); }
+.cardsOnly.cardsOnly .choice strong {
+  font-size: clamp(15px, 4.36vw, 18px);
+}
+.cardsOnly.cardsOnly .choice span {
+  font-size: clamp(13px, 3.33vw, 14px);
+}
 
-.cardsOnly .choice + .choice { border-left-color: #d2c6ac; }
-.cardsOnly .choice > span { color: #70675c; }
+.cardsOnly .choice + .choice {
+  border-left-color: #d2c6ac;
+}
+.cardsOnly .choice > span {
+  color: #70675c;
+}
 .cardsOnly .choice i {
   align-self: end;
   background-color: #827668;
-  transition: transform 160ms ease, background-color 160ms ease;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
 }
 .cardsOnly .choice:focus-visible {
   outline: 2px solid var(--deep-plum);
   outline-offset: -4px;
-  background: rgba(255, 254, 249, .8);
+  background: rgba(255, 254, 249, 0.8);
 }
 .cardsOnly .choice:active {
-  background: rgba(110, 84, 119, .07);
+  background: rgba(110, 84, 119, 0.07);
 }
 .cardsOnly .choice:active i {
   transform: translateX(3px);
   background-color: var(--deep-plum);
 }
 @media (hover: hover) and (pointer: fine) {
-  .cardsOnly .choice:hover { background: rgba(255, 254, 249, .72); }
+  .cardsOnly .choice:hover {
+    background: rgba(255, 254, 249, 0.72);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cardsOnly .choice, .cardsOnly .choice i { transition: none; }
-  .cardsOnly .choice:active i { transform: none; }
+  .cardsOnly .choice,
+  .cardsOnly .choice i {
+    transition: none;
+  }
+  .cardsOnly .choice:active i {
+    transform: none;
+  }
 }
 
 /* 방 장면은 배경이 아니라 흐름 안의 요소다.
@@ -277,21 +332,41 @@
   gap: 7px;
 }
 
-.screen .hidden { display: none; }
-
-@media (max-height: 740px) {
-  .screen .scroll.scroll { padding-top: 70px !important; }
-  :is(.screen, .cardsOnly) .choices { margin-top: 22px; }
-  :is(.screen, .cardsOnly) .choice { padding-block: 18px; }
-  .scene { height: 145px; min-height: 145px; max-height: 145px; background-size: auto 540px; }
-  .screen .footer { padding-block: 16px; }
+.screen .hidden {
+  display: none;
 }
 
+@media (max-height: 740px) {
+  .screen .scroll.scroll {
+    padding-top: 70px !important;
+  }
+  :is(.screen, .cardsOnly) .choices {
+    margin-top: 22px;
+  }
+  :is(.screen, .cardsOnly) .choice {
+    padding-block: 18px;
+  }
+  .scene {
+    height: 145px;
+    min-height: 145px;
+    max-height: 145px;
+    background-size: auto 540px;
+  }
+  .screen .footer {
+    padding-block: 16px;
+  }
+}
 
 @media (max-width: 375px) {
-  :is(.screen, .cardsOnly) .choice { padding-inline: 12px; }
-  :is(.screen, .cardsOnly) .choice strong { font-size: 16px; }
-  .screen .footer img { width: 30px; }
+  :is(.screen, .cardsOnly) .choice {
+    padding-inline: 12px;
+  }
+  :is(.screen, .cardsOnly) .choice strong {
+    font-size: 16px;
+  }
+  .screen .footer img {
+    width: 30px;
+  }
 }
 
 /* Responsive card variant: copy, room and tagline share one scroll flow. */
@@ -360,7 +435,8 @@
      예전에는 방 전체 그림(1170x2700)의 위쪽 58% 가 빈 벽이라, 가구를 보이게
      하려고 center 77% 같은 값을 쓰고 기기마다 미디어쿼리로 위치를 찍어야 했다.
      그 계산이 이 아트워크로 전부 없어졌다. */
-  background: url("/assets/home-bottom-bg3.png") center top / 100% auto no-repeat;
+  background: url("/assets/home-bottom-bg3.png") center top / 100% auto
+    no-repeat;
   mix-blend-mode: normal;
   mask-image: none;
   opacity: 1;
@@ -396,14 +472,22 @@
   color: #827668;
   line-height: 1.5;
 }
-.cardsOnly .hidden { display: none; }
+.cardsOnly .hidden {
+  display: none;
+}
 
 /* /home의 등장 순서와 같은 리듬: 인사말, 첫 선택, 둘째 선택, 아래 문구.
    카드가 한꺼번에 나타나지 않아 선택지가 차례로 읽히고, 동작 줄이기 설정에서는
    이 블록 전체가 적용되지 않는다. */
 @keyframes cards-only-rise-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -416,16 +500,20 @@
   }
 
   .cardsOnly .choice:nth-child(2) {
-    animation: cards-only-rise-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both;
+    animation: cards-only-rise-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 150ms
+      both;
   }
 
   .cardsOnly .footer {
-    animation: cards-only-rise-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 240ms both;
+    animation: cards-only-rise-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 240ms
+      both;
   }
 
   @media (hover: hover) {
     .cardsOnly .choice {
-      transition: background-color 280ms ease, transform 320ms ease;
+      transition:
+        background-color 280ms ease,
+        transform 320ms ease;
     }
 
     .cardsOnly .choice:hover {
@@ -435,30 +523,54 @@
 }
 
 @media (max-width: 350px) {
-  .cardsOnly .scroll.scroll { padding-inline: 16px !important; }
-  .cardsOnly .scene { width: calc(100% + 32px); margin-inline: -16px; }
-  .cardsOnly .choice { padding-inline: 8px; }
+  .cardsOnly .scroll.scroll {
+    padding-inline: 16px !important;
+  }
+  .cardsOnly .scene {
+    width: calc(100% + 32px);
+    margin-inline: -16px;
+  }
+  .cardsOnly .choice {
+    padding-inline: 8px;
+  }
   /* 제목 15px 핀은 위 clamp 의 하한이 대신한다. */
 }
 
 @media (max-width: 375px) {
-  .cardsOnly .footer img { width: 30px; }
+  .cardsOnly .footer img {
+    width: 30px;
+  }
 }
 
 @media (max-height: 740px) {
-  .cardsOnly .scroll.scroll { padding-top: 60px !important; padding-bottom: 0 !important; }
-  .cardsOnly :global(.home-heading-helper) { margin-top: 10px !important; }
-  .cardsOnly .choices { margin-top: 16px; }
-  .cardsOnly .choice { padding-block: 12px; }
-  .cardsOnly .choice span { margin-top: 8px; }
-  .cardsOnly .choice i { margin-top: 12px; }
+  .cardsOnly .scroll.scroll {
+    padding-top: 60px !important;
+    padding-bottom: 0 !important;
+  }
+  .cardsOnly :global(.home-heading-helper) {
+    margin-top: 10px !important;
+  }
+  .cardsOnly .choices {
+    margin-top: 16px;
+  }
+  .cardsOnly .choice {
+    padding-block: 12px;
+  }
+  .cardsOnly .choice span {
+    margin-top: 8px;
+  }
+  .cardsOnly .choice i {
+    margin-top: 12px;
+  }
 }
 
 /* /home-backup과 같은 기준: 제목은 고정 헤더·안전 영역 아래에서 시작하고,
    남는 간격만 실제 화면 높이에 맞춰 연속적으로 조절한다. */
 @media (orientation: portrait) {
   .cardsOnly .scroll.scroll {
-    padding-top: calc(var(--header-h) + env(safe-area-inset-top) + clamp(12px, 2.5dvh, 24px)) !important;
+    padding-top: calc(
+      var(--header-h) + env(safe-area-inset-top) + clamp(12px, 2.5dvh, 24px)
+    ) !important;
     /* 아래 패딩을 0 으로 둔다.
        .footer 가 러그 아래부터 내비까지를 전부 차지하고 그 안에서 문구를
        세로 가운데에 두는데, 여기에 패딩이 남아 있으면 상자가 내비까지 닿지
@@ -466,14 +578,18 @@
     padding-bottom: 0 !important;
   }
   .cardsOnly :global(.home-heading-helper) {
-    margin-top: clamp(10px, calc(10px + (100dvh - 667px) * .034), 16px) !important;
+    margin-top: clamp(
+      10px,
+      calc(10px + (100dvh - 667px) * 0.034),
+      16px
+    ) !important;
   }
   .cardsOnly .choices {
-    margin-top: clamp(16px, calc(16px + (100dvh - 667px) * .07), 30px);
+    margin-top: clamp(16px, calc(16px + (100dvh - 667px) * 0.07), 30px);
   }
   .cardsOnly .choice {
     /* 667 -> 16, 844 -> 33, 932 -> 40 */
-    padding-block: clamp(16px, calc(16px + (100dvh - 667px) * .096), 40px);
+    padding-block: clamp(16px, calc(16px + (100dvh - 667px) * 0.096), 40px);
   }
   /* 글 사이 간격을 화면 높이에 비례시킨다.
      예전에는 667~844 가 전부 10 / 14 로 같고 430x932 에서만 14 / 26 으로
@@ -484,8 +600,12 @@
      제목-부제는 4px 만 움직이고(10 -> 14) 부제-화살표는 12px 움직인다(14 -> 26).
      제목과 부제는 한 덩어리로 읽혀야 해서 간격이 벌어지면 따로 놀고,
      화살표는 '다음 동작' 이라 떨어져도 - 오히려 떨어지는 편이 낫다. */
-  .cardsOnly .choice span { margin-top: clamp(10px, calc(10px + (100dvh - 667px) * .0151), 14px); }
-  .cardsOnly .choice i { margin-top: clamp(14px, calc(14px + (100dvh - 667px) * .0679), 32px); }
+  .cardsOnly .choice span {
+    margin-top: clamp(10px, calc(10px + (100dvh - 667px) * 0.0151), 14px);
+  }
+  .cardsOnly .choice i {
+    margin-top: clamp(14px, calc(14px + (100dvh - 667px) * 0.0679), 32px);
+  }
 }
 
 /* iPhone 15 Pro(393 × 852)는 하단 장면의 위치가 이미 적절하다.
@@ -494,9 +614,11 @@
 @media (orientation: portrait) and (min-width: 390px) and (max-width: 399px) and (min-height: 830px) and (max-height: 870px) {
   /* 제목과 카드 묶음을 함께 6px 내려 상단 호흡을 만든다. */
   .cardsOnly .scroll.scroll {
-    padding-top: calc(var(--header-h) + env(safe-area-inset-top) + clamp(12px, 2.5dvh, 24px) + 6px) !important;
+    padding-top: calc(
+      var(--header-h) + env(safe-area-inset-top) + clamp(12px, 2.5dvh, 24px) +
+        6px
+    ) !important;
   }
-
 }
 
 /* 375 × 812처럼 폭은 좁고 긴 화면은 짧은 SE 규칙에서 빠져 기본 하단
@@ -564,7 +686,9 @@
      남지 않아 러그와 내비 사이에 끼어 보였다.
      기본값은 clamp(12px, 2.5dvh, 24px) = 16.7px 이다. */
   .cardsOnly .scroll.scroll {
-    padding-top: calc(var(--header-h) + env(safe-area-inset-top) + 10px) !important;
+    padding-top: calc(
+      var(--header-h) + env(safe-area-inset-top) + 10px
+    ) !important;
   }
 
   /* 아래 값들은 예전에 이 화면에서만 평평한 px 로 '올려둔' 것이다.

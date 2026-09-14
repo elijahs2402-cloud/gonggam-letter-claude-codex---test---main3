@@ -20,7 +20,8 @@ const TERMS_SECTIONS = [
       "다른 이용자에게 개인정보 또는 연락처를 요구하는 행위",
       "불법적인 활동을 조장하는 내용",
     ],
-    footer: "위반 시 콘텐츠가 제한 또는 삭제되거나 서비스 이용이 제한될 수 있습니다.",
+    footer:
+      "위반 시 콘텐츠가 제한 또는 삭제되거나 서비스 이용이 제한될 수 있습니다.",
   },
   {
     title: "4. 콘텐츠 안전검토 및 신고",
@@ -40,25 +41,35 @@ const TERMS_SECTIONS = [
   },
 ];
 
-export function TermsMockupScreen({ stageClassName = "" }: { stageClassName?: string } = {}) {
+export function TermsMockupScreen({
+  stageClassName = "",
+}: { stageClassName?: string } = {}) {
   return (
-    <main className={`mobile-prototype auth-screen terms-screen terms-screen--my-space${stageClassName ? ` ${stageClassName}` : ""}`}>
-
+    <main
+      className={`mobile-prototype auth-screen terms-screen terms-screen--my-space${stageClassName ? ` ${stageClassName}` : ""}`}
+    >
       <header className="auth-header">
-        <button type="button" onClick={() => navigateBack("/my-space")} aria-label="이전 화면으로 돌아가기">←</button>
+        <button
+          type="button"
+          onClick={() => navigateBack("/my-space")}
+          aria-label="이전 화면으로 돌아가기"
+        >
+          ←
+        </button>
         <span>서비스 이용약관</span>
         <i aria-hidden="true" />
       </header>
 
       <div className="auth-scroll terms-policy-scroll">
-        <section className="terms-policy-document" aria-label="서비스 이용약관 본문">
+        <section
+          className="terms-policy-document"
+          aria-label="서비스 이용약관 본문"
+        >
           {TERMS_SECTIONS.map((section) => (
             <article key={section.title}>
               <h2>{section.title}</h2>
 
-              {section.body && (
-                <p>{section.body}</p>
-              )}
+              {section.body && <p>{section.body}</p>}
 
               {section.list && (
                 <ul>
@@ -68,9 +79,7 @@ export function TermsMockupScreen({ stageClassName = "" }: { stageClassName?: st
                 </ul>
               )}
 
-              {section.footer && (
-                <aside>{section.footer}</aside>
-              )}
+              {section.footer && <aside>{section.footer}</aside>}
             </article>
           ))}
         </section>

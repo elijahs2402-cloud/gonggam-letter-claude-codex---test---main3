@@ -8,6 +8,10 @@ public
 artifacts
 .figma
 
+# AI 도구 설정 (앱 코드가 아님)
+.claude
+.gemini
+
 # 보관용 옛 코드
 src/_archive
 

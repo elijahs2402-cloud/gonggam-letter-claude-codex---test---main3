@@ -26,11 +26,16 @@ const INTERACTIVE_SELECTOR =
  * 그래서 이 영역은 키보드를 내리는 대상에서 빼고, 대신 안쪽 입력창으로
  * 초점을 넘겨준다.
  */
-const WRITING_AREA_SELECTOR = ".letter-compose-paper, .reply-compose-paper, .figma-report-detail";
+const WRITING_AREA_SELECTOR =
+  ".letter-compose-paper, .reply-compose-paper, .figma-report-detail";
 
 function isTextEntry(element: Element | null): element is HTMLElement {
   if (!(element instanceof HTMLElement)) return false;
-  return element.tagName === "INPUT" || element.tagName === "TEXTAREA" || element.isContentEditable;
+  return (
+    element.tagName === "INPUT" ||
+    element.tagName === "TEXTAREA" ||
+    element.isContentEditable
+  );
 }
 
 export function installTapToDismissKeyboard() {
@@ -44,9 +49,11 @@ export function installTapToDismissKeyboard() {
     // 다른 입력창·버튼·링크를 눌렀다면 건드리지 않는다.
     // pointerdown 시점에 blur 하면 레이아웃이 움직여 이어질 click 이
     // 엉뚱한 곳에 떨어질 수 있어서, 조작 요소는 반드시 걸러내야 한다.
-    if (target instanceof Element && target.closest(INTERACTIVE_SELECTOR)) return;
+    if (target instanceof Element && target.closest(INTERACTIVE_SELECTOR))
+      return;
     // 편지지 여백은 '빈 곳'이 아니라 쓰는 자리다. 아래 handleClick 이 받는다.
-    if (target instanceof Element && target.closest(WRITING_AREA_SELECTOR)) return;
+    if (target instanceof Element && target.closest(WRITING_AREA_SELECTOR))
+      return;
 
     active.blur();
   };
@@ -73,7 +80,9 @@ export function installTapToDismissKeyboard() {
     // 글자 수 표시 옆의 버튼처럼, 영역 안에 있어도 제 동작이 있는 것은 건드리지 않는다.
     if (target.closest(INTERACTIVE_SELECTOR)) return;
 
-    const input = area.querySelector<HTMLElement>("textarea, input, [contenteditable]");
+    const input = area.querySelector<HTMLElement>(
+      "textarea, input, [contenteditable]",
+    );
     if (!input || input === document.activeElement) return;
     input.focus();
   };

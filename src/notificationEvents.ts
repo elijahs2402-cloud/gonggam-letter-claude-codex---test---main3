@@ -1,5 +1,16 @@
-import { getCurrentUserId, getLetters, getMyLetters, getReplyDeadline, type Letter } from "./letters";
-import { addNotification, getNotificationSettings, hasNotificationFor, type MockNotificationType } from "./notifications";
+import {
+  getCurrentUserId,
+  getLetters,
+  getMyLetters,
+  getReplyDeadline,
+  type Letter,
+} from "./letters";
+import {
+  addNotification,
+  getNotificationSettings,
+  hasNotificationFor,
+  type MockNotificationType,
+} from "./notifications";
 
 /**
  * 알림을 실제로 만들어 넣는 곳.
@@ -27,27 +38,68 @@ export function syncDerivedNotifications(userId = getCurrentUserId()) {
   const now = Date.now();
 
   // 이미 있으면 다시 만들지 않는다. 읽음 처리한 알림도 '있는' 것으로 본다.
-  const add = (type: MockNotificationType, letter: Letter, title: string, message: string, targetRoute: string) => {
+  const add = (
+    type: MockNotificationType,
+    letter: Letter,
+    title: string,
+    message: string,
+    targetRoute: string,
+  ) => {
     if (hasNotificationFor(userId, type, letter.id)) return;
-    addNotification({ userId, type, title, message, targetType: "letter", targetId: letter.id, targetRoute });
+    addNotification({
+      userId,
+      type,
+      title,
+      message,
+      targetType: "letter",
+      targetId: letter.id,
+      targetRoute,
+    });
   };
 
   for (const letter of getMyLetters(userId)) {
     if (settings.replyArrived && letter.reply && !letter.replyOpenedAt) {
-      add("reply_arrived", letter, "답장이 도착했어요.", "당신의 편지를 읽은 사람이 마음을 전했어요.", `/mailbox/my/${encodeURIComponent(letter.id)}`);
+      add(
+        "reply_arrived",
+        letter,
+        "답장이 도착했어요.",
+        "당신의 편지를 읽은 사람이 마음을 전했어요.",
+        `/mailbox/my/${encodeURIComponent(letter.id)}`,
+      );
     }
-    if (settings.letterUpdates && letter.assignedReaderId && HELD_STATUSES.includes(letter.status)) {
-      add("letter_assigned", letter, "누군가가 편지를 맡았어요.", "답장이 도착하면 다시 알려드릴게요.", `/mailbox/my/${encodeURIComponent(letter.id)}`);
+    if (
+      settings.letterUpdates &&
+      letter.assignedReaderId &&
+      HELD_STATUSES.includes(letter.status)
+    ) {
+      add(
+        "letter_assigned",
+        letter,
+        "누군가가 편지를 맡았어요.",
+        "답장이 도착하면 다시 알려드릴게요.",
+        `/mailbox/my/${encodeURIComponent(letter.id)}`,
+      );
     }
   }
 
   if (!settings.replyReminders) return;
   for (const letter of getLetters()) {
-    if (letter.assignedReaderId !== userId || !HELD_STATUSES.includes(letter.status)) continue;
+    if (
+      letter.assignedReaderId !== userId ||
+      !HELD_STATUSES.includes(letter.status)
+    )
+      continue;
     const deadline = getReplyDeadline(letter);
     // 기한이 없거나(옛 기록), 아직 멀거나, 이미 지났으면 알리지 않는다.
     // 지난 편지를 재촉하는 것은 도움이 되지 않는다.
-    if (!deadline || deadline - now > REMINDER_LEAD_MS || deadline <= now) continue;
-    add("reply_reminder", letter, "맡은 편지에 답장을 전해주세요.", "하루 안에 사라져요. 짧은 한마디도 괜찮아요.", `/write-reply/${encodeURIComponent(letter.id)}`);
+    if (!deadline || deadline - now > REMINDER_LEAD_MS || deadline <= now)
+      continue;
+    add(
+      "reply_reminder",
+      letter,
+      "맡은 편지에 답장을 전해주세요.",
+      "하루 안에 사라져요. 짧은 한마디도 괜찮아요.",
+      `/write-reply/${encodeURIComponent(letter.id)}`,
+    );
   }
 }

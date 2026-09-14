@@ -12,7 +12,9 @@
 function findScrollPort(element: Element | null): HTMLElement | null {
   if (!(element instanceof HTMLElement)) return null;
   const isTextEntry =
-    element.tagName === "INPUT" || element.tagName === "TEXTAREA" || element.isContentEditable;
+    element.tagName === "INPUT" ||
+    element.tagName === "TEXTAREA" ||
+    element.isContentEditable;
   if (!isTextEntry) return null;
 
   let node = element.parentElement;
@@ -29,12 +31,30 @@ function findScrollPort(element: Element | null): HTMLElement | null {
    원본과 달라진다. 한글은 word-break / overflow-wrap 에 따라 끊기는 자리가 크게
    달라지므로 반드시 함께 복제한다. */
 const TEXT_MEASURE_PROPS = [
-  "box-sizing", "width",
-  "padding-top", "padding-right", "padding-bottom", "padding-left",
-  "border-top-width", "border-right-width", "border-bottom-width", "border-left-width",
-  "font-family", "font-size", "font-weight", "font-style", "font-variant",
-  "line-height", "letter-spacing", "word-spacing", "text-indent", "text-transform",
-  "white-space", "word-break", "overflow-wrap", "text-align",
+  "box-sizing",
+  "width",
+  "padding-top",
+  "padding-right",
+  "padding-bottom",
+  "padding-left",
+  "border-top-width",
+  "border-right-width",
+  "border-bottom-width",
+  "border-left-width",
+  "font-family",
+  "font-size",
+  "font-weight",
+  "font-style",
+  "font-variant",
+  "line-height",
+  "letter-spacing",
+  "word-spacing",
+  "text-indent",
+  "text-transform",
+  "white-space",
+  "word-break",
+  "overflow-wrap",
+  "text-align",
 ];
 
 /**
@@ -48,7 +68,8 @@ const TEXT_MEASURE_PROPS = [
 function textContentHeight(element: HTMLTextAreaElement): number {
   const style = window.getComputedStyle(element);
   const mirror = document.createElement("div");
-  for (const prop of TEXT_MEASURE_PROPS) mirror.style.setProperty(prop, style.getPropertyValue(prop));
+  for (const prop of TEXT_MEASURE_PROPS)
+    mirror.style.setProperty(prop, style.getPropertyValue(prop));
   mirror.style.position = "absolute";
   mirror.style.top = "0";
   mirror.style.left = "-9999px";
@@ -116,11 +137,13 @@ function revealWritingAreaIfHidden(element: Element | null) {
   // 아래로 빈 줄이 길게 남아, 아랫변에 맞추면 빈 줄만 보이고 정작 쓴 글이 화면
   // 위로 밀려난다(20자짜리 답장에서 빈 줄만 보이던 증상이 이것이었다).
   const textEnd = rect.top + textContentHeight(element);
-  if (textEnd > port.bottom - margin) scroller.scrollTop += textEnd - (port.bottom - margin);
+  if (textEnd > port.bottom - margin)
+    scroller.scrollTop += textEnd - (port.bottom - margin);
 }
 
 export function installViewportHeightSync() {
-  const viewport = typeof window !== "undefined" ? window.visualViewport : undefined;
+  const viewport =
+    typeof window !== "undefined" ? window.visualViewport : undefined;
   if (!viewport) return () => {};
 
   const root = document.documentElement;
@@ -139,17 +162,25 @@ export function installViewportHeightSync() {
     // 거리'를 따로 계산해야 하단 바를 정확히 키보드 위에 세울 수 있다.
     const isIosStandalone =
       /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-      (("standalone" in navigator && (navigator as Navigator & { standalone?: boolean }).standalone === true) ||
+      (("standalone" in navigator &&
+        (navigator as Navigator & { standalone?: boolean }).standalone ===
+          true) ||
         window.matchMedia("(display-mode: standalone)").matches);
     const standaloneHeight = Math.round(window.screen?.height ?? 0);
     const layoutHeight = document.documentElement.clientHeight;
-    largestViewportHeight = Math.max(largestViewportHeight, Math.round(viewport.height));
-    const rawInset = Math.round(layoutHeight - (viewport.height + viewport.offsetTop));
+    largestViewportHeight = Math.max(
+      largestViewportHeight,
+      Math.round(viewport.height),
+    );
+    const rawInset = Math.round(
+      layoutHeight - (viewport.height + viewport.offsetTop),
+    );
     // standalone 앱에서는 이전 전환 중 기록된 큰 visual viewport 값이 남을 수 있다.
     // 기기의 고정 화면 높이를 상한으로 삼아 키보드 높이가 터치마다 달라지지 않게 한다.
-    const keyboardBaseline = isIosStandalone && standaloneHeight > 0
-      ? Math.min(largestViewportHeight, standaloneHeight)
-      : largestViewportHeight;
+    const keyboardBaseline =
+      isIosStandalone && standaloneHeight > 0
+        ? Math.min(largestViewportHeight, standaloneHeight)
+        : largestViewportHeight;
     const viewportReduction = keyboardBaseline - Math.round(viewport.height);
     // 주소창이 접히는 순간 1px 안팎의 오차가 생겨 바가 미세하게 떨린다.
     // 홈 화면에 추가한 iPhone 앱은 키보드가 떠도 rawInset 이 0이 될 수 있다.
@@ -159,8 +190,11 @@ export function installViewportHeightSync() {
     // 높이다. 일부 standalone iPhone에서는 rawInset이 화면 전체에 가깝게
     // 과대 계산되므로, 이 경우 rawInset보다 viewport 감소량을 우선한다.
     // 감소량을 얻을 수 없는 브라우저에서만 rawInset을 보조값으로 쓴다.
-    const inset = viewportReduction > 150 ? viewportReduction : rawInset > 2 ? rawInset : 0;
-    const keyboardVisible = viewportReduction > 150 || (rawInset > 150 && Math.round(viewport.height) < keyboardBaseline - 80);
+    const inset =
+      viewportReduction > 150 ? viewportReduction : rawInset > 2 ? rawInset : 0;
+    const keyboardVisible =
+      viewportReduction > 150 ||
+      (rawInset > 150 && Math.round(viewport.height) < keyboardBaseline - 80);
 
     // 키보드가 열린 동안 셸까지 같이 줄이면, 셸 바닥이 보이는 영역 바닥보다
     // offsetTop 만큼 위에 놓여 그 아래가 빈 여백으로 남는다.
@@ -169,7 +203,9 @@ export function installViewportHeightSync() {
     // 짧게 주는 경우가 있다. 이때 screen.height는 실제 독립 앱 창 높이이므로
     // 그것을 기준으로 셸을 채워야 화면 끝에 종이색 띠가 남지 않는다.
     const measuredHeight = Math.max(layoutHeight, Math.round(viewport.height));
-    const standaloneFill = isIosStandalone ? Math.max(0, standaloneHeight - measuredHeight) : 0;
+    const standaloneFill = isIosStandalone
+      ? Math.max(0, standaloneHeight - measuredHeight)
+      : 0;
     // 키보드가 열린 동안에는 셸을 실제 보이는 viewport 높이로 전환한다.
     // 키보드 높이를 바의 margin/bottom에 따로 더하는 방식은 iOS가 반환하는
     // 값에 따라 두 번 적용될 수 있어, 버튼이 터치마다 다른 높이로 튀었다.
@@ -214,7 +250,8 @@ export function installViewportHeightSync() {
 
     // 키보드가 막 열린 순간에만 한 번. 계속 돌리면 글을 쓰다 손으로 스크롤한 것을
     // 되돌리게 된다.
-    if (keyboardVisible && !wasKeyboardVisible) revealWritingAreaIfHidden(document.activeElement);
+    if (keyboardVisible && !wasKeyboardVisible)
+      revealWritingAreaIfHidden(document.activeElement);
     wasKeyboardVisible = keyboardVisible;
   };
   // 키보드 전환 중에는 resize 가 연달아 오므로 프레임당 한 번만 반영한다.

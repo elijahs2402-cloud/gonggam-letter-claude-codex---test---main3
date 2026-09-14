@@ -5,5 +5,6 @@
 // 화면마다 달라져야 하는 문구는 여기 두지 않는다 — 어디서든 같은 뜻일 때만 올린다.
 
 /** 편지를 이미 두고 온 뒤 그 편지로 다시 들어왔을 때. */
-export const RETURNED_LETTER_TITLE = "이미 두고 온 편지예요"
-export const RETURNED_LETTER_BODY = "이 편지는 다른 사람이 이어서 읽을 수 있어요."
+export const RETURNED_LETTER_TITLE = "이미 두고 온 편지예요";
+export const RETURNED_LETTER_BODY =
+  "이 편지는 다른 사람이 이어서 읽을 수 있어요.";

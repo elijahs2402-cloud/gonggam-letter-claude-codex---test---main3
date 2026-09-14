@@ -1,32 +1,36 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import { AppBottomNavigation } from "./AppBottomNavigation"
-import { NotificationsScreen } from "./NotificationScreens"
-import { isPrototypeQaMode } from "./prototypeQa"
-import { getCurrentUserId, getReplyDeadline } from "./letters"
-import { getCurrentAppPath, navigateTo, registerShellRouter } from "./navigation"
-import { getLetterDraft } from "./letterDraft"
-import { getMockAuthSnapshot } from "./mockAuth"
-import { seedNotificationTestState } from "./notifications"
-import { getMailboxAttention } from "./mailboxAttention"
-import { unreadNotificationCount } from "./notifications"
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AppBottomNavigation } from "./AppBottomNavigation";
+import { NotificationsScreen } from "./NotificationScreens";
+import { isPrototypeQaMode } from "./prototypeQa";
+import { getCurrentUserId, getReplyDeadline } from "./letters";
+import {
+  getCurrentAppPath,
+  navigateTo,
+  registerShellRouter,
+} from "./navigation";
+import { getLetterDraft } from "./letterDraft";
+import { getMockAuthSnapshot } from "./mockAuth";
+import { seedNotificationTestState } from "./notifications";
+import { getMailboxAttention } from "./mailboxAttention";
+import { unreadNotificationCount } from "./notifications";
 import {
   dismissNotice,
   isNoticeDismissed,
   markNoticeSeen,
   wasNoticeSeenThisSession,
-} from "./dismissedNotices"
+} from "./dismissedNotices";
 import { getReadCardPath } from "./waitingLetters";
 
-type HomeTestState = "normal" | "loading" | "error" | "partial-error"
+type HomeTestState = "normal" | "loading" | "error" | "partial-error";
 type FloatingNotice = {
-  id: string
-  title: string
-  description: string
-  action: string
-  onAction: () => void
+  id: string;
+  title: string;
+  description: string;
+  action: string;
+  onAction: () => void;
   /** 있으면 제목 아래에 남은 시간을 1초 단위로 함께 보여준다. */
-  deadline?: number
-  isUrgent?: boolean
+  deadline?: number;
+  isUrgent?: boolean;
   /**
    * 언제 다시 안 보이게 할지.
    *  - "session": 한 번의 접속에서 한 번만 보인다. 접속을 새로 하면 다시 뜬다.
@@ -38,49 +42,49 @@ type FloatingNotice = {
    *  - "forever":  한 번 닫거나 버튼을 누르면 다시 뜨지 않는다.
    *               (답장 도착 — 확인했다면 더 알릴 이유가 없다)
    */
-  hideAfter: "session" | "forever"
-}
+  hideAfter: "session" | "forever";
+};
 // 편지든 답장이든 같은 일이 일어났으므로 같은 말을 쓴다. 예전에는 편지가
 // "임시 저장 됩니다"(평서·미래), 답장이 "임시로 보관되었어요"(완료)로 갈려
 // 시제도 어휘도 달랐다. 이미 끝난 뒤에 뜨는 알림이라 완료형이 맞다.
 // 단어는 '저장' 대신 '보관'을 쓴다. 마침표는 옆의 소식 카드들
 // ('답장이 도착했어요.' 등)과 같은 관행이다.
-const DRAFT_SAVED_MESSAGE = "작성 중인 글이 임시 보관되었어요."
-const DRAFT_SAVED_TOAST_KEY = "gonggam-letter:draft-saved-toast"
+const DRAFT_SAVED_MESSAGE = "작성 중인 글이 임시 보관되었어요.";
+const DRAFT_SAVED_TOAST_KEY = "gonggam-letter:draft-saved-toast";
 const DRAFT_SAVED_TOAST_FALLBACK_KEY =
-  "gonggam-letter:draft-saved-toast-pending"
+  "gonggam-letter:draft-saved-toast-pending";
 
 function consumeDraftSavedToastRequest() {
-  const currentUrl = new URL(window.location.href)
-  const fallback = window.localStorage.getItem(DRAFT_SAVED_TOAST_FALLBACK_KEY)
+  const currentUrl = new URL(window.location.href);
+  const fallback = window.localStorage.getItem(DRAFT_SAVED_TOAST_FALLBACK_KEY);
   const requested =
     window.sessionStorage.getItem(DRAFT_SAVED_TOAST_KEY) ??
     currentUrl.searchParams.get("toast") ??
-    fallback
-  if (!requested) return null
+    fallback;
+  if (!requested) return null;
 
-  window.sessionStorage.removeItem(DRAFT_SAVED_TOAST_KEY)
-  window.localStorage.removeItem(DRAFT_SAVED_TOAST_FALLBACK_KEY)
+  window.sessionStorage.removeItem(DRAFT_SAVED_TOAST_KEY);
+  window.localStorage.removeItem(DRAFT_SAVED_TOAST_FALLBACK_KEY);
   if (currentUrl.searchParams.has("toast")) {
-    currentUrl.searchParams.delete("toast")
+    currentUrl.searchParams.delete("toast");
     window.history.replaceState(
       {},
       "",
       `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`,
-    )
+    );
   }
 
-  return requested
+  return requested;
 }
 
 /** 남은 시간을 "N일 HH:MM:SS" 로 적는다. 1초 미만은 버린다. */
 function formatRemaining(ms: number) {
-  const total = Math.max(0, Math.floor(ms / 1000))
-  const days = Math.floor(total / 86400)
-  const hh = String(Math.floor((total % 86400) / 3600)).padStart(2, "0")
-  const mm = String(Math.floor((total % 3600) / 60)).padStart(2, "0")
-  const ss = String(total % 60).padStart(2, "0")
-  return days > 0 ? `${days}일 ${hh}:${mm}:${ss}` : `${hh}:${mm}:${ss}`
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const days = Math.floor(total / 86400);
+  const hh = String(Math.floor((total % 86400) / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
+  const ss = String(total % 60).padStart(2, "0");
+  return days > 0 ? `${days}일 ${hh}:${mm}:${ss}` : `${hh}:${mm}:${ss}`;
 }
 
 /**
@@ -93,27 +97,35 @@ function formatRemaining(ms: number) {
  * 사용자에게는 소음이 된다. 대신 남은 시간을 문장으로 담은 aria-label 을
  * 한 번만 준다.
  */
-function ReplyCountdown({ deadline, isUrgent = false }: { deadline: number; isUrgent?: boolean }) {
-  const [now, setNow] = useState(() => Date.now())
+function ReplyCountdown({
+  deadline,
+  isUrgent = false,
+}: {
+  deadline: number;
+  isUrgent?: boolean;
+}) {
+  const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    if (deadline - Date.now() <= 0) return
-    const timer = window.setInterval(() => setNow(Date.now()), 1000)
-    return () => window.clearInterval(timer)
-  }, [deadline])
+    if (deadline - Date.now() <= 0) return;
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [deadline]);
 
-  const remaining = deadline - now
+  const remaining = deadline - now;
   if (remaining <= 0)
-    return <span className="home-notice-countdown is-over">곧 사라져요</span>
+    return <span className="home-notice-countdown is-over">곧 사라져요</span>;
 
-  const text = formatRemaining(remaining)
+  const text = formatRemaining(remaining);
   return (
     <span
       className={`home-notice-countdown${isUrgent ? " is-over" : ""}`}
       aria-label={`답장할 수 있는 시간이 ${text} 남았어요`}
     >
-      <span aria-hidden="true">{isUrgent ? `곧 사라져요 · ${text} 남음` : `${text} 남음`}</span>
+      <span aria-hidden="true">
+        {isUrgent ? `곧 사라져요 · ${text} 남음` : `${text} 남음`}
+      </span>
     </span>
-  )
+  );
 }
 
 // 홈은 알림 화면을 '한 화면 안에서' state 로 갈아끼운다. 나의 공간이 목록↔상세를
@@ -125,20 +137,20 @@ function ReplyCountdown({ deadline, isUrgent = false }: { deadline: number; isUr
 // 들어오면 App.tsx 의 라우터가 알림 화면을 단독으로 그리고(기존 동작 그대로),
 // 그때는 페이지 단위 진입 모션이 쓰인다.
 export function HomeScreen() {
-  const [view, setView] = useState<"home" | "notifications">("home")
-  const [direction, setDirection] = useState<"forward" | "back">("forward")
+  const [view, setView] = useState<"home" | "notifications">("home");
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
   // 셸 안에서 한 번이라도 이동했는지. 처음 홈에 들어왔을 때는 단계 클래스를
   // 붙이지 않아야 홈 고유의 순차 등장 모션이 그대로 살아난다.
-  const [moved, setMoved] = useState(false)
+  const [moved, setMoved] = useState(false);
 
-  const viewRef = useRef<"home" | "notifications">("home")
-  viewRef.current = view
+  const viewRef = useRef<"home" | "notifications">("home");
+  viewRef.current = view;
 
   const goToView = (next: "home" | "notifications") => {
-    setDirection(next === "notifications" ? "forward" : "back")
-    setMoved(true)
-    setView(next)
-  }
+    setDirection(next === "notifications" ? "forward" : "back");
+    setMoved(true);
+    setView(next);
+  };
 
   // navigateTo / navigateBack 을 가로채 셸 안에서 처리한다.
   // 처리하지 못하는 곳(편지함, 알림이 가리키는 편지 등)은 false 를 돌려
@@ -147,86 +159,88 @@ export function HomeScreen() {
     return registerShellRouter({
       go: (path) => {
         if (path === "/notifications" && viewRef.current === "home") {
-          goToView("notifications")
-          window.history.pushState({}, "", path)
-          return true
+          goToView("notifications");
+          window.history.pushState({}, "", path);
+          return true;
         }
         // 알림 빈 화면의 '홈으로' 버튼은 navigateTo("/home") 을 부른다.
         // 새 기록을 쌓지 않고 헤더 ← 와 똑같이 되돌아가야 뒤로가기가 꼬이지 않는다.
         if (path === "/home" && viewRef.current === "notifications") {
-          window.history.back()
-          return true
+          window.history.back();
+          return true;
         }
-        return false
+        return false;
       },
       back: (fallbackPath) => {
         if (fallbackPath !== "/home" || viewRef.current !== "notifications")
-          return false
+          return false;
         // pushState 로 쌓아둔 만큼 물러난다 — 브라우저 뒤로가기와 같은 결과.
-        window.history.back()
-        return true
+        window.history.back();
+        return true;
       },
-    })
-  }, [])
+    });
+  }, []);
 
   // 브라우저 뒤로/앞으로에도 같은 전환으로 반응한다.
   useEffect(() => {
     const onPopState = () => {
-      goToView(getCurrentAppPath() === "/notifications" ? "notifications" : "home")
-    }
-    window.addEventListener("popstate", onPopState)
-    return () => window.removeEventListener("popstate", onPopState)
-  }, [])
+      goToView(
+        getCurrentAppPath() === "/notifications" ? "notifications" : "home",
+      );
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
-  const stage = moved ? `app-shell-stage app-shell-stage--${direction}` : ""
+  const stage = moved ? `app-shell-stage app-shell-stage--${direction}` : "";
 
   if (view === "notifications")
-    return <NotificationsScreen stageClassName={stage} />
+    return <NotificationsScreen stageClassName={stage} />;
 
-  return <HomeContent stageClassName={stage} suppressStagger={moved} />
+  return <HomeContent stageClassName={stage} suppressStagger={moved} />;
 }
 
 function HomeContent({
   stageClassName = "",
   suppressStagger = false,
 }: {
-  stageClassName?: string
-  suppressStagger?: boolean
+  stageClassName?: string;
+  suppressStagger?: boolean;
 }) {
-  const [testState, setTestState] = useState<HomeTestState>("normal")
-  const [noticeVersion, setNoticeVersion] = useState(0)
-  const [draftSavedToastRequest] = useState(consumeDraftSavedToastRequest)
+  const [testState, setTestState] = useState<HomeTestState>("normal");
+  const [noticeVersion, setNoticeVersion] = useState(0);
+  const [draftSavedToastRequest] = useState(consumeDraftSavedToastRequest);
   const [showDraftSavedToast, setShowDraftSavedToast] = useState(() =>
     Boolean(draftSavedToastRequest),
-  )
+  );
   const [isDraftSavedToastLeaving, setIsDraftSavedToastLeaving] =
-    useState(false)
+    useState(false);
   useEffect(() => {
-    if (!showDraftSavedToast) return
+    if (!showDraftSavedToast) return;
     const leaveTimer = window.setTimeout(
       () => setIsDraftSavedToastLeaving(true),
       3000,
-    )
+    );
     const hideTimer = window.setTimeout(
       () => setShowDraftSavedToast(false),
       3400,
-    )
+    );
     return () => {
-      window.clearTimeout(leaveTimer)
-      window.clearTimeout(hideTimer)
-    }
-  }, [showDraftSavedToast])
-  const userId = getCurrentUserId()
-  const account = getMockAuthSnapshot().account
-  const letterDraft = getLetterDraft(userId)
+      window.clearTimeout(leaveTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, [showDraftSavedToast]);
+  const userId = getCurrentUserId();
+  const account = getMockAuthSnapshot().account;
+  const letterDraft = getLetterDraft(userId);
   const attention = useMemo(
     () => getMailboxAttention(userId, Boolean(letterDraft?.content.trim())),
     [userId, noticeVersion, letterDraft?.content],
-  )
-  const unreadReplies = attention.unreadReplies
+  );
+  const unreadReplies = attention.unreadReplies;
   const assignedLetter = attention.assignedLetters.find(
     (letter) => !attention.replyDraftLetterIds.includes(letter.id),
-  )
+  );
 
   /*
    * 홈 소식 카드는 두 가지만 띄운다.
@@ -246,7 +260,7 @@ function HomeContent({
      맡은 편지는 3일이 지나면 사라지지만, 도착한 답장은 언제 봐도 그대로 있다.
      놓쳤을 때 되돌릴 수 없는 쪽이 먼저 보여야 한다.
      앞의 것을 닫으면 그 다음 것이 이어서 뜬다(아래 dismissedNow 참고). */
-  const candidates: FloatingNotice[] = []
+  const candidates: FloatingNotice[] = [];
   if (assignedLetter)
     candidates.push({
       id: `assigned-${assignedLetter.id}`,
@@ -260,7 +274,7 @@ function HomeContent({
       onAction: () =>
         navigateTo(`/write-reply/${encodeURIComponent(assignedLetter.id)}`),
       hideAfter: "session",
-    })
+    });
   if (unreadReplies.length)
     candidates.push({
       id: "replies",
@@ -269,11 +283,13 @@ function HomeContent({
       action: "편지함 가기",
       onAction: () => navigateTo("/mailbox"),
       hideAfter: "forever",
-    })
+    });
 
   // 하단 소식 토스트를 데이터 준비 없이 검토할 수 있는 임시 상태.
   // 실제 소식 로직에는 영향을 주지 않고, preview 쿼리가 있을 때만 우선한다.
-  const noticePreview = new URLSearchParams(window.location.search).get("preview")
+  const noticePreview = new URLSearchParams(window.location.search).get(
+    "preview",
+  );
   const previewNotice: FloatingNotice | undefined =
     noticePreview === "notice-assigned"
       ? {
@@ -293,7 +309,8 @@ function HomeContent({
             deadline: Date.now() + 15 * 60 * 1000,
             isUrgent: true,
             action: "답장 쓰기",
-            onAction: () => navigateTo("/write-reply/sample-waiting-letter-one"),
+            onAction: () =>
+              navigateTo("/write-reply/sample-waiting-letter-one"),
             hideAfter: "session",
           }
         : noticePreview === "notice-reply-arrived"
@@ -305,39 +322,41 @@ function HomeContent({
               onAction: () => navigateTo("/mailbox"),
               hideAfter: "forever",
             }
-          : undefined
+          : undefined;
 
   // 이 화면에서 방금 닫은 것들. 하나를 닫으면 다음 순위가 이어서 뜬다.
-  const [dismissedNow, setDismissedNow] = useState<string[]>([])
-  const notice = previewNotice ?? candidates.find(
-    (item) =>
-      !dismissedNow.includes(item.id) &&
-      (item.hideAfter === "forever"
-        ? !isNoticeDismissed(userId, item.id)
-        : !wasNoticeSeenThisSession(item.id)),
-  )
+  const [dismissedNow, setDismissedNow] = useState<string[]>([]);
+  const notice =
+    previewNotice ??
+    candidates.find(
+      (item) =>
+        !dismissedNow.includes(item.id) &&
+        (item.hideAfter === "forever"
+          ? !isNoticeDismissed(userId, item.id)
+          : !wasNoticeSeenThisSession(item.id)),
+    );
 
   // 한 번 보여준 세션 소식은 '봤다'고 적어 둔다. 판단 기준은 페이지가 뜨기 전
   // 상태로 고정돼 있어(dismissedNotices.ts 참고) 지금 화면에서 사라지지는 않고,
   // 다음 접속·다음 페이지부터 뜨지 않는다.
   useEffect(() => {
-    if (notice?.hideAfter === "session") markNoticeSeen(notice.id)
-  }, [notice?.id, notice?.hideAfter])
+    if (notice?.hideAfter === "session") markNoticeSeen(notice.id);
+  }, [notice?.id, notice?.hideAfter]);
 
   /** 소식을 닫는다. 남기는 방식은 소식마다 다르다(hideAfter). */
   const closeNotice = (item: FloatingNotice) => {
-    if (item.hideAfter === "forever") dismissNotice(userId, item.id)
-    else markNoticeSeen(item.id)
-    setDismissedNow((ids) => [...ids, item.id])
-  }
+    if (item.hideAfter === "forever") dismissNotice(userId, item.id);
+    else markNoticeSeen(item.id);
+    setDismissedNow((ids) => [...ids, item.id]);
+  };
 
-  const name = account?.anonymousName ?? "당신"
+  const name = account?.anonymousName ?? "당신";
   // 벨의 점은 벨을 눌렀을 때 열리는 알림 목록만 본다.
   // 예전에는 편지함 소식(getMailboxAttention)으로 켰는데, 알림 화면은
   // 그것과 아무 상관 없는 별도 저장소를 읽는다. 그래서 점을 보고 눌러도
   // '아직 새로운 알림이 없어요'만 나왔다.
-  const hasUnreadNotifications = unreadNotificationCount(userId) > 0
-  const qaMode = isPrototypeQaMode()
+  const hasUnreadNotifications = unreadNotificationCount(userId) > 0;
+  const qaMode = isPrototypeQaMode();
   return (
     <main
       className={`mobile-prototype home-screen${
@@ -354,7 +373,7 @@ function HomeContent({
           aria-live="polite"
           onAnimationEnd={(event) => {
             if (event.animationName === "home-draft-saved-toast-out")
-              setShowDraftSavedToast(false)
+              setShowDraftSavedToast(false);
           }}
         >
           {DRAFT_SAVED_MESSAGE}
@@ -403,9 +422,19 @@ function HomeContent({
             <span className="home-notice-copy">
               <strong>{notice.title}</strong>
               {notice.deadline !== undefined && (
-                <ReplyCountdown deadline={notice.deadline} isUrgent={notice.isUrgent} />
+                <ReplyCountdown
+                  deadline={notice.deadline}
+                  isUrgent={notice.isUrgent}
+                />
               )}
-              {notice.deadline === undefined && <span className="home-notice-countdown home-notice-countdown--placeholder" aria-hidden="true">시간 여백</span>}
+              {notice.deadline === undefined && (
+                <span
+                  className="home-notice-countdown home-notice-countdown--placeholder"
+                  aria-hidden="true"
+                >
+                  시간 여백
+                </span>
+              )}
             </span>
             <button
               type="button"
@@ -417,8 +446,8 @@ function HomeContent({
                 // 맡은 편지(session)는 답장을 보낼 때까지 계속 상기시켜야 하므로
                 // 여기서 지우지 않는다 — 다음 접속에 다시 뜬다.
                 if (notice.hideAfter === "forever")
-                  dismissNotice(userId, notice.id)
-                notice.onAction()
+                  dismissNotice(userId, notice.id);
+                notice.onAction();
               }}
             >
               {notice.action}
@@ -503,7 +532,11 @@ function HomeContent({
                   모두 같고 가운데 별 문양만 다르다 — 01 은 갈래가 더 많고 가늘게 뻗는다.
                   표시 폭이 21px 남짓이라 실제 화면에서 차이는 아주 미세하다.
                   네 화면(홈 · /home-cards · /home-scene · 편지 읽기)가 같은 파일을 공유한다. */}
-              <img src="/assets/home-cards-ornaments-01.svg" alt="" aria-hidden="true" />
+              <img
+                src="/assets/home-cards-ornaments-01.svg"
+                alt=""
+                aria-hidden="true"
+              />
               <p>마음을 쓰고, 마음을 읽는 시간</p>
             </div>
             {testState === "partial-error" && (
@@ -538,8 +571,8 @@ function HomeContent({
               <button
                 type="button"
                 onClick={() => {
-                  seedNotificationTestState("reply")
-                  setNoticeVersion((value) => value + 1)
+                  seedNotificationTestState("reply");
+                  setNoticeVersion((value) => value + 1);
                 }}
               >
                 답장 도착
@@ -547,8 +580,8 @@ function HomeContent({
               <button
                 type="button"
                 onClick={() => {
-                  seedNotificationTestState("empty")
-                  setNoticeVersion((value) => value + 1)
+                  seedNotificationTestState("empty");
+                  setNoticeVersion((value) => value + 1);
                 }}
               >
                 소식 없음
@@ -559,5 +592,5 @@ function HomeContent({
       </div>
       <AppBottomNavigation active="home" />
     </main>
-  )
+  );
 }

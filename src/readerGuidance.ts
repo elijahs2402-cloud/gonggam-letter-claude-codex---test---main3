@@ -6,9 +6,32 @@ type ReaderGuidance = { acceptedAt: string; version: string };
 function read(): ReaderGuidance | undefined {
   try {
     const value: unknown = JSON.parse(localStorage.getItem(KEY) ?? "null");
-    return value && typeof value === "object" && typeof (value as ReaderGuidance).acceptedAt === "string" && typeof (value as ReaderGuidance).version === "string" ? value as ReaderGuidance : undefined;
-  } catch { return undefined; }
+    return value &&
+      typeof value === "object" &&
+      typeof (value as ReaderGuidance).acceptedAt === "string" &&
+      typeof (value as ReaderGuidance).version === "string"
+      ? (value as ReaderGuidance)
+      : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
-export function hasAcceptedReaderGuidance() { const value = read(); return value?.version === READER_GUIDANCE_VERSION; }
-export function acceptReaderGuidance() { try { localStorage.setItem(KEY, JSON.stringify({ acceptedAt: new Date().toISOString(), version: READER_GUIDANCE_VERSION })); return true; } catch { return false; } }
+export function hasAcceptedReaderGuidance() {
+  const value = read();
+  return value?.version === READER_GUIDANCE_VERSION;
+}
+export function acceptReaderGuidance() {
+  try {
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        acceptedAt: new Date().toISOString(),
+        version: READER_GUIDANCE_VERSION,
+      }),
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}

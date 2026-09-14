@@ -50,19 +50,89 @@ const RETURN_PATH_KEY = "gonggam_mock_auth_return_path_v1";
 // 결을 정하는 기준이다. 조합이 1,600가지라 어떤 명사와 붙어도 어색하지 않은,
 // 분위기·감촉을 가리키는 말만 골랐다.
 const firstWords = [
-  "조용한", "다정한", "포근한", "잔잔한", "느린", "따뜻한", "작은", "고요한",
-  "차분한", "은은한", "아득한", "그리운", "수줍은", "정다운", "반가운", "살가운",
-  "편안한", "넉넉한", "깊은", "맑은", "여린", "옅은", "짙은", "오랜",
-  "나직한", "산뜻한", "보드라운", "부드러운", "소중한", "어여쁜", "애틋한", "다감한",
-  "흐릿한", "자그만", "오붓한", "호젓한", "아늑한", "담담한", "한적한", "은근한",
+  "조용한",
+  "다정한",
+  "포근한",
+  "잔잔한",
+  "느린",
+  "따뜻한",
+  "작은",
+  "고요한",
+  "차분한",
+  "은은한",
+  "아득한",
+  "그리운",
+  "수줍은",
+  "정다운",
+  "반가운",
+  "살가운",
+  "편안한",
+  "넉넉한",
+  "깊은",
+  "맑은",
+  "여린",
+  "옅은",
+  "짙은",
+  "오랜",
+  "나직한",
+  "산뜻한",
+  "보드라운",
+  "부드러운",
+  "소중한",
+  "어여쁜",
+  "애틋한",
+  "다감한",
+  "흐릿한",
+  "자그만",
+  "오붓한",
+  "호젓한",
+  "아늑한",
+  "담담한",
+  "한적한",
+  "은근한",
 ];
 
 const secondWords = [
-  "별빛", "구름", "등불", "나무", "호수", "바람", "새벽", "편지",
-  "달빛", "햇살", "노을", "안개", "이슬", "물결", "오솔길", "창가",
-  "골목", "언덕", "들판", "숲길", "밤길", "눈길", "빗소리", "파도",
-  "갈대", "낙엽", "씨앗", "새싹", "우물", "나룻배", "종소리", "발자국",
-  "책갈피", "담요", "온기", "숨결", "목소리", "그림자", "물빛", "별자리",
+  "별빛",
+  "구름",
+  "등불",
+  "나무",
+  "호수",
+  "바람",
+  "새벽",
+  "편지",
+  "달빛",
+  "햇살",
+  "노을",
+  "안개",
+  "이슬",
+  "물결",
+  "오솔길",
+  "창가",
+  "골목",
+  "언덕",
+  "들판",
+  "숲길",
+  "밤길",
+  "눈길",
+  "빗소리",
+  "파도",
+  "갈대",
+  "낙엽",
+  "씨앗",
+  "새싹",
+  "우물",
+  "나룻배",
+  "종소리",
+  "발자국",
+  "책갈피",
+  "담요",
+  "온기",
+  "숨결",
+  "목소리",
+  "그림자",
+  "물빛",
+  "별자리",
 ];
 
 // 틀 2 — "때·자리 + 의 + 명사" (밤의 등불).
@@ -70,25 +140,57 @@ const secondWords = [
 // 두 번째 명사는 'X의 Y'로 읽었을 때 자연스러운 것만 따로 추렸다
 // (secondWords 를 그대로 쓰면 "밤의 담요" 같은 어색한 짝이 생긴다).
 const placeWords = [
-  "밤", "새벽", "아침", "저녁", "한낮", "봄", "여름", "가을",
-  "겨울", "창가", "숲", "들녘", "강가", "바다", "언덕",
+  "밤",
+  "새벽",
+  "아침",
+  "저녁",
+  "한낮",
+  "봄",
+  "여름",
+  "가을",
+  "겨울",
+  "창가",
+  "숲",
+  "들녘",
+  "강가",
+  "바다",
+  "언덕",
 ];
 
 const boundWords = [
-  "등불", "별빛", "달빛", "편지", "바람", "노을", "물결", "숨결",
-  "온기", "그림자", "발자국", "종소리", "빗소리", "목소리", "안개", "이슬",
-  "새싹", "오솔길", "나룻배", "책갈피",
+  "등불",
+  "별빛",
+  "달빛",
+  "편지",
+  "바람",
+  "노을",
+  "물결",
+  "숨결",
+  "온기",
+  "그림자",
+  "발자국",
+  "종소리",
+  "빗소리",
+  "목소리",
+  "안개",
+  "이슬",
+  "새싹",
+  "오솔길",
+  "나룻배",
+  "책갈피",
 ];
 
 function canUseStorage() {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 function readJson<T>(key: string): T | undefined {
   if (!canUseStorage()) return undefined;
   try {
     const raw = window.localStorage.getItem(key);
-    return raw ? JSON.parse(raw) as T : undefined;
+    return raw ? (JSON.parse(raw) as T) : undefined;
   } catch {
     return undefined;
   }
@@ -119,11 +221,15 @@ function isProvider(value: unknown): value is MockAuthProvider {
 function normalizeAccount(value: unknown): MockUserAccount | undefined {
   if (!value || typeof value !== "object") return undefined;
   const account = value as Partial<MockUserAccount>;
-  if (typeof account.id !== "string" || !isProvider(account.authProvider)) return undefined;
+  if (typeof account.id !== "string" || !isProvider(account.authProvider))
+    return undefined;
   return {
     id: account.id,
     authProvider: account.authProvider,
-    anonymousName: typeof account.anonymousName === "string" ? account.anonymousName : undefined,
+    anonymousName:
+      typeof account.anonymousName === "string"
+        ? account.anonymousName
+        : undefined,
     onboardingCompleted: Boolean(account.onboardingCompleted),
     termsAccepted: Boolean(account.termsAccepted),
     ageConfirmed: Boolean(account.ageConfirmed),
@@ -132,15 +238,32 @@ function normalizeAccount(value: unknown): MockUserAccount | undefined {
 
 export function getMockAuthSnapshot(): MockAuthSnapshot {
   const stored = readJson<Partial<MockAuthSnapshot>>(AUTH_KEY);
-  const account = normalizeAccount(stored?.account ?? readJson<unknown>(ONBOARDING_KEY));
-  const state: MockAuthState = ["logged_out", "logging_in", "new_user", "existing_user", "login_failed", "logged_in", "withdrawn"].includes(stored?.state ?? "")
-    ? stored!.state as MockAuthState
+  const account = normalizeAccount(
+    stored?.account ?? readJson<unknown>(ONBOARDING_KEY),
+  );
+  const state: MockAuthState = [
+    "logged_out",
+    "logging_in",
+    "new_user",
+    "existing_user",
+    "login_failed",
+    "logged_in",
+    "withdrawn",
+  ].includes(stored?.state ?? "")
+    ? (stored!.state as MockAuthState)
     : "logged_out";
   return {
     state,
     account,
-    pendingProvider: isProvider(stored?.pendingProvider) ? stored.pendingProvider : undefined,
-    loginMode: stored?.loginMode === "new" || stored?.loginMode === "existing" || stored?.loginMode === "failure" ? stored.loginMode : undefined,
+    pendingProvider: isProvider(stored?.pendingProvider)
+      ? stored.pendingProvider
+      : undefined,
+    loginMode:
+      stored?.loginMode === "new" ||
+      stored?.loginMode === "existing" ||
+      stored?.loginMode === "failure"
+        ? stored.loginMode
+        : undefined,
   };
 }
 
@@ -151,66 +274,108 @@ function saveSnapshot(snapshot: MockAuthSnapshot) {
 
 export function setMockLoginMode(loginMode: "new" | "existing" | "failure") {
   const snapshot = getMockAuthSnapshot();
-  saveSnapshot({ ...snapshot, state: "logged_out", loginMode, pendingProvider: undefined });
+  saveSnapshot({
+    ...snapshot,
+    state: "logged_out",
+    loginMode,
+    pendingProvider: undefined,
+  });
 }
 
 export function beginMockLogin(provider: MockAuthProvider) {
   const snapshot = getMockAuthSnapshot();
-  const fallbackMode = snapshot.account?.onboardingCompleted ? "existing" : "new";
-  saveSnapshot({ ...snapshot, state: "logging_in", pendingProvider: provider, loginMode: snapshot.loginMode ?? fallbackMode });
+  const fallbackMode = snapshot.account?.onboardingCompleted
+    ? "existing"
+    : "new";
+  saveSnapshot({
+    ...snapshot,
+    state: "logging_in",
+    pendingProvider: provider,
+    loginMode: snapshot.loginMode ?? fallbackMode,
+  });
 }
 
 export function cancelMockLogin() {
   const snapshot = getMockAuthSnapshot();
-  saveSnapshot({ ...snapshot, state: "logged_out", pendingProvider: undefined });
+  saveSnapshot({
+    ...snapshot,
+    state: "logged_out",
+    pendingProvider: undefined,
+  });
 }
 
 export function retryMockLogin() {
   const snapshot = getMockAuthSnapshot();
   const loginMode = snapshot.account?.onboardingCompleted ? "existing" : "new";
-  saveSnapshot({ ...snapshot, state: "logged_out", pendingProvider: undefined, loginMode });
+  saveSnapshot({
+    ...snapshot,
+    state: "logged_out",
+    pendingProvider: undefined,
+    loginMode,
+  });
 }
 
 export function resolveMockLogin() {
   const snapshot = getMockAuthSnapshot();
   const provider = snapshot.pendingProvider ?? "apple";
-  const mode = snapshot.loginMode ?? (snapshot.account?.onboardingCompleted ? "existing" : "new");
+  const mode =
+    snapshot.loginMode ??
+    (snapshot.account?.onboardingCompleted ? "existing" : "new");
   if (mode === "failure") {
-    saveSnapshot({ ...snapshot, state: "login_failed", pendingProvider: undefined });
+    saveSnapshot({
+      ...snapshot,
+      state: "login_failed",
+      pendingProvider: undefined,
+    });
     return getMockAuthSnapshot();
   }
 
   // Keep the existing local user id so prior letters, drafts, reports, blocks,
   // and sealed excerpts remain attached to this prototype account.
-  const account: MockUserAccount = mode === "existing"
-    ? snapshot.account
-      ? { ...snapshot.account, authProvider: provider, onboardingCompleted: true, termsAccepted: true, ageConfirmed: true }
+  const account: MockUserAccount =
+    mode === "existing"
+      ? snapshot.account
+        ? {
+            ...snapshot.account,
+            authProvider: provider,
+            onboardingCompleted: true,
+            termsAccepted: true,
+            ageConfirmed: true,
+          }
+        : {
+            // A ready-to-use account is seeded only for the explicit prototype
+            // test branch; it still reuses the existing local record owner id.
+            id: getCurrentUserId(),
+            authProvider: provider,
+            anonymousName: generateAnonymousName(),
+            onboardingCompleted: true,
+            termsAccepted: true,
+            ageConfirmed: true,
+          }
       : {
-        // A ready-to-use account is seeded only for the explicit prototype
-        // test branch; it still reuses the existing local record owner id.
-        id: getCurrentUserId(),
-        authProvider: provider,
-        anonymousName: generateAnonymousName(),
-        onboardingCompleted: true,
-        termsAccepted: true,
-        ageConfirmed: true,
-      }
-    : {
-      id: getCurrentUserId(),
-      authProvider: provider,
-      onboardingCompleted: false,
-      termsAccepted: false,
-      ageConfirmed: false,
-    };
+          id: getCurrentUserId(),
+          authProvider: provider,
+          onboardingCompleted: false,
+          termsAccepted: false,
+          ageConfirmed: false,
+        };
   // Existing users are ready for protected routes immediately after mock login.
-  saveSnapshot({ state: mode === "existing" ? "logged_in" : "new_user", account, loginMode: mode });
+  saveSnapshot({
+    state: mode === "existing" ? "logged_in" : "new_user",
+    account,
+    loginMode: mode,
+  });
   return getMockAuthSnapshot();
 }
 
 export function acceptTerms() {
   const snapshot = getMockAuthSnapshot();
   if (!snapshot.account) return;
-  const account = { ...snapshot.account, termsAccepted: true, ageConfirmed: true };
+  const account = {
+    ...snapshot.account,
+    termsAccepted: true,
+    ageConfirmed: true,
+  };
   saveSnapshot({ ...snapshot, state: "new_user", account });
 }
 
@@ -270,9 +435,23 @@ export function generateAnonymousName(previous?: string) {
 
 export function confirmAnonymousName(anonymousName: string) {
   const snapshot = getMockAuthSnapshot();
-  if (!snapshot.account || !snapshot.account.termsAccepted || !snapshot.account.ageConfirmed) return;
-  const account: MockUserAccount = { ...snapshot.account, anonymousName, onboardingCompleted: true };
-  saveSnapshot({ ...snapshot, state: "logged_in", account, pendingProvider: undefined });
+  if (
+    !snapshot.account ||
+    !snapshot.account.termsAccepted ||
+    !snapshot.account.ageConfirmed
+  )
+    return;
+  const account: MockUserAccount = {
+    ...snapshot.account,
+    anonymousName,
+    onboardingCompleted: true,
+  };
+  saveSnapshot({
+    ...snapshot,
+    state: "logged_in",
+    account,
+    pendingProvider: undefined,
+  });
 }
 
 /** Updates only the current mock account. Existing letter/reply records retain their stored name. */
@@ -297,7 +476,11 @@ export function getPostLoginPath(fallback = "/home") {
 
 export function setPostLoginPath(path: string) {
   if (!canUseStorage() || !path.startsWith("/")) return;
-  try { window.localStorage.setItem(RETURN_PATH_KEY, path); } catch { /* no-op */ }
+  try {
+    window.localStorage.setItem(RETURN_PATH_KEY, path);
+  } catch {
+    /* no-op */
+  }
 }
 
 export function logoutMockAccount() {
@@ -306,7 +489,9 @@ export function logoutMockAccount() {
     ...snapshot,
     state: "logged_out",
     pendingProvider: undefined,
-    loginMode: snapshot.account?.onboardingCompleted ? "existing" : snapshot.loginMode,
+    loginMode: snapshot.account?.onboardingCompleted
+      ? "existing"
+      : snapshot.loginMode,
   });
   removeStorageItem(RETURN_PATH_KEY);
 }
@@ -319,7 +504,13 @@ export function deleteMockAccount() {
   // 건너뛰어 삭제했던 이름으로 홈에 들어갔다.
   // 편지·초안·신고 기록은 다른 저장소(gonggam_letters_v1 등)에 있어
   // 여기서 계정을 지워도 프로토타입 점검용 데이터는 그대로 남는다.
-  saveSnapshot({ ...snapshot, state: "withdrawn", account: undefined, loginMode: undefined, pendingProvider: undefined });
+  saveSnapshot({
+    ...snapshot,
+    state: "withdrawn",
+    account: undefined,
+    loginMode: undefined,
+    pendingProvider: undefined,
+  });
   // 스냅샷에서 계정을 지워도 getMockAuthSnapshot() 이 ONBOARDING_KEY 에서 되읽어온다.
   // (stored?.account ?? readJson(ONBOARDING_KEY)) — 그래서 삭제 후 다시 로그인하면
   // 지운 계정이 살아나 약관·이름을 건너뛰고 옆 이름으로 홈에 들어갔다.
@@ -331,13 +522,22 @@ export function deleteMockAccount() {
 
 export function getOnboardingNextPath() {
   const snapshot = getMockAuthSnapshot();
-  if (!snapshot.account || !["new_user", "existing_user", "logged_in"].includes(snapshot.state)) return "/login";
-  if (!snapshot.account.termsAccepted || !snapshot.account.ageConfirmed) return "/terms-consent";
-  if (!snapshot.account.anonymousName || !snapshot.account.onboardingCompleted) return "/nickname-entry";
+  if (
+    !snapshot.account ||
+    !["new_user", "existing_user", "logged_in"].includes(snapshot.state)
+  )
+    return "/login";
+  if (!snapshot.account.termsAccepted || !snapshot.account.ageConfirmed)
+    return "/terms-consent";
+  if (!snapshot.account.anonymousName || !snapshot.account.onboardingCompleted)
+    return "/nickname-entry";
   return undefined;
 }
 
 export function isMockAuthenticated() {
   const snapshot = getMockAuthSnapshot();
-  return snapshot.state === "logged_in" && Boolean(snapshot.account?.onboardingCompleted);
+  return (
+    snapshot.state === "logged_in" &&
+    Boolean(snapshot.account?.onboardingCompleted)
+  );
 }

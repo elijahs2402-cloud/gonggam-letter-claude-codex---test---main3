@@ -25,7 +25,10 @@ export default defineConfig([
     },
     rules: {
       // 일부러 버리는 값은 허용한다: `_` 로 시작하는 인자, 나머지(...rest)를 얻으려고 꺼낸 형제 속성
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", ignoreRestSiblings: true }],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", ignoreRestSiblings: true },
+      ],
 
       // 아래는 오류가 아니라 경고로 둔다 (2026-09-14 결정, 개발팀 합의 대상).
       // React Compiler 기준 규칙이다. 이 앱은 React Compiler 를 쓰지 않아 지금은 권장 사항이고,

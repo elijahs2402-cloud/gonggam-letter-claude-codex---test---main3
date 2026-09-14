@@ -1,14 +1,162 @@
 import type { ReactNode } from "react";
 import { navigateTo } from "./navigation";
 
-export type CommonStateVariant = "loading" | "empty" | "error" | "offline" | "not_found" | "restricted" | "already_processed" | "maintenance" | "update_required";
+export type CommonStateVariant =
+  | "loading"
+  | "empty"
+  | "error"
+  | "offline"
+  | "not_found"
+  | "restricted"
+  | "already_processed"
+  | "maintenance"
+  | "update_required";
 type Action = { label: string; onClick?: () => void; href?: string };
-type Props = { variant: CommonStateVariant; title: string; description?: string; primaryAction?: Action; secondaryAction?: Action; compact?: boolean; developerMessage?: string; children?: ReactNode };
-function run(action?: Action) { if (!action) return; if (action.href) navigateTo(action.href); else action.onClick?.(); }
-export function isDevelopmentPreview() { return typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname); }
+type Props = {
+  variant: CommonStateVariant;
+  title: string;
+  description?: string;
+  primaryAction?: Action;
+  secondaryAction?: Action;
+  compact?: boolean;
+  developerMessage?: string;
+  children?: ReactNode;
+};
+function run(action?: Action) {
+  if (!action) return;
+  if (action.href) navigateTo(action.href);
+  else action.onClick?.();
+}
+export function isDevelopmentPreview() {
+  return (
+    typeof window !== "undefined" &&
+    ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  );
+}
 // not_found 는 제목 위 마크를 그리지 않는다. 오류·오프라인의 "!" 는 상태를 알리지만
 // 나머지 변형이 쓰는 "·" 는 아무것도 말하지 않는 장식이라, 이 화면에서는 뺐다.
 // (empty · restricted · already_processed · maintenance · update_required 는 아직 "·" 를 쓴다.)
-export function PageState({ variant, title, description, primaryAction, secondaryAction, compact, developerMessage, children }: Props) { return <section className={`common-state common-state--${variant}${compact ? " is-compact" : ""}`} aria-busy={variant === "loading" || undefined} aria-live={variant === "error" || variant === "offline" ? "assertive" : "polite"}>{variant === "loading" && <div className="common-state-skeleton" aria-hidden="true"><i /><i /><i /></div>}{variant !== "loading" && variant !== "not_found" && <span className="common-state-mark" aria-hidden="true">{variant === "error" || variant === "offline" ? "!" : "·"}</span>}<h1>{title}</h1>{description && <p>{description}</p>}{children}{(primaryAction || secondaryAction) && <div className="common-state-actions">{primaryAction && <button type="button" className="flow-primary-button" onClick={() => run(primaryAction)}>{primaryAction.label}</button>}{secondaryAction && <button type="button" className="flow-text-button" onClick={() => run(secondaryAction)}>{secondaryAction.label}</button>}</div>}{isDevelopmentPreview() && developerMessage && <small className="common-state-developer">개발 확인 · {developerMessage}</small>}</section>; }
-export function NotFoundScreen() { return <main className="mobile-prototype common-state-screen"><PageState variant="not_found" title="이 화면은 지금 없어요" description="홈에서 다시 시작할 수 있어요." primaryAction={{ label: "홈으로 돌아가기", href: "/home" }} /></main>; }
-export function ServiceStateScreen({ variant }: { variant: "offline" | "maintenance" | "update_required" | "restricted" | "error" }) { const copy = { offline: ["연결이 원활하지 않아요.", "인터넷 연결을 확인하고 다시 시도해주세요."], maintenance: ["잠시 서비스를 정리하고 있어요.", "조금 뒤에 다시 찾아와주세요."], update_required: ["새로운 버전이 필요해요.", "업데이트 후 공감편지를 계속 이용할 수 있어요."], restricted: ["현재 이 이용은 제한되어 있어요.", "안전을 위해 이 기능을 지금은 이용할 수 없어요."], error: ["내용을 불러오지 못했어요.", "잠시 후 다시 시도해주세요."] } as const; const [title, description] = copy[variant]; return <main className="mobile-prototype common-state-screen"><PageState variant={variant} title={title} description={description} primaryAction={variant === "maintenance" ? undefined : { label: variant === "update_required" ? "업데이트 안내 보기" : "다시 시도", onClick: () => window.location.reload() }} secondaryAction={{ label: "홈으로 돌아가기", href: "/home" }} developerMessage={`prototype system state: ${variant}`} /></main>; }
+export function PageState({
+  variant,
+  title,
+  description,
+  primaryAction,
+  secondaryAction,
+  compact,
+  developerMessage,
+  children,
+}: Props) {
+  return (
+    <section
+      className={`common-state common-state--${variant}${compact ? " is-compact" : ""}`}
+      aria-busy={variant === "loading" || undefined}
+      aria-live={
+        variant === "error" || variant === "offline" ? "assertive" : "polite"
+      }
+    >
+      {variant === "loading" && (
+        <div className="common-state-skeleton" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
+      )}
+      {variant !== "loading" && variant !== "not_found" && (
+        <span className="common-state-mark" aria-hidden="true">
+          {variant === "error" || variant === "offline" ? "!" : "·"}
+        </span>
+      )}
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+      {children}
+      {(primaryAction || secondaryAction) && (
+        <div className="common-state-actions">
+          {primaryAction && (
+            <button
+              type="button"
+              className="flow-primary-button"
+              onClick={() => run(primaryAction)}
+            >
+              {primaryAction.label}
+            </button>
+          )}
+          {secondaryAction && (
+            <button
+              type="button"
+              className="flow-text-button"
+              onClick={() => run(secondaryAction)}
+            >
+              {secondaryAction.label}
+            </button>
+          )}
+        </div>
+      )}
+      {isDevelopmentPreview() && developerMessage && (
+        <small className="common-state-developer">
+          개발 확인 · {developerMessage}
+        </small>
+      )}
+    </section>
+  );
+}
+export function NotFoundScreen() {
+  return (
+    <main className="mobile-prototype common-state-screen">
+      <PageState
+        variant="not_found"
+        title="이 화면은 지금 없어요"
+        description="홈에서 다시 시작할 수 있어요."
+        primaryAction={{ label: "홈으로 돌아가기", href: "/home" }}
+      />
+    </main>
+  );
+}
+export function ServiceStateScreen({
+  variant,
+}: {
+  variant:
+    "offline" | "maintenance" | "update_required" | "restricted" | "error";
+}) {
+  const copy = {
+    offline: [
+      "연결이 원활하지 않아요.",
+      "인터넷 연결을 확인하고 다시 시도해주세요.",
+    ],
+    maintenance: [
+      "잠시 서비스를 정리하고 있어요.",
+      "조금 뒤에 다시 찾아와주세요.",
+    ],
+    update_required: [
+      "새로운 버전이 필요해요.",
+      "업데이트 후 공감편지를 계속 이용할 수 있어요.",
+    ],
+    restricted: [
+      "현재 이 이용은 제한되어 있어요.",
+      "안전을 위해 이 기능을 지금은 이용할 수 없어요.",
+    ],
+    error: ["내용을 불러오지 못했어요.", "잠시 후 다시 시도해주세요."],
+  } as const;
+  const [title, description] = copy[variant];
+  return (
+    <main className="mobile-prototype common-state-screen">
+      <PageState
+        variant={variant}
+        title={title}
+        description={description}
+        primaryAction={
+          variant === "maintenance"
+            ? undefined
+            : {
+                label:
+                  variant === "update_required"
+                    ? "업데이트 안내 보기"
+                    : "다시 시도",
+                onClick: () => window.location.reload(),
+              }
+        }
+        secondaryAction={{ label: "홈으로 돌아가기", href: "/home" }}
+        developerMessage={`prototype system state: ${variant}`}
+      />
+    </main>
+  );
+}
