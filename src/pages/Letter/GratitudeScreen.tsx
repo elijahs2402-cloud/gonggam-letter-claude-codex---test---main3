@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { getCurrentUserId, getLetterById } from "./letters";
-import { navigateBack, navigateTo } from "./navigation";
+import { getCurrentUserId, getLetterById } from "../../data/letters";
+import { navigateBack, navigateTo } from "../../utils/navigation";
 
 type GratitudeRecord = {
   letterId: string;

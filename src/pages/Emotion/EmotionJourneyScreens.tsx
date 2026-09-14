@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { navigateBack, navigateTo } from "./navigation";
+import { navigateBack, navigateTo } from "../../utils/navigation";
 import {
   EMOTIONS,
   EMOTION_TYPE_BY_EMOTION,
@@ -11,7 +11,7 @@ import {
   updateEmotionJourney,
   type Emotion,
   type EmotionChange,
-} from "./emotionJourney";
+} from "../../data/emotionJourney";
 
 const EMOTION_CHANGE_ICONS: Partial<Record<EmotionChange, string>> = {
   "조금 가벼워졌어요": "/assets/emotion-after-lighter-icon.png",

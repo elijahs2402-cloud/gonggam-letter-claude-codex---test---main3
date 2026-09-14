@@ -1,25 +1,25 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AppBottomNavigation } from "./AppBottomNavigation";
-import { NotificationsScreen } from "./NotificationScreens";
-import { isPrototypeQaMode } from "./prototypeQa";
-import { getCurrentUserId, getReplyDeadline } from "./letters";
+import { AppBottomNavigation } from "../../components/common/AppBottomNavigation";
+import { NotificationsScreen } from "../Notifications/NotificationScreens";
+import { isPrototypeQaMode } from "../../utils/prototypeQa";
+import { getCurrentUserId, getReplyDeadline } from "../../data/letters";
 import {
   getCurrentAppPath,
   navigateTo,
   registerShellRouter,
-} from "./navigation";
-import { getLetterDraft } from "./letterDraft";
-import { getMockAuthSnapshot } from "./mockAuth";
-import { seedNotificationTestState } from "./notifications";
-import { getMailboxAttention } from "./mailboxAttention";
-import { unreadNotificationCount } from "./notifications";
+} from "../../utils/navigation";
+import { getLetterDraft } from "../../data/letterDraft";
+import { getMockAuthSnapshot } from "../../data/mockAuth";
+import { seedNotificationTestState } from "../../data/notifications";
+import { getMailboxAttention } from "../../data/mailboxAttention";
+import { unreadNotificationCount } from "../../data/notifications";
 import {
   dismissNotice,
   isNoticeDismissed,
   markNoticeSeen,
   wasNoticeSeenThisSession,
-} from "./dismissedNotices";
-import { getReadCardPath } from "./waitingLetters";
+} from "../../data/dismissedNotices";
+import { getReadCardPath } from "../../data/waitingLetters";
 
 type HomeTestState = "normal" | "loading" | "error" | "partial-error";
 type FloatingNotice = {

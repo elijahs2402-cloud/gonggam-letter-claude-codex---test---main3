@@ -3,7 +3,7 @@ import {
   transitionLetterStatus,
   updateLetter,
   type LetterStatus,
-} from "./letters";
+} from "../data/letters";
 const isDevelopment =
   typeof window !== "undefined" &&
   /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname);

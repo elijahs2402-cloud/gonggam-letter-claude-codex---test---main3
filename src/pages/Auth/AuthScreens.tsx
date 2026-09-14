@@ -11,9 +11,9 @@ import {
   retryMockLogin,
   setMockLoginMode,
   type MockAuthProvider,
-} from "./mockAuth";
-import { navigateBack, navigateTo, replaceRoute } from "./navigation";
-import { isPrototypeQaMode } from "./prototypeQa";
+} from "../../data/mockAuth";
+import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
+import { isPrototypeQaMode } from "../../utils/prototypeQa";
 
 function AuthShell({
   children,

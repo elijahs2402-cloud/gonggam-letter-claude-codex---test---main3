@@ -3,14 +3,14 @@ import {
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
-} from "./navigation";
-import { getCurrentUserId } from "./letters";
-import { seedSampleLetters } from "./sampleLetters";
+} from "../../utils/navigation";
+import { getCurrentUserId } from "../../data/letters";
+import { seedSampleLetters } from "../../data/sampleLetters";
 import {
   getAvailableWaitingLetters,
   markWaitingLetterViewed,
-} from "./waitingLetters";
-import { getListenEntryPath } from "./waitingLetters";
+} from "../../data/waitingLetters";
+import { getListenEntryPath } from "../../data/waitingLetters";
 
 type ListenVariant = "A" | "B" | "C";
 type ListenEntryState = "ready" | "loading" | "error" | "empty";

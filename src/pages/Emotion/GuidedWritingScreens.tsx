@@ -3,7 +3,7 @@ import {
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
-} from "./navigation";
+} from "../../utils/navigation";
 import {
   buildGuidedLetterDraft,
   ensureEmotionJourney,
@@ -13,7 +13,7 @@ import {
   updateEmotionJourney,
   type EmotionJourney,
   type EmotionType,
-} from "./emotionJourney";
+} from "../../data/emotionJourney";
 
 const CATEGORIES = [
   [

@@ -4,24 +4,27 @@ import {
   getCurrentUserId,
   getLetterById,
   sendReply,
-} from "./letters";
+} from "../../data/letters";
 import {
   clearLetterDraft,
   clearReplyDraft,
   getLetterDraft,
   getReplyDraft,
   updateLetterDraft,
-} from "./letterDraft";
+} from "../../data/letterDraft";
 import {
   canSubmitLetter,
   reviewLetterSafety,
   reviewReplySafety,
-} from "./safety";
-import { navigateBack, navigateTo } from "./navigation";
-import { getLetterReturn } from "./letterReturns";
-import { resolveDeliveryIssues } from "./deliveryIssues";
-import { RETURNED_LETTER_BODY, RETURNED_LETTER_TITLE } from "./copy";
-import { getListenEntryPath } from "./waitingLetters";
+} from "../../data/safety";
+import { navigateBack, navigateTo } from "../../utils/navigation";
+import { getLetterReturn } from "../../data/letterReturns";
+import { resolveDeliveryIssues } from "../../data/deliveryIssues";
+import {
+  RETURNED_LETTER_BODY,
+  RETURNED_LETTER_TITLE,
+} from "../../constants/copy";
+import { getListenEntryPath } from "../../data/waitingLetters";
 
 function Shell({
   title,

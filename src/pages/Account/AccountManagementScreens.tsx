@@ -3,14 +3,14 @@ import {
   getMockAuthSnapshot,
   logoutMockAccount,
   deleteMockAccount,
-} from "./mockAuth";
+} from "../../data/mockAuth";
 import {
   consumePopEntry,
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
-} from "./navigation";
-import { ListenEntryLoadingState } from "./ListenEntryVariants";
+} from "../../utils/navigation";
+import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
 
 function providerName(provider?: string) {
   return provider === "apple"

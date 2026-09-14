@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getLetterById } from "./letters";
+import { getLetterById } from "../../data/letters";
 import {
   getNotificationSettings,
   getNotifications,
@@ -7,10 +7,10 @@ import {
   seedNotificationTestState,
   updateNotificationSettings,
   type MockNotification,
-} from "./notifications";
-import { navigateBack, navigateTo } from "./navigation";
-import { isPrototypeQaMode } from "./prototypeQa";
-import { formatDate } from "./datetime";
+} from "../../data/notifications";
+import { navigateBack, navigateTo } from "../../utils/navigation";
+import { isPrototypeQaMode } from "../../utils/prototypeQa";
+import { formatDate } from "../../utils/datetime";
 
 function Header({ title, fallback }: { title: string; fallback: string }) {
   return (

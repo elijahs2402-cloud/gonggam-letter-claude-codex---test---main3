@@ -1,4 +1,4 @@
-import { navigateBack } from "./navigation";
+import { navigateBack } from "../../utils/navigation";
 
 const TERMS_SECTIONS = [
   {

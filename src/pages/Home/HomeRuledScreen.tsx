@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { AppBottomNavigation } from "./AppBottomNavigation";
-import { getCurrentAnonymousName } from "./mockAuth";
-import { getCurrentUserId } from "./letters";
-import { unreadNotificationCount } from "./notifications";
-import { navigateTo } from "./navigation";
-import { getReadCardPath } from "./waitingLetters";
+import { AppBottomNavigation } from "../../components/common/AppBottomNavigation";
+import { getCurrentAnonymousName } from "../../data/mockAuth";
+import { getCurrentUserId } from "../../data/letters";
+import { unreadNotificationCount } from "../../data/notifications";
+import { navigateTo } from "../../utils/navigation";
+import { getReadCardPath } from "../../data/waitingLetters";
 import styles from "./HomeRuledScreen.module.css";
 import refined from "./HomeRuledRefinedScreen.module.css";
 

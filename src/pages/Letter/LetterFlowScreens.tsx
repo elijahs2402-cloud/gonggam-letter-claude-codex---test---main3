@@ -3,7 +3,7 @@ import {
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
-} from "./navigation";
+} from "../../utils/navigation";
 import {
   assignLetterToReader,
   createLetter,
@@ -14,8 +14,8 @@ import {
   sendReply,
   transitionLetterStatus,
   type Letter,
-} from "./letters";
-import { getCurrentAnonymousName } from "./mockAuth";
+} from "../../data/letters";
+import { getCurrentAnonymousName } from "../../data/mockAuth";
 import {
   clearLetterDraft,
   clearReplyDraft,
@@ -25,40 +25,46 @@ import {
   getReplyDraft,
   updateLetterDraft,
   updateReplyDraft,
-} from "./letterDraft";
-import { seedSampleLetters } from "./sampleLetters";
-import { getLetterStatusDescription } from "./letterStatus";
-import { useDraftAutosave } from "./draftGuards";
-import { shouldFailDraftOperation } from "./draftDevTools";
-import { isUserBlocked } from "./blocks";
-import { SealedReply } from "./SealedReply";
-import { getSentLetterDisplayStatus } from "./mailboxStatus";
-import { isContentHidden, revealContent } from "./contentVisibility";
-import { getLetterReturn } from "./letterReturns";
-import { recordDeliveryIssue, resolveDeliveryIssues } from "./deliveryIssues";
+} from "../../data/letterDraft";
+import { seedSampleLetters } from "../../data/sampleLetters";
+import { getLetterStatusDescription } from "../../data/letterStatus";
+import { useDraftAutosave } from "../../hooks/draftGuards";
+import { shouldFailDraftOperation } from "../../utils/draftDevTools";
+import { isUserBlocked } from "../../data/blocks";
+import { SealedReply } from "../../components/letter/SealedReply";
+import { getSentLetterDisplayStatus } from "../../data/mailboxStatus";
+import { isContentHidden, revealContent } from "../../data/contentVisibility";
+import { getLetterReturn } from "../../data/letterReturns";
+import {
+  recordDeliveryIssue,
+  resolveDeliveryIssues,
+} from "../../data/deliveryIssues";
 import {
   acceptReaderGuidance,
   hasAcceptedReaderGuidance,
-} from "./readerGuidance";
+} from "../../data/readerGuidance";
 import {
   getAvailableWaitingLetters,
   markWaitingLetterViewed,
   refreshWaitingLetterOrder,
   waitingLetterPreview,
   waitingLetterTimeText,
-} from "./waitingLetters";
+} from "../../data/waitingLetters";
 import {
   canSubmitLetter,
   canSubmitReply,
   reviewLetterSafety,
   reviewReplySafety,
-} from "./safety";
-import { isPrototypeQaMode } from "./prototypeQa";
+} from "../../data/safety";
+import { isPrototypeQaMode } from "../../utils/prototypeQa";
 import { ListenEntryLoadingState } from "./ListenEntryVariants";
-import { formatDateTime } from "./datetime";
-import { RETURNED_LETTER_BODY, RETURNED_LETTER_TITLE } from "./copy";
-import { getListenEntryPath } from "./waitingLetters";
-import { LetterReturnSheet } from "./SafetyActionScreens";
+import { formatDateTime } from "../../utils/datetime";
+import {
+  RETURNED_LETTER_BODY,
+  RETURNED_LETTER_TITLE,
+} from "../../constants/copy";
+import { getListenEntryPath } from "../../data/waitingLetters";
+import { LetterReturnSheet } from "../Safety/SafetyActionScreens";
 
 function FocusShell({
   title,

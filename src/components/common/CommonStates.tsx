@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { navigateTo } from "./navigation";
+import { navigateTo } from "../../utils/navigation";
 
 export type CommonStateVariant =
   | "loading"

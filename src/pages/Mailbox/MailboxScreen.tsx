@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { getCurrentAppSearchParams, navigateTo } from "./navigation";
-import { AppBottomNavigation } from "./AppBottomNavigation";
+import { getCurrentAppSearchParams, navigateTo } from "../../utils/navigation";
+import { AppBottomNavigation } from "../../components/common/AppBottomNavigation";
 import {
   getCurrentUserId,
   getLettersRepliedByUser,
   getMyLetters,
   type Letter,
-} from "./letters";
+} from "../../data/letters";
 import {
   getSentLetterDisplayStatus,
   sortSentLettersByActivity,
-} from "./mailboxStatus";
-import { formatDate } from "./datetime";
+} from "../../data/mailboxStatus";
+import { formatDate } from "../../utils/datetime";
 
 export type MailboxKey = "sent" | "replied" | "favorite";
 

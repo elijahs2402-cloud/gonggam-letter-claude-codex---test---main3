@@ -1,5 +1,5 @@
 import { getCurrentUserId, type LetterStatus } from "./letters";
-import { shouldFailDraftOperation } from "./draftDevTools";
+import { shouldFailDraftOperation } from "../utils/draftDevTools";
 
 export type DraftStage = "writing" | "review";
 

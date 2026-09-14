@@ -1,7 +1,7 @@
-import { navigateTo } from "./navigation";
-import { getCurrentUserId } from "./letters";
-import { getLetterDraft } from "./letterDraft";
-import { hasMailboxAttention } from "./mailboxAttention";
+import { navigateTo } from "../../utils/navigation";
+import { getCurrentUserId } from "../../data/letters";
+import { getLetterDraft } from "../../data/letterDraft";
+import { hasMailboxAttention } from "../../data/mailboxAttention";
 
 type AppSection = "home" | "mailbox" | "my-space";
 

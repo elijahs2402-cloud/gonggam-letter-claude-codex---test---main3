@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { getBlockedUsers, isUserBlocked } from "./blocks";
-import { isContentHidden } from "./contentVisibility";
+import { getBlockedUsers, isUserBlocked } from "../../data/blocks";
+import { isContentHidden } from "../../data/contentVisibility";
 import {
   getCurrentUserId,
   getWaitingReplyLettersByUser,
   getReceivedRepliesByUser,
   markReplyOpened,
   type Letter,
-} from "./letters";
+} from "../../data/letters";
 import {
   deleteMockAccount,
   generateAnonymousName,
@@ -15,17 +15,17 @@ import {
   getMockAuthSnapshot,
   logoutMockAccount,
   updateAnonymousName,
-} from "./mockAuth";
-import { navigateBack, navigateTo } from "./navigation";
-import { isPrototypeQaMode } from "./prototypeQa";
-import { isDevelopmentPreview } from "./CommonStates";
-import { getNotificationSettings } from "./notifications";
-import { getReportForTarget, getReportsByUser } from "./reports";
+} from "../../data/mockAuth";
+import { navigateBack, navigateTo } from "../../utils/navigation";
+import { isPrototypeQaMode } from "../../utils/prototypeQa";
+import { isDevelopmentPreview } from "../../components/common/CommonStates";
+import { getNotificationSettings } from "../../data/notifications";
+import { getReportForTarget, getReportsByUser } from "../../data/reports";
 import {
   getSealedExcerptsByReplyId,
   getSealedExcerptsByUser,
-} from "./sealedExcerpts";
-import { formatDate } from "./datetime";
+} from "../../data/sealedExcerpts";
+import { formatDate } from "../../utils/datetime";
 
 function Header({
   title,

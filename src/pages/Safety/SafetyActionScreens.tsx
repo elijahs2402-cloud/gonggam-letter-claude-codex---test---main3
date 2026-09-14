@@ -1,21 +1,28 @@
 import { useEffect, useRef, useState } from "react";
-import { blockUser } from "./blocks";
-import { deleteReplyDraft, getReplyDraft } from "./letterDraft";
+import { blockUser } from "../../data/blocks";
+import { deleteReplyDraft, getReplyDraft } from "../../data/letterDraft";
 import {
   getCurrentUserId,
   getLetterById,
   returnLetterToWaiting,
-} from "./letters";
-import { getLetterReturn, saveLetterReturn } from "./letterReturns";
+} from "../../data/letters";
+import { getLetterReturn, saveLetterReturn } from "../../data/letterReturns";
 import {
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
-} from "./navigation";
-import { createReport, getReportForTarget, type ReportReason } from "./reports";
-import { RETURNED_LETTER_BODY, RETURNED_LETTER_TITLE } from "./copy";
-import { getListenEntryPath } from "./waitingLetters";
-import { ListenEntryLoadingState } from "./ListenEntryVariants";
+} from "../../utils/navigation";
+import {
+  createReport,
+  getReportForTarget,
+  type ReportReason,
+} from "../../data/reports";
+import {
+  RETURNED_LETTER_BODY,
+  RETURNED_LETTER_TITLE,
+} from "../../constants/copy";
+import { getListenEntryPath } from "../../data/waitingLetters";
+import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
 
 // action 은 스크롤 밖 하단 고정 바다. 편지 신고 최종본(ReportScreens.tsx)의 Shell 과 같은 형태로 맞췄다.
 function Shell({

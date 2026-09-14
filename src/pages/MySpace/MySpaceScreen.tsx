@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { AppBottomNavigation } from "./AppBottomNavigation";
+import { AppBottomNavigation } from "../../components/common/AppBottomNavigation";
 import {
   consumePopEntry,
   getCurrentAppPath,
   registerShellRouter,
-} from "./navigation";
+} from "../../utils/navigation";
 import {
   AnonymousNameSettingsScreen,
   GuideScreen,
@@ -14,11 +14,11 @@ import {
 import {
   AccountSettingsScreen,
   AccountWithdrawalScreen,
-} from "./AccountManagementScreens";
-import { NotificationSettingsScreen } from "./NotificationScreens";
-import { SafetyManagementScreen } from "./ReportScreens";
+} from "../Account/AccountManagementScreens";
+import { NotificationSettingsScreen } from "../Notifications/NotificationScreens";
+import { SafetyManagementScreen } from "../Safety/ReportScreens";
 import { TermsMockupScreen } from "./TermsMockup";
-import { isPrototypeQaMode } from "./prototypeQa";
+import { isPrototypeQaMode } from "../../utils/prototypeQa";
 
 type TestState = "normal" | "loading" | "error" | "partial-error";
 type ViewKey =

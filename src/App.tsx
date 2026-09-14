@@ -2,15 +2,15 @@ import { useEffect } from "react";
 import {
   ListenEntryAScreen,
   ListenEntryEmptyScreen,
-} from "./ListenEntryVariants";
+} from "./pages/Letter/ListenEntryVariants";
 import {
   MailboxEmptyDemoScreen,
   MailboxReplyArrivedDemoScreen,
   MailboxScreen,
-} from "./MailboxScreen";
-import { TermsMockupScreen } from "./TermsMockup";
-import { HomeScreen } from "./HomeScreen";
-import { MySpaceScreen } from "./MySpaceScreen";
+} from "./pages/Mailbox/MailboxScreen";
+import { TermsMockupScreen } from "./pages/MySpace/TermsMockup";
+import { HomeScreen } from "./pages/Home/HomeScreen";
+import { MySpaceScreen } from "./pages/MySpace/MySpaceScreen";
 import {
   AssignLetterScreen,
   LetterPreviewScreen,
@@ -32,19 +32,22 @@ import {
   WaitingLettersScreen,
   WriteLetterFlowScreen,
   WriteReplyFlowScreen,
-} from "./LetterFlowScreens";
+} from "./pages/Letter/LetterFlowScreens";
 import {
   getCurrentAppPath,
   getCurrentAppSearchParams,
   navigateTo,
   replaceRoute,
-} from "./navigation";
-import { LetterSafetyReviewScreen, UrgentSupportScreen } from "./SafetyScreens";
+} from "./utils/navigation";
+import {
+  LetterSafetyReviewScreen,
+  UrgentSupportScreen,
+} from "./pages/Safety/SafetyScreens";
 import {
   LetterReportCompleteDemoScreen,
   LetterReportFigmaScreen,
   SafetyManagementScreen,
-} from "./ReportScreens";
+} from "./pages/Safety/ReportScreens";
 import {
   AuthGateRedirect,
   DirectNicknameScreen,
@@ -54,27 +57,30 @@ import {
   ReturningWelcomeScreen,
   TermsConsentScreen,
   getRequiredOnboardingPath,
-} from "./AuthScreens";
-import { GratitudeScreen } from "./GratitudeScreen";
-import { HomeRuledScreen } from "./HomeRuledScreen";
+} from "./pages/Auth/AuthScreens";
+import { GratitudeScreen } from "./pages/Letter/GratitudeScreen";
+import { HomeRuledScreen } from "./pages/Home/HomeRuledScreen";
 import {
   getMockAuthSnapshot,
   isMockAuthenticated,
   setPostLoginPath,
-} from "./mockAuth";
+} from "./data/mockAuth";
 import {
   NotificationsScreen,
   NotificationSettingsScreen,
-} from "./NotificationScreens";
-import { LetterReturnScreen, ReplyReportScreen } from "./SafetyActionScreens";
-import { SavedExcerptsScreen } from "./SavedExcerptsScreen";
+} from "./pages/Notifications/NotificationScreens";
+import {
+  LetterReturnScreen,
+  ReplyReportScreen,
+} from "./pages/Safety/SafetyActionScreens";
+import { SavedExcerptsScreen } from "./pages/MySpace/SavedExcerptsScreen";
 import {
   AnonymousNameSettingsScreen,
   AppInfoScreen,
   GuideScreen,
   PolicyScreen,
   ReceivedRepliesScreen,
-} from "./MySpaceDetails";
+} from "./pages/MySpace/MySpaceDetails";
 import {
   AccountRestrictedScreen,
   AccountSettingsScreen,
@@ -82,8 +88,11 @@ import {
   DataAndPrivacyScreen,
   LoginInformationScreen,
   WithdrawalCompleteScreen,
-} from "./AccountManagementScreens";
-import { NotFoundScreen, ServiceStateScreen } from "./CommonStates";
+} from "./pages/Account/AccountManagementScreens";
+import {
+  NotFoundScreen,
+  ServiceStateScreen,
+} from "./components/common/CommonStates";
 
 function goTo(path: string) {
   navigateTo(path);

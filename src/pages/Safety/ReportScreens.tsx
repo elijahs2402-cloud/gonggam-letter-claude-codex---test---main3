@@ -4,19 +4,23 @@ import {
   getBlockedUsers,
   unblockUser,
   type UserBlock,
-} from "./blocks";
-import { hideContent } from "./contentVisibility";
-import { getCurrentUserId, getLetterById, getLetters } from "./letters";
+} from "../../data/blocks";
+import { hideContent } from "../../data/contentVisibility";
+import {
+  getCurrentUserId,
+  getLetterById,
+  getLetters,
+} from "../../data/letters";
 import {
   createReport,
   getReportForTarget,
   getReportsByUser,
   type Report,
   type ReportReason,
-} from "./reports";
-import { navigateBack, navigateTo } from "./navigation";
-import { formatDate } from "./datetime";
-import { getListenEntryPath } from "./waitingLetters";
+} from "../../data/reports";
+import { navigateBack, navigateTo } from "../../utils/navigation";
+import { formatDate } from "../../utils/datetime";
+import { getListenEntryPath } from "../../data/waitingLetters";
 
 const reasons: ReadonlyArray<[ReportReason, string]> = [
   ["abusive", "모욕적이거나 공격적인 표현"],

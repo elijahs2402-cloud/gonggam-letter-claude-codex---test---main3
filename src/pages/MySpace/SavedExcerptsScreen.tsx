@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { AppBottomNavigation } from "./AppBottomNavigation";
-import { isUserBlocked } from "./blocks";
-import { isContentHidden } from "./contentVisibility";
-import { getCurrentUserId, getLetterById } from "./letters";
-import { navigateBack, navigateTo } from "./navigation";
-import { getReportForTarget } from "./reports";
+import { AppBottomNavigation } from "../../components/common/AppBottomNavigation";
+import { isUserBlocked } from "../../data/blocks";
+import { isContentHidden } from "../../data/contentVisibility";
+import { getCurrentUserId, getLetterById } from "../../data/letters";
+import { navigateBack, navigateTo } from "../../utils/navigation";
+import { getReportForTarget } from "../../data/reports";
 import {
   deleteSealedExcerpt,
   getSealedExcerptsByUser,
   restoreSealedExcerpt,
   type SealedExcerpt,
-} from "./sealedExcerpts";
-import { formatDate } from "./datetime";
+} from "../../data/sealedExcerpts";
+import { formatDate } from "../../utils/datetime";
 
 function date(value: string) {
   return formatDate(value);

@@ -8,7 +8,7 @@ import {
   resolveExcerptPosition,
   restoreSealedExcerpt,
   type SealedExcerpt,
-} from "./sealedExcerpts";
+} from "../../data/sealedExcerpts";
 
 type Selection = {
   text: string;
