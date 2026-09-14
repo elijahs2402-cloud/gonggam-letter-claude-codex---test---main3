@@ -45,44 +45,6 @@ export function formatMailboxCount(count: number) {
   return `${count > 999 ? "999+" : count}통`;
 }
 
-export function MailboxNavigation({
-  onUnavailable,
-}: {
-  onUnavailable: (label: string) => void;
-}) {
-  return (
-    <nav className="app-bottom-navigation" aria-label="주요 메뉴">
-      <button type="button" onClick={() => navigateTo("/home")}>
-        <img
-          className="app-nav-mark app-nav-mark--home"
-          src="/assets/home_icon.png"
-          alt=""
-          aria-hidden="true"
-        />
-        <span>홈</span>
-      </button>
-      <button type="button" className="is-active" aria-current="page">
-        <img
-          className="app-nav-mark app-nav-mark--mailbox"
-          src="/assets/letter_icon.png"
-          alt=""
-          aria-hidden="true"
-        />
-        <span>편지함</span>
-      </button>
-      <button type="button" onClick={() => onUnavailable("나의 공간")}>
-        <img
-          className="app-nav-mark app-nav-mark--space"
-          src="/assets/notebook_icon.png"
-          alt=""
-          aria-hidden="true"
-        />
-        <span>나의 공간</span>
-      </button>
-    </nav>
-  );
-}
-
 export function MailboxScreen() {
   const userId = getCurrentUserId();
   const isContentPreview =
@@ -108,16 +70,6 @@ export function MailboxScreen() {
           : records
       }
       isDemo={isContentPreview}
-      illustrationVariant="directional-status-inline"
-    />
-  );
-}
-
-export function MailboxDemoScreen() {
-  return (
-    <MailboxCollection
-      records={getMailboxDemoRecords("/mailbox-demo")}
-      isDemo
       illustrationVariant="directional-status-inline"
     />
   );
@@ -149,56 +101,6 @@ export function MailboxReplyArrivedDemoScreen() {
       ]}
       isDemo
       illustrationVariant="directional-status-inline"
-    />
-  );
-}
-
-export function MailboxDemoStatusIconScreen() {
-  return (
-    <MailboxCollection
-      records={getMailboxDemoRecords("/mailbox-demo-status-icons")}
-      isDemo
-      illustrationVariant="demo-status"
-    />
-  );
-}
-
-export function MailboxDemoDirectionalStatusScreen() {
-  return (
-    <MailboxCollection
-      records={getMailboxDemoRecords("/mailbox-demo-directional-status")}
-      isDemo
-      illustrationVariant="directional-status"
-    />
-  );
-}
-
-export function MailboxDemoInlineDirectionalStatusScreen() {
-  return (
-    <MailboxCollection
-      records={getMailboxDemoRecords("/mailbox-demo-inline-directional-status")}
-      isDemo
-      illustrationVariant="directional-status-inline"
-    />
-  );
-}
-
-export function MailboxDemoIconSetScreen() {
-  return (
-    <MailboxCollection
-      records={getMailboxDemoRecords("/mailbox-demo-icons")}
-      isDemo
-      illustrationVariant="icon-set"
-    />
-  );
-}
-
-export function MailboxDemoUploadedIconSetScreen() {
-  return (
-    <MailboxCollection
-      records={getMailboxDemoRecords("/mailbox-demo-upload-icons")}
-      isDemo
-      illustrationVariant="icon-set-upload"
     />
   );
 }
@@ -545,61 +447,5 @@ function UnifiedMailboxEmpty() {
         편지 쓰기
       </button>
     </section>
-  );
-}
-
-export function MailboxLetterListItem({
-  letter,
-  mode,
-  userId,
-  onClick,
-  statusOverride,
-  previewOverride,
-}: {
-  letter: Letter;
-  mode: "mine" | "replied";
-  userId: string;
-  onClick: () => void;
-  statusOverride?: string;
-  previewOverride?: string;
-}) {
-  const date = formatDate(letter.updatedAt);
-  const sentStatus = getSentLetterDisplayStatus(letter, userId);
-  const status =
-    statusOverride ??
-    (mode === "replied" ? "답장을 전했어요" : sentStatus.label);
-  const preview =
-    previewOverride ??
-    (mode === "replied" ? letter.reply?.content : letter.content);
-  const aria =
-    mode === "mine"
-      ? `${date}에 보낸 편지, ${status}${sentStatus.hasUnreadReply ? ", 읽지 않은 새 답장 있음" : ""}`
-      : `${date}에 답한 편지, ${status}`;
-  return (
-    <button
-      type="button"
-      className={`mailbox-letter-item mailbox-letter-item--${mode}${sentStatus.hasUnreadReply && mode === "mine" ? " is-unread" : ""}${sentStatus.isRestricted ? " is-restricted" : ""}`}
-      onClick={onClick}
-      aria-label={aria}
-    >
-      <span className="mailbox-letter-meta">
-        <time dateTime={letter.updatedAt}>{date}</time>
-        <em>
-          {sentStatus.hasUnreadReply && mode === "mine" && (
-            <i className="mailbox-unread-dot" aria-hidden="true" />
-          )}
-          {status}
-        </em>
-      </span>
-      <strong>{preview || "내용을 준비하고 있어요."}</strong>
-      <span>
-        {mode === "replied"
-          ? "내가 건넨 답장"
-          : letter.anonymousName || "익명으로 보낸 편지"}
-      </span>
-      {mode === "mine" && sentStatus.requiresAttention && (
-        <small>확인 필요</small>
-      )}
-    </button>
   );
 }

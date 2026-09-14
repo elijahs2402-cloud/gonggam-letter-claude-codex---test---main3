@@ -284,50 +284,6 @@ export function ListenEntryAScreen() {
   );
 }
 
-export function ListenEntryBScreen() {
-  return (
-    <ListenEntryFrame variant="B" className="listen-entry-b">
-      <>
-        <ListenHeading compact />
-        <section className="listen-b-focus">
-          <blockquote>
-            끝까지 읽어주는 것만으로도
-            <br />
-            누군가에게는 큰 위로가 될 수 있어요.
-          </blockquote>
-          <img
-            src="/assets/read-letter-object-tight.png"
-            alt="독서등과 펼쳐진 편지, 안경"
-          />
-        </section>
-        <p className="listen-b-note">
-          서두르지 않아도 괜찮아요. 당신의 속도로 편지를 만나보세요.
-        </p>
-      </>
-    </ListenEntryFrame>
-  );
-}
-
-export function ListenEntryCScreen() {
-  return (
-    <ListenEntryFrame variant="C" className="listen-entry-c">
-      <>
-        <ListenHeading compact />
-        <figure className="listen-c-letter-scene">
-          <img
-            src="/assets/direction-b-read.png"
-            alt="펼쳐진 편지와 안경, 찻잔"
-          />
-          <figcaption>
-            <span>한 통의 편지가</span>
-            당신의 마음을 기다리고 있어요.
-          </figcaption>
-        </figure>
-      </>
-    </ListenEntryFrame>
-  );
-}
-
 export function ListenEntryEmptyScreen() {
   return (
     <main className="mobile-prototype listen-entry-screen listen-entry-empty-screen">

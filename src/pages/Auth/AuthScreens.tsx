@@ -51,60 +51,6 @@ function AuthHeader({
   );
 }
 
-export function OnboardingScreen() {
-  return (
-    <AuthShell className="onboarding-screen">
-      <AuthHeader />
-      <div className="auth-scroll">
-        <section className="auth-intro-copy">
-          <p>처음 만나는 공감편지</p>
-          <h1>
-            공감편지는
-            <br />
-            이런 곳이에요
-          </h1>
-          <figure
-            className="onboarding-welcome-illustration"
-            aria-hidden="true"
-          >
-            <img src="/assets/onboarding-welcome-illustration.png" alt="" />
-          </figure>
-          <ul className="onboarding-guides">
-            <li>이름을 드러내지 않고 마음을 편지로 남길 수 있어요.</li>
-            <li>한 사람이 당신의 편지를 읽고 한 통의 답장을 전해요.</li>
-            <li>답장은 바로 도착하지 않을 수 있어요.</li>
-          </ul>
-          <aside className="onboarding-boundary">
-            <strong>
-              공감편지는 전문 상담이나 진단을 제공하는 서비스는 아니에요.
-            </strong>
-            <p>
-              지금 바로 도움이 필요한 상황이라면 편지보다 가까운 사람이나
-              전문적인 도움을 먼저 찾아주세요.
-            </p>
-          </aside>
-        </section>
-      </div>
-      <footer className="auth-actions auth-actions--stacked">
-        <button
-          className="auth-primary"
-          type="button"
-          onClick={() => navigateTo("/login?new=1")}
-        >
-          시작하기
-        </button>
-        <button
-          className="auth-text-action"
-          type="button"
-          onClick={() => navigateTo("/login")}
-        >
-          이미 이용하고 있어요
-        </button>
-      </footer>
-    </AuthShell>
-  );
-}
-
 export function OnboardingRedesignScreen() {
   return (
     <AuthShell className="onboarding-redesign-screen">
@@ -615,36 +561,6 @@ export function ReturningWelcomeScreen() {
           <strong>{name}</strong>님, 반가워요.
         </p>
       </div>
-    </AuthShell>
-  );
-}
-
-export function OnboardingCompleteScreen() {
-  const name = getMockAuthSnapshot().account?.anonymousName ?? "조용한 별빛";
-  return (
-    <AuthShell className="onboarding-complete-screen">
-      <div className="auth-complete-content">
-        <div className="auth-complete-seal" aria-hidden="true">
-          ✦
-        </div>
-        <p>익명 닉네임이 정해졌어요</p>
-        <h1>
-          이제 편지를 시작할
-          <br />
-          준비가 되었어요
-        </h1>
-        <strong>{name}</strong>
-        <span>이 이름으로 당신의 마음을 조심스럽게 전할게요.</span>
-      </div>
-      <footer className="auth-actions">
-        <button
-          className="auth-primary"
-          type="button"
-          onClick={() => navigateTo(getPostLoginPath("/home"))}
-        >
-          공감편지 시작하기
-        </button>
-      </footer>
     </AuthShell>
   );
 }

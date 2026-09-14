@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   ListenEntryAScreen,
   ListenEntryEmptyScreen,
@@ -37,7 +36,6 @@ import {
   getCurrentAppPath,
   getCurrentAppSearchParams,
   navigateTo,
-  replaceRoute,
 } from "./utils/navigation";
 import {
   LetterSafetyReviewScreen,
@@ -108,13 +106,6 @@ function ScreenShell({
   return <main className={`mobile-prototype ${className}`}>{children}</main>;
 }
 
-function RedirectToHome() {
-  useEffect(() => {
-    replaceRoute("/home");
-  }, []);
-  return <HomeScreen />;
-}
-
 function IntroScreen() {
   const auth = getMockAuthSnapshot();
   const handleEntry = () => {
@@ -175,8 +166,6 @@ export function App() {
   if (path === "/" || path === "/intro") return <IntroScreen />;
 
   if (path === "/onboarding") return <OnboardingRedesignScreen />;
-  // The redesign became the onboarding screen; its former address still resolves.
-  if (path === "/onboarding-new") return <AuthGateRedirect to="/onboarding" />;
   if (path === "/dormant-account") return <DormantAccountScreen />;
   if (path === "/login") {
     if (isMockAuthenticated()) return <AuthGateRedirect to="/home" />;
@@ -204,11 +193,6 @@ export function App() {
     if (next && next !== "/nickname-entry")
       return <AuthGateRedirect to={next} />;
     return <DirectNicknameScreen />;
-  }
-  if (path === "/onboarding-complete") {
-    if (!isMockAuthenticated())
-      return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
-    return <AuthGateRedirect to="/home" />;
   }
 
   const protectedPaths = new Set([
@@ -424,19 +408,6 @@ export function App() {
         letterId={decodeURIComponent(path.slice("/mailbox/replied/".length))}
       />
     );
-  // Legacy emotion-journey routes are preserved in source and storage only.
-  // They are intentionally isolated from the active user service flow.
-  if (
-    [
-      "/emotion-check-in",
-      "/writing-method",
-      "/guided-writing",
-      "/emotion-after",
-      "/emotion-summary",
-      "/guided-summary",
-    ].includes(path)
-  )
-    return <RedirectToHome />;
   // 답장 쓰기 확정본. 실제 흐름은 /write-reply/:letterId 로 들어오고,
   // 이름만 부른 /write-reply 는 시안 확인용으로 표본 편지를 띄운다.
   // (예전 /write-reply 시안 WriteReplyScreen 은 이 화면으로 대체되었다.)
@@ -448,7 +419,5 @@ export function App() {
   if (path === "/mailbox") return <MailboxScreen />;
   if (path === "/listen-entry-a") return <ListenEntryAScreen />;
   if (path === "/listen-entry-empty") return <ListenEntryEmptyScreen />;
-  // 옛 첫 선택 화면(Direction A)의 주소. 화면은 지웠고, 들어오면 홈으로 보낸다.
-  if (path === "/direction-a") return <RedirectToHome />;
   return <NotFoundScreen />;
 }
