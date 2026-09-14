@@ -7,16 +7,16 @@
 | 항목 | 현재 상태 | 비고 |
 |---|---|---|
 | 실제 API 연동 | 없음. 모든 데이터는 브라우저 `localStorage` 의 목업 | "13. 개발자 인계 사항 > Mock Data" 참고 |
-| 실제 인증 방식 | 목업 로그인(`src/mockAuth.ts`). 화면에는 토스·Google·Apple 버튼이 있음 | 실제 로그인 수단 확정 필요 |
+| 실제 인증 방식 | 목업 로그인(`src/data/mockAuth.ts`). 화면에는 토스·Google·Apple 버튼이 있음 | 실제 로그인 수단 확정 필요 |
 | 푸시 알림 | 없음. 앱 안의 알림 목록만 있음 | |
 | Capacitor `appId` | `com.example.placeholder` (자리표시자) | 스토어 등록 전 확정 |
 | 앱 아이콘 · Splash Screen | 없음 | |
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 43곳 · TSX 56곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
 | `build` 스크립트 `tsc -b && vite build` (규격 §22) | 지금은 `vite build` | 기존 TypeScript 오류 31개 때문에 적용하면 빌드가 실패한다 |
-| React Router (규격 §12) | 아직 없음. 주소별 분기(`src/App.tsx`) + 페이지 새로고침 이동(`src/navigation.ts`) | 전환 예정 |
+| React Router (규격 §12) | 아직 없음. 주소별 분기(`src/App.tsx`) + 페이지 새로고침 이동(`src/utils/navigation.ts`) | 전환 예정 |
 | CSS Modules (규격 §6) | 일부만 적용. 대부분 `src/styles/global.css`(약 1.6만 줄) | 화면별 전환 예정 |
 | Tailwind CSS (규격 §3 금지) | 유틸리티 클래스는 쓰지 않고, `@import "tailwindcss"` 의 기본 스타일 초기화(Preflight)만 쓰는 중 | 초기화 규칙을 옮긴 뒤 제거 예정 |
-| 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
+| 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
 | lint 경고 17건 | 오류는 0. React Compiler 기준 규칙 6 · Hook 의존성 6 · Fast Refresh 5 | 규칙을 경고로 둔 이유는 `eslint.config.ts` 주석 참고 |
 | 이미지·폰트 라이선스 | "9. Asset 출처" 의 "확인 필요" 항목 | |
 | `@capacitor/cli` 보안 경고 | `npm audit` 보통(moderate) 3건 — CLI 가 쓰는 `xcode` 패키지의 `uuid` | 개발 도구 쪽 의존성이며 앱 번들에는 들어가지 않음. npm 제안은 CLI 8.4.3 으로 내리기 |
@@ -53,13 +53,27 @@
 ├── src/
 │   ├── main.tsx           # 진입점: 화면 높이·키보드·상태 표시줄 대응 설치 후 App 렌더
 │   ├── App.tsx            # 주소 → 화면 분기 (라우팅)
-│   ├── navigation.ts      # 화면 이동 (페이지 새로고침 방식)
-│   ├── *Screen*.tsx       # 화면 컴포넌트 (예: LetterFlowScreens.tsx, MailboxScreen.tsx)
-│   ├── *.module.css       # CSS Modules (홈 화면 등 일부)
+│   ├── pages/             # 주소로 열리는 화면
+│   │   ├── Auth/          # 인트로 뒤 온보딩 · 로그인 · 약관 · 이름 정하기
+│   │   ├── Home/          # 홈 (HomeRuledScreen + CSS Modules), 옛 홈 HomeScreen(/home-backup)
+│   │   ├── Letter/        # 편지 쓰기 · 읽기 · 답장 (LetterFlowScreens.tsx), 편지 만나기, 감사 전하기
+│   │   ├── Mailbox/       # 편지함
+│   │   ├── MySpace/       # 나의 공간 · 간직한 문구 · 받은 답장 · 안내 · 약관
+│   │   ├── Account/       # 계정 설정 · 로그인 정보 · 탈퇴
+│   │   ├── Notifications/ # 알림 · 알림 설정
+│   │   ├── Safety/        # 신고 · 차단 관리 · 안전 점검 · 긴급 지원
+│   │   └── Emotion/       # 옛 감정 기록 화면 (주소는 홈으로 넘김, 코드만 보존)
+│   ├── components/
+│   │   ├── common/        # 하단 내비 · 공통 상태 화면(없는 페이지, 서비스 상태)
+│   │   └── letter/        # 여러 화면이 쓰는 편지 UI (SealedReply)
+│   ├── hooks/             # 임시 저장 자동 저장 Hook (draftGuards.ts)
+│   ├── constants/         # 문구 상수 (copy.ts)
+│   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
+│   ├── utils/             # 화면 이동 · 화면 높이 · 키보드 · 상태 표시줄 · 날짜 · QA 모드 · 개발용 도구
 │   ├── styles/
 │   │   ├── common.css     # 폰트 · 디자인 토큰(:root 변수)
 │   │   └── global.css     # 전역 스타일 (common.css 를 불러옴)
-│   ├── mockAuth.ts, letters.ts, notifications.ts …  # 목업 데이터·저장소
+│   ├── assets/            # 코드에서 쓰지 않는 이미지 14개 (정리 후보)
 │   └── _archive/          # 보관용 옛 CSS (빌드에 쓰이지 않음)
 ├── capacitor.config.ts
 ├── eslint.config.ts
@@ -67,8 +81,13 @@
 └── tsconfig.json
 ```
 
-규격 §4 의 구조(`pages/`, `components/`, `routes/`, `styles/variables.css` 등)로의 이동은 아직 하지 않았다.
-지금은 `src/` 바로 아래에 화면과 데이터 모듈이 함께 있다.
+- 규격 §4 의 구조로 파일을 옮겼다. 코드와 파일명은 그대로다.
+- **규격과 다른 점**
+  - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
+  - 한 파일에 여러 화면이 들어 있는 경우가 있다(예: `pages/Letter/LetterFlowScreens.tsx` 에 20여 개). 규격의 `pages/[Page]/[Page].tsx` 형태로 나누는 일은 CSS Modules 전환 때 화면별로 한다.
+  - `routes/AppRoutes.tsx` 는 아직 없다. React Router 전환 때 만든다.
+  - `styles/` 는 아직 `common.css` · `global.css` 두 파일이다. 규격의 `globals.css` · `variables.css` · `fonts.css` 로 나누는 일은 Tailwind 제거 · CSS Modules 전환 때 한다.
+  - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.
 
 ## 4. 설치 방법
 
@@ -199,7 +218,7 @@ npx cap open ios
 ### Routing
 - `src/App.tsx` 의 `App()` 이 현재 주소(`getCurrentAppPath()`)를 `if (path === …)` 로 비교해 화면을 고른다.
 - 로그인이 필요한 주소는 `protectedPaths` · `protectedFlowPrefixes` 에 있고, 목업 로그인이 없으면 로그인·온보딩으로 보낸다.
-- 화면 이동(`navigateTo`, `navigateBack` — `src/navigation.ts`)은 대부분 **페이지 새로고침**이다. 나의 공간(`MySpaceScreen`)과 옛 홈(`/home-backup` 의 `HomeScreen`)만 일부 이동을 새로고침 없이 처리한다(`registerShellRouter`). 현재 홈(`/home`)은 해당하지 않는다.
+- 화면 이동(`navigateTo`, `navigateBack` — `src/utils/navigation.ts`)은 대부분 **페이지 새로고침**이다. 나의 공간(`MySpaceScreen`)과 옛 홈(`/home-backup` 의 `HomeScreen`)만 일부 이동을 새로고침 없이 처리한다(`registerShellRouter`). 현재 홈(`/home`)은 해당하지 않는다.
 - 새로고침을 전제로 한 로직이 있다(예: `main.tsx` 가 화면마다 알림을 다시 맞춤, `dismissedNotices.ts` 의 "이번 접속에 한 번"). React Router 로 바꿀 때 함께 검토해야 한다.
 
 ### State Management
@@ -207,7 +226,7 @@ npx cap open ios
 - 전역 상태 라이브러리·Context 는 쓰지 않는다. 화면 사이에 공유되는 데이터는 모두 `localStorage` 를 모듈 함수로 읽고 쓴다(예: `getLetters()`, `saveLetter()`).
 
 ### Mock Data
-실제 서버 대신 브라우저 `localStorage` 에 저장한다. 서버 API 로 바꿀 때 교체할 모듈:
+실제 서버 대신 브라우저 `localStorage` 에 저장한다. 서버 API 로 바꿀 때 교체할 모듈(모두 `src/data/`):
 
 | 모듈 | 내용 | 주요 저장 키 |
 |---|---|---|
