@@ -12,20 +12,11 @@
       (vs .my-detail-scroll), .account-withdrawal-copy h1 · .account-withdrawal-copy p ×2 (vs .subpage-heading …)
     · .account-withdrawal-stage / .account-withdrawal-stage--back 과 그 reduced-motion 규칙 —
       전역 @keyframes(app-stage-enter-*) 이름을 쓰는데, 모듈로 옮기면 애니메이션 이름이 모듈 이름으로 바뀔 수 있어서다.
+  - 2026-09-15 로그인 정보·데이터 보관 안내·이용 제한 화면을 지우며 그 화면만 쓰던
+    .account-copy-list ×2 · .account-processing--restricted 규칙도 지웠다.
   - .account-empty-state 는 지금 어느 화면도 쓰지 않지만 .account-processing 과 한 규칙에 묶여 있어
     선택자를 바꾸지 않으려고 함께 옮겼다.
 */
-.account-copy-list {
-  margin: 28px 0;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a50));
-}
-.account-copy-list p {
-  margin: 0;
-  padding: 17px 0;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
-  color: var(--ink);
-  font: var(--fs-body-sm)/1.75 var(--font-sans);
-}
 .account-empty-state,
 .account-processing {
   padding: 88px 30px;
@@ -47,9 +38,6 @@
 }
 .account-processing--withdrawal-complete > p {
   font-size: 14px;
-}
-.account-processing--restricted > p {
-  font-size: var(--fs-body-sm);
 }
 .account-processing {
   flex: 1;

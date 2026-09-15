@@ -69,7 +69,7 @@ const MY_SPACE_DETAIL_PATHS = new Set([
 // 구분이 안 된다) 별도 목록이 필요하다.
 //
 // account-settings-screen · guide-screen · terms-screen 은 bare 클래스로 두면
-// 각각 계정 삭제 흐름 · 안전 안내(/safety-guide) · 온보딩 약관 동의 화면과도
+// 각각 계정 삭제 흐름 · (예전) 안전 안내 · 온보딩 약관 동의 화면과도
 // 겹친다(index.css 의 같은 목록에 적힌 사연 참고). 여기서도 같은 전용 클래스
 // (--figma, --my-space)로 좁혀 CSS 쪽과 판단 기준을 맞춘다.
 const MY_SPACE_DETAIL_CLASSES = [

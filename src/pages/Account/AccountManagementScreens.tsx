@@ -206,60 +206,6 @@ export function AccountSettingsScreen({
   );
 }
 
-export function LoginInformationScreen() {
-  const account = getMockAuthSnapshot().account;
-  return (
-    <main className="mobile-prototype account-settings-screen">
-      <Header title="로그인 정보" fallback="/account-settings" />
-      <div className="my-detail-scroll">
-        <section className="subpage-heading">
-          <h1>로그인 정보</h1>
-          <p>다른 사용자에게 공개되지 않는 로그인 방식이에요.</p>
-        </section>
-        <section className="account-state-card">
-          <p>로그인 방식</p>
-          <strong>{providerName(account?.authProvider)}로 로그인했어요.</strong>
-          <span>
-            프로토타입에서는 실제 이메일, 이름, 토큰을 조회하거나 저장하지
-            않아요.
-          </span>
-        </section>
-        <p className="account-settings-note">
-          로그인 방식 변경, 추가 연결, 비밀번호·이메일 수정은 지원하지 않아요.
-        </p>
-      </div>
-    </main>
-  );
-}
-export function DataAndPrivacyScreen() {
-  const items = [
-    "편지와 답장은 계정에 연결되어 보관돼요.",
-    "작성 중인 초안은 이 기기에 잠시 남을 수 있어요.",
-    "신고·차단 기록은 안전한 이용을 위해 보관될 수 있어요.",
-    "탈퇴 뒤 일반 이용 데이터는 삭제 또는 비식별화 대상이에요.",
-    "신고·분쟁·법적 의무와 관련한 일부 기록은 별도로 보관될 수 있어요.",
-  ];
-  return (
-    <main className="mobile-prototype account-settings-screen">
-      <Header title="데이터 보관 안내" fallback="/account-settings" />
-      <div className="my-detail-scroll">
-        <section className="subpage-heading">
-          <h1>내 데이터 보관 안내</h1>
-          <p>공감편지의 기록이 어떻게 다뤄지는지 쉽게 설명해요.</p>
-        </section>
-        <section className={`account-copy-list ${styles["account-copy-list"]}`}>
-          {items.map((item) => (
-            <p key={item}>{item}</p>
-          ))}
-        </section>
-        <p className="account-settings-note">
-          보관 기준에 대한 자세한 내용은 개인정보 처리방침에서 확인할 수 있어요.
-        </p>
-      </div>
-    </main>
-  );
-}
-
 const withdrawalReasons = [
   "더 이상 이용하지 않아요",
   "잠시 쉬고 싶어요",
@@ -407,28 +353,6 @@ export function WithdrawalCompleteScreen() {
           완료되었어요
         </h1>
         <p>함께한 편지들은 탈퇴와 함께 모두 사라져요.</p>
-        <button
-          className="flow-primary-button"
-          onClick={() => navigateTo("/intro")}
-        >
-          처음으로
-        </button>
-      </section>
-    </main>
-  );
-}
-export function AccountRestrictedScreen() {
-  return (
-    <main className="mobile-prototype account-settings-screen">
-      <Header title="계정 이용 제한" fallback="/intro" />
-      <section
-        className={`account-processing account-processing--restricted ${styles["account-processing"]} ${styles["account-processing--restricted"]}`}
-      >
-        <h1>현재 계정의 이용이 제한되었어요</h1>
-        <p>
-          안전한 이용을 위해 계정 이용이 일시적으로 제한되었어요. 자세한 내용은
-          이용 안내에서 확인할 수 있어요.
-        </p>
         <button
           className="flow-primary-button"
           onClick={() => navigateTo("/intro")}

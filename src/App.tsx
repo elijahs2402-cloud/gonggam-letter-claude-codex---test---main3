@@ -65,11 +65,8 @@ import {
   PolicyScreen,
 } from "./pages/MySpace/MySpaceDetails";
 import {
-  AccountRestrictedScreen,
   AccountSettingsScreen,
   AccountWithdrawalScreen,
-  DataAndPrivacyScreen,
-  LoginInformationScreen,
   WithdrawalCompleteScreen,
 } from "./pages/Account/AccountManagementScreens";
 import {
@@ -188,14 +185,11 @@ export function App() {
     "/my-space",
     "/anonymous-name-settings",
     "/account-settings",
-    "/login-information",
-    "/data-and-privacy",
     "/account-withdrawal",
     "/notifications",
     "/notification-settings",
     "/safety-management",
     "/service-guide",
-    "/safety-guide",
     "/privacy-policy",
     "/app-info",
     "/letter-safety-review",
@@ -229,13 +223,9 @@ export function App() {
   if (path === "/anonymous-name-settings")
     return <AnonymousNameSettingsScreen />;
   if (path === "/account-settings") return <AccountSettingsScreen />;
-  if (path === "/login-information") return <LoginInformationScreen />;
-  if (path === "/data-and-privacy") return <DataAndPrivacyScreen />;
   if (path === "/account-withdrawal") return <AccountWithdrawalScreen />;
   if (path === "/withdrawal-complete") return <WithdrawalCompleteScreen />;
-  if (path === "/account-restricted") return <AccountRestrictedScreen />;
-  if (path === "/service-guide") return <GuideScreen kind="service" />;
-  if (path === "/safety-guide") return <GuideScreen kind="safety" />;
+  if (path === "/service-guide") return <GuideScreen />;
   if (path === "/privacy-policy") return <PolicyScreen kind="privacy" />;
   if (path === "/terms-of-service") return <TermsMockupScreen />;
   if (path === "/app-info") return <AppInfoScreen />;

@@ -247,69 +247,35 @@ const guideContent = [
     "불편한 편지는 언제든 신고하거나 차단할 수 있어요. 공감편지는 전문적인 상담이나 의료 서비스가 아니에요.",
   ],
 ];
-const safetyContent = [
-  ["개인정보", "실명, 연락처, 주소, SNS 계정은 적지 않도록 해요."],
-  ["서로를 존중하기", "상대방을 비난하거나 모욕하는 표현은 사용할 수 없어요."],
-  [
-    "제한되는 내용",
-    "성적·불법·위협 콘텐츠와 자해·타해를 부추기는 표현은 제한돼요.",
-  ],
-  [
-    "신고와 차단",
-    "편지와 답장은 신고될 수 있으며, 차단하면 해당 사용자와 다시 연결되지 않아요.",
-  ],
-  [
-    "프로토타입 안내",
-    "AI 또는 규칙 기반 안전 검토는 오판할 수 있어요. 실제 서비스에서는 중요한 제재에 운영 검토가 필요해요.",
-  ],
-];
-
+// 이용 안내 화면. 안전 가이드(/safety-guide) 분기는 앱에서 갈 수 없어 2026-09-15 지웠다.
 export function GuideScreen({
-  kind,
   stageClassName = "",
 }: {
-  kind: "service" | "safety";
   stageClassName?: string;
 }) {
-  const isSafety = kind === "safety";
-  const content = isSafety ? safetyContent : guideContent;
   return (
     <main
-      className={`mobile-prototype guide-screen${isSafety ? "" : " guide-screen--my-space"}${stageClassName ? ` ${stageClassName}` : ""}`}
+      className={`mobile-prototype guide-screen guide-screen--my-space${stageClassName ? ` ${stageClassName}` : ""}`}
     >
-      <Header title={isSafety ? "안전하게 마음을 나누기 위해" : "이용 안내"} />
+      <Header title="이용 안내" />
       <div className="my-detail-scroll">
         {/* 이용 안내는 헤더 타이틀("이용 안내")이 곧 제목이라
-      본문 대제목이 같은 말을 두 번 하는 꼴이었다. 헤더만 남긴다.
-      안전 안내는 부제가 따로 있어 대제목이 제 몫을 한다. */}
-        {isSafety && (
-          <section className="subpage-heading">
-            <h1>{"안전하게 마음을\n나누기 위해"}</h1>
-            <p>서로의 마음이 안전하게 머물 수 있도록 함께 지켜주세요.</p>
-          </section>
-        )}
+      본문 대제목이 같은 말을 두 번 하는 꼴이었다. 헤더만 남긴다. */}
         <section className="guide-sections">
-          {content.map(([title, body]) => (
+          {guideContent.map(([title, body]) => (
             <article key={title}>
               <h2>{title}</h2>
               <p>{body}</p>
             </article>
           ))}
         </section>
-        {!isSafety && (
-          <p className="guide-urgent-note">
-            <span aria-hidden="true">✻</span>
-            <strong>
-              공감편지의 답장은 언제 도착할지 알 수 없어요. 지금 도움이
-              필요하다면 가까운 사람이나 전문 기관에 먼저 연락해주세요.
-            </strong>
-          </p>
-        )}
-        {isSafety && isDevelopmentPreview() && (
-          <p className="guide-todo">
-            TODO · 실제 서비스 개발 시 운영 정책과 검토 절차를 연결해야 해요.
-          </p>
-        )}
+        <p className="guide-urgent-note">
+          <span aria-hidden="true">✻</span>
+          <strong>
+            공감편지의 답장은 언제 도착할지 알 수 없어요. 지금 도움이 필요하다면
+            가까운 사람이나 전문 기관에 먼저 연락해주세요.
+          </strong>
+        </p>
       </div>
     </main>
   );

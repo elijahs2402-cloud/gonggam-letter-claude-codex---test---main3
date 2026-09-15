@@ -4910,11 +4910,6 @@ html[data-ios-standalone="true"] .intro-copy {
   color: var(--muted-ink);
   font: var(--fs-body-sm)/var(--lh-relaxed) var(--font-sans);
 }
-.guide-todo {
-  margin-top: 24px;
-  color: #875952;
-  font: 12px/1.7 var(--font-sans);
-}
 .guide-urgent-note {
   display: grid;
   grid-template-columns: 14px minmax(0, 1fr);
@@ -4929,9 +4924,6 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 .guide-urgent-note > strong {
   font: inherit;
-}
-.guide-screen .subpage-heading h1 {
-  font-size: var(--fs-title);
 }
 
 /* 계정 삭제 확인 — 되돌릴 수 없다는 안내라 경고색을 입힌다.

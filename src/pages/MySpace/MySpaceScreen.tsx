@@ -156,8 +156,7 @@ export function MySpaceScreen() {
       return <NotificationSettingsScreen stageClassName={stage} />;
     if (view === "safety")
       return <SafetyManagementScreen stageClassName={stage} />;
-    if (view === "guide")
-      return <GuideScreen kind="service" stageClassName={stage} />;
+    if (view === "guide") return <GuideScreen stageClassName={stage} />;
     if (view === "privacy")
       return <PolicyScreen kind="privacy" stageClassName={stage} />;
     if (view === "terms") return <TermsMockupScreen stageClassName={stage} />;
