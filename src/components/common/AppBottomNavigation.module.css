@@ -1,0 +1,105 @@
+/*
+  하단 내비게이션(홈 · 편지함 · 나의 공간) 스타일 (CSS Modules 전환, 2026-09-15)
+
+  src/styles/global.css 에서 이 컴포넌트만 쓰는 app-bottom-navigation · app-nav-* 규칙을 원래 순서대로 옮겼다.
+  선택자와 선언은 그대로다(선택자 목록에 섞인 옛 class 이름도 그대로 둔다).
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.
+  - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
+  - global.css 에 남긴 규칙:
+    · 선택된 메뉴(.is-active) 규칙 — 편지함 화면과 이름이 겹쳐 '공유'로 분류됨. 옮긴 규칙보다 우선순위가 높아 결과는 같다
+    · @media 안의 hover · active 규칙 — 옮긴 규칙보다 우선순위가 높거나 같은 규칙과 겹치지 않는다
+*/
+.app-bottom-navigation {
+  position: relative;
+  z-index: 20;
+  flex: 0 0 auto;
+  min-height: var(--nav-h);
+  /* 위 선에서 10px 아래에 아이콘이 앉는다. 아래는 안전영역 몫으로 비워둔다 —
+     내용을 가운데 두면 라벨이 홈 인디케이터 위로 내려앉는다. */
+  padding: 10px 21px env(safe-area-inset-bottom);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: start;
+  border-top: 1px solid rgba(var(--gold-rgb), var(--a33));
+  background: rgba(var(--paper-rgb), var(--a95));
+}
+.app-bottom-navigation button {
+  appearance: none;
+  min-height: 52px;
+  padding: 0 8px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  color: var(--nav-inactive);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+.app-nav-mark {
+  /* 24×24 격자에 선 1.5 로 그린 아이콘이다. 박스를 32 로 두면 1.333 배로
+     늘어나 선이 2.0px 로 굵어지고 픽셀 격자에서도 벗어난다. 격자와 1:1 로 맞춘다. */
+  width: 24px;
+  height: 24px;
+  display: block;
+  background-color: currentColor;
+  -webkit-mask: var(--nav-mark) center / contain no-repeat;
+  mask: var(--nav-mark) center / contain no-repeat;
+}
+.app-nav-mark--home {
+  --nav-mark: url("/assets/home_icon.png");
+}
+.app-nav-mark--mailbox {
+  --nav-mark: url("/assets/letter_icon.png");
+}
+.app-nav-mark--space {
+  --nav-mark: url("/assets/notebook_icon.png");
+}
+.app-bottom-navigation,
+.emotion-fixed-action,
+.letter-flow-fixed-action {
+  border-top-color: rgba(var(--gold-rgb), var(--a40));
+  background-color: rgba(var(--paper-rgb), var(--a95));
+  background-image:
+    linear-gradient(
+      rgba(var(--paper-rgb), var(--a95)),
+      rgba(var(--paper-rgb), var(--a95))
+    ),
+    url("/assets/paper-pattern.jpg");
+  background-size:
+    auto,
+    650px auto;
+}
+.app-bottom-navigation button {
+  border-radius: 0;
+  color: var(--nav-inactive);
+}
+.app-bottom-navigation button {
+  position: relative;
+}
+.app-nav-notice-dot {
+  position: absolute;
+  top: -4px;
+  right: calc(50% - 16px);
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--deep-plum);
+  box-sizing: content-box;
+}
+.app-bottom-navigation button:focus-visible {
+  outline: 2px solid rgba(var(--deep-plum-rgb), var(--a72));
+  outline-offset: -4px;
+}
+.app-nav-mark--home {
+  --nav-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='butt' stroke-linejoin='miter' stroke-miterlimit='6'%3E%3Cpath d='M3.5 10.2 12 3.5l8.5 6.7V20.5H3.5z'/%3E%3Cpath d='M9.6 20.5v-4.6a2.4 2.4 0 0 1 4.8 0v4.6'/%3E%3C/svg%3E");
+}
+.app-nav-mark--mailbox {
+  --nav-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='butt' stroke-linejoin='miter' stroke-miterlimit='6'%3E%3Crect x='2.75' y='5.25' width='18.5' height='13.5'/%3E%3Cpath d='M3.37 6.35 12 13.08 20.63 6.35'/%3E%3C/svg%3E");
+}
+.app-nav-mark--space {
+  --nav-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='butt' stroke-linejoin='miter' stroke-miterlimit='6'%3E%3Ccircle cx='12' cy='7.4' r='3.9'/%3E%3Cpath d='M4.5 21.25a7.5 7.5 0 0 1 15 0'/%3E%3C/svg%3E");
+}

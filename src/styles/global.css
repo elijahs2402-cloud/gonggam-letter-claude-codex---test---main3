@@ -1228,37 +1228,6 @@
   font-style: normal;
 }
 
-.app-bottom-navigation {
-  position: relative;
-  z-index: 20;
-  flex: 0 0 auto;
-  min-height: var(--nav-h);
-  /* 위 선에서 10px 아래에 아이콘이 앉는다. 아래는 안전영역 몫으로 비워둔다 —
-     내용을 가운데 두면 라벨이 홈 인디케이터 위로 내려앉는다. */
-  padding: 10px 21px env(safe-area-inset-bottom);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-content: start;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a33));
-  background: rgba(var(--paper-rgb), var(--a95));
-}
-
-.app-bottom-navigation button {
-  appearance: none;
-  min-height: 52px;
-  padding: 0 8px;
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  gap: 5px;
-  border: 0;
-  background: transparent;
-  color: var(--nav-inactive);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-}
-
 .app-bottom-navigation button.is-active {
   color: var(--deep-plum);
   font-weight: 700;
@@ -1266,26 +1235,6 @@
 
 /* The bottom-navigation marks are the shipped PNG artwork, painted through a
    mask so the icon takes its colour from the button instead of a filter chain. */
-.app-nav-mark {
-  /* 24×24 격자에 선 1.5 로 그린 아이콘이다. 박스를 32 로 두면 1.333 배로
-     늘어나 선이 2.0px 로 굵어지고 픽셀 격자에서도 벗어난다. 격자와 1:1 로 맞춘다. */
-  width: 24px;
-  height: 24px;
-  display: block;
-  background-color: currentColor;
-  -webkit-mask: var(--nav-mark) center / contain no-repeat;
-  mask: var(--nav-mark) center / contain no-repeat;
-}
-
-.app-nav-mark--home {
-  --nav-mark: url("/assets/home_icon.png");
-}
-.app-nav-mark--mailbox {
-  --nav-mark: url("/assets/letter_icon.png");
-}
-.app-nav-mark--space {
-  --nav-mark: url("/assets/notebook_icon.png");
-}
 
 @media (hover: hover) {
   .mailbox-record:hover,
@@ -1800,27 +1749,6 @@ html[data-ios-standalone="true"] .intro-copy {
 
 .flow-primary-button:disabled:hover {
   background: var(--disabled-bg);
-}
-
-.app-bottom-navigation,
-.emotion-fixed-action,
-.letter-flow-fixed-action {
-  border-top-color: rgba(var(--gold-rgb), var(--a40));
-  background-color: rgba(var(--paper-rgb), var(--a95));
-  background-image:
-    linear-gradient(
-      rgba(var(--paper-rgb), var(--a95)),
-      rgba(var(--paper-rgb), var(--a95))
-    ),
-    url("/assets/paper-pattern.jpg");
-  background-size:
-    auto,
-    650px auto;
-}
-
-.app-bottom-navigation button {
-  border-radius: 0;
-  color: var(--nav-inactive);
 }
 
 .app-bottom-navigation button.is-active {
@@ -4880,9 +4808,6 @@ html[data-ios-standalone="true"] .intro-copy {
   font: 23px/1 var(--font-sans);
   cursor: pointer;
 }
-.app-bottom-navigation button {
-  position: relative;
-}
 /* 알림 점의 자리는 '박스 모서리'가 아니라 '그려진 잉크까지의 거리'로 정한다.
    벨과 봉투는 모양이 달라 같은 모서리에 놓아도 다르게 보인다 —
    벨은 윗모서리가 비어 있어 점이 떠 보이고, 봉투는 사각형이라 땍 붙어 보인다.
@@ -4893,17 +4818,6 @@ html[data-ios-standalone="true"] .intro-copy {
      중심 y = top 값 + 6
    top -4 / right calc(50% - 16px) 이면 중심이 (22, 2) 가 되어
    벨과 똑같은 1.05px 겹침이 된다. */
-.app-nav-notice-dot {
-  position: absolute;
-  top: -4px;
-  right: calc(50% - 16px);
-  width: 8px;
-  height: 8px;
-  border: 2px solid var(--paper);
-  border-radius: 50%;
-  background: var(--deep-plum);
-  box-sizing: content-box;
-}
 /* 편지함 알림 점(.app-nav-notice-dot)과 같은 규칙.
    벨은 44px 버튼 안 30px 박스에 그려지고, PNG 오른쪽 투명 여백이 20.9% 라
    그림의 오른쪽 끝은 버튼 오른끔에서 13.3px 안쪽이다. 점 중심을 거기 맞춘다. */
@@ -4975,10 +4889,6 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 
 /* 키보드 포커스. 안쪽으로 넣어(-4px) 내비 윗선과 겹치지 않게 한다. */
-.app-bottom-navigation button:focus-visible {
-  outline: 2px solid rgba(var(--deep-plum-rgb), var(--a72));
-  outline-offset: -4px;
-}
 
 /* Development-only journey verification board. */
 /* Active waiting-letter reader — selected C reading language */
@@ -6430,18 +6340,6 @@ html[data-ios-standalone="true"] .intro-copy {
    곡선은 형태에 필요한 곳(아치문·사람·벨 돔)에만 남긴다.
    되돌리려면 이 블록만 지우면 기존 PNG 로 돌아간다.
    ========================================================================== */
-
-.app-nav-mark--home {
-  --nav-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='butt' stroke-linejoin='miter' stroke-miterlimit='6'%3E%3Cpath d='M3.5 10.2 12 3.5l8.5 6.7V20.5H3.5z'/%3E%3Cpath d='M9.6 20.5v-4.6a2.4 2.4 0 0 1 4.8 0v4.6'/%3E%3C/svg%3E");
-}
-
-.app-nav-mark--mailbox {
-  --nav-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='butt' stroke-linejoin='miter' stroke-miterlimit='6'%3E%3Crect x='2.75' y='5.25' width='18.5' height='13.5'/%3E%3Cpath d='M3.37 6.35 12 13.08 20.63 6.35'/%3E%3C/svg%3E");
-}
-
-.app-nav-mark--space {
-  --nav-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='butt' stroke-linejoin='miter' stroke-miterlimit='6'%3E%3Ccircle cx='12' cy='7.4' r='3.9'/%3E%3Cpath d='M4.5 21.25a7.5 7.5 0 0 1 15 0'/%3E%3C/svg%3E");
-}
 
 /* 벨만 30px 박스를 쓴다(내비 아이콘은 24px). 30/24 = 1.25 배 확대되므로
    원본 선을 1.2 로 낮춰야 화면에서 내비와 같은 1.5px 이 나온다. */
