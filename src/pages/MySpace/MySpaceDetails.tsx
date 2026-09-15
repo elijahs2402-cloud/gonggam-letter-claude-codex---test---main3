@@ -9,6 +9,8 @@ import {
 import { navigateBack, navigateTo } from "../../utils/navigation";
 import { getNotificationSettings } from "../../data/notifications";
 import { getReportsByUser } from "../../data/reports";
+// 이용 안내 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import guide from "./GuideScreen.module.css";
 
 function Header({
   title,
@@ -251,13 +253,13 @@ export function GuideScreen({
 }) {
   return (
     <main
-      className={`mobile-prototype guide-screen guide-screen--my-space${stageClassName ? ` ${stageClassName}` : ""}`}
+      className={`mobile-prototype guide-screen ${guide["guide-screen"]} guide-screen--my-space${stageClassName ? ` ${stageClassName}` : ""}`}
     >
       <Header title="이용 안내" />
       <div className="my-detail-scroll">
         {/* 이용 안내는 헤더 타이틀("이용 안내")이 곧 제목이라
       본문 대제목이 같은 말을 두 번 하는 꼴이었다. 헤더만 남긴다. */}
-        <section className="guide-sections">
+        <section className={`guide-sections ${guide["guide-sections"]}`}>
           {guideContent.map(([title, body]) => (
             <article key={title}>
               <h2>{title}</h2>
@@ -265,7 +267,7 @@ export function GuideScreen({
             </article>
           ))}
         </section>
-        <p className="guide-urgent-note">
+        <p className={`guide-urgent-note ${guide["guide-urgent-note"]}`}>
           <span aria-hidden="true">✻</span>
           <strong>
             공감편지의 답장은 언제 도착할지 알 수 없어요. 지금 도움이 필요하다면

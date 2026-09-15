@@ -1,0 +1,61 @@
+/*
+  이용 안내(/service-guide, GuideScreen) 스타일 (CSS Modules 전환, 2026-09-15)
+
+  src/styles/global.css 에서 이 화면만 쓰는 규칙(항목 목록 · 구분선 · 도움 안내 문구)을
+  원래 순서대로 옮겼다. 선택자와 선언은 그대로다.
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.
+  - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
+  - global.css 에 남긴 규칙: 다른 화면도 쓰는 .guide-screen · .my-detail-scroll 공통 규칙,
+    .guide-screen .my-detail-scroll > .guide-sections:first-child
+*/
+.guide-sections {
+  margin-top: 34px;
+}
+.guide-sections article {
+  padding: 18px 0;
+  border-top: 1px solid rgba(var(--gold-rgb), var(--a50));
+}
+.guide-sections article:last-child {
+  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a50));
+}
+.guide-sections h2 {
+  margin: 0;
+  font: 500 17px var(--font-sans);
+}
+.guide-sections p {
+  margin: 9px 0 0;
+  color: var(--muted-ink);
+  font: var(--fs-body-sm)/var(--lh-relaxed) var(--font-sans);
+}
+.guide-urgent-note {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 6px;
+  margin: 22px 0 0;
+  color: var(--terracotta);
+  font: 600 var(--fs-body-sm)/1.7 var(--font-sans);
+}
+.guide-urgent-note > span {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+}
+.guide-urgent-note > strong {
+  font: inherit;
+}
+.guide-screen .guide-sections h2 {
+  font-size: 16px;
+}
+.guide-screen .guide-sections h2 {
+  line-height: var(--lh-title);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.guide-sections article,
+.guide-sections article:last-child {
+  border-top-color: rgba(var(--ink-rgb), var(--a10));
+  border-bottom-color: rgba(var(--ink-rgb), var(--a10));
+}
+.guide-sections article:first-child {
+  padding-top: 0;
+  border-top: 0;
+}

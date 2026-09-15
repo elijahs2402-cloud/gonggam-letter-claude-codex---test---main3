@@ -4100,49 +4100,12 @@ html[data-ios-standalone="true"] .intro-copy {
     animation-duration: 1ms;
   }
 }
-.guide-sections {
-  margin-top: 34px;
-}
-.guide-sections article {
-  padding: 18px 0;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a50));
-}
-.guide-sections article:last-child {
-  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a50));
-}
-.guide-sections h2 {
-  margin: 0;
-  font: 500 17px var(--font-sans);
-}
-.guide-sections p {
-  margin: 9px 0 0;
-  color: var(--muted-ink);
-  font: var(--fs-body-sm)/var(--lh-relaxed) var(--font-sans);
-}
-.guide-urgent-note {
-  display: grid;
-  grid-template-columns: 14px minmax(0, 1fr);
-  gap: 6px;
-  margin: 22px 0 0;
-  color: var(--terracotta);
-  font: 600 var(--fs-body-sm)/1.7 var(--font-sans);
-}
-.guide-urgent-note > span {
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-snug);
-}
-.guide-urgent-note > strong {
-  font: inherit;
-}
 
 /* 계정 삭제 확인 — 되돌릴 수 없다는 안내라 경고색을 입힌다.
    이 화면의 본문은 설명이 아니라 마지막 경고라, 읽햘지면 곳란난다.
    색은 앱이 이미 쓰는 경고색(--terracotta)을 그대로 쓴다. */
 .account-withdrawal-copy p {
   color: var(--terracotta);
-}
-.guide-screen .guide-sections h2 {
-  font-size: 16px;
 }
 .policy-document {
   padding: 5px 0 18px;
@@ -6107,11 +6070,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
    본문은 1.7(차단 관리) / 1.75(문서형)로, 설명문은 1.43 / 1.5 로 갈렸다. */
 
 /* 소제목 행간 1.4 */
-.guide-screen .guide-sections h2 {
-  line-height: var(--lh-title);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
 
 /* 본문 행간 1.75 — 약관·이용안내·처리방침 기준 */
 
@@ -6150,11 +6108,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
 /* 차단 및 신고 관리 */
 
 /* 이용 안내 */
-.guide-sections article,
-.guide-sections article:last-child {
-  border-top-color: rgba(var(--ink-rgb), var(--a10));
-  border-bottom-color: rgba(var(--ink-rgb), var(--a10));
-}
 
 /* 개인정보 처리방침 · 서비스 이용약관 — 문서마다 클래스가 다르다 */
 .terms-policy-document article,
@@ -6170,10 +6123,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
    처리방침·약관은 이미 첫 항목 선을 빼고 시작하는데 여기만 남아 있어,
    헤더 밑줄 바로 아래에 선이 한 번 더 그어진 꼴이었다.
    윗 여백도 같은 방식(패딩 제거)으로 32px 에서 시작하게 맞춘다. */
-.guide-sections article:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
 
 /* 닉네임 값은 설정값이 아니라 편지에 실릴 서명이다.
    홈 인사말(28px 세리프)과 이름 바꾸기 입력창(16px 세리프)은 이미 세리프인데
