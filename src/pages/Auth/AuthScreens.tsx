@@ -12,6 +12,8 @@ import {
   type MockAuthProvider,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
+// 공감편지 소개 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import onboarding from "./OnboardingScreen.module.css";
 
 function AuthShell({
   children,
@@ -51,10 +53,16 @@ function AuthHeader({
 
 export function OnboardingRedesignScreen() {
   return (
-    <AuthShell className="onboarding-redesign-screen">
+    <AuthShell
+      className={`onboarding-redesign-screen ${onboarding["onboarding-redesign-screen"]}`}
+    >
       <AuthHeader title="공감편지 소개" />
-      <div className="auth-scroll onboarding-redesign-scroll">
-        <section className="onboarding-redesign-hero">
+      <div
+        className={`auth-scroll onboarding-redesign-scroll ${onboarding["onboarding-redesign-scroll"]}`}
+      >
+        <section
+          className={`onboarding-redesign-hero ${onboarding["onboarding-redesign-hero"]}`}
+        >
           <p>이름 없이 오가는 한 통의 편지</p>
           <h1>
             오늘의 마음을
@@ -69,7 +77,7 @@ export function OnboardingRedesignScreen() {
           </figure>
         </section>
         <section
-          className="onboarding-redesign-steps"
+          className={`onboarding-redesign-steps ${onboarding["onboarding-redesign-steps"]}`}
           aria-label="공감편지 이용 방법"
         >
           <article>
@@ -129,7 +137,9 @@ export function OnboardingRedesignScreen() {
           </article>
         </section>
       </div>
-      <footer className="auth-actions auth-actions--stacked onboarding-redesign-actions">
+      <footer
+        className={`auth-actions auth-actions--stacked onboarding-redesign-actions ${onboarding["onboarding-redesign-actions"]}`}
+      >
         <button
           className="auth-primary"
           type="button"
