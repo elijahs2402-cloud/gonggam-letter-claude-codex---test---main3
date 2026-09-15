@@ -3,28 +3,15 @@ import {
   createLetter,
   getCurrentUserId,
   getLetterById,
-  sendReply,
 } from "../../data/letters";
 import {
   clearLetterDraft,
-  clearReplyDraft,
   getLetterDraft,
-  getReplyDraft,
   updateLetterDraft,
 } from "../../data/letterDraft";
-import {
-  canSubmitLetter,
-  reviewLetterSafety,
-  reviewReplySafety,
-} from "../../data/safety";
+import { canSubmitLetter, reviewLetterSafety } from "../../data/safety";
 import { navigateBack, navigateTo } from "../../utils/navigation";
-import { getLetterReturn } from "../../data/letterReturns";
 import { resolveDeliveryIssues } from "../../data/deliveryIssues";
-import {
-  RETURNED_LETTER_BODY,
-  RETURNED_LETTER_TITLE,
-} from "../../constants/copy";
-import { getListenEntryPath } from "../../data/waitingLetters";
 
 function Shell({
   title,
@@ -201,138 +188,6 @@ export function LetterSafetyReviewScreen() {
       <section className="flow-message">
         <h1>
           편지를 안전하게
-          <br />
-          전할 수 있어요
-        </h1>
-        <p>보내기 전에 내용을 한 번 더 살펴봤어요.</p>
-        <p className="flow-notice" role="status">
-          {error}
-        </p>
-      </section>
-    </Shell>
-  );
-}
-
-export function ReplySafetyReviewScreen({ letterId }: { letterId?: string }) {
-  const userId = getCurrentUserId();
-  const letter = letterId ? getLetterById(letterId) : undefined;
-  const draft = letterId ? getReplyDraft(letterId, userId) : undefined;
-  const [error, setError] = useState("");
-  if (letter && getLetterReturn(letter.id, userId))
-    return (
-      <Shell title="답장 안전 검토" fallback="/home">
-        <section className="flow-message">
-          <h1>{RETURNED_LETTER_TITLE}</h1>
-          <p>{RETURNED_LETTER_BODY}</p>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}
-          >
-            다른 편지 만나기
-          </button>
-        </section>
-      </Shell>
-    );
-  if (!letter || !draft?.content.trim())
-    return (
-      <Shell title="답장 안전 검토" fallback="/mailbox">
-        <section className="flow-message">
-          <h1>검토할 답장이 없어요</h1>
-          <p>답장을 작성한 뒤 다시 확인해주세요.</p>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() => navigateTo("/mailbox")}
-          >
-            편지함으로
-          </button>
-        </section>
-      </Shell>
-    );
-  const review = reviewReplySafety(draft.content, draft.id);
-  function send() {
-    const latest = getReplyDraft(letter.id, userId);
-    const current = getLetterById(letter.id);
-    if (!latest?.content.trim() || !current) return;
-    const latestReview = reviewReplySafety(latest.content, latest.id);
-    if (!canSubmitLetter(latestReview)) {
-      navigateTo(
-        latestReview.status === "high_risk"
-          ? "/urgent-support"
-          : `/reply-safety-review/${encodeURIComponent(letter.id)}`,
-      );
-      return;
-    }
-    const result = sendReply(letter.id, userId, latest.content);
-    if (!result.ok) {
-      setError("답장을 보내지 못했어요. 작성한 내용은 그대로 보관되어 있어요.");
-      return;
-    }
-    resolveDeliveryIssues("reply-send", letter.id, userId);
-    clearReplyDraft(letter.id, userId);
-    navigateTo(`/reply-sent/${encodeURIComponent(letter.id)}`);
-  }
-  if (review.status === "high_risk")
-    return (
-      <UrgentSupportScreen
-        kind="reply"
-        returnTo={`/write-reply/${letter.id}`}
-      />
-    );
-  if (review.status === "needs_revision")
-    return (
-      <Shell
-        title="답장 안전 검토"
-        fallback={`/reply-review/${letter.id}`}
-        action={
-          <div className="flow-fixed-action flow-fixed-action--split">
-            <button
-              className="flow-secondary-button"
-              type="button"
-              onClick={() => navigateTo(`/reply-review/${letter.id}`)}
-            >
-              미리보기로
-            </button>
-            <button
-              className="flow-primary-button"
-              type="button"
-              onClick={() => navigateTo(`/write-reply/${letter.id}`)}
-            >
-              내용 수정하기
-            </button>
-          </div>
-        }
-      >
-        <ReviewNotice
-          content={draft.content}
-          matches={review.matches}
-          target="답장"
-        />
-      </Shell>
-    );
-  return (
-    <Shell
-      title="답장 안전 검토"
-      fallback={`/reply-review/${letter.id}`}
-      action={
-        <div className="flow-fixed-action flow-fixed-action--split">
-          <button
-            className="flow-secondary-button"
-            type="button"
-            onClick={() => navigateTo(`/write-reply/${letter.id}`)}
-          >
-            수정하기
-          </button>
-          <button className="flow-primary-button" type="button" onClick={send}>
-            답장 보내기
-          </button>
-        </div>
-      }
-    >
-      <section className="flow-message">
-        <h1>
-          답장을 안전하게
           <br />
           전할 수 있어요
         </h1>

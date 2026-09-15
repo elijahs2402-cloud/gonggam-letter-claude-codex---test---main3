@@ -34,9 +34,6 @@ const copy: Record<LetterStatus, { label: string; description: string }> = {
 export function getLetterStatusLabel(letter: Letter) {
   return copy[letter.status].label;
 }
-export function getLetterStatusDescription(letter: Letter) {
-  return copy[letter.status].description;
-}
 
 export function getLetterStatusDate(letter: Letter) {
   if (letter.status === "assigned") return letter.assignedAt;

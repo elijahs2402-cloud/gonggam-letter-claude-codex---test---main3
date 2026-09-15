@@ -27,11 +27,9 @@ import {
   updateReplyDraft,
 } from "../../data/letterDraft";
 import { seedSampleLetters } from "../../data/sampleLetters";
-import { getLetterStatusDescription } from "../../data/letterStatus";
 import { useDraftAutosave } from "../../hooks/draftGuards";
 import { shouldFailDraftOperation } from "../../utils/draftDevTools";
 import { isUserBlocked } from "../../data/blocks";
-import { SealedReply } from "../../components/letter/SealedReply";
 import { getSentLetterDisplayStatus } from "../../data/mailboxStatus";
 import { isContentHidden, revealContent } from "../../data/contentVisibility";
 import { getLetterReturn } from "../../data/letterReturns";
@@ -40,23 +38,11 @@ import {
   resolveDeliveryIssues,
 } from "../../data/deliveryIssues";
 import {
-  acceptReaderGuidance,
-  hasAcceptedReaderGuidance,
-} from "../../data/readerGuidance";
-import {
-  getAvailableWaitingLetters,
-  markWaitingLetterViewed,
-  refreshWaitingLetterOrder,
-  waitingLetterPreview,
-  waitingLetterTimeText,
-} from "../../data/waitingLetters";
-import {
   canSubmitLetter,
   canSubmitReply,
   reviewLetterSafety,
   reviewReplySafety,
 } from "../../data/safety";
-import { isPrototypeQaMode } from "../../utils/prototypeQa";
 import { ListenEntryLoadingState } from "./ListenEntryVariants";
 import { formatDateTime } from "../../utils/datetime";
 import {
@@ -664,172 +650,6 @@ export function LetterSentScreen({ letterId }: { letterId?: string }) {
   );
 }
 
-export function WaitingLettersScreen() {
-  seedSampleLetters();
-  const currentUserId = getCurrentUserId();
-  const prototypeState = getCurrentAppSearchParams().get("prototype");
-  const [state, setState] = useState<
-    "normal" | "test-list" | "empty" | "loading" | "error" | "offline"
-  >(() =>
-    prototypeState === "letters"
-      ? "test-list"
-      : prototypeState === "empty"
-        ? "empty"
-        : "normal",
-  );
-  const [refresh, setRefresh] = useState(0);
-  const letters = getAvailableWaitingLetters(currentUserId, refresh);
-  const testLetters =
-    state === "test-list" ? ensureWaitingListTestLetters(currentUserId) : [];
-  const visibleLetters = state === "test-list" ? testLetters : letters;
-  const open = (letterId: string) => {
-    markWaitingLetterViewed(letterId);
-    navigateTo(`/read-letter/${encodeURIComponent(letterId)}`);
-  };
-  const reshuffle = () => {
-    if (state === "loading") return;
-    setState("loading");
-    window.setTimeout(() => {
-      refreshWaitingLetterOrder();
-      setRefresh((value) => value + 1);
-      setState("normal");
-    }, 360);
-  };
-  const isEmptyState = state === "empty" || !visibleLetters.length;
-  return (
-    <FocusShell title="기다리는 편지" fallback="/home">
-      {!isEmptyState && (
-        <section className="waiting-heading">
-          <h1>기다리는 마음들</h1>
-          <p>
-            지금 천천히 읽을 여유가 있는 편지를 골라주세요. 열어보기만 해서는
-            맡아지지 않아요.
-          </p>
-        </section>
-      )}
-      {state === "loading" ? (
-        <section className="waiting-loading" aria-live="polite">
-          <strong>기다리는 편지를 만나고 있어요.</strong>
-          <i />
-          <i />
-          <i />
-        </section>
-      ) : state === "error" || state === "offline" ? (
-        <section className="flow-message">
-          <h1>
-            {state === "offline"
-              ? "인터넷 연결을\n확인해주세요"
-              : "편지를 불러오지 못했어요"}
-          </h1>
-          <p>잠시 후 다시 확인해주세요.</p>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() => setState("normal")}
-          >
-            다시 확인하기
-          </button>
-        </section>
-      ) : isEmptyState ? (
-        <section className="flow-message">
-          <h1>지금은 기다리는 편지가 없어요</h1>
-          <p>새로운 마음이 도착하면 이곳에서 만날 수 있어요.</p>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() => navigateTo("/home")}
-          >
-            홈으로 돌아가기
-          </button>
-          <button
-            className="flow-text-button"
-            type="button"
-            onClick={reshuffle}
-          >
-            다시 확인하기
-          </button>
-        </section>
-      ) : (
-        <>
-          <section
-            className="waiting-list"
-            aria-label={
-              state === "test-list"
-                ? "기다리는 편지 정상 상태 테스트"
-                : "읽고 맡을 수 있는 기다리는 편지"
-            }
-          >
-            {visibleLetters.map((letter) => (
-              <WaitingLetterCard
-                key={letter.id}
-                letter={letter}
-                onOpen={() => open(letter.id)}
-              />
-            ))}
-          </section>
-          <button className="waiting-refresh" type="button" onClick={reshuffle}>
-            다른 편지 더 보기
-          </button>
-        </>
-      )}
-      {isPrototypeQaMode() && (
-        <details className="prototype-test-panel waiting-test-panel">
-          <summary>프로토타입 상태</summary>
-          <p>기다리는 편지가 있는 경우와 없는 경우를 바로 확인할 수 있어요.</p>
-          <div>
-            <button
-              type="button"
-              className={state === "test-list" ? "is-active" : ""}
-              onClick={() =>
-                navigateTo("/waiting-letters?qa=1&prototype=letters")
-              }
-            >
-              편지가 있을 때
-            </button>
-            <button
-              type="button"
-              className={state === "empty" ? "is-active" : ""}
-              onClick={() =>
-                navigateTo("/waiting-letters?qa=1&prototype=empty")
-              }
-            >
-              편지가 없을 때
-            </button>
-          </div>
-        </details>
-      )}
-    </FocusShell>
-  );
-}
-
-export function WaitingLetterCard({
-  letter,
-  onOpen,
-}: {
-  letter: Letter;
-  onOpen: () => void;
-}) {
-  const preview = waitingLetterPreview(letter.content);
-  const time = waitingLetterTimeText(letter.createdAt);
-  const displayName = letter.isPrototypeFixture
-    ? `${letter.anonymousName || "이름 없는 마음"}님`
-    : "기다리는 편지";
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      aria-label={`${time}, ${displayName}, ${preview}`}
-    >
-      <span>
-        <strong>{displayName}</strong>
-        <time dateTime={letter.createdAt}>{time}</time>
-      </span>
-      <p>{preview}</p>
-      <small>편지 열어보기</small>
-    </button>
-  );
-}
-
 function ensureWaitingListTestLetters(_userId: string) {
   const shortLetterContent = `요즘 회사에서 내가 하는 일이 아무 의미가 없는 것처럼 느껴져요.
 
@@ -946,61 +766,6 @@ function ensureForcedReplyTestDraft(letterId: string, userId: string) {
     stage: "review",
     letterStatusAtSave: "assigned",
   });
-}
-
-export function ReaderPromiseScreen({ letterId }: { letterId?: string }) {
-  const letter = letterId ? getLetterById(letterId) : undefined;
-  if (!letter) return <MissingLetterScreen fallback="/home" />;
-  if (hasAcceptedReaderGuidance())
-    return <ReadLetterFlowScreen letterId={letter.id} />;
-  return (
-    <FocusShell
-      title="안내"
-      fallback={`/read-letter/${letter.id}`}
-      action={
-        <div className="flow-fixed-action flow-fixed-action--split">
-          <button
-            className="flow-secondary-button"
-            type="button"
-            onClick={() =>
-              navigateTo(`/read-letter/${encodeURIComponent(letter.id)}`)
-            }
-          >
-            돌아가기
-          </button>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() => {
-              acceptReaderGuidance();
-              navigateTo(`/assign-letter/${encodeURIComponent(letter.id)}`);
-            }}
-          >
-            동의하고 맡기
-          </button>
-        </div>
-      }
-    >
-      <section className="reader-promise">
-        <h1>
-          마음을 안전하게
-          <br />
-          이어가기 위해
-        </h1>
-        <p>이 안내는 처음 편지를 맡을 때 한 번만 보여드려요.</p>
-        <p className="reader-promise-expectation">
-          편지를 맡은 뒤에는 한 통의 답장을 남기게 돼요. 지금 여유가 없다면 맡지
-          않아도 괜찮아요.
-        </p>
-        <ul>
-          <li>상대방을 판단하거나 비난하지 않기</li>
-          <li>연락처와 개인정보를 요구하지 않기</li>
-          <li>답장을 강요하거나 관계를 이어가려 하지 않기</li>
-          <li>답장이 어렵다면 편지를 반환할 수 있기</li>
-        </ul>
-      </section>
-    </FocusShell>
-  );
 }
 
 export function ReadLetterFlowScreen({
@@ -1361,79 +1126,6 @@ export function ReadLetterFlowScreen({
           onConfirm={() => continueTo("return")}
         />
       )}
-    </FocusShell>
-  );
-}
-
-export function AssignedLetterFlowScreen({ letterId }: { letterId?: string }) {
-  return <ReadLetterFlowScreen letterId={letterId} assignedReaderMode />;
-}
-
-export function AssignLetterScreen({ letterId }: { letterId?: string }) {
-  const [notice, setNotice] = useState("");
-  const [phase, setPhase] = useState<"processing" | "failed">("processing");
-  const letter = letterId ? getLetterById(letterId) : undefined;
-  useEffect(() => {
-    if (!letter) return;
-    const timer = window.setTimeout(() => {
-      const result =
-        letter.prototypeWaitingScenario === "race_lost"
-          ? { ok: false as const, reason: "already-assigned" as const }
-          : assignLetterToReader(letter.id, getCurrentUserId());
-      if (result.ok) {
-        navigateTo(`/write-reply/${encodeURIComponent(letter.id)}`);
-        return;
-      }
-      setPhase("failed");
-      setNotice(
-        result.reason === "already-assigned"
-          ? "이 편지는 다른 사람이 먼저 맡았어요. 다른 기다리는 편지를 만나볼 수 있어요."
-          : "이 편지를 지금 맡을 수 없어요.",
-      );
-    }, 460);
-    return () => window.clearTimeout(timer);
-  }, [letter?.id]);
-  if (!letter) return <MissingLetterScreen fallback="/home" />;
-  return (
-    <FocusShell
-      title="편지 맡기"
-      fallback={`/read-letter/${letter.id}`}
-      action={
-        phase === "failed" ? (
-          <div className="flow-fixed-action flow-fixed-action--split">
-            <button
-              className="flow-secondary-button"
-              type="button"
-              onClick={() => navigateTo("/home")}
-            >
-              홈으로 돌아가기
-            </button>
-            <button
-              className="flow-primary-button"
-              type="button"
-              onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}
-            >
-              다른 편지 만나기
-            </button>
-          </div>
-        ) : undefined
-      }
-    >
-      <section className="assign-confirm">
-        <h1>
-          {phase === "processing"
-            ? "편지를 맡고 있어요"
-            : "다른 편지를 만나볼까요?"}
-        </h1>
-        <p>
-          {phase === "processing"
-            ? "잠시만 기다려주세요."
-            : "다른 기다리는 편지를 만나볼 수 있어요."}
-        </p>
-        <p className="flow-notice" role="status">
-          {notice}
-        </p>
-      </section>
     </FocusShell>
   );
 }
@@ -2193,259 +1885,19 @@ export function ReplySendingTransitionScreen({
   );
 }
 
-type JourneyStep =
-  | "sent"
-  | "waiting"
-  | "assigned"
-  | "reply_writing"
-  | "reply_arrived"
-  | "reply_opened";
-const journeySteps: ReadonlyArray<{
-  key: JourneyStep;
-  title: string;
-  description: string;
-}> = [
-  {
-    key: "sent",
-    title: "편지를 보냈어요",
-    description: "편지를 조심스럽게 전달했어요.",
-  },
-  {
-    key: "waiting",
-    title: "편지가 마음을 전해줄 사람을 기다리고 있어요",
-    description: "답장을 전해줄 사람을 천천히 기다리고 있어요.",
-  },
-  {
-    key: "assigned",
-    title: "한 사람이 편지를 맡았어요",
-    description: "한 사람이 이 편지에 답장을 전하기로 했어요.",
-  },
-  {
-    key: "reply_writing",
-    title: "답장을 준비하고 있어요",
-    description: "어떤 말을 건넬지 천천히 생각하고 있어요.",
-  },
-  {
-    key: "reply_arrived",
-    title: "답장이 도착했어요",
-    description: "당신의 이야기를 읽은 사람이 답장을 남겼어요.",
-  },
-  {
-    key: "reply_opened",
-    title: "답장을 읽었어요",
-    description: "도착한 답장을 열어보았어요.",
-  },
-];
-
-function journeyState(letter: Letter): JourneyStep {
-  if (letter.replyOpenedAt) return "reply_opened";
-  if (letter.reply || letter.status === "replied") return "reply_arrived";
-  if (letter.status === "waiting_for_reply") return "reply_writing";
-  if (letter.assignedReaderId || letter.status === "assigned")
-    return "assigned";
-  return "waiting";
-}
-
-function isJourneyStepReached(letter: Letter, step: JourneyStep) {
-  return (
-    journeySteps.findIndex((item) => item.key === step) <=
-    journeySteps.findIndex((item) => item.key === journeyState(letter))
-  );
-}
-function journeyDate(letter: Letter, step: JourneyStep) {
-  if (step === "sent") return letter.createdAt;
-  if (step === "assigned") return letter.assignedAt;
-  if (step === "reply_writing")
-    return letter.waitingForReplyAt ?? letter.assignedAt;
-  if (step === "reply_arrived") return letter.repliedAt;
-  if (step === "reply_opened") return letter.replyOpenedAt;
-  return letter.lastRedistributedAt ?? letter.lastStatusChangedAt;
-}
-
-export function LetterJourneyScreen({ letterId }: { letterId?: string }) {
-  const letter = letterId ? getLetterById(letterId) : undefined;
-  if (!letter || letter.senderId !== getCurrentUserId())
-    return <MissingLetterScreen fallback="/home" />;
-  const currentState = journeyState(letter);
-  return (
-    <FocusShell title="편지의 여정" fallback="/home">
-      <section className="journey-screen">
-        <h1>편지의 여정</h1>
-        <p>
-          {letter.status === "waiting_for_reader" && letter.lastReturnedAt
-            ? "편지가 다시 천천히 답장을 기다리고 있어요."
-            : getLetterStatusDescription(letter)}
-        </p>
-        {letter.status === "withdrawn" ? (
-          <section className="journey-withdrawn">
-            <strong>이 편지는 조용히 거두었어요</strong>
-            {letter.withdrawnAt && (
-              <small>{formatDate(letter.withdrawnAt)}</small>
-            )}
-          </section>
-        ) : (
-          <ol className="journey-timeline">
-            {journeySteps.map((step) => {
-              const reached = isJourneyStepReached(letter, step.key);
-              const current = step.key === currentState;
-              const changedAt = journeyDate(letter, step.key);
-              return (
-                <li
-                  key={step.key}
-                  className={
-                    reached ? (current ? "is-current" : "is-complete") : ""
-                  }
-                >
-                  <span aria-hidden="true" />
-                  <div>
-                    <strong>{step.title}</strong>
-                    <p>{step.description}</p>
-                    {reached && changedAt && (
-                      <time dateTime={changedAt}>{formatDate(changedAt)}</time>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        )}
-        <JourneyActions letter={letter} />
-      </section>
-    </FocusShell>
-  );
-}
-
-function JourneyActions({ letter }: { letter: Letter }) {
-  if (letter.status === "replied")
-    return (
-      <div className="journey-actions">
-        <button
-          className="flow-primary-button"
-          type="button"
-          onClick={() =>
-            navigateTo(`/reply-arrived/${encodeURIComponent(letter.id)}`)
-          }
-        >
-          답장 열어보기
-        </button>
-      </div>
-    );
-  if (letter.status === "withdrawn")
-    return (
-      <div className="journey-actions">
-        <button
-          className="flow-primary-button"
-          type="button"
-          onClick={() =>
-            navigateTo(`/mailbox/my/${encodeURIComponent(letter.id)}`)
-          }
-        >
-          편지함에서 보기
-        </button>
-      </div>
-    );
-  return (
-    <div className="journey-actions">
-      <button
-        className="flow-primary-button"
-        type="button"
-        onClick={() => navigateTo("/home")}
-      >
-        홈으로 돌아가기
-      </button>
-    </div>
-  );
-}
-
-export function ReplyArrivedScreen({ letterId }: { letterId?: string }) {
-  const letter = letterId ? getLetterById(letterId) : undefined;
-  if (!letter?.reply || letter.senderId !== getCurrentUserId())
-    return <MissingLetterScreen fallback="/home" />;
-  function openReply() {
-    markReplyOpened(letter.id, letter.senderId);
-    navigateTo(`/mailbox/my/${encodeURIComponent(letter.id)}?reply=1`);
-  }
-  return (
-    <FocusShell title="답장 도착" fallback="/home">
-      <section className="flow-complete reply-arrived">
-        <img
-          src="/assets/reply-sent-lavender-envelope.png"
-          alt="도착한 편지 봉투"
-        />
-        <h1>답장이 도착했어요</h1>
-        <p>당신의 이야기를 읽은 사람이 마음을 전했어요.</p>
-        <div>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={openReply}
-          >
-            답장 열어보기
-          </button>
-          <button
-            className="flow-text-button"
-            type="button"
-            onClick={() => navigateTo("/home")}
-          >
-            나중에 읽기
-          </button>
-        </div>
-      </section>
-    </FocusShell>
-  );
-}
-
-export function LetterWithdrawnScreen({ letterId }: { letterId?: string }) {
-  const letter = letterId ? getLetterById(letterId) : undefined;
-  if (
-    !letter ||
-    letter.senderId !== getCurrentUserId() ||
-    letter.status !== "withdrawn"
-  )
-    return <MissingLetterScreen fallback="/home" />;
-  return (
-    <FocusShell title="편지 거두기" fallback="/home">
-      <section className="flow-complete">
-        <h1>편지를 조용히 거두었어요</h1>
-        <p>이 편지는 더 이상 새로운 사람에게 보이지 않아요.</p>
-        <div>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() =>
-              navigateTo(`/mailbox/my/${encodeURIComponent(letter.id)}`)
-            }
-          >
-            편지함에 보관하기
-          </button>
-          <button
-            className="flow-text-button"
-            type="button"
-            onClick={() => navigateTo("/home")}
-          >
-            홈으로 돌아가기
-          </button>
-        </div>
-      </section>
-    </FocusShell>
-  );
-}
-
 export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
   const letter = letterId ? getLetterById(letterId) : undefined;
   if (!letter || letter.senderId !== getCurrentUserId())
     return <MissingLetterScreen />;
   const userId = getCurrentUserId();
   const params = getCurrentAppSearchParams();
-  const showReply =
-    params.get("reply") === "1" || Boolean(params.get("excerpt"));
+  const showReply = params.get("reply") === "1";
   const replyHidden = Boolean(
     letter.reply && isContentHidden(userId, "reply", letter.reply.id),
   );
   const replyBlocked = Boolean(
     letter.reply && isUserBlocked(userId, letter.reply.writerId),
   );
-  const focusExcerptId = params.get("excerpt") ?? undefined;
   const display = getSentLetterDisplayStatus(letter, userId);
   if (display.isDeleted)
     return (
@@ -2678,25 +2130,11 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
                 </div>
               ) : (
                 <>
-                  <SealedReply
-                    letterId={letter.id}
-                    replyId={letter.reply.id}
-                    ownerId={userId}
-                    content={letter.reply.content}
-                    focusExcerptId={focusExcerptId}
-                  />
+                  {/* 간직하기·고마움 전하기는 1차 오픈에서 빠져(2026-09-15) 답장 글만 보여준다. */}
+                  <blockquote>{letter.reply.content}</blockquote>
                   <small>
                     익명의 누군가 · {formatDate(letter.reply.createdAt)}
                   </small>
-                  <button
-                    className="detail-gratitude-button"
-                    type="button"
-                    onClick={() =>
-                      navigateTo(`/gratitude/${encodeURIComponent(letter.id)}`)
-                    }
-                  >
-                    고마움 전하기
-                  </button>
                 </>
               )}
             </section>
@@ -2715,13 +2153,15 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
               <button
                 className="flow-primary-button"
                 type="button"
-                onClick={() =>
+                onClick={() => {
+                  // 답장 도착 봉투 화면(/reply-arrived)을 지워, 그 화면이 하던 일
+                  // (읽음 표시 후 답장 펼치기)을 여기서 바로 한다.
+                  if (display.hasUnreadReply)
+                    markReplyOpened(letter.id, letter.senderId);
                   navigateTo(
-                    display.hasUnreadReply
-                      ? `/reply-arrived/${encodeURIComponent(letter.id)}`
-                      : `/mailbox/my/${encodeURIComponent(letter.id)}?reply=1`,
-                  )
-                }
+                    `/mailbox/my/${encodeURIComponent(letter.id)}?reply=1`,
+                  );
+                }}
               >
                 {display.hasUnreadReply ? "답장 읽기" : "받은 답장 보기"}
               </button>

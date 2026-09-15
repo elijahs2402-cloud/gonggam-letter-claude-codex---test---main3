@@ -39,27 +39,6 @@ function hash(value: string) {
   );
 }
 
-export function waitingLetterPreview(content: string, maxLength = 112) {
-  const clean = content
-    .replace(/\s+/g, " ")
-    .replace(
-      /(?:\d{2,3}[-\s]?\d{3,4}[-\s]?\d{4}|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g,
-      "•••",
-    )
-    .trim();
-  return clean.length > maxLength ? `${clean.slice(0, maxLength)}…` : clean;
-}
-
-export function waitingLetterTimeText(value: string) {
-  const hours = Math.max(
-    0,
-    Math.floor((Date.now() - new Date(value).getTime()) / 3_600_000),
-  );
-  if (hours < 24) return "오늘 도착한 편지";
-  if (hours < 48) return "어제 도착한 편지";
-  return `${Math.floor(hours / 24)}일째 기다리는 편지`;
-}
-
 export function isAvailableWaitingLetter(letter: Letter, userId: string) {
   return (
     !letter.isPrototypeFixture &&
@@ -107,11 +86,6 @@ export function markWaitingLetterViewed(letterId: string) {
   const next = viewedIds();
   next.add(letterId);
   sessionWrite(VIEWED_KEY, JSON.stringify([...next].slice(-80)));
-}
-export function refreshWaitingLetterOrder() {
-  const next = Number(sessionRead(ORDER_KEY) ?? "0") + 1;
-  sessionWrite(ORDER_KEY, String(next));
-  return next;
 }
 
 /**

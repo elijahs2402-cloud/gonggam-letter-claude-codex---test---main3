@@ -1,13 +1,6 @@
 import { useState } from "react";
-import { getBlockedUsers, isUserBlocked } from "../../data/blocks";
-import { isContentHidden } from "../../data/contentVisibility";
-import {
-  getCurrentUserId,
-  getWaitingReplyLettersByUser,
-  getReceivedRepliesByUser,
-  markReplyOpened,
-  type Letter,
-} from "../../data/letters";
+import { getBlockedUsers } from "../../data/blocks";
+import { getCurrentUserId, getReceivedRepliesByUser } from "../../data/letters";
 import {
   deleteMockAccount,
   generateAnonymousName,
@@ -17,15 +10,9 @@ import {
   updateAnonymousName,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo } from "../../utils/navigation";
-import { isPrototypeQaMode } from "../../utils/prototypeQa";
 import { isDevelopmentPreview } from "../../components/common/CommonStates";
 import { getNotificationSettings } from "../../data/notifications";
-import { getReportForTarget, getReportsByUser } from "../../data/reports";
-import {
-  getSealedExcerptsByReplyId,
-  getSealedExcerptsByUser,
-} from "../../data/sealedExcerpts";
-import { formatDate } from "../../utils/datetime";
+import { getReportsByUser } from "../../data/reports";
 
 function Header({
   title,
@@ -46,133 +33,6 @@ function Header({
       <strong>{title}</strong>
       <span />
     </header>
-  );
-}
-const short = (value: string, length = 52) => {
-  const text = value.trim().replace(/\s+/g, " ");
-  return text.length > length ? `${text.slice(0, length)}…` : text;
-};
-const date = (value?: string) =>
-  value ? formatDate(value) : "도착 날짜를 알 수 없어요";
-
-export function ReceivedRepliesScreen() {
-  const userId = getCurrentUserId();
-  const [version, setVersion] = useState(0);
-  const qaMode = isPrototypeQaMode();
-  const replies = getReceivedRepliesByUser(userId);
-  const waitingLetters = getWaitingReplyLettersByUser(userId);
-  return (
-    <main
-      className="mobile-prototype received-replies-screen"
-      data-version={version}
-    >
-      <Header title="받은 답장" />
-      <div className="received-replies-scroll">
-        <section className="subpage-heading">
-          <h1>받은 답장</h1>
-          <p>내 이야기를 읽은 사람이 전한 마음이에요.</p>
-        </section>
-        {replies.length ? (
-          <section className="received-reply-list">
-            {replies.map((letter) => (
-              <ReceivedReplyRow
-                key={letter.id}
-                letter={letter}
-                userId={userId}
-                onOpen={() => {
-                  markReplyOpened(letter.id, userId);
-                  setVersion((value) => value + 1);
-                  navigateTo(`/mailbox/my/${encodeURIComponent(letter.id)}`);
-                }}
-              />
-            ))}
-          </section>
-        ) : (
-          <section className="received-reply-empty">
-            <h2>아직 도착한 답장이 없어요</h2>
-            <p>
-              {waitingLetters.length
-                ? "보낸 편지들이 각자의 답장을 기다리고 있어요."
-                : "마음을 남기면 한 사람이 읽고 답장을 전해요."}
-            </p>
-            <button
-              className="flow-primary-button"
-              type="button"
-              onClick={() =>
-                navigateTo(waitingLetters.length ? "/mailbox" : "/write-letter")
-              }
-            >
-              {waitingLetters.length ? "내가 보낸 편지 보기" : "편지 쓰기"}
-            </button>
-          </section>
-        )}
-        {qaMode && (
-          <details className="prototype-test-panel">
-            <summary>프로토타입 테스트</summary>
-            <p>
-              데이터가 없는 상태는 새 사용자 또는 답장이 없는 계정에서 확인할 수
-              있어요.
-            </p>
-          </details>
-        )}
-      </div>
-    </main>
-  );
-}
-
-function ReceivedReplyRow({
-  letter,
-  userId,
-  onOpen,
-}: {
-  letter: Letter;
-  userId: string;
-  onOpen: () => void;
-}) {
-  const reply = letter.reply!;
-  const hidden = isContentHidden(userId, "reply", reply.id);
-  const report = getReportForTarget(userId, "reply", reply.id);
-  const blocked = isUserBlocked(userId, reply.writerId);
-  const unavailable = reply.safetyStatus === "blocked";
-  const sealed = getSealedExcerptsByReplyId(reply.id, userId).length;
-  const unread = !letter.replyOpenedAt;
-  const state = unavailable
-    ? [
-        "이 답장은 더 이상 볼 수 없어요.",
-        "연결된 내 편지는 계속 확인할 수 있어요.",
-      ]
-    : hidden || blocked
-      ? ["숨긴 답장이에요.", "필요하면 다시 확인할 수 있어요."]
-      : report
-        ? [
-            "신고한 답장이에요.",
-            (
-              {
-                submitted: "접수됨",
-                reviewing: "확인 중",
-                resolved: "처리 완료",
-                dismissed: "검토 종료",
-              } as const
-            )[report.status],
-          ]
-        : undefined;
-  return (
-    <button
-      type="button"
-      className={`received-reply-row${unread ? " is-unread" : ""}`}
-      onClick={onOpen}
-    >
-      <span className="received-reply-top">
-        <time>{date(reply.createdAt)}</time>
-        {unread && <em>새 답장</em>}
-      </span>
-      <strong>
-        {reply.anonymousName ?? "익명의 누군가"}에게서 답장이 도착했어요.
-      </strong>
-      <span>{state ? state[0] : `내 편지: ${short(letter.content)}`}</span>
-      {state && <small>{state[1]}</small>}
-      {sealed > 0 && <small>간직한 문구 {sealed}개</small>}
-    </button>
   );
 }
 
@@ -732,12 +592,10 @@ export function AccountSettingsScreen() {
 }
 
 export function getMySpaceSummary(userId = getCurrentUserId()) {
-  const excerpts = getSealedExcerptsByUser(userId);
   const replies = getReceivedRepliesByUser(userId);
   const reports = getReportsByUser(userId);
   return {
     name: getCurrentAnonymousName(),
-    excerpts,
     replies,
     settings: getNotificationSettings(userId),
     blocks: getBlockedUsers(userId),

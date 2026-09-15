@@ -274,13 +274,6 @@ export function getActiveOutgoingLettersByUser(userId: string) {
   );
 }
 
-export function getWaitingReplyLettersByUser(userId: string) {
-  return getMyLetters(userId).filter(
-    (letter) =>
-      !letter.reply && !["replied", "withdrawn"].includes(letter.status),
-  );
-}
-
 export function getUnreadReplyLettersByUser(userId: string) {
   return getMyLetters(userId).filter(
     (letter) => Boolean(letter.reply) && !letter.replyOpenedAt,
@@ -453,52 +446,6 @@ export function markLetterReadForReply(letterId: string, readerId: string) {
   return transitionLetterStatus(letterId, "waiting_for_reply", readerId, {
     readAt: now,
     waitingForReplyAt: now,
-  });
-}
-
-export function redistributeLetter(letterId: string, senderId: string) {
-  const latest = getLetterById(letterId);
-  if (
-    !latest ||
-    latest.senderId !== senderId ||
-    latest.status !== "waiting_for_reader"
-  )
-    return undefined;
-  const now = new Date().toISOString();
-  return transitionLetterStatus(letterId, "waiting_for_reader", senderId, {
-    retryCount: latest.retryCount + 1,
-    lastRedistributedAt: now,
-    waitingExtendedAt: undefined,
-  });
-}
-
-export function extendLetterWaiting(letterId: string, senderId: string) {
-  const latest = getLetterById(letterId);
-  if (
-    !latest ||
-    latest.senderId !== senderId ||
-    ["replied", "withdrawn"].includes(latest.status)
-  )
-    return undefined;
-  return updateLetter(letterId, {
-    waitingExtendedAt: new Date().toISOString(),
-  });
-}
-
-export function withdrawLetter(letterId: string, senderId: string) {
-  const latest = getLetterById(letterId);
-  if (
-    !latest ||
-    latest.senderId !== senderId ||
-    latest.status === "replied" ||
-    latest.status === "withdrawn"
-  )
-    return undefined;
-  const now = new Date().toISOString();
-  return transitionLetterStatus(letterId, "withdrawn", senderId, {
-    withdrawnAt: now,
-    assignedReaderId: undefined,
-    assignedAt: undefined,
   });
 }
 

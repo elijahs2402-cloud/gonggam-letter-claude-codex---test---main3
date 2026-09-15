@@ -8,27 +8,19 @@ import {
   MailboxScreen,
 } from "./pages/Mailbox/MailboxScreen";
 import { TermsMockupScreen } from "./pages/MySpace/TermsMockup";
-import { HomeScreen } from "./pages/Home/HomeScreen";
 import { MySpaceScreen } from "./pages/MySpace/MySpaceScreen";
 import {
-  AssignLetterScreen,
   LetterPreviewScreen,
   LetterSentScreen,
-  LetterJourneyScreen,
-  LetterWithdrawnScreen,
   MyLetterDetailScreen,
   MyLetterRepliedDemoScreen,
   MyLetterWaitingDemoScreen,
   RepliedLetterDemoScreen,
-  ReaderPromiseScreen,
-  AssignedLetterFlowScreen,
   ReadLetterFlowScreen,
   RepliedLetterDetailScreen,
   ReplyReviewScreen,
-  ReplyArrivedScreen,
   ReplySendingTransitionScreen,
   ReplySentScreen,
-  WaitingLettersScreen,
   WriteLetterFlowScreen,
   WriteReplyFlowScreen,
 } from "./pages/Letter/LetterFlowScreens";
@@ -56,7 +48,6 @@ import {
   TermsConsentScreen,
   getRequiredOnboardingPath,
 } from "./pages/Auth/AuthScreens";
-import { GratitudeScreen } from "./pages/Letter/GratitudeScreen";
 import { HomeRuledScreen } from "./pages/Home/HomeRuledScreen";
 import {
   getMockAuthSnapshot,
@@ -71,13 +62,11 @@ import {
   LetterReturnScreen,
   ReplyReportScreen,
 } from "./pages/Safety/SafetyActionScreens";
-import { SavedExcerptsScreen } from "./pages/MySpace/SavedExcerptsScreen";
 import {
   AnonymousNameSettingsScreen,
   AppInfoScreen,
   GuideScreen,
   PolicyScreen,
-  ReceivedRepliesScreen,
 } from "./pages/MySpace/MySpaceDetails";
 import {
   AccountRestrictedScreen,
@@ -197,14 +186,10 @@ export function App() {
 
   const protectedPaths = new Set([
     "/home",
-    "/home-backup",
     "/write-letter",
     "/listen-entry-a",
-    "/waiting-letters",
     "/mailbox",
     "/my-space",
-    "/saved-excerpts",
-    "/received-replies",
     "/anonymous-name-settings",
     "/account-settings",
     "/login-information",
@@ -220,32 +205,20 @@ export function App() {
     "/letter-safety-review",
   ]);
   const protectedFlowPrefixes = [
-    "/gratitude/",
     "/report-reply/",
     "/return-letter/",
-    "/reply-safety-review/",
     "/reply-sending/",
     "/report-letter/",
     "/read-letter/",
-    "/assigned-letter/",
-    "/assign-letter/",
     "/write-reply/",
     "/reply-review/",
     "/reply-sent/",
-    "/letter-journey/",
-    "/reply-arrived/",
-    "/letter-withdrawn/",
     "/mailbox/my/",
     "/mailbox/replied/",
   ];
   const isProtectedServicePath =
     protectedPaths.has(path) ||
-    [
-      "/letter-preview",
-      "/letter-sent",
-      "/reader-promise",
-      "/urgent-support",
-    ].includes(path) ||
+    ["/letter-preview", "/letter-sent", "/urgent-support"].includes(path) ||
     protectedFlowPrefixes.some((prefix) => path.startsWith(prefix));
   if (isProtectedServicePath && !isMockAuthenticated()) {
     setPostLoginPath(path);
@@ -255,11 +228,8 @@ export function App() {
   if (path === "/notifications") return <NotificationsScreen />;
   if (path === "/notification-settings") return <NotificationSettingsScreen />;
 
-  if (path === "/home-backup") return <HomeScreen />;
   if (path === "/home") return <HomeRuledScreen refinedCardsOnly />;
   if (path === "/my-space") return <MySpaceScreen />;
-  if (path === "/saved-excerpts") return <SavedExcerptsScreen />;
-  if (path === "/received-replies") return <ReceivedRepliesScreen />;
   if (path === "/anonymous-name-settings")
     return <AnonymousNameSettingsScreen />;
   if (path === "/account-settings") return <AccountSettingsScreen />;
@@ -276,12 +246,6 @@ export function App() {
   if (path === "/write-letter") return <WriteLetterFlowScreen />;
   if (path === "/letter-preview") return <LetterPreviewScreen />;
   if (path === "/letter-safety-review") return <LetterSafetyReviewScreen />;
-  if (path.startsWith("/gratitude/"))
-    return (
-      <GratitudeScreen
-        letterId={decodeURIComponent(path.slice("/gratitude/".length))}
-      />
-    );
   if (path === "/report-reply-demo") return <ReplyReportScreen existingDemo />;
   if (path === "/report-reply-complete-demo")
     return <ReplyReportScreen completeDemo />;
@@ -297,14 +261,6 @@ export function App() {
     return (
       <LetterReturnScreen
         letterId={decodeURIComponent(path.slice("/return-letter/".length))}
-      />
-    );
-  if (path.startsWith("/reply-safety-review/"))
-    return (
-      <ReplySendingTransitionScreen
-        letterId={decodeURIComponent(
-          path.slice("/reply-safety-review/".length),
-        )}
       />
     );
   if (path === "/urgent-support")
@@ -326,29 +282,10 @@ export function App() {
         letterId={getCurrentAppSearchParams().get("id") ?? undefined}
       />
     );
-  if (path === "/waiting-letters") return <WaitingLettersScreen />;
-  if (path === "/reader-promise")
-    return (
-      <ReaderPromiseScreen
-        letterId={getCurrentAppSearchParams().get("id") ?? undefined}
-      />
-    );
-  if (path.startsWith("/assigned-letter/"))
-    return (
-      <AssignedLetterFlowScreen
-        letterId={decodeURIComponent(path.slice("/assigned-letter/".length))}
-      />
-    );
   if (path.startsWith("/read-letter/"))
     return (
       <ReadLetterFlowScreen
         letterId={decodeURIComponent(path.slice("/read-letter/".length))}
-      />
-    );
-  if (path.startsWith("/assign-letter/"))
-    return (
-      <AssignLetterScreen
-        letterId={decodeURIComponent(path.slice("/assign-letter/".length))}
       />
     );
   if (path.startsWith("/write-reply/"))
@@ -373,24 +310,6 @@ export function App() {
     return (
       <ReplySentScreen
         letterId={decodeURIComponent(path.slice("/reply-sent/".length))}
-      />
-    );
-  if (path.startsWith("/letter-journey/"))
-    return (
-      <LetterJourneyScreen
-        letterId={decodeURIComponent(path.slice("/letter-journey/".length))}
-      />
-    );
-  if (path.startsWith("/reply-arrived/"))
-    return (
-      <ReplyArrivedScreen
-        letterId={decodeURIComponent(path.slice("/reply-arrived/".length))}
-      />
-    );
-  if (path.startsWith("/letter-withdrawn/"))
-    return (
-      <LetterWithdrawnScreen
-        letterId={decodeURIComponent(path.slice("/letter-withdrawn/".length))}
       />
     );
   if (path === "/mailbox-my-replied-demo") return <MyLetterRepliedDemoScreen />;
