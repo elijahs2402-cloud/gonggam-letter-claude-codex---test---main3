@@ -571,106 +571,12 @@
 }
 
 /* Direct nickname entry — a focused alternative to the existing random-name flow. */
-.direct-nickname-screen {
-  background: var(--paper);
-}
 .direct-nickname-scroll {
   padding: 42px 28px 30px;
-}
-.direct-nickname-content {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding-top: 8px;
-}
-.direct-nickname-content h1 {
-  margin: 0;
-  color: var(--ink);
-  font-family: var(--font-serif);
-  font-size: 28px;
-  font-weight: var(--fw-title);
-  line-height: var(--lh-title);
-  letter-spacing: -0.035em;
-}
-.direct-nickname-content > p {
-  margin: 22px 0 0;
-  color: var(--muted-ink);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.7;
-  letter-spacing: -0.035em;
-}
-.direct-nickname-field {
-  margin-top: 42px;
-}
-.direct-nickname-field__label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  color: rgb(118, 108, 97);
-  font-size: 14px;
-  font-weight: 700;
-}
-.direct-nickname-field__label span {
-  color: var(--muted-ink);
-  font-size: var(--fs-body-sm);
-}
-.direct-nickname-input-wrap {
-  position: relative;
 }
 /* font-weight 가 없어 기본값 400 으로 그려졌다. 편지함 리스트와 나의 공간에서
    같은 이름이 16px/500 으로 나오므로, 입력하는 동안 보이는 모습이 실제로 보일
    모습과 달랐다. 500 으로 맞춘다(placeholder 는 input 에서 상속받는다). */
-.direct-nickname-field input {
-  width: 100%;
-  height: 52px;
-  padding: 0 48px 0 17px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a72));
-  border-radius: 0;
-  outline: 0;
-  background: rgba(var(--surface-card-rgb), var(--a72));
-  color: var(--ink);
-  font-family: var(--font-serif);
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-}
-.direct-nickname-field input::placeholder {
-  color: rgba(117, 104, 87, var(--a60));
-}
-.direct-nickname-field input:focus {
-  border-color: var(--deep-plum);
-  box-shadow: inset 0 0 0 1px rgba(var(--deep-plum-rgb), var(--a10));
-}
-.direct-nickname-field__meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 11px;
-  color: var(--muted-ink);
-  font-size: 12px;
-  line-height: 1.5;
-}
-.direct-nickname-field__meta p {
-  margin: 0;
-}
-.direct-nickname-field__meta span {
-  font-size: 12px;
-}
-.direct-nickname-recommend {
-  align-self: center;
-  margin-top: auto;
-  margin-bottom: 20px;
-  padding: 5px 4px;
-  border: 0;
-  border-bottom: 1px solid currentColor;
-  background: transparent;
-  color: var(--deep-plum);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-}
 .direct-nickname-actions {
   padding-inline: 18px;
 }

@@ -14,6 +14,8 @@ import {
 import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
 // 공감편지 소개 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import onboarding from "./OnboardingScreen.module.css";
+// 닉네임 정하기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import nickname from "./NicknameEntryScreen.module.css";
 
 function AuthShell({
   children,
@@ -405,11 +407,13 @@ export function DirectNicknameScreen() {
   };
 
   return (
-    <AuthShell className="direct-nickname-screen">
+    <AuthShell
+      className={`direct-nickname-screen ${nickname["direct-nickname-screen"]}`}
+    >
       <AuthHeader backTo="/terms-consent" title="이름 정하기" />
       <div className="auth-scroll direct-nickname-scroll">
         <section
-          className="direct-nickname-content"
+          className={`direct-nickname-content ${nickname["direct-nickname-content"]}`}
           aria-labelledby="direct-nickname-title"
         >
           <h1 id="direct-nickname-title">
@@ -418,11 +422,17 @@ export function DirectNicknameScreen() {
             정해볼까요?
           </h1>
           <p>편지 속에서 나를 대신해 불러줄 이름이에요.</p>
-          <div className="direct-nickname-field">
-            <div className="direct-nickname-field__label">
+          <div
+            className={`direct-nickname-field ${nickname["direct-nickname-field"]}`}
+          >
+            <div
+              className={`direct-nickname-field__label ${nickname["direct-nickname-field__label"]}`}
+            >
               <label htmlFor="direct-nickname-input">이름</label>
             </div>
-            <div className="direct-nickname-input-wrap">
+            <div
+              className={`direct-nickname-input-wrap ${nickname["direct-nickname-input-wrap"]}`}
+            >
               <input
                 id="direct-nickname-input"
                 type="text"
@@ -444,13 +454,15 @@ export function DirectNicknameScreen() {
                 </button>
               )}
             </div>
-            <div className="direct-nickname-field__meta">
+            <div
+              className={`direct-nickname-field__meta ${nickname["direct-nickname-field__meta"]}`}
+            >
               <p id="direct-nickname-help">10자 이내로 입력해주세요.</p>
               <span aria-live="polite">{name.length} / 10</span>
             </div>
           </div>
           <button
-            className="direct-nickname-recommend"
+            className={`direct-nickname-recommend ${nickname["direct-nickname-recommend"]}`}
             type="button"
             onClick={recommendName}
           >
