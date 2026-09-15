@@ -52,10 +52,7 @@ export function AnonymousNameSettingsScreen({
   };
   const save = () => {
     const finalized = name.trim();
-    if (
-      !finalized ||
-      new URLSearchParams(window.location.search).get("state") === "error"
-    ) {
+    if (!finalized) {
       setFailed(true);
       return;
     }

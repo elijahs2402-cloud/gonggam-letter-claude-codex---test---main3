@@ -6,7 +6,6 @@ import {
 } from "../../data/mockAuth";
 import {
   consumePopEntry,
-  getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
 } from "../../utils/navigation";
@@ -198,8 +197,6 @@ export function AccountSettingsScreen({
 
 export function LoginInformationScreen() {
   const account = getMockAuthSnapshot().account;
-  const isError =
-    new URLSearchParams(window.location.search).get("state") === "error";
   return (
     <main className="mobile-prototype account-settings-screen">
       <Header title="로그인 정보" fallback="/account-settings" />
@@ -208,29 +205,14 @@ export function LoginInformationScreen() {
           <h1>로그인 정보</h1>
           <p>다른 사용자에게 공개되지 않는 로그인 방식이에요.</p>
         </section>
-        {isError ? (
-          <section className="account-empty-state" role="alert">
-            <h2>로그인 정보를 불러오지 못했어요</h2>
-            <p>잠시 후 다시 확인해주세요.</p>
-            <button
-              className="flow-primary-button"
-              onClick={() => navigateTo("/login-information")}
-            >
-              다시 시도
-            </button>
-          </section>
-        ) : (
-          <section className="account-state-card">
-            <p>로그인 방식</p>
-            <strong>
-              {providerName(account?.authProvider)}로 로그인했어요.
-            </strong>
-            <span>
-              프로토타입에서는 실제 이메일, 이름, 토큰을 조회하거나 저장하지
-              않아요.
-            </span>
-          </section>
-        )}
+        <section className="account-state-card">
+          <p>로그인 방식</p>
+          <strong>{providerName(account?.authProvider)}로 로그인했어요.</strong>
+          <span>
+            프로토타입에서는 실제 이메일, 이름, 토큰을 조회하거나 저장하지
+            않아요.
+          </span>
+        </section>
         <p className="account-settings-note">
           로그인 방식 변경, 추가 연결, 비밀번호·이메일 수정은 지원하지 않아요.
         </p>
@@ -275,10 +257,8 @@ const withdrawalReasons = [
 ];
 
 export function AccountWithdrawalScreen() {
-  const [step, setStep] = useState<"reason" | "confirm" | "processing">(() =>
-    getCurrentAppSearchParams().get("state") === "processing"
-      ? "processing"
-      : "reason",
+  const [step, setStep] = useState<"reason" | "confirm" | "processing">(
+    "reason",
   );
   const [reason, setReason] = useState("");
   const [detail, setDetail] = useState("");

@@ -9,11 +9,9 @@ import {
   getPostLoginPath,
   resolveMockLogin,
   retryMockLogin,
-  setMockLoginMode,
   type MockAuthProvider,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
-import { isPrototypeQaMode } from "../../utils/prototypeQa";
 
 function AuthShell({
   children,
@@ -155,7 +153,6 @@ const loginProviderOrder: MockAuthProvider[] = ["kakao", "google", "apple"];
 
 export function LoginScreen() {
   const [snapshot, setSnapshot] = useState(getMockAuthSnapshot);
-  const qaMode = isPrototypeQaMode();
   const loggingIn = snapshot.state === "logging_in";
   const failed = snapshot.state === "login_failed";
 
@@ -172,11 +169,6 @@ export function LoginScreen() {
 
   const start = (provider: MockAuthProvider) => {
     beginMockLogin(provider);
-    setSnapshot(getMockAuthSnapshot());
-  };
-
-  const setTestMode = (mode: "new" | "existing" | "failure") => {
-    setMockLoginMode(mode);
     setSnapshot(getMockAuthSnapshot());
   };
 
@@ -284,39 +276,6 @@ export function LoginScreen() {
               처음으로 돌아가기
             </button>
           </div>
-        )}
-
-        {qaMode && (
-          <section
-            className="prototype-test-panel"
-            aria-label="프로토타입 테스트"
-          >
-            <span>프로토타입 테스트</span>
-            <p>선택한 상태로 다음 로그인 버튼을 눌러 확인할 수 있어요.</p>
-            <div>
-              <button
-                type="button"
-                className={snapshot.loginMode === "new" ? "is-active" : ""}
-                onClick={() => setTestMode("new")}
-              >
-                신규 사용자
-              </button>
-              <button
-                type="button"
-                className={snapshot.loginMode === "existing" ? "is-active" : ""}
-                onClick={() => setTestMode("existing")}
-              >
-                기존 사용자
-              </button>
-              <button
-                type="button"
-                className={snapshot.loginMode === "failure" ? "is-active" : ""}
-                onClick={() => setTestMode("failure")}
-              >
-                실패 보기
-              </button>
-            </div>
-          </section>
         )}
       </div>
     </AuthShell>

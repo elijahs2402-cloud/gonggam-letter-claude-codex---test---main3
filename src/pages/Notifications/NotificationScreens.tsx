@@ -4,12 +4,10 @@ import {
   getNotificationSettings,
   getNotifications,
   markNotificationRead,
-  seedNotificationTestState,
   updateNotificationSettings,
   type MockNotification,
 } from "../../data/notifications";
 import { navigateBack, navigateTo } from "../../utils/navigation";
-import { isPrototypeQaMode } from "../../utils/prototypeQa";
 import { formatDate } from "../../utils/datetime";
 // CSS Modules 시범 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
@@ -56,7 +54,6 @@ export function NotificationsScreen({
   >();
   const notices = getNotifications();
   const refresh = () => setVersion((value) => value + 1);
-  const qaMode = isPrototypeQaMode();
   const open = (notice: MockNotification) => {
     markNotificationRead(notice.id);
     refresh();
@@ -131,52 +128,6 @@ export function NotificationsScreen({
               홈으로 돌아가기
             </button>
           </section>
-        )}
-        {qaMode && (
-          <details
-            className={`prototype-test-panel notification-test ${styles["notification-test"]}`}
-          >
-            <summary>프로토타입 테스트</summary>
-            <p>알림 목록 상태를 바꿔 확인할 수 있어요.</p>
-            <div>
-              {(
-                [
-                  "empty",
-                  "one",
-                  "many",
-                  "all-read",
-                  "reply",
-                  "progress",
-                  "report",
-                  "missing",
-                ] as const
-              ).map((kind) => (
-                <button
-                  key={kind}
-                  type="button"
-                  onClick={() => {
-                    seedNotificationTestState(kind);
-                    refresh();
-                  }}
-                >
-                  {
-                    (
-                      {
-                        empty: "알림 없음",
-                        one: "읽지 않음 1개",
-                        many: "여러 알림",
-                        "all-read": "모두 읽음",
-                        reply: "답장 도착",
-                        progress: "편지 진행",
-                        report: "신고 결과",
-                        missing: "연결 없음",
-                      } as const
-                    )[kind]
-                  }
-                </button>
-              ))}
-            </div>
-          </details>
         )}
       </div>
       {noticeDetail && (

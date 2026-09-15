@@ -18,9 +18,6 @@ import {
 import { NotificationSettingsScreen } from "../Notifications/NotificationScreens";
 import { SafetyManagementScreen } from "../Safety/ReportScreens";
 import { TermsMockupScreen } from "./TermsMockup";
-import { isPrototypeQaMode } from "../../utils/prototypeQa";
-
-type TestState = "normal" | "loading" | "error" | "partial-error";
 type ViewKey =
   | "list"
   | "nickname"
@@ -88,9 +85,7 @@ const BACK_TARGET: Partial<Record<ViewKey, ViewKey>> = {
 // App.tsx 의 라우터가 그 화면을 단독으로 그리고(기존 동작 그대로),
 // 그때는 페이지 단위 push/pop 모션이 쓰인다.
 export function MySpaceScreen() {
-  const [state, setState] = useState<TestState>("normal");
   const summary = getMySpaceSummary();
-  const qaMode = isPrototypeQaMode();
   // 상세 화면에서 '페이지 이동으로' 돌아온 경우에만 pop-in 을 쓴다.
   // 셸 안에서 돌아올 때는 아래 stage 전환이 대신한다.
   const [enteredViaPop] = useState(consumePopEntry);
@@ -180,77 +175,27 @@ export function MySpaceScreen() {
           <h1>나의 공간</h1>
           <span>나에 대한 설정과 안내를 모아뒀어요.</span>
         </header>
-        {state === "loading" ? (
-          <section
-            className="my-space-skeleton"
-            aria-label="나의 공간 불러오는 중"
-          >
-            <i />
-            <i />
-            <i />
-          </section>
-        ) : state === "error" ? (
-          <section className="my-space-error">
-            <h2>나의 공간을 불러오지 못했어요</h2>
-            <p>잠시 후 다시 확인해주세요.</p>
+        <section
+          className="my-space-menu my-space-menu--figma"
+          aria-label="나의 공간 메뉴"
+        >
+          {menuItems.map((item) => (
             <button
-              className="flow-primary-button"
+              key={item.label}
               type="button"
-              onClick={() => setState("normal")}
+              onClick={() => {
+                goToView(item.key);
+                window.history.pushState({}, "", item.path);
+              }}
             >
-              다시 시도
+              <span>{item.label}</span>
+              <span className="my-space-menu-value">
+                {item.key === "nickname" ? summary.name : null}
+              </span>
+              <i aria-hidden="true">›</i>
             </button>
-          </section>
-        ) : (
-          <>
-            <section
-              className="my-space-menu my-space-menu--figma"
-              aria-label="나의 공간 메뉴"
-            >
-              {menuItems.map((item) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  onClick={() => {
-                    goToView(item.key);
-                    window.history.pushState({}, "", item.path);
-                  }}
-                >
-                  <span>{item.label}</span>
-                  <span className="my-space-menu-value">
-                    {item.key === "nickname" ? summary.name : null}
-                  </span>
-                  <i aria-hidden="true">›</i>
-                </button>
-              ))}
-            </section>
-            {state === "partial-error" && (
-              <p className="my-space-partial-error">
-                일부 기록을 불러오지 못했어요. 잠시 후 다시 확인해주세요.
-              </p>
-            )}
-          </>
-        )}
-        {qaMode && (
-          <details className="prototype-test-panel my-space-test">
-            <summary>프로토타입 테스트</summary>
-            <p>나의 공간 로딩 및 오류 상태를 확인할 수 있어요.</p>
-            <div>
-              <button type="button" onClick={() => setState("normal")}>
-                정상
-              </button>
-              <button type="button" onClick={() => setState("loading")}>
-                로딩
-              </button>
-              <button type="button" onClick={() => setState("partial-error")}>
-                부분 오류
-              </button>
-              <button type="button" onClick={() => setState("error")}>
-                전체 오류
-              </button>
-            </div>
-          </details>
-        )}
+          ))}
+        </section>
       </div>
       <AppBottomNavigation active="my-space" />
     </main>

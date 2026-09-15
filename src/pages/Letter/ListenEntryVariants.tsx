@@ -1,9 +1,5 @@
 import { type ReactNode, useState } from "react";
-import {
-  getCurrentAppSearchParams,
-  navigateBack,
-  navigateTo,
-} from "../../utils/navigation";
+import { navigateBack, navigateTo } from "../../utils/navigation";
 import { getCurrentUserId } from "../../data/letters";
 import { seedSampleLetters } from "../../data/sampleLetters";
 import {
@@ -13,7 +9,7 @@ import {
 import { getListenEntryPath } from "../../data/waitingLetters";
 
 type ListenVariant = "A" | "B" | "C";
-type ListenEntryState = "ready" | "loading" | "error" | "empty";
+type ListenEntryState = "ready" | "loading";
 
 const HELPER_COPY = (
   <>
@@ -22,13 +18,6 @@ const HELPER_COPY = (
     그저 끝까지 읽어주는 마음만으로도 충분해요.
   </>
 );
-
-function getInitialState(): ListenEntryState {
-  const state = getCurrentAppSearchParams().get("state");
-  return state === "loading" || state === "error" || state === "empty"
-    ? state
-    : "ready";
-}
 
 /**
  * 한 사람이 한 번에 맡을 수 있는 편지는 한 통이므로 목록을 거치지 않는다.
@@ -116,33 +105,6 @@ export function ListenEntryLoadingState({
   );
 }
 
-function ErrorState() {
-  return (
-    <section className="listen-entry-feedback" role="alert">
-      <p>잠시 멈춰 다시 살펴볼게요.</p>
-      <h1>지금은 편지를 가져오지 못했어요</h1>
-      <div>잠시 후 다시 시도해주세요.</div>
-    </section>
-  );
-}
-
-function EmptyState() {
-  return (
-    <section
-      className="listen-entry-feedback listen-entry-feedback--empty"
-      aria-live="polite"
-    >
-      <p>기다리는 마음</p>
-      <h1>지금은 기다리고 있는 편지가 없어요</h1>
-      <div>
-        조금 뒤에 다시 찾아오거나,
-        <br />
-        먼저 내 마음을 편지에 담아보세요.
-      </div>
-    </section>
-  );
-}
-
 function FixedActions({
   state,
   onMeet,
@@ -151,23 +113,6 @@ function FixedActions({
   onMeet: () => void;
 }) {
   if (state === "loading") return null;
-
-  if (state === "empty") {
-    return (
-      <div className="flow-fixed-action flow-fixed-action--split listen-entry-actions">
-        <button
-          type="button"
-          className="flow-secondary-button"
-          onClick={() => goTo("/write-letter")}
-        >
-          편지 쓰기
-        </button>
-        <button type="button" className="flow-primary-button" onClick={onMeet}>
-          다시 확인하기
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="flow-fixed-action listen-entry-actions">
@@ -205,7 +150,7 @@ function ListenEntryFrame({
   onMeet?: () => void;
   children: ReactNode;
 }) {
-  const [state, setState] = useState<ListenEntryState>(getInitialState);
+  const [state, setState] = useState<ListenEntryState>("ready");
   function meetLetter() {
     if (state === "loading") return;
     setState("loading");
@@ -220,16 +165,7 @@ function ListenEntryFrame({
     }, 1700);
   }
 
-  const content =
-    state === "loading" ? (
-      <ListenEntryLoadingState />
-    ) : state === "error" ? (
-      <ErrorState />
-    ) : state === "empty" ? (
-      <EmptyState />
-    ) : (
-      children
-    );
+  const content = state === "loading" ? <ListenEntryLoadingState /> : children;
 
   return (
     <main

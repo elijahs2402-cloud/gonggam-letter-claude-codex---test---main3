@@ -272,16 +272,6 @@ function saveSnapshot(snapshot: MockAuthSnapshot) {
   if (snapshot.account) writeJson(ONBOARDING_KEY, snapshot.account);
 }
 
-export function setMockLoginMode(loginMode: "new" | "existing" | "failure") {
-  const snapshot = getMockAuthSnapshot();
-  saveSnapshot({
-    ...snapshot,
-    state: "logged_out",
-    loginMode,
-    pendingProvider: undefined,
-  });
-}
-
 export function beginMockLogin(provider: MockAuthProvider) {
   const snapshot = getMockAuthSnapshot();
   const fallbackMode = snapshot.account?.onboardingCompleted
