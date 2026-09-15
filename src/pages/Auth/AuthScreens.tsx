@@ -18,6 +18,8 @@ import onboarding from "./OnboardingScreen.module.css";
 import nickname from "./NicknameEntryScreen.module.css";
 // 로그인 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import login from "./LoginScreen.module.css";
+// 환영 문구 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import welcome from "./ReturningWelcomeScreen.module.css";
 
 function AuthShell({
   children,
@@ -520,7 +522,7 @@ export function ReturningWelcomeScreen() {
   return (
     <AuthShell className="anonymous-name-screen motion-preview is-completing returning-welcome-screen">
       <div
-        className={`anonymous-name-welcome${visible ? " is-visible" : ""}${leaving ? " is-leaving" : ""}`}
+        className={`anonymous-name-welcome ${welcome["anonymous-name-welcome"]}${visible ? " is-visible" : ""}${leaving ? " is-leaving" : ""}`}
         role="status"
         aria-live="polite"
       >
