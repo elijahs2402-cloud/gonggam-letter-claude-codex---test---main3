@@ -8,6 +8,7 @@
   - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
     그래서 전역의 같은 우선순위 규칙과 겹치던 3개는 global.css 에 남겼다:
     .notification-detail h2 (vs .auth-dialog h2), .notification-test / .notification-test button (vs .prototype-test-panel …)
+  - 2026-09-15 ?qa=1 검수 패널을 지우며 .notification-test 규칙(이 파일 2개 · global.css 2개)도 지웠다.
 */
 .notification-screen,
 .notification-settings-screen {
@@ -101,16 +102,6 @@
 }
 .notification-empty button {
   min-width: 180px;
-}
-.notification-test summary {
-  cursor: pointer;
-  color: var(--deep-plum);
-  font-size: 12px;
-  font-weight: 700;
-}
-.notification-test div {
-  flex-wrap: wrap;
-  margin-top: 7px;
 }
 .notification-settings-list {
   border-top: 0;
