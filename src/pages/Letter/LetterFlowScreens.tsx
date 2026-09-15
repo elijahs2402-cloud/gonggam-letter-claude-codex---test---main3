@@ -494,10 +494,8 @@ export function LetterPreviewScreen() {
       lastSafetyCheckedAt: review.checkedAt,
     });
     if (!canSubmitLetter(review)) {
-      if (review.status === "high_risk") {
-        navigateTo("/urgent-support");
-        return;
-      }
+      // 높은 위험(high_risk)도 다듬기 요청과 같게 안전 검토 화면으로 보낸다
+      // (발송 전 위험 안내 화면 /urgent-support 는 2026-09-15 삭제).
       navigateTo("/letter-safety-review");
       return;
     }
@@ -1815,8 +1813,8 @@ export function ReplySendingTransitionScreen({
       }
       const review = reviewReplySafety(draft.content, draft.id);
       if (!canSubmitReply(review)) {
-        if (review.status === "high_risk") navigateTo("/urgent-support");
-        else navigateTo(`/write-reply/${encodeURIComponent(letterId)}`);
+        // 높은 위험(high_risk)도 다듬기 요청과 같게 답장 쓰기로 돌려보낸다.
+        navigateTo(`/write-reply/${encodeURIComponent(letterId)}`);
         return;
       }
       const result = sendReply(letterId, currentUserId, draft.content);

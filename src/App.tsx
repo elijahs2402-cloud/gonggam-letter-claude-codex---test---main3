@@ -29,10 +29,7 @@ import {
   getCurrentAppSearchParams,
   navigateTo,
 } from "./utils/navigation";
-import {
-  LetterSafetyReviewScreen,
-  UrgentSupportScreen,
-} from "./pages/Safety/SafetyScreens";
+import { LetterSafetyReviewScreen } from "./pages/Safety/SafetyScreens";
 import {
   LetterReportCompleteDemoScreen,
   LetterReportFigmaScreen,
@@ -218,7 +215,7 @@ export function App() {
   ];
   const isProtectedServicePath =
     protectedPaths.has(path) ||
-    ["/letter-preview", "/letter-sent", "/urgent-support"].includes(path) ||
+    ["/letter-preview", "/letter-sent"].includes(path) ||
     protectedFlowPrefixes.some((prefix) => path.startsWith(prefix));
   if (isProtectedServicePath && !isMockAuthenticated()) {
     setPostLoginPath(path);
@@ -263,8 +260,6 @@ export function App() {
         letterId={decodeURIComponent(path.slice("/return-letter/".length))}
       />
     );
-  if (path === "/urgent-support")
-    return <UrgentSupportScreen kind="letter" returnTo="/write-letter" />;
   if (path === "/safety-management") return <SafetyManagementScreen />;
   if (path === "/report-letter-demo")
     return <LetterReportFigmaScreen letterId="sample-waiting-letter-one" />;

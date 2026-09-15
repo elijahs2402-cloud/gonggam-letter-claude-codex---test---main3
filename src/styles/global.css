@@ -4663,13 +4663,6 @@ html[data-ios-standalone="true"] .intro-copy {
 .management-report-list em.is-complete {
   color: var(--deep-plum);
 }
-.urgent-support small {
-  display: block;
-  margin-top: 17px;
-  color: var(--muted-ink);
-  font-size: var(--fs-caption);
-  line-height: var(--lh-snug);
-}
 
 /* 4.5E · my space, received replies, and guidance documents */
 .my-space-heading {

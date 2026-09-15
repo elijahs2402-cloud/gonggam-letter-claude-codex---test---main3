@@ -111,11 +111,7 @@ export function LetterSafetyReviewScreen() {
       lastSafetyCheckedAt: latestReview.checkedAt,
     });
     if (!canSubmitLetter(latestReview)) {
-      navigateTo(
-        latestReview.status === "high_risk"
-          ? "/urgent-support"
-          : "/letter-safety-review",
-      );
+      navigateTo("/letter-safety-review");
       return;
     }
     const letter = createLetter({
@@ -133,9 +129,9 @@ export function LetterSafetyReviewScreen() {
     navigateTo(`/letter-sent?id=${encodeURIComponent(letter.id)}`);
   }
 
-  if (review.status === "high_risk")
-    return <UrgentSupportScreen kind="letter" returnTo="/write-letter" />;
-  if (review.status === "needs_revision")
+  // 높은 위험(high_risk)도 다듬기 요청과 같은 화면을 보여준다
+  // (발송 전 위험 안내 화면 /urgent-support 는 2026-09-15 삭제).
+  if (review.status === "needs_revision" || review.status === "high_risk")
     return (
       <Shell
         title="편지 안전 검토"
@@ -195,49 +191,6 @@ export function LetterSafetyReviewScreen() {
         <p className="flow-notice" role="status">
           {error}
         </p>
-      </section>
-    </Shell>
-  );
-}
-
-export function UrgentSupportScreen({
-  kind,
-  returnTo,
-}: {
-  kind: "letter" | "reply";
-  returnTo: string;
-}) {
-  return (
-    <Shell title="지금 확인하기" fallback={returnTo}>
-      <section className="flow-message urgent-support">
-        <h1>
-          지금은 편지보다
-          <br />
-          빠른 도움이 먼저 필요해요
-        </h1>
-        <p>
-          작성한 내용에서 지금 바로 확인이 필요한 상황이 느껴져요. 혼자 감당하지
-          않아도 괜찮아요.
-        </p>
-        <button
-          className="flow-primary-button"
-          type="button"
-          onClick={() => navigateTo(returnTo)}
-        >
-          내용 다시 확인하기
-        </button>
-        <button
-          className="flow-secondary-button"
-          type="button"
-          onClick={() => navigateTo("/home")}
-        >
-          홈으로 돌아가기
-        </button>
-        <small>
-          {kind === "letter"
-            ? "편지는 아직 보내지지 않았어요."
-            : "답장은 아직 보내지지 않았어요."}
-        </small>
       </section>
     </Shell>
   );
