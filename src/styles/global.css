@@ -983,35 +983,6 @@
   font-size: 12px;
   line-height: 1.55;
 }
-.return-safety-note {
-  margin: 16px 0;
-  padding: 14px;
-  border-left: 2px solid var(--gold);
-  background: rgba(var(--white-rgb), var(--a33));
-}
-.return-safety-note strong {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: var(--fs-body-sm);
-}
-.return-safety-note span {
-  display: block;
-  margin-top: 7px;
-  color: var(--muted-ink);
-  font-size: 12px;
-  line-height: 1.6;
-}
-.return-safety-note button {
-  margin-top: 10px;
-  border: 0;
-  background: transparent;
-  color: var(--deep-plum);
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
 .reply-more-button {
   float: right;
   padding: 0 3px;
@@ -4162,13 +4133,6 @@ html[data-ios-standalone="true"] .intro-copy {
   line-height: var(--lh-relaxed);
 }
 
-/* 편지 두고 가기 — 완료 직전의 사이 화면.
-   점 세 개를 제목 아래에 놓아 진행 중임을 보인다.
-   점은 임시저장 시트가 쓰던 .draft-exit-saving-dots 를 그대로 빌려
-   한 앱 안에서 기다림이 같은 모양으로 읽히게 한다. */
-.return-processing i {
-  margin-top: 22px;
-}
 .safety-review ul {
   margin: 16px 0;
   padding: 0;
