@@ -112,7 +112,8 @@ export function AccountSettingsScreen({
   const [confirmLogout, setConfirmLogout] = useState(false);
   const logout = () => {
     logoutMockAccount();
-    navigateTo("/login?notice=logged-out");
+    // 로그아웃하면 인트로로 간다(2026-09-15). 다시 들어올 때는 소개 → 기존회원용 로그인.
+    navigateTo("/intro");
   };
   const emailAddress =
     account?.authProvider === "apple"
