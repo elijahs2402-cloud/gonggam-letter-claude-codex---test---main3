@@ -7,6 +7,9 @@ import { navigateTo } from "../../utils/navigation";
 import { getReadCardPath } from "../../data/waitingLetters";
 import styles from "./HomeRuledScreen.module.css";
 import refined from "./HomeRuledRefinedScreen.module.css";
+// 홈 머리·소식 카드 CSS Modules(전역에서 옮김): 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+// 두 홈 모듈보다 뒤에 import 해야 원래(전역) 적용 순서가 유지된다 — HomeScreen.module.css 머리 주석 참고.
+import home from "./HomeScreen.module.css";
 
 // 피그마 168-316 시안(괘선 2단 + 어두운 골동품 가구)에 '옅은 면'을 더한 홈.
 // 기존 /home 은 건드리지 않고 이 라우트에서만 비교한다.
@@ -92,14 +95,14 @@ export function HomeRuledScreen({
 
   return (
     <main
-      className={`mobile-prototype home-screen home-ruled-screen ${styles.screen}${isRefined ? ` ${refined.screen}` : refinedCardsOnly ? ` ${refined.cardsOnly}` : ""}`}
+      className={`mobile-prototype home-screen home-ruled-screen ${home["home-screen"]} ${home["home-ruled-screen"]} ${styles.screen}${isRefined ? ` ${refined.screen}` : refinedCardsOnly ? ` ${refined.cardsOnly}` : ""}`}
     >
       <div
-        className={`home-heading-top ${styles.headingTop}${isScrolled ? ` ${styles.scrolled}` : ""}`}
+        className={`home-heading-top ${home["home-heading-top"]} ${styles.headingTop}${isScrolled ? ` ${styles.scrolled}` : ""}`}
       >
-        <p className="home-brand">공감편지</p>
+        <p className={`home-brand ${home["home-brand"]}`}>공감편지</p>
         <button
-          className="home-notification-button"
+          className={`home-notification-button ${home["home-notification-button"]}`}
           type="button"
           onClick={() => navigateTo("/notifications")}
           aria-label={
@@ -111,27 +114,30 @@ export function HomeRuledScreen({
       </div>
 
       {previewNotice && (
-        <aside className="home-notice-card" role="status">
+        <aside
+          className={`home-notice-card ${home["home-notice-card"]}`}
+          role="status"
+        >
           <button
-            className="home-notice-dismiss"
+            className={`home-notice-dismiss ${home["home-notice-dismiss"]}`}
             type="button"
             aria-label="소식 닫기"
             onClick={() => navigateTo(homePath)}
           >
             ×
           </button>
-          <span className="home-notice-copy">
+          <span className={`home-notice-copy ${home["home-notice-copy"]}`}>
             <strong>{previewNotice.title}</strong>
             {previewNotice.time && (
               <span
-                className={`home-notice-countdown${noticePreview === "notice-expiring" ? " is-over" : ""}`}
+                className={`home-notice-countdown ${home["home-notice-countdown"]}${noticePreview === "notice-expiring" ? " is-over" : ""}`}
               >
                 {previewNotice.time}
               </span>
             )}
             {!previewNotice.time && (
               <span
-                className="home-notice-countdown home-notice-countdown--placeholder"
+                className={`home-notice-countdown home-notice-countdown--placeholder ${home["home-notice-countdown"]} ${home["home-notice-countdown--placeholder"]}`}
                 aria-hidden="true"
               >
                 시간 여백
@@ -139,7 +145,7 @@ export function HomeRuledScreen({
             )}
           </span>
           <button
-            className="home-notice-action"
+            className={`home-notice-action ${home["home-notice-action"]}`}
             type="button"
             onClick={previewNotice.onAction}
           >
@@ -149,16 +155,16 @@ export function HomeRuledScreen({
       )}
 
       <div
-        className={`home-scroll-region ${styles.scroll}${useRefinedCards ? ` ${refined.scroll}` : ""}`}
+        className={`home-scroll-region ${home["home-scroll-region"]} ${styles.scroll}${useRefinedCards ? ` ${refined.scroll}` : ""}`}
         onScroll={(event) => setIsScrolled(event.currentTarget.scrollTop > 4)}
       >
-        <header className="home-heading">
+        <header className={`home-heading ${home["home-heading"]}`}>
           <h1>
             <em>{name}</em>님,
             <br />
             오늘은 어떤 마음인가요?
           </h1>
-          <p className="home-heading-helper">
+          <p className={`home-heading-helper ${home["home-heading-helper"]}`}>
             지금 마음이 향하는 쪽을 골라주세요.
           </p>
         </header>
