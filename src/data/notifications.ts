@@ -6,15 +6,14 @@ export type MockNotificationType =
   | "letter_assigned"
   | "reply_reminder"
   | "report_received"
-  | "report_resolved"
-  | "service_notice";
+  | "report_resolved";
 export type MockNotification = {
   id: string;
   userId: string;
   type: MockNotificationType;
   title: string;
   message: string;
-  targetType?: "letter" | "reply" | "report" | "notice";
+  targetType?: "letter" | "reply" | "report";
   targetId?: string;
   targetRoute?: string;
   isRead: boolean;
@@ -74,7 +73,9 @@ export function getNotifications(userId = getCurrentUserId()) {
     .filter(
       (item) =>
         item.userId === userId &&
-        (item as { type?: string }).type !== "letter_read",
+        (item as { type?: string }).type !== "letter_read" &&
+        // 서비스 이용 안내 알림은 2026-09-15 없앴다 — 기기에 남은 옛 알림도 보이지 않게 한다.
+        (item as { type?: string }).type !== "service_notice",
     )
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }

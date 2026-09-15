@@ -57,7 +57,15 @@ export function NotificationsScreen({
   const open = (notice: MockNotification) => {
     markNotificationRead(notice.id);
     refresh();
-    if (!notice.targetRoute || notice.type === "service_notice") {
+    // 신고 접수·검토 완료 알림은 차단 및 신고 관리에서 내역을 본다(2026-09-15).
+    if (
+      notice.type === "report_received" ||
+      notice.type === "report_resolved"
+    ) {
+      navigateTo("/safety-management");
+      return;
+    }
+    if (!notice.targetRoute) {
       setNoticeDetail(notice);
       return;
     }
