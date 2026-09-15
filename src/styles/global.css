@@ -4847,20 +4847,6 @@ html[data-ios-standalone="true"] .intro-copy {
        글자가 커지면서 270px 폭에서 한 줄이 어색하게 끊겨 max-width 를 290px 로 함께 넓혔다.
    개발 확인용 .common-state-developer 의 12px 은 캡션이 맞아 그대로 둔다.
    같은 19px 이 .my-space-identity strong 과 .policy-document h2 에도 있다 — 이 화면 밖이라 두었다. */
-.common-state-screen {
-  display: flex;
-  min-height: var(--app-viewport-height, 100dvh);
-  flex-direction: column;
-  background: var(--paper);
-}
-.common-state {
-  display: grid;
-  min-height: 330px;
-  align-content: center;
-  justify-items: center;
-  padding: 56px 30px;
-  text-align: center;
-}
 .common-state.is-compact {
   min-height: 285px;
   padding: 42px 10px;
@@ -4868,68 +4854,8 @@ html[data-ios-standalone="true"] .intro-copy {
    만큼만 차지해 위쪽에 붙는다 — align-content:center 는 이미 있었지만 기준이 될 높이가
    없어 아무 일도 하지 않고 있었다. 다른 화면 안에 끼워 쓰는 .common-state 는 건드리지
    않도록 직계 자식으로만 좁힌다. */
-.common-state-screen > .common-state {
-  flex: 1 1 auto;
-}
-.common-state-mark {
-  display: grid;
-  width: 27px;
-  height: 27px;
-  place-items: center;
-  margin-bottom: 19px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a72));
-  border-radius: 50%;
-  color: var(--deep-plum);
-  font: 400 var(--fs-section) var(--font-serif);
-}
-.common-state--error .common-state-mark,
-.common-state--offline .common-state-mark {
-  border-color: rgba(var(--terracotta-rgb), var(--a60));
-  color: var(--terracotta);
-}
-.common-state h1 {
-  margin: 0;
-  font: var(--fw-title) var(--fs-state-title)/var(--lh-title) var(--font-serif);
-  letter-spacing: var(--ls-title);
-}
-.common-state p {
-  max-width: 290px;
-  margin: 12px 0 0;
-  color: var(--muted-ink);
-  font: var(--fs-body-sm)/var(--lh-normal) var(--font-sans);
-}
-.common-state-actions {
-  display: grid;
-  width: min(100%, 250px);
-  gap: 10px;
-  margin-top: 25px;
-}
 .common-state-actions .flow-primary-button {
   width: 100%;
-}
-.common-state-developer {
-  margin-top: 23px;
-  color: var(--muted-ink);
-  font: 12px var(--font-sans);
-}
-.common-state-skeleton {
-  display: grid;
-  width: 100%;
-  max-width: 290px;
-  gap: 10px;
-  margin-bottom: 26px;
-}
-.common-state-skeleton i {
-  display: block;
-  height: 12px;
-  background: rgba(123, 91, 166, var(--a10));
-}
-.common-state-skeleton i:first-child {
-  width: 56%;
-  height: 18px;
-}
-.common-state-skeleton i:last-child {
-  width: 77%;
 }
 
 /* Home action notice: a centred, quiet paper layer. */

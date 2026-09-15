@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { navigateTo } from "../../utils/navigation";
+// CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import styles from "./CommonStates.module.css";
 
 export type CommonStateVariant =
   | "loading"
@@ -46,23 +48,31 @@ export function PageState({
   developerMessage,
   children,
 }: Props) {
+  // 모듈에는 error·offline 변형 규칙만 있다 — 그 밖의 변형이면 모듈 class 를 붙이지 않는다.
+  const variantModule = styles[`common-state--${variant}`];
   return (
     <section
-      className={`common-state common-state--${variant}${compact ? " is-compact" : ""}`}
+      className={`common-state common-state--${variant} ${styles["common-state"]}${variantModule ? ` ${variantModule}` : ""}${compact ? " is-compact" : ""}`}
       aria-busy={variant === "loading" || undefined}
       aria-live={
         variant === "error" || variant === "offline" ? "assertive" : "polite"
       }
     >
       {variant === "loading" && (
-        <div className="common-state-skeleton" aria-hidden="true">
+        <div
+          className={`common-state-skeleton ${styles["common-state-skeleton"]}`}
+          aria-hidden="true"
+        >
           <i />
           <i />
           <i />
         </div>
       )}
       {variant !== "loading" && variant !== "not_found" && (
-        <span className="common-state-mark" aria-hidden="true">
+        <span
+          className={`common-state-mark ${styles["common-state-mark"]}`}
+          aria-hidden="true"
+        >
           {variant === "error" || variant === "offline" ? "!" : "·"}
         </span>
       )}
@@ -70,7 +80,9 @@ export function PageState({
       {description && <p>{description}</p>}
       {children}
       {(primaryAction || secondaryAction) && (
-        <div className="common-state-actions">
+        <div
+          className={`common-state-actions ${styles["common-state-actions"]}`}
+        >
           {primaryAction && (
             <button
               type="button"
@@ -92,7 +104,9 @@ export function PageState({
         </div>
       )}
       {isDevelopmentPreview() && developerMessage && (
-        <small className="common-state-developer">
+        <small
+          className={`common-state-developer ${styles["common-state-developer"]}`}
+        >
           개발 확인 · {developerMessage}
         </small>
       )}
@@ -101,7 +115,9 @@ export function PageState({
 }
 export function NotFoundScreen() {
   return (
-    <main className="mobile-prototype common-state-screen">
+    <main
+      className={`mobile-prototype common-state-screen ${styles["common-state-screen"]}`}
+    >
       <PageState
         variant="not_found"
         title="이 화면은 지금 없어요"
@@ -138,7 +154,9 @@ export function ServiceStateScreen({
   } as const;
   const [title, description] = copy[variant];
   return (
-    <main className="mobile-prototype common-state-screen">
+    <main
+      className={`mobile-prototype common-state-screen ${styles["common-state-screen"]}`}
+    >
       <PageState
         variant={variant}
         title={title}

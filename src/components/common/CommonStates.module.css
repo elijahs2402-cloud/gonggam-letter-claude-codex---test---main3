@@ -1,0 +1,85 @@
+/*
+  공통 상태 화면 스타일 — 없는 페이지(NotFoundScreen) · 서비스 상태(ServiceStateScreen) · PageState
+  (CSS Modules 전환, 2026-09-15)
+
+  src/styles/global.css 에서 이 컴포넌트만 쓰는 common-state-* 규칙을 원래 순서대로 옮겼다. 선택자와 선언은 그대로다.
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.
+  - 상태 변형 class(common-state--error · --offline)는 이 모듈에 규칙이 있을 때만 모듈 class 를 붙인다.
+  - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
+  - global.css 에 남긴 규칙: .common-state.is-compact, .common-state-actions .flow-primary-button
+    (코드 분석상 다른 폴더 이름과 겹쳐 '공유'로 분류됨)
+*/
+.common-state-screen {
+  display: flex;
+  min-height: var(--app-viewport-height, 100dvh);
+  flex-direction: column;
+  background: var(--paper);
+}
+.common-state {
+  display: grid;
+  min-height: 330px;
+  align-content: center;
+  justify-items: center;
+  padding: 56px 30px;
+  text-align: center;
+}
+.common-state-screen > .common-state {
+  flex: 1 1 auto;
+}
+.common-state-mark {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  margin-bottom: 19px;
+  border: 1px solid rgba(var(--gold-rgb), var(--a72));
+  border-radius: 50%;
+  color: var(--deep-plum);
+  font: 400 var(--fs-section) var(--font-serif);
+}
+.common-state--error .common-state-mark,
+.common-state--offline .common-state-mark {
+  border-color: rgba(var(--terracotta-rgb), var(--a60));
+  color: var(--terracotta);
+}
+.common-state h1 {
+  margin: 0;
+  font: var(--fw-title) var(--fs-state-title)/var(--lh-title) var(--font-serif);
+  letter-spacing: var(--ls-title);
+}
+.common-state p {
+  max-width: 290px;
+  margin: 12px 0 0;
+  color: var(--muted-ink);
+  font: var(--fs-body-sm)/var(--lh-normal) var(--font-sans);
+}
+.common-state-actions {
+  display: grid;
+  width: min(100%, 250px);
+  gap: 10px;
+  margin-top: 25px;
+}
+.common-state-developer {
+  margin-top: 23px;
+  color: var(--muted-ink);
+  font: 12px var(--font-sans);
+}
+.common-state-skeleton {
+  display: grid;
+  width: 100%;
+  max-width: 290px;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.common-state-skeleton i {
+  display: block;
+  height: 12px;
+  background: rgba(123, 91, 166, var(--a10));
+}
+.common-state-skeleton i:first-child {
+  width: 56%;
+  height: 18px;
+}
+.common-state-skeleton i:last-child {
+  width: 77%;
+}
