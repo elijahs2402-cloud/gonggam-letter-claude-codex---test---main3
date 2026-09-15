@@ -73,23 +73,14 @@ const rules: ReadonlyArray<{
   pattern: RegExp;
   message: string;
 }> = [
+  // 지금은 욕설 표현만 걸러낸다(2026-09-15 결정). 걸리면 고친 뒤에만 보낼 수 있다.
+  // 아래 단어는 자리 표시다 — 개발팀이 정한 욕설 목록으로 교체할 예정.
+  // (자해·폭력 표현 규칙은 같은 날 지웠다. 그런 글을 어떻게 다룰지는 기획 정책으로 정한다.)
   {
     category: "harassment",
     severity: "warning",
     pattern: /(한심해|멍청해|네 탓이야|꺼져|죽어라|미친)/g,
     message: "상대를 상처 입힐 수 있는 표현이 포함되어 있을 수 있어요.",
-  },
-  {
-    category: "self_harm_risk",
-    severity: "warning",
-    pattern: /(자해|나를 해칠|죽고 싶|목숨을 끊)/g,
-    message: "안전을 위해 내용을 조금 다듬어주세요.",
-  },
-  {
-    category: "violence_risk",
-    severity: "warning",
-    pattern: /(죽여|해치겠|폭력|칼로)/g,
-    message: "안전을 위해 내용을 조금 다듬어주세요.",
   },
 ];
 

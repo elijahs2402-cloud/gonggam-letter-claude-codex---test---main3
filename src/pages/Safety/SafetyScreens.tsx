@@ -61,8 +61,8 @@ function ReviewNotice({
         조금만 다듬어볼까요?
       </h1>
       <p>
-        누군가를 알아볼 수 있는 정보나 직접 연결을 요청하는 표현이 있어요.
-        내용은 이 기기에 그대로 보관되어 있어요.
+        상처가 될 수 있는 표현이 있어요. 내용은 이 기기에 그대로 보관되어
+        있어요.
       </p>
       <article className="flow-letter-paper">
         <blockquote>{content}</blockquote>
