@@ -16,6 +16,8 @@ import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
 import onboarding from "./OnboardingScreen.module.css";
 // 닉네임 정하기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import nickname from "./NicknameEntryScreen.module.css";
+// 로그인 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import login from "./LoginScreen.module.css";
 
 function AuthShell({
   children,
@@ -201,7 +203,9 @@ export function LoginScreen() {
     <AuthShell className="login-screen">
       <AuthHeader backTo="/onboarding" />
       <div className="auth-scroll">
-        <section className="auth-intro-copy auth-intro-copy--login">
+        <section
+          className={`auth-intro-copy auth-intro-copy--login ${login["auth-intro-copy--login"]}`}
+        >
           <p>이름 없이 오가는 한 통의 편지</p>
           {isNewComer ? (
             <h1>
@@ -222,23 +226,29 @@ export function LoginScreen() {
         </section>
 
         {failed && (
-          <section className="auth-login-error" role="alert">
+          <section
+            className={`auth-login-error ${login["auth-login-error"]}`}
+            role="alert"
+          >
             <strong>로그인하지 못했어요.</strong>
             <p>잠시 후 다시 시도해주세요.</p>
           </section>
         )}
 
-        <section className="auth-provider-list" aria-label="로그인 방법">
+        <section
+          className={`auth-provider-list ${login["auth-provider-list"]}`}
+          aria-label="로그인 방법"
+        >
           {loginProviderOrder.map((provider) => (
             <button
               key={provider}
-              className="auth-provider-button"
+              className={`auth-provider-button ${login["auth-provider-button"]}`}
               type="button"
               disabled={loggingIn}
               onClick={() => start(provider)}
             >
               <span
-                className={`auth-provider-mark auth-provider-mark--${provider}`}
+                className={`auth-provider-mark auth-provider-mark--${provider} ${login["auth-provider-mark"]}`}
                 aria-hidden="true"
               >
                 <img
@@ -253,8 +263,10 @@ export function LoginScreen() {
                 />
               </span>
               {loggingIn && snapshot.pendingProvider === provider ? (
-                <span className="auth-loading-copy">
-                  <i className="auth-spinner" />
+                <span
+                  className={`auth-loading-copy ${login["auth-loading-copy"]}`}
+                >
+                  <i className={`auth-spinner ${login["auth-spinner"]}`} />
                   로그인하고 있어요.
                 </span>
               ) : (
@@ -265,7 +277,9 @@ export function LoginScreen() {
         </section>
 
         {failed && (
-          <div className="auth-failure-actions">
+          <div
+            className={`auth-failure-actions ${login["auth-failure-actions"]}`}
+          >
             <button
               type="button"
               className="auth-primary"
