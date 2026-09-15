@@ -110,8 +110,9 @@ function IntroScreen() {
       goTo(nextOnboarding);
       return;
     }
-    // A completed prototype account that is logged out follows the existing-user login path.
-    goTo(auth.account?.onboardingCompleted ? "/login" : "/onboarding");
+    // 로그아웃 상태면 신규·기존 모두 공감편지 소개부터 본다(2026-09-15 확정 흐름).
+    // 소개의 '시작하기'는 신규회원용, '이미 이용하고 있어요'는 기존회원용 로그인으로 간다.
+    goTo("/onboarding");
   };
   return (
     <ScreenShell className="intro-screen">

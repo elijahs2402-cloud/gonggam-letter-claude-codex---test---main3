@@ -272,16 +272,18 @@ function saveSnapshot(snapshot: MockAuthSnapshot) {
   if (snapshot.account) writeJson(ONBOARDING_KEY, snapshot.account);
 }
 
-export function beginMockLogin(provider: MockAuthProvider) {
+// mode: 어느 로그인 화면에서 눌렀는지 — 신규회원용이면 "new"(약관부터), 기존회원용이면 "existing"(환영 → 홈).
+// 로그인 결과를 기기에 남은 계정이 아니라 들어온 화면으로 정한다(2026-09-15 확정 흐름).
+export function beginMockLogin(
+  provider: MockAuthProvider,
+  mode: "new" | "existing",
+) {
   const snapshot = getMockAuthSnapshot();
-  const fallbackMode = snapshot.account?.onboardingCompleted
-    ? "existing"
-    : "new";
   saveSnapshot({
     ...snapshot,
     state: "logging_in",
     pendingProvider: provider,
-    loginMode: snapshot.loginMode ?? fallbackMode,
+    loginMode: mode,
   });
 }
 
@@ -327,6 +329,9 @@ export function resolveMockLogin() {
       ? snapshot.account
         ? {
             ...snapshot.account,
+            // 가입을 중간에 멈춘 계정으로 기존회원 로그인을 하면 이름이 없을 수 있다
+            anonymousName:
+              snapshot.account.anonymousName ?? generateAnonymousName(),
             authProvider: provider,
             onboardingCompleted: true,
             termsAccepted: true,

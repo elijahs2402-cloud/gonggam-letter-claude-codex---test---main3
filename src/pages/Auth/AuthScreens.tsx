@@ -167,17 +167,18 @@ export function LoginScreen() {
     return () => window.clearTimeout(timer);
   }, [loggingIn]);
 
-  const start = (provider: MockAuthProvider) => {
-    beginMockLogin(provider);
-    setSnapshot(getMockAuthSnapshot());
-  };
-
   // 이 화면은 신규·기존이 함께 쓴다. 로그인 전이라 신규 여부를
   // 계정으로 알 수 없으므로, 들어온 경로로 판단한다 —
   // 온보딩의 '시작하기'만 ?new=1 을 붙여 보낸다.
-  // '이미 이용하고 있어요'·인트로·직접 진입은 기존 문구를 본다.
+  // '이미 이용하고 있어요'·직접 진입은 기존 문구를 본다.
+  // 문구뿐 아니라 로그인 결과도 이 구분을 따른다(신규 → 약관, 기존 → 환영 → 홈).
   const isNewComer =
     new URLSearchParams(window.location.search).get("new") === "1";
+
+  const start = (provider: MockAuthProvider) => {
+    beginMockLogin(provider, isNewComer ? "new" : "existing");
+    setSnapshot(getMockAuthSnapshot());
+  };
 
   return (
     <AuthShell className="login-screen">
@@ -378,42 +379,19 @@ export function DirectNicknameScreen() {
   const validName = Boolean(name.trim());
   const recommendName = () => setName(generateAnonymousName(name || undefined));
 
-  /* 이름을 확정한 뒤의 환영 연출.
-     원래는 연결되지 않은 /anonymous-name 화면에만 있었고, 정작 신규 가입자가
-     실제로 지나는 이 화면에는 없어서 이름을 정하면 곧장 홈으로 넘어갔다.
-     가입의 마지막이자 자기 이름이 처음 불리는 자리라 그 연출을 이리로 옮겼다.
-     시간(2510ms 머무르고 720ms 걸쳐 사라짐)과 클래스는 원래 값 그대로 쓴다 —
-     CSS(.anonymous-name-welcome)가 그 길이에 맞춰 짜여 있다. */
-  const [isCompleting, setIsCompleting] = useState(false);
-  const [isWelcomeVisible, setIsWelcomeVisible] = useState(false);
-  const [isWelcomeLeaving, setIsWelcomeLeaving] = useState(false);
-  const [welcomeName, setWelcomeName] = useState("");
-
-  useEffect(() => {
-    if (!isCompleting) return;
-    // 한 박자 뒤에 나타나게 해야 등장 애니메이션이 재생된다.
-    const revealTimer = window.setTimeout(() => setIsWelcomeVisible(true), 90);
-    return () => window.clearTimeout(revealTimer);
-  }, [isCompleting]);
-
+  /* 이름을 확정하면 환영 화면(/returning-welcome)으로 간다.
+     예전에는 이 화면 위에 같은 환영문구(.anonymous-name-welcome)를 겹쳐 띄웠는데,
+     신규·기존 유저가 같은 환영 화면을 거치도록 2026-09-15 통일했다. */
   const continueWithName = () => {
     const finalizedName = name.trim();
-    if (!finalizedName || isCompleting) return;
+    if (!finalizedName) return;
     confirmAnonymousName(finalizedName);
-    setWelcomeName(finalizedName);
-    setIsWelcomeVisible(false);
-    setIsCompleting(true);
-    window.setTimeout(() => {
-      setIsWelcomeLeaving(true);
-      window.setTimeout(() => navigateTo("/home"), 720);
-    }, 2510);
+    navigateTo("/returning-welcome");
   };
 
   return (
-    <AuthShell
-      className={`direct-nickname-screen${isCompleting ? " anonymous-name-screen motion-preview is-completing" : ""}`}
-    >
-      <AuthHeader backTo="/terms-of-service" title="이름 정하기" />
+    <AuthShell className="direct-nickname-screen">
+      <AuthHeader backTo="/terms-consent" title="이름 정하기" />
       <div className="auth-scroll direct-nickname-scroll">
         <section
           className="direct-nickname-content"
@@ -469,23 +447,12 @@ export function DirectNicknameScreen() {
         <button
           className="auth-primary"
           type="button"
-          disabled={!validName || isCompleting}
+          disabled={!validName}
           onClick={continueWithName}
         >
           이 이름으로 시작하기
         </button>
       </footer>
-      {isCompleting && (
-        <div
-          className={`anonymous-name-welcome${isWelcomeVisible ? " is-visible" : ""}${isWelcomeLeaving ? " is-leaving" : ""}`}
-          role="status"
-          aria-live="polite"
-        >
-          <p>
-            <strong>{welcomeName}</strong>님, 반가워요.
-          </p>
-        </div>
-      )}
     </AuthShell>
   );
 }
