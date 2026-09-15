@@ -27,7 +27,6 @@ export type MockNotificationSettings = {
   letterUpdates: boolean;
   replyReminders: boolean;
   safetyUpdates: boolean;
-  serviceNotices: boolean;
   updatedAt: string;
 };
 
@@ -156,7 +155,6 @@ export function getNotificationSettings(
       letterUpdates: true,
       replyReminders: true,
       safetyUpdates: true,
-      serviceNotices: true,
       updatedAt: new Date().toISOString(),
     }
   );

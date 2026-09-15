@@ -2,15 +2,11 @@ import { useState } from "react";
 import { getBlockedUsers } from "../../data/blocks";
 import { getCurrentUserId, getReceivedRepliesByUser } from "../../data/letters";
 import {
-  deleteMockAccount,
   generateAnonymousName,
   getCurrentAnonymousName,
-  getMockAuthSnapshot,
-  logoutMockAccount,
   updateAnonymousName,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo } from "../../utils/navigation";
-import { isDevelopmentPreview } from "../../components/common/CommonStates";
 import { getNotificationSettings } from "../../data/notifications";
 import { getReportsByUser } from "../../data/reports";
 
@@ -417,139 +413,6 @@ export function AppInfoScreen() {
           </button>
         </section>
       </div>
-    </main>
-  );
-}
-
-function providerLabel(provider?: string) {
-  if (provider === "apple") return "Apple";
-  if (provider === "google") return "Google";
-  if (provider === "kakao") return "토스";
-  return "mock";
-}
-
-export function AccountSettingsScreen() {
-  const account = getMockAuthSnapshot().account;
-  const [dialog, setDialog] = useState<"logout" | "delete" | undefined>();
-
-  const logout = () => {
-    logoutMockAccount();
-    navigateTo("/intro");
-  };
-
-  const removeAccount = () => {
-    deleteMockAccount();
-    navigateTo("/intro");
-  };
-
-  return (
-    <main className="mobile-prototype account-settings-screen">
-      <Header title="계정 관리" />
-      <div className="my-detail-scroll">
-        <section className="subpage-heading">
-          <h1>계정 관리</h1>
-          <p>이 기기에서 공감편지를 어떻게 이어갈지 정할 수 있어요.</p>
-        </section>
-        <section className="account-state-card">
-          <p>현재 연결된 mock 계정</p>
-          <strong>{account?.anonymousName ?? "익명 사용자"}</strong>
-          <span>
-            {providerLabel(account?.authProvider)}로 연결된 프로토타입
-            계정이에요.
-          </span>
-        </section>
-        <section className="account-action-list" aria-label="계정 행동">
-          <button type="button" onClick={() => setDialog("logout")}>
-            <span>
-              <strong>로그아웃</strong>
-              <small>
-                다시 로그인하면 이 기기의 기록을 이어서 볼 수 있어요.
-              </small>
-            </span>
-            <i aria-hidden="true">›</i>
-          </button>
-          <button
-            className="is-danger"
-            type="button"
-            onClick={() => setDialog("delete")}
-          >
-            <span>
-              <strong>회원 탈퇴</strong>
-              <small>
-                프로토타입에서는 실제 서버 데이터 삭제 대신 계정 연결만
-                해제해요.
-              </small>
-            </span>
-            <i aria-hidden="true">›</i>
-          </button>
-        </section>
-        {isDevelopmentPreview() && (
-          <p className="account-settings-note">
-            TODO · 실제 서비스에서는 인증 세션 종료, 계정 삭제 요청, 법정 보관
-            기간, 문의 경로를 별도 API와 정책 문서로 연결해야 해요.
-          </p>
-        )}
-      </div>
-      {dialog === "logout" && (
-        <div className="auth-dialog-backdrop">
-          <section
-            className="auth-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="logout-dialog-title"
-          >
-            <p>계정 관리</p>
-            <h2 id="logout-dialog-title">로그아웃할까요?</h2>
-            <span>
-              편지와 간직한 문구는 이 기기에 그대로 남아요.
-              <br />
-              다시 로그인하면 이어서 볼 수 있어요.
-            </span>
-            <button className="auth-primary" type="button" onClick={logout}>
-              로그아웃
-            </button>
-            <button
-              className="auth-secondary"
-              type="button"
-              onClick={() => setDialog(undefined)}
-            >
-              계속 머물기
-            </button>
-          </section>
-        </div>
-      )}
-      {dialog === "delete" && (
-        <div className="auth-dialog-backdrop">
-          <section
-            className="auth-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="delete-dialog-title"
-          >
-            <p>계정 관리</p>
-            <h2 id="delete-dialog-title">탈퇴 처리를 진행할까요?</h2>
-            <span>
-              이 화면은 프로토타입 확인용이에요.
-              <br />
-              편지, 답장, 간직한 문구 데이터는 개발 검수를 위해 삭제하지 않아요.
-            </span>
-            <button
-              className="auth-primary"
-              type="button"
-              onClick={removeAccount}
-            >
-              탈퇴 처리하기
-            </button>
-            <button
-              className="auth-secondary"
-              type="button"
-              onClick={() => setDialog(undefined)}
-            >
-              취소
-            </button>
-          </section>
-        </div>
-      )}
     </main>
   );
 }

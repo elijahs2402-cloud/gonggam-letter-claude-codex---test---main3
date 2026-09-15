@@ -874,18 +874,6 @@
   font-style: normal;
   font-weight: 700;
 }
-.home-priority-card > button:not(.flow-text-button),
-.home-progress-card > button,
-.home-empty-letter > button {
-  width: 100%;
-  min-height: 43px;
-  border: 1px solid var(--deep-plum);
-  background: var(--deep-plum);
-  color: #fff;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 700;
-}
 @keyframes home-skeleton {
   0%,
   100% {
@@ -1555,19 +1543,9 @@ html[data-ios-standalone="true"] .intro-copy {
 
 /* Direction A */
 
-.a-choice.is-selected .a-choice-index,
-.a-choice.is-selected strong {
-  color: var(--deep-plum);
-}
-
 /* Direction B */
 
 /* Direction C */
-
-.c-option.is-selected .c-number,
-.c-option.is-selected strong {
-  color: var(--terracotta);
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .intro-cta,
@@ -1618,27 +1596,6 @@ html[data-ios-standalone="true"] .intro-copy {
   font-weight: 500;
   line-height: 1.45;
   letter-spacing: -0.03em;
-}
-
-.write-variant-a .letter-preview .letter-kicker,
-.write-variant-a .letter-preview .variant-send-complete-copy {
-  font-family: var(--font-sans);
-}
-
-.write-variant-a .letter-preview h2,
-.write-variant-a .letter-preview .preview-body {
-  font-family: var(--font-serif);
-}
-
-.write-variant-a .letter-preview .preview-body::before,
-.write-variant-a .letter-preview .preview-body::after {
-  display: block;
-  color: rgba(var(--deep-plum-rgb), var(--a72));
-  font-family: var(--font-serif);
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 0.75;
-  white-space: normal;
 }
 
 /* Reading */
@@ -2439,11 +2396,6 @@ html[data-ios-standalone="true"] .intro-copy {
     animation: app-dialog-rise-in 420ms cubic-bezier(0.22, 1, 0.36, 1) 40ms both;
   }
 
-  .variant-save-toast.is-leaving,
-  .reply-save-toast.is-leaving {
-    animation-name: app-save-toast-out;
-  }
-
   .mobile-prototype button {
     transition:
       color 220ms ease,
@@ -2474,11 +2426,6 @@ html[data-ios-standalone="true"] .intro-copy {
   .mobile-prototype.is-page-leaving {
     animation-name: app-reduced-fade-out !important;
     animation-duration: 100ms !important;
-  }
-
-  .mobile-prototype .variant-save-toast.is-leaving,
-  .mobile-prototype .reply-save-toast.is-leaving {
-    animation-name: app-reduced-fade-out !important;
   }
 
   /* Keep the loading state legible without reintroducing positional motion. */
@@ -3380,11 +3327,6 @@ html[data-ios-standalone="true"] .intro-copy {
   margin-right: 10px;
   color: var(--status-caution-text);
 }
-.assign-question .flow-primary-button,
-.assign-question .flow-secondary-button {
-  width: 100%;
-  margin-top: 9px;
-}
 
 .reply-compose-intro {
   position: relative;
@@ -4096,11 +4038,6 @@ html[data-ios-standalone="true"] .intro-copy {
   min-height: 40px;
   font-size: 12px;
 }
-.reader-read-confirm .flow-primary-button,
-.reader-read-confirm .flow-secondary-button {
-  width: 100%;
-  margin-top: 9px;
-}
 
 .draft-exit-overlay {
   position: fixed;
@@ -4713,79 +4650,6 @@ html[data-ios-standalone="true"] .intro-copy {
   margin-top: 10px;
   color: var(--muted-ink);
   font: 12px/1.65 var(--font-sans);
-}
-.name-candidate .flow-primary-button,
-.name-candidate .flow-secondary-button {
-  width: 100%;
-  margin-top: 9px;
-}
-.account-state-card {
-  margin-top: 30px;
-  padding: 20px 0;
-  border-top: 1px solid var(--frame-rule);
-  border-bottom: 1px solid var(--frame-rule);
-}
-.account-state-card p {
-  margin: 0 0 8px;
-  color: var(--deep-plum);
-  font: 600 12px var(--font-sans);
-}
-.account-state-card strong {
-  display: block;
-  font: 400 var(--fs-state-title) var(--font-serif);
-  letter-spacing: -0.03em;
-}
-.account-state-card span {
-  display: block;
-  margin-top: 9px;
-  color: var(--muted-ink);
-  font: var(--fs-body-sm)/var(--lh-normal) var(--font-sans);
-}
-.account-action-list {
-  margin-top: 30px;
-  border-top: 1px solid rgba(var(--ink-rgb), var(--a15));
-}
-.account-action-list button {
-  width: 100%;
-  min-height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 15px 0;
-  border: 0;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a15));
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-.account-action-list strong,
-.account-action-list small {
-  display: block;
-}
-.account-action-list strong {
-  color: var(--ink);
-  font: 400 15px var(--font-serif);
-}
-.account-action-list small {
-  margin-top: 5px;
-  color: var(--muted-ink);
-  font: 12px/1.5 var(--font-sans);
-}
-.account-action-list i {
-  color: var(--deep-plum);
-  font-size: 21px;
-  font-style: normal;
-}
-.account-action-list .is-danger strong {
-  color: var(--terracotta);
-}
-.account-settings-note {
-  margin: 26px 0 0;
-  padding-left: 12px;
-  border-left: 2px solid rgba(var(--gold-rgb), var(--a60));
-  color: var(--muted-ink);
-  font: var(--fs-body-sm)/1.7 var(--font-sans);
 }
 
 /* Account settings — Figma node 22:96 */
