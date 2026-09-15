@@ -115,14 +115,19 @@ export function OnboardingRedesignScreen() {
               </p>
             </div>
           </article>
+          {/* 따로 떨어진 안내 박스였던 내용을 05번 항목으로 옮겼다(2026-09-15 사용자 요청). */}
+          <article>
+            <span>05</span>
+            <div>
+              <h2>전문 상담이나 진단을 제공하지 않아요</h2>
+              <p>
+                지금 바로 도움이 필요한 상황이라면
+                <br />
+                가까운 사람이나 전문적인 도움을 먼저 찾아주세요.
+              </p>
+            </div>
+          </article>
         </section>
-        <aside className="onboarding-redesign-note">
-          <strong>공감편지는 전문 상담이나 진단을 제공하지 않아요.</strong>
-          <p>
-            지금 바로 도움이 필요한 상황이라면 가까운 사람이나 전문적인 도움을
-            먼저 찾아주세요.
-          </p>
-        </aside>
       </div>
       <footer className="auth-actions auth-actions--stacked onboarding-redesign-actions">
         <button

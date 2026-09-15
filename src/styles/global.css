@@ -191,6 +191,10 @@
   padding: 17px 0 18px;
   border-bottom: 1px solid rgba(var(--gold-rgb), var(--a33));
 }
+/* 마지막 항목(05) 아래에는 금색 라인을 두지 않는다(2026-09-15 사용자 요청). */
+.onboarding-redesign-steps article:last-child {
+  border-bottom: 0;
+}
 .onboarding-redesign-steps span {
   padding-top: 3px;
   color: var(--status-caution-text);
@@ -215,27 +219,6 @@
   line-height: 1.7;
   letter-spacing: -0.035em;
 }
-.onboarding-redesign-note {
-  margin-top: 25px;
-  padding: 7px 0 7px 13px;
-  border-left: 2px solid rgba(var(--gold-rgb), var(--a72));
-  color: var(--muted-ink);
-}
-.onboarding-redesign-note strong {
-  display: block;
-  color: var(--ink);
-  font-family: var(--font-serif);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: var(--lh-normal);
-  letter-spacing: -0.035em;
-}
-.onboarding-redesign-note p {
-  margin: 6px 0 0;
-  font-family: var(--font-sans);
-  font-size: var(--fs-body-sm);
-  line-height: 1.7;
-}
 .onboarding-redesign-actions {
   background: rgba(var(--paper-rgb), var(--a95));
 }
@@ -250,9 +233,6 @@
   }
   .onboarding-redesign-steps article {
     padding-block: 13px;
-  }
-  .onboarding-redesign-note {
-    margin-top: 17px;
   }
 }
 .auth-actions {
