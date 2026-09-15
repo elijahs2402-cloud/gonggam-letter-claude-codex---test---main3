@@ -4258,24 +4258,6 @@ html[data-ios-standalone="true"] .intro-copy {
   color: var(--deep-plum);
   font: 600 12px var(--font-sans);
 }
-.dormant-account-copy {
-  padding-top: 60px;
-}
-.dormant-account-note {
-  display: grid;
-  gap: 8px;
-  margin-top: 34px;
-  padding: 19px 0;
-  border-top: 1px solid var(--frame-rule);
-  border-bottom: 1px solid var(--frame-rule);
-}
-.dormant-account-note strong {
-  font: 400 16px/1.55 var(--font-serif);
-}
-.dormant-account-note span {
-  color: var(--muted-ink);
-  font: 12px/1.65 var(--font-sans);
-}
 .report-screen {
   display: grid;
   gap: 11px;

@@ -38,7 +38,6 @@ import {
 import {
   AuthGateRedirect,
   DirectNicknameScreen,
-  DormantAccountScreen,
   LoginScreen,
   OnboardingRedesignScreen,
   ReturningWelcomeScreen,
@@ -153,7 +152,6 @@ export function App() {
   if (path === "/" || path === "/intro") return <IntroScreen />;
 
   if (path === "/onboarding") return <OnboardingRedesignScreen />;
-  if (path === "/dormant-account") return <DormantAccountScreen />;
   if (path === "/login") {
     if (isMockAuthenticated()) return <AuthGateRedirect to="/home" />;
     return <LoginScreen />;

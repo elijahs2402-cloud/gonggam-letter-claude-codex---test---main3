@@ -496,43 +496,6 @@ export function ReturningWelcomeScreen() {
   );
 }
 
-export function DormantAccountScreen() {
-  return (
-    <AuthShell className="dormant-account-screen">
-      <AuthHeader backTo="/login" title="재방문 안내" />
-      <div className="auth-scroll">
-        <section className="auth-intro-copy dormant-account-copy">
-          <p>오랜만이에요</p>
-          <h1>
-            잠시 쉬고 있던
-            <br />
-            계정을 다시 확인할게요
-          </h1>
-          <p className="auth-helper">
-            안전하게 다시 시작할 수 있도록 로그인 방식을 한 번 더 확인해주세요.
-          </p>
-          <section className="dormant-account-note">
-            <strong>내 편지와 기록은 그대로 보관되어 있어요.</strong>
-            <span>
-              실제 서비스에서는 휴면 전환 기준과 본인 확인 절차를 정책에 맞춰
-              연결합니다.
-            </span>
-          </section>
-        </section>
-      </div>
-      <footer className="auth-actions">
-        <button
-          className="auth-primary"
-          type="button"
-          onClick={() => navigateTo("/login")}
-        >
-          로그인 이어가기
-        </button>
-      </footer>
-    </AuthShell>
-  );
-}
-
 export function AuthGateRedirect({ to }: { to: string }) {
   useEffect(() => {
     replaceRoute(to);
