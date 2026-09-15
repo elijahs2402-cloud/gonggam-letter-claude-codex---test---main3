@@ -1,0 +1,210 @@
+/*
+  계정 관리 · 로그인 정보 · 데이터 보관 안내 · 계정 삭제 · 삭제 완료 · 이용 제한 화면 스타일
+  (CSS Modules 전환, 2026-09-15)
+
+  src/styles/global.css 에서 이 화면들만 쓰는 규칙을 원래 순서대로 옮겼다. 선택자와 선언은 그대로다.
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다
+    (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
+  - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
+  - global.css 에 남긴 계정 전용 규칙 9개:
+    · 모듈이 먼저 불러와져 전역의 같은 우선순위 규칙에 지던 6개(계산값 비교로 확인) —
+      .account-settings-scroll--figma · .account-withdrawal-scroll · .account-withdrawal-reason-scroll
+      (vs .my-detail-scroll), .account-withdrawal-copy h1 · .account-withdrawal-copy p ×2 (vs .subpage-heading …)
+    · .account-withdrawal-stage / .account-withdrawal-stage--back 과 그 reduced-motion 규칙 —
+      전역 @keyframes(app-stage-enter-*) 이름을 쓰는데, 모듈로 옮기면 애니메이션 이름이 모듈 이름으로 바뀔 수 있어서다.
+  - .account-empty-state 는 지금 어느 화면도 쓰지 않지만 .account-processing 과 한 규칙에 묶여 있어
+    선택자를 바꾸지 않으려고 함께 옮겼다.
+*/
+.account-copy-list {
+  margin: 28px 0;
+  border-top: 1px solid rgba(var(--gold-rgb), var(--a50));
+}
+.account-copy-list p {
+  margin: 0;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
+  color: var(--ink);
+  font: var(--fs-body-sm)/1.75 var(--font-sans);
+}
+.account-empty-state,
+.account-processing {
+  padding: 88px 30px;
+  text-align: center;
+}
+.account-empty-state h2,
+.account-processing h1 {
+  max-width: 20ch;
+  margin: 0 auto;
+  font: var(--fw-title) var(--fs-state-title)/var(--lh-title) var(--font-serif);
+  letter-spacing: var(--ls-title);
+  word-break: keep-all;
+}
+.account-empty-state p,
+.account-processing > p {
+  margin: 13px 0 24px;
+  color: var(--muted-ink);
+  font: 12px/1.7 var(--font-sans);
+}
+.account-processing--withdrawal-complete > p {
+  font-size: 14px;
+}
+.account-processing--restricted > p {
+  font-size: var(--fs-body-sm);
+}
+.account-processing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: max(88px, env(safe-area-inset-bottom));
+}
+.withdrawal-reasons {
+  display: grid;
+  gap: 9px;
+  margin: 28px 0 18px;
+}
+.withdrawal-reasons button {
+  min-height: 52px;
+  padding: 0 15px;
+  border: 1px solid rgba(var(--gold-rgb), var(--a50));
+  background: rgba(var(--surface-card-rgb), var(--a72));
+  color: var(--ink);
+  text-align: left;
+  font: var(--fs-body-sm) var(--font-sans);
+}
+.account-textarea {
+  display: block;
+  margin-bottom: 20px;
+  color: var(--muted-ink);
+  font: 12px var(--font-sans);
+}
+.account-textarea textarea {
+  display: block;
+  width: 100%;
+  min-height: 92px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid rgba(var(--gold-rgb), var(--a50));
+  border-radius: 0;
+  background: rgba(var(--surface-card-rgb), var(--a72));
+  font: var(--fs-body-sm)/1.6 var(--font-sans);
+  resize: vertical;
+}
+.is-danger-action {
+  background: var(--terracotta) !important;
+}
+.account-settings-list--figma {
+  width: 100%;
+  margin: 0;
+}
+.account-settings-row {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 81px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a15));
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.account-settings-list--figma > button.account-settings-row {
+  min-height: 62px;
+}
+.account-settings-row > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+.account-settings-row small {
+  display: block;
+  padding-top: 5px;
+  color: var(--muted-ink);
+  font: 400 14px/20px var(--font-sans);
+}
+.account-settings-row strong {
+  display: block;
+  overflow: hidden;
+  color: var(--ink);
+  font: 500 16px/1.35 var(--font-sans);
+  letter-spacing: var(--ls-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-settings-row--email {
+  cursor: default;
+}
+.account-settings-row--provider {
+  cursor: default;
+}
+.account-provider-icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  object-fit: contain;
+}
+.account-settings-row--delete strong {
+  color: var(--terracotta);
+}
+.account-settings-row--delete > i {
+  color: var(--muted-ink);
+  font: 300 32px/1 var(--font-sans);
+  font-style: normal;
+}
+.account-provider-mark {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: var(--ink);
+  font: 700 17px/1 var(--font-sans);
+  font-style: normal;
+}
+.account-provider-mark--apple {
+  font-size: 16px;
+}
+.account-provider-mark--kakao {
+  border: 1px solid rgba(var(--ink-rgb), var(--a40));
+  border-radius: 50%;
+  font-size: 12px;
+}
+.account-withdrawal-fixed-action {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.account-withdrawal-textarea {
+  position: relative;
+}
+.account-withdrawal-textarea > span {
+  color: var(--muted-ink);
+  font: 400 12px/1.5 var(--font-sans);
+}
+.account-withdrawal-textarea textarea {
+  min-height: 116px;
+  margin-top: 9px;
+}
+.account-withdrawal-textarea > small {
+  display: block;
+  margin-top: 6px;
+  color: #9a9083;
+  font: 400 12px/1 var(--font-sans);
+  text-align: right;
+}
+.account-settings-row strong {
+  line-height: 1.5;
+}
+.account-settings-row small {
+  line-height: 1.5;
+}
+.account-settings-row {
+  border-bottom-color: rgba(var(--ink-rgb), var(--a10));
+}

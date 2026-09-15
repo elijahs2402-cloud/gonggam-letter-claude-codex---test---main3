@@ -1728,92 +1728,13 @@ html[data-ios-standalone="true"] .intro-copy {
   }
 }
 
-.account-copy-list {
-  margin: 28px 0;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a50));
-}
-.account-copy-list p {
-  margin: 0;
-  padding: 17px 0;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
-  color: var(--ink);
-  font: var(--fs-body-sm)/1.75 var(--font-sans);
-}
-.account-empty-state,
-.account-processing {
-  padding: 88px 30px;
-  text-align: center;
-}
-.account-empty-state h2,
-.account-processing h1 {
-  max-width: 20ch;
-  margin: 0 auto;
-  font: var(--fw-title) var(--fs-state-title)/var(--lh-title) var(--font-serif);
-  letter-spacing: var(--ls-title);
-  word-break: keep-all;
-}
-.account-empty-state p,
-.account-processing > p {
-  margin: 13px 0 24px;
-  color: var(--muted-ink);
-  font: 12px/1.7 var(--font-sans);
-}
-.account-processing--withdrawal-complete > p {
-  font-size: 14px;
-}
-.account-processing--restricted > p {
-  font-size: var(--fs-body-sm);
-}
-.account-processing {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-bottom: max(88px, env(safe-area-inset-bottom));
-}
 .account-processing .flow-primary-button {
   margin-top: 14px;
-}
-.withdrawal-reasons {
-  display: grid;
-  gap: 9px;
-  margin: 28px 0 18px;
-}
-.withdrawal-reasons button {
-  min-height: 52px;
-  padding: 0 15px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a50));
-  background: rgba(var(--surface-card-rgb), var(--a72));
-  color: var(--ink);
-  text-align: left;
-  font: var(--fs-body-sm) var(--font-sans);
 }
 .withdrawal-reasons button.is-selected {
   border-color: var(--deep-plum);
   background: rgba(123, 91, 166, var(--a10));
   color: var(--deep-plum);
-}
-.account-textarea {
-  display: block;
-  margin-bottom: 20px;
-  color: var(--muted-ink);
-  font: 12px var(--font-sans);
-}
-.account-textarea textarea {
-  display: block;
-  width: 100%;
-  min-height: 92px;
-  box-sizing: border-box;
-  margin-top: 10px;
-  padding: 12px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a50));
-  border-radius: 0;
-  background: rgba(var(--surface-card-rgb), var(--a72));
-  font: var(--fs-body-sm)/1.6 var(--font-sans);
-  resize: vertical;
-}
-.is-danger-action {
-  background: var(--terracotta) !important;
 }
 
 /* QA reference alignment — shared warm editorial surface for current service routes.
@@ -4928,87 +4849,6 @@ html[data-ios-standalone="true"] .intro-copy {
   padding: var(--scroll-top) var(--gutter);
   overflow-y: auto;
 }
-.account-settings-list--figma {
-  width: 100%;
-  margin: 0;
-}
-.account-settings-row {
-  box-sizing: border-box;
-  display: flex;
-  width: 100%;
-  min-height: 81px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 0;
-  border: 0;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a15));
-  background: transparent;
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
-}
-.account-settings-list--figma > button.account-settings-row {
-  min-height: 62px;
-}
-.account-settings-row > span {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 4px;
-}
-.account-settings-row small {
-  display: block;
-  padding-top: 5px;
-  color: var(--muted-ink);
-  font: 400 14px/20px var(--font-sans);
-}
-.account-settings-row strong {
-  display: block;
-  overflow: hidden;
-  color: var(--ink);
-  font: 500 16px/1.35 var(--font-sans);
-  letter-spacing: var(--ls-body);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.account-settings-row--email {
-  cursor: default;
-}
-.account-settings-row--provider {
-  cursor: default;
-}
-.account-provider-icon {
-  display: block;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-  object-fit: contain;
-}
-.account-settings-row--delete strong {
-  color: var(--terracotta);
-}
-.account-settings-row--delete > i {
-  color: var(--muted-ink);
-  font: 300 32px/1 var(--font-sans);
-  font-style: normal;
-}
-.account-provider-mark {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  color: var(--ink);
-  font: 700 17px/1 var(--font-sans);
-  font-style: normal;
-}
-.account-provider-mark--apple {
-  font-size: 16px;
-}
-.account-provider-mark--kakao {
-  border: 1px solid rgba(var(--ink-rgb), var(--a40));
-  border-radius: 50%;
-  font-size: 12px;
-}
 
 /* Account deletion — a single, fixed destructive action like the letter flows. */
 .account-withdrawal-screen {
@@ -5032,32 +4872,8 @@ html[data-ios-standalone="true"] .intro-copy {
   font: 400 14px/1.75 var(--font-sans);
   letter-spacing: -0.03em;
 }
-.account-withdrawal-fixed-action {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
 .account-withdrawal-fixed-action .flow-primary-button {
   width: 100%;
-}
-.account-withdrawal-textarea {
-  position: relative;
-}
-.account-withdrawal-textarea > span {
-  color: var(--muted-ink);
-  font: 400 12px/1.5 var(--font-sans);
-}
-.account-withdrawal-textarea textarea {
-  min-height: 116px;
-  margin-top: 9px;
-}
-.account-withdrawal-textarea > small {
-  display: block;
-  margin-top: 6px;
-  color: #9a9083;
-  font: 400 12px/1 var(--font-sans);
-  text-align: right;
 }
 /* 한 화면 안에서 하위 뷰를 state 로 갈아끼울 때 쓰는 공용 전환.
    계정 삭제(이유↔확인)가 쓰던 것을 나의 공간 셸도 함께 쓰도록 이름만
@@ -7467,9 +7283,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
 }
 
 /* 항목명 행간이 계정 관리 1.35 / 알림 설정 1.5 로 달랐다 */
-.account-settings-row strong {
-  line-height: 1.5;
-}
 
 /* 오른쪽 액션·상태 글자도 목록과 같은 산세 계열로 */
 .management-screen button,
@@ -7496,9 +7309,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
 }
 
 /* 항목 설명문 행간 1.5 */
-.account-settings-row small {
-  line-height: 1.5;
-}
 
 /* 이용 안내의 대제목을 뺐으니, 대제목과 첫 항목을 띄우던 34px 여백도
    같이 없앤다. 처리방침과 같이 스크롤 상단 여백(32px)에서 바로 시작한다.
@@ -7553,9 +7363,6 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
 }
 
 /* 계정 관리 — 15% 였다 */
-.account-settings-row {
-  border-bottom-color: rgba(var(--ink-rgb), var(--a10));
-}
 
 /* 이용 안내 — 본문 첫 항목의 윗선을 뺀다.
    처리방침·약관은 이미 첫 항목 선을 빼고 시작하는데 여기만 남아 있어,

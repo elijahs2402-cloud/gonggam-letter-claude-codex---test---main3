@@ -10,6 +10,9 @@ import {
   navigateTo,
 } from "../../utils/navigation";
 import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
+// CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
+// (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
+import styles from "./AccountManagementScreens.module.css";
 
 function providerName(provider?: string) {
   return provider === "apple"
@@ -123,6 +126,9 @@ export function AccountSettingsScreen({
     account?.authProvider === "apple"
       ? "애플"
       : providerName(account?.authProvider);
+  const providerKey = account?.authProvider ?? "unknown";
+  // 모듈에는 apple·kakao 표시 규칙만 있다 — 그 밖의 값이면 모듈 class 를 붙이지 않는다.
+  const providerMarkModule = styles[`account-provider-mark--${providerKey}`];
   // 계정 삭제 화면(이유 선택 단계)의 ← 로 돌아온 경우에만 pop-in 을 쓴다.
   const [enteredViaPop] = useState(consumePopEntry);
 
@@ -133,35 +139,39 @@ export function AccountSettingsScreen({
       <Header title="계정 관리" />
       <div className="my-detail-scroll account-settings-scroll--figma">
         <section
-          className="account-settings-list--figma"
+          className={`account-settings-list--figma ${styles["account-settings-list--figma"]}`}
           aria-label="계정 관리 메뉴"
         >
-          <div className="account-settings-row account-settings-row--email">
+          <div
+            className={`account-settings-row account-settings-row--email ${styles["account-settings-row"]} ${styles["account-settings-row--email"]}`}
+          >
             <span>
               <small>이메일</small>
               <strong>{emailAddress}</strong>
             </span>
           </div>
-          <div className="account-settings-row account-settings-row--provider">
+          <div
+            className={`account-settings-row account-settings-row--provider ${styles["account-settings-row"]} ${styles["account-settings-row--provider"]}`}
+          >
             <span>
               <small>연결된 계정</small>
               <strong>{connectedAccountName}</strong>
             </span>
             {providerIcons[account?.authProvider ?? ""] ? (
               <img
-                className="account-provider-icon"
+                className={`account-provider-icon ${styles["account-provider-icon"]}`}
                 src={providerIcons[account!.authProvider].src}
                 alt={providerIcons[account!.authProvider].alt}
               />
             ) : (
               <i
-                className={`account-provider-mark account-provider-mark--${account?.authProvider ?? "unknown"}`}
+                className={`account-provider-mark account-provider-mark--${providerKey} ${styles["account-provider-mark"]}${providerMarkModule ? ` ${providerMarkModule}` : ""}`}
                 aria-label={`${providerName(account?.authProvider)} 계정`}
               />
             )}
           </div>
           <button
-            className="account-settings-row"
+            className={`account-settings-row ${styles["account-settings-row"]}`}
             type="button"
             onClick={() => setConfirmLogout(true)}
           >
@@ -170,7 +180,7 @@ export function AccountSettingsScreen({
             </span>
           </button>
           <button
-            className="account-settings-row account-settings-row--delete"
+            className={`account-settings-row account-settings-row--delete ${styles["account-settings-row"]} ${styles["account-settings-row--delete"]}`}
             type="button"
             onClick={() => navigateTo("/account-withdrawal")}
           >
@@ -236,7 +246,7 @@ export function DataAndPrivacyScreen() {
           <h1>내 데이터 보관 안내</h1>
           <p>공감편지의 기록이 어떻게 다뤄지는지 쉽게 설명해요.</p>
         </section>
-        <section className="account-copy-list">
+        <section className={`account-copy-list ${styles["account-copy-list"]}`}>
           {items.map((item) => (
             <p key={item}>{item}</p>
           ))}
@@ -310,7 +320,10 @@ export function AccountWithdrawalScreen() {
             <h1>이유를 알려주실래요?</h1>
             <p>선택하지 않아도 계정을 삭제할 수 있어요.</p>
           </section>
-          <section className="withdrawal-reasons" aria-label="계정 삭제 이유">
+          <section
+            className={`withdrawal-reasons ${styles["withdrawal-reasons"]}`}
+            aria-label="계정 삭제 이유"
+          >
             {withdrawalReasons.map((item) => (
               <button
                 key={item}
@@ -323,7 +336,9 @@ export function AccountWithdrawalScreen() {
             ))}
           </section>
           {reason === "직접입력" && (
-            <label className="account-textarea account-withdrawal-textarea">
+            <label
+              className={`account-textarea account-withdrawal-textarea ${styles["account-textarea"]} ${styles["account-withdrawal-textarea"]}`}
+            >
               <span>삭제 이유를 입력해주세요</span>
               <textarea
                 value={detail}
@@ -334,7 +349,9 @@ export function AccountWithdrawalScreen() {
             </label>
           )}
         </div>
-        <div className="flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action account-withdrawal-reason-action">
+        <div
+          className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action account-withdrawal-reason-action ${styles["account-withdrawal-fixed-action"]}`}
+        >
           <button className="flow-primary-button" onClick={showConfirmation}>
             다음
           </button>
@@ -364,9 +381,11 @@ export function AccountWithdrawalScreen() {
           </p>
         </section>
       </div>
-      <div className="flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action">
+      <div
+        className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]}`}
+      >
         <button
-          className="flow-primary-button is-danger-action"
+          className={`flow-primary-button is-danger-action ${styles["is-danger-action"]}`}
           onClick={finish}
         >
           삭제하기
@@ -378,7 +397,9 @@ export function AccountWithdrawalScreen() {
 export function WithdrawalCompleteScreen() {
   return (
     <main className="mobile-prototype account-settings-screen">
-      <section className="account-processing account-processing--withdrawal-complete">
+      <section
+        className={`account-processing account-processing--withdrawal-complete ${styles["account-processing"]} ${styles["account-processing--withdrawal-complete"]}`}
+      >
         <h1>
           계정 삭제가
           <br />
@@ -399,7 +420,9 @@ export function AccountRestrictedScreen() {
   return (
     <main className="mobile-prototype account-settings-screen">
       <Header title="계정 이용 제한" fallback="/intro" />
-      <section className="account-processing account-processing--restricted">
+      <section
+        className={`account-processing account-processing--restricted ${styles["account-processing"]} ${styles["account-processing--restricted"]}`}
+      >
         <h1>현재 계정의 이용이 제한되었어요</h1>
         <p>
           안전한 이용을 위해 계정 이용이 일시적으로 제한되었어요. 자세한 내용은
