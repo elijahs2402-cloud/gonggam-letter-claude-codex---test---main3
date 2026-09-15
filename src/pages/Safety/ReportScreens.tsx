@@ -21,6 +21,8 @@ import {
 import { navigateBack, navigateTo } from "../../utils/navigation";
 import { formatDate } from "../../utils/datetime";
 import { getListenEntryPath } from "../../data/waitingLetters";
+// 차단 및 신고 관리 화면 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import mgmt from "./SafetyManagementScreen.module.css";
 
 const reasons: ReadonlyArray<[ReportReason, string]> = [
   ["abusive", "모욕적이거나 공격적인 표현"],
@@ -391,11 +393,14 @@ export function SafetyManagementScreen({
       fallback="/my-space"
       screenClassName={`safety-management-screen${stageClassName ? ` ${stageClassName}` : ""}`}
     >
-      <section className="management-screen" data-refresh={refresh}>
+      <section
+        className={`management-screen ${mgmt["management-screen"]}`}
+        data-refresh={refresh}
+      >
         {/* 상단 안내 문구를 뺐다. 헤더 타이틀과 각 섹션 설명이
           이미 무엇을 하는 화면인지 말하고 있어 한 번 더 설명할 필요가 없었다. */}
         <section
-          className="management-section"
+          className={`management-section ${mgmt["management-section"]}`}
           aria-labelledby="blocked-users-heading"
         >
           <header>
@@ -405,10 +410,14 @@ export function SafetyManagementScreen({
             </p>
           </header>
           {blocks.length ? (
-            <ul className="management-record-list">
+            <ul
+              className={`management-record-list ${mgmt["management-record-list"]}`}
+            >
               {blocks.map((item) => (
                 <li key={item.id}>
-                  <span className="management-record-copy">
+                  <span
+                    className={`management-record-copy ${mgmt["management-record-copy"]}`}
+                  >
                     <strong>
                       {previewNames[item.id] ??
                         blockedNickname(item.blockedUserId, reports)}
@@ -428,12 +437,14 @@ export function SafetyManagementScreen({
               ))}
             </ul>
           ) : (
-            <p className="management-empty">차단한 사용자가 없어요.</p>
+            <p className={`management-empty ${mgmt["management-empty"]}`}>
+              차단한 사용자가 없어요.
+            </p>
           )}
         </section>
 
         <section
-          className="management-section"
+          className={`management-section ${mgmt["management-section"]}`}
           aria-labelledby="reports-heading"
         >
           <header>
@@ -441,10 +452,14 @@ export function SafetyManagementScreen({
             <p>신고 내역은 운영팀에서 검토 후 조치합니다.</p>
           </header>
           {reports.length ? (
-            <ul className="management-record-list management-report-list">
+            <ul
+              className={`management-record-list management-report-list ${mgmt["management-record-list"]} ${mgmt["management-report-list"]}`}
+            >
               {reports.map((item) => (
                 <li key={item.id}>
-                  <span className="management-record-copy">
+                  <span
+                    className={`management-record-copy ${mgmt["management-record-copy"]}`}
+                  >
                     <strong>
                       {previewNames[item.id] ?? reportedNickname(item)}
                     </strong>
@@ -460,7 +475,9 @@ export function SafetyManagementScreen({
               ))}
             </ul>
           ) : (
-            <p className="management-empty">신고 내역이 없어요.</p>
+            <p className={`management-empty ${mgmt["management-empty"]}`}>
+              신고 내역이 없어요.
+            </p>
           )}
         </section>
       </section>
