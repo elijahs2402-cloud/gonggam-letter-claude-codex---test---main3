@@ -23,6 +23,8 @@ import { formatDate } from "../../utils/datetime";
 import { getListenEntryPath } from "../../data/waitingLetters";
 // 차단 및 신고 관리 화면 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import mgmt from "./SafetyManagementScreen.module.css";
+// 신고 화면 CSS Modules(답장 신고 SafetyActionScreens.tsx 와 함께 쓴다).
+import reportForm from "./ReportForm.module.css";
 
 const reasons: ReadonlyArray<[ReportReason, string]> = [
   ["abusive", "모욕적이거나 공격적인 표현"],
@@ -169,7 +171,7 @@ export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
   return (
     <Shell
       title="편지 신고"
-      screenClassName="figma-report-letter-screen"
+      screenClassName={`figma-report-letter-screen ${reportForm["figma-report-letter-screen"]}`}
       action={
         <div className="flow-fixed-action flow-fixed-action--split figma-report-action">
           <button
@@ -190,7 +192,9 @@ export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
         </div>
       }
     >
-      <section className="figma-report-screen">
+      <section
+        className={`figma-report-screen ${reportForm["figma-report-screen"]}`}
+      >
         <header>
           <h1>
             어떤 점이
@@ -231,7 +235,9 @@ export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
           />
           <small>{detail.length} / 200</small>
         </section>
-        <label className={`figma-report-setting${block ? " is-selected" : ""}`}>
+        <label
+          className={`figma-report-setting ${reportForm["figma-report-setting"]}${block ? " is-selected" : ""}`}
+        >
           <input
             type="checkbox"
             checked={block}

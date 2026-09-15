@@ -4210,74 +4210,12 @@ html[data-ios-standalone="true"] .intro-copy {
 .report-screen .flow-primary-button {
   margin-top: 10px;
 }
-.figma-report-screen {
-  padding: 0 0 28px;
-}
-.figma-report-screen > header {
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a40));
-}
-.figma-report-screen h1 {
-  margin: 0;
-  color: var(--ink);
-  font-family: var(--font-serif);
-  font-size: var(--fs-title);
-  font-weight: var(--fw-title);
-  line-height: var(--lh-title);
-  letter-spacing: -0.035em;
-}
-.figma-report-screen > header p {
-  margin: 13px 0 0;
-  color: var(--muted-ink);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.7;
-}
-.figma-report-screen fieldset {
-  margin: 20px 0 0;
-  padding: 0;
-  border: 0;
-}
-.figma-report-screen legend {
-  display: block;
-  color: var(--muted-ink);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
 .figma-report-detail > label {
   display: block;
   color: var(--muted-ink);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.03em;
-}
-.figma-report-screen fieldset label {
-  min-height: 47px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 4px;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
-  color: var(--ink);
-  font-size: var(--fs-body-sm);
-  cursor: pointer;
-}
-.figma-report-screen fieldset label:first-of-type {
-  margin-top: 8px;
-}
-.figma-report-screen fieldset label:last-of-type {
-  border-bottom: 0;
-}
-.figma-report-screen fieldset input {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  flex: 0 0 auto;
-  border: 1.33px solid rgba(var(--gold-rgb), var(--a40));
-  border-radius: 50%;
-  background: #fdfaf4;
 }
 .figma-report-screen fieldset label.is-selected input {
   border: 5px solid var(--deep-plum);
@@ -4324,16 +4262,6 @@ html[data-ios-standalone="true"] .intro-copy {
   font-size: 12px;
   text-align: right;
 }
-.figma-report-setting {
-  display: flex;
-  gap: 12px;
-  margin-top: 10px;
-  padding: 14px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a20));
-  border-radius: 0;
-  background: rgba(var(--surface-card-rgb), var(--a50));
-  cursor: pointer;
-}
 .figma-report-setting.is-selected {
   border-color: rgba(var(--deep-plum-rgb), var(--a20));
   background: rgba(var(--deep-plum-rgb), var(--a05));
@@ -4341,35 +4269,8 @@ html[data-ios-standalone="true"] .intro-copy {
 .figma-report-setting.is-selected small {
   color: var(--muted-ink-on-mat);
 }
-.figma-report-setting input {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  margin: 1px 0 0;
-  flex: 0 0 auto;
-  border: 1.33px solid rgba(var(--gold-rgb), var(--a40));
-  border-radius: 0;
-  background: #fdfaf4;
-}
-.figma-report-setting input:checked {
-  border: 5px solid var(--deep-plum);
-}
-.figma-report-setting span {
-  display: grid;
-  gap: 3px;
-}
-.figma-report-setting strong {
-  color: var(--ink);
-  font-size: var(--fs-body-sm);
-  line-height: 1.5;
-}
 .figma-report-setting.is-selected strong {
   color: var(--deep-plum);
-}
-.figma-report-setting small {
-  color: var(--faint-ink);
-  font-size: 12px;
-  line-height: var(--lh-snug);
 }
 .figma-report-action .flow-primary-button {
   width: 100%;
@@ -4378,12 +4279,6 @@ html[data-ios-standalone="true"] .intro-copy {
 /* 신고 화면도 편지쓰기와 같은 키보드 배치 방식을 사용한다.
    버튼을 셸의 마지막 flex 항목으로 두고 키보드 높이만큼 아래 여백을 더해,
    키보드가 열리면 본문만 줄어들고 버튼은 키보드 바로 위에 유지한다. */
-.figma-report-letter-screen {
-  position: relative;
-  height: var(--app-viewport-height, 100dvh);
-  min-height: 0;
-  overflow: hidden;
-}
 .figma-report-letter-screen .letter-flow-scroll {
   padding-bottom: 24px;
   scroll-padding-bottom: calc(

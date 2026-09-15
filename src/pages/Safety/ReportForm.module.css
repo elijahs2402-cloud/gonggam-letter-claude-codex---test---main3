@@ -1,0 +1,116 @@
+/*
+  신고 화면 스타일 — 편지 신고(/report-letter/:id, LetterReportFigmaScreen)와
+  답장 신고(/report-reply/:id, ReplyReportForm)가 함께 쓴다 (CSS Modules 전환, 2026-09-15)
+
+  src/styles/global.css 에서 이 두 화면만 쓰는 figma-report-* 규칙을 원래 순서대로 옮겼다. 선택자와 선언은 그대로다.
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.
+  - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
+  - global.css 에 남긴 신고 화면 규칙:
+    · 선택 상태(.is-selected)·추가 설명(.figma-report-detail)·버튼 영역 규칙 — 코드 분석상 다른 폴더 이름과 겹쳐 '공유'로 분류됨
+    · @media 안의 규칙 1개(작은 화면 간격) — 전역에 두어도 원래처럼 이 모듈 규칙보다 뒤에 적용된다
+*/
+.figma-report-screen {
+  padding: 0 0 28px;
+}
+.figma-report-screen > header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a40));
+}
+.figma-report-screen h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-title);
+  line-height: var(--lh-title);
+  letter-spacing: -0.035em;
+}
+.figma-report-screen > header p {
+  margin: 13px 0 0;
+  color: var(--muted-ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.figma-report-screen fieldset {
+  margin: 20px 0 0;
+  padding: 0;
+  border: 0;
+}
+.figma-report-screen legend {
+  display: block;
+  color: var(--muted-ink);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.figma-report-screen fieldset label {
+  min-height: 47px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 4px;
+  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+}
+.figma-report-screen fieldset label:first-of-type {
+  margin-top: 8px;
+}
+.figma-report-screen fieldset label:last-of-type {
+  border-bottom: 0;
+}
+.figma-report-screen fieldset input {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: 0 0 auto;
+  border: 1.33px solid rgba(var(--gold-rgb), var(--a40));
+  border-radius: 50%;
+  background: #fdfaf4;
+}
+.figma-report-setting {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(var(--gold-rgb), var(--a20));
+  border-radius: 0;
+  background: rgba(var(--surface-card-rgb), var(--a50));
+  cursor: pointer;
+}
+.figma-report-setting input {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 1px 0 0;
+  flex: 0 0 auto;
+  border: 1.33px solid rgba(var(--gold-rgb), var(--a40));
+  border-radius: 0;
+  background: #fdfaf4;
+}
+.figma-report-setting input:checked {
+  border: 5px solid var(--deep-plum);
+}
+.figma-report-setting span {
+  display: grid;
+  gap: 3px;
+}
+.figma-report-setting strong {
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+}
+.figma-report-setting small {
+  color: var(--faint-ink);
+  font-size: 12px;
+  line-height: var(--lh-snug);
+}
+.figma-report-letter-screen {
+  position: relative;
+  height: var(--app-viewport-height, 100dvh);
+  min-height: 0;
+  overflow: hidden;
+}

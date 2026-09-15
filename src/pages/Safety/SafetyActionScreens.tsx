@@ -23,6 +23,8 @@ import {
 } from "../../constants/copy";
 import { getListenEntryPath } from "../../data/waitingLetters";
 import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
+// 신고 화면 CSS Modules(편지 신고 ReportScreens.tsx 와 함께 쓴다).
+import reportForm from "./ReportForm.module.css";
 
 // action 은 스크롤 밖 하단 고정 바다. 편지 신고 최종본(ReportScreens.tsx)의 Shell 과 같은 형태로 맞췄다.
 function Shell({
@@ -260,7 +262,9 @@ function ReplyReportForm({
         </div>
       }
     >
-      <section className="figma-report-screen">
+      <section
+        className={`figma-report-screen ${reportForm["figma-report-screen"]}`}
+      >
         <header>
           <h1>어떤 점이 불편하셨나요?</h1>
           <p>
@@ -298,7 +302,7 @@ function ReplyReportForm({
           <small>{detail.length} / 200</small>
         </section>
         <label
-          className={`figma-report-setting${withBlock ? " is-selected" : ""}`}
+          className={`figma-report-setting ${reportForm["figma-report-setting"]}${withBlock ? " is-selected" : ""}`}
         >
           <input
             type="checkbox"
