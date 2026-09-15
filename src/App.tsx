@@ -51,6 +51,7 @@ import {
   setPostLoginPath,
 } from "./data/mockAuth";
 import {
+  NotificationsAllCasesDemoScreen,
   NotificationsScreen,
   NotificationSettingsScreen,
 } from "./pages/Notifications/NotificationScreens";
@@ -147,6 +148,9 @@ export function App() {
 
   // Intro was formerly the fallback route; retain both direct and root entry.
   if (path === "/" || path === "/intro") return <IntroScreen />;
+  // 검토용 임시 화면: 알림의 여섯 가지 유형을 저장소 변경 없이 한 번에 보여준다.
+  if (path === "/notifications-all-demo")
+    return <NotificationsAllCasesDemoScreen />;
 
   if (path === "/onboarding") return <OnboardingRedesignScreen />;
   if (path === "/login") {
