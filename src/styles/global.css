@@ -3038,7 +3038,8 @@ html[data-ios-standalone="true"] .intro-copy {
 .write-letter-screen--figma .letter-compose-guidance {
   box-sizing: border-box;
   margin: 28px 1px 0;
-  padding: 17px 18px 18px;
+  /* 2026-09-15 사용자 요청으로 박스 세로 높이를 줄였다(위아래 17·18 → 14, 본문 간격 12 → 8). */
+  padding: 14px 18px 14px;
   border-left: 3px solid rgba(var(--terracotta-rgb), var(--a85));
   background: rgba(var(--paper-deep-rgb), var(--a50));
 }
@@ -3053,7 +3054,7 @@ html[data-ios-standalone="true"] .intro-copy {
   font: inherit;
 }
 .write-letter-screen--figma .letter-compose-guidance p {
-  margin: 12px 0 0 20px;
+  margin: 8px 0 0 20px;
   line-height: 21px;
 }
 .write-letter-screen--figma .letter-compose-paper {
@@ -3580,7 +3581,8 @@ html[data-ios-standalone="true"] .intro-copy {
 .reply-compose-screen--figma .reply-compose-guidance {
   box-sizing: border-box;
   margin: 28px 1px 0;
-  padding: 17px 18px 18px;
+  /* 편지 쓰기 안내 박스와 같게 줄였다(2026-09-15 사용자 요청). */
+  padding: 14px 18px 14px;
   border-left: 3px solid rgba(var(--terracotta-rgb), var(--a85));
   background: rgba(var(--paper-deep-rgb), var(--a50));
 }
@@ -3595,7 +3597,7 @@ html[data-ios-standalone="true"] .intro-copy {
   font: inherit;
 }
 .reply-compose-screen--figma .reply-compose-guidance p {
-  margin: 12px 0 0 20px;
+  margin: 8px 0 0 20px;
   line-height: 21px;
 }
 .reply-compose-screen--figma .reply-compose-paper {
