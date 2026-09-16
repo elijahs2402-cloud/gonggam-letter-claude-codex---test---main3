@@ -114,6 +114,11 @@ export function getListenEntryPath(userId: string) {
  * 두고 간 기록(getLetterReturn)까지 함께 본다 — 편지 읽기 화면의 가드와 기준이
  * 어긋나면, 여기서 보낸 편지가 저기서 '이미 두고 온 편지'로 막혀버린다.
  *
+ * 신고·숨김·차단도 함께 본다(2026-09-16). 신고해도 맡은 상태는 그대로 남아서,
+ * 홈의 '누군가의 마음을 들어주고 싶어요'가 신고한 편지로 다시 돌아갔다.
+ * 거기서 신고하기를 누르면 '이미 신고한 편지예요'가 떴다.
+ * 기다리는 편지 목록(isAvailableWaitingLetter)과 같은 기준으로 맞춘다.
+ *
  * 여러 통이면 먼저 맡은 것부터 돌려준다. 답장 기한(3일)이 먼저 끝나는 쪽이라,
  * 놓쳤을 때 되돌릴 수 없는 편지다.
  */
@@ -124,7 +129,10 @@ export function getHeldLetter(userId: string) {
         letter.assignedReaderId === userId &&
         ["assigned", "read", "waiting_for_reply"].includes(letter.status) &&
         !letter.reply &&
-        !getLetterReturn(letter.id, userId),
+        !getLetterReturn(letter.id, userId) &&
+        !getReportForTarget(userId, "letter", letter.id) &&
+        !isContentHidden(userId, "letter", letter.id) &&
+        !isUserBlocked(userId, letter.senderId),
     )
     .sort((left, right) =>
       (left.assignedAt ?? left.createdAt).localeCompare(
