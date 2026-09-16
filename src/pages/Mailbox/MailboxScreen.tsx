@@ -12,6 +12,8 @@ import {
   sortSentLettersByActivity,
 } from "../../data/mailboxStatus";
 import { formatDate } from "../../utils/datetime";
+// 편지함 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import mailbox from "./MailboxScreen.module.css";
 
 export type MailboxKey = "sent" | "replied" | "favorite";
 
@@ -180,13 +182,13 @@ function MailboxCollection({
     illustrationVariant === "directional-status-inline";
   return (
     <main
-      className={`mobile-prototype mailbox-screen${isDemo ? " mailbox-screen--demo" : ""}${illustrationVariant !== "default" ? " mailbox-screen--icon-set" : ""}${illustrationVariant === "demo-status" ? " mailbox-screen--status-icons" : ""}${usesInlineDirection ? " mailbox-screen--inline-direction" : ""}`}
+      className={`mobile-prototype mailbox-screen ${mailbox["mailbox-screen"]}${isDemo ? ` mailbox-screen--demo ${mailbox["mailbox-screen--demo"]}` : ""}${illustrationVariant !== "default" ? " mailbox-screen--icon-set" : ""}${illustrationVariant === "demo-status" ? ` mailbox-screen--status-icons ${mailbox["mailbox-screen--status-icons"]}` : ""}${usesInlineDirection ? ` mailbox-screen--inline-direction ${mailbox["mailbox-screen--inline-direction"]}` : ""}`}
     >
       <div
-        className={`mailbox-scroll-region${visibleRecords.length ? "" : " mailbox-scroll-region--empty"}`}
+        className={`mailbox-scroll-region ${mailbox["mailbox-scroll-region"]}${visibleRecords.length ? "" : ` mailbox-scroll-region--empty ${mailbox["mailbox-scroll-region--empty"]}`}`}
       >
         <header
-          className="mailbox-heading mailbox-heading--unified"
+          className={`mailbox-heading ${mailbox["mailbox-heading"]} mailbox-heading--unified ${mailbox["mailbox-heading--unified"]}`}
           aria-labelledby="mailbox-title"
         >
           {!usesInlineDirection && <p>편지함</p>}
@@ -198,7 +200,7 @@ function MailboxCollection({
           )}
         </header>
         <div
-          className="mailbox-filter-chips"
+          className={`mailbox-filter-chips ${mailbox["mailbox-filter-chips"]}`}
           role="group"
           aria-label="편지 상태로 정렬"
         >
@@ -216,14 +218,17 @@ function MailboxCollection({
           ))}
         </div>
         {visibleRecords.length ? (
-          <section className="mailbox-unified-list" aria-label="내 편지 목록">
+          <section
+            className={`mailbox-unified-list ${mailbox["mailbox-unified-list"]}`}
+            aria-label="내 편지 목록"
+          >
             {visibleRecords.map((record) =>
               usesInlineDirection ? (
                 <UnifiedMailboxRow key={record.id} record={record} />
               ) : (
                 <button
                   type="button"
-                  className={`mailbox-unified-item mailbox-unified-item--${record.status}${record.isUnread ? " is-unread" : ""}`}
+                  className={`mailbox-unified-item ${mailbox["mailbox-unified-item"]} mailbox-unified-item--${record.status}${record.isUnread ? " is-unread" : ""}`}
                   key={record.id}
                   onClick={() => navigateTo(record.href)}
                 >
@@ -231,7 +236,9 @@ function MailboxCollection({
                     status={record.status}
                     variant={illustrationVariant}
                   />
-                  <span className="mailbox-unified-copy">
+                  <span
+                    className={`mailbox-unified-copy ${mailbox["mailbox-unified-copy"]}`}
+                  >
                     <time dateTime={record.activityAt}>
                       {formatFullMailboxDate(record.activityAt)}
                     </time>
@@ -239,7 +246,7 @@ function MailboxCollection({
                       {record.nickname}
                       {record.isUnread && (
                         <i
-                          className="mailbox-unified-unread"
+                          className={`mailbox-unified-unread ${mailbox["mailbox-unified-unread"]}`}
                           aria-label="읽지 않은 답장"
                         />
                       )}
@@ -337,28 +344,42 @@ function UnifiedMailboxRow({ record }: { record: UnifiedMailboxRecord }) {
   return (
     <button
       type="button"
-      className={`mailbox-unified-item mailbox-unified-item--${record.status}${record.isUnread ? " is-unread" : ""}`}
+      className={`mailbox-unified-item ${mailbox["mailbox-unified-item"]} mailbox-unified-item--${record.status}${record.isUnread ? " is-unread" : ""}`}
       onClick={() => navigateTo(record.href)}
     >
-      <strong className="mailbox-unified-name">
+      <strong
+        className={`mailbox-unified-name ${mailbox["mailbox-unified-name"]}`}
+      >
         {name}
         {record.isUnread && (
-          <i className="mailbox-unified-unread" aria-label="읽지 않은 답장" />
+          <i
+            className={`mailbox-unified-unread ${mailbox["mailbox-unified-unread"]}`}
+            aria-label="읽지 않은 답장"
+          />
         )}
       </strong>
       <em
-        className={`mailbox-unified-status mailbox-unified-status--${record.status}`}
+        className={`mailbox-unified-status ${mailbox["mailbox-unified-status"]} mailbox-unified-status--${record.status}`}
       >
         {record.label}
       </em>
       {record.preview ? (
-        <span className="mailbox-unified-preview">{record.preview}</span>
+        <span
+          className={`mailbox-unified-preview ${mailbox["mailbox-unified-preview"]}`}
+        >
+          {record.preview}
+        </span>
       ) : record.status === "arrived" && record.isUnread ? (
-        <span className="mailbox-unified-preview mailbox-unified-preview--sealed">
+        <span
+          className={`mailbox-unified-preview ${mailbox["mailbox-unified-preview"]} mailbox-unified-preview--sealed ${mailbox["mailbox-unified-preview--sealed"]}`}
+        >
           아직 열어보지 않았어요.
         </span>
       ) : null}
-      <time className="mailbox-unified-date" dateTime={record.activityAt}>
+      <time
+        className={`mailbox-unified-date ${mailbox["mailbox-unified-date"]}`}
+        dateTime={record.activityAt}
+      >
         {formatDate(record.activityAt)}
       </time>
     </button>
@@ -388,7 +409,7 @@ function MailboxStatusIllustration({
           : "답장을 기다리는 편지";
     return (
       <span
-        className={`mailbox-status-direction mailbox-status-direction--${status}`}
+        className={`mailbox-status-direction ${mailbox["mailbox-status-direction"]} mailbox-status-direction--${status}`}
         aria-label={label}
       >
         {mark}
@@ -422,7 +443,10 @@ function MailboxStatusIllustration({
         ? "답장을 보낸 편지"
         : "답장을 기다리는 편지";
   return (
-    <span className="mailbox-status-illustration" aria-label={label}>
+    <span
+      className={`mailbox-status-illustration ${mailbox["mailbox-status-illustration"]}`}
+      aria-label={label}
+    >
       <img src={source} alt="" />
     </span>
   );
@@ -436,7 +460,9 @@ function getDirectionMark(status: Exclude<MailboxFilter, "all">) {
 // 같은 화면이 두 가지 얼굴을 갖게 되고, 필터를 옮길 때마다 나가는 길이 사라진다.
 function UnifiedMailboxEmpty() {
   return (
-    <section className="mailbox-letter-empty mailbox-letter-empty--unified">
+    <section
+      className={`mailbox-letter-empty ${mailbox["mailbox-letter-empty"]} mailbox-letter-empty--unified ${mailbox["mailbox-letter-empty--unified"]}`}
+    >
       <p>아직 편지가 없어요</p>
       <span>
         새로운 마음이 오면
