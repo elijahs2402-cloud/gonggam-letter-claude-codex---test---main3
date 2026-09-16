@@ -11,6 +11,8 @@ import { getNotificationSettings } from "../../data/notifications";
 import { getReportsByUser } from "../../data/reports";
 // 이용 안내 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import guide from "./GuideScreen.module.css";
+// 이름 바꾸기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import nameSettings from "./AnonymousNameSettingsScreen.module.css";
 
 function Header({
   title,
@@ -73,7 +75,7 @@ export function AnonymousNameSettingsScreen({
     >
       {toast && (
         <p
-          className={`home-draft-saved-toast${isToastLeaving ? " is-leaving" : ""}`}
+          className={`home-draft-saved-toast ${nameSettings["home-draft-saved-toast"]}${isToastLeaving ? " is-leaving" : ""}`}
           role="status"
           aria-live="polite"
           onAnimationEnd={() => {
@@ -94,7 +96,7 @@ export function AnonymousNameSettingsScreen({
         <span>나의 이름</span>
         <i aria-hidden="true" />
       </header>
-      <div className="auth-scroll nef-scroll">
+      <div className={`auth-scroll nef-scroll ${nameSettings["nef-scroll"]}`}>
         {/* 헤더가 "나의 이름", 대제목이 "이름 바꾸기"로 둘 다 라벨이라
         말을 거는 느낌이 없었다. 같은 일을 하는 이름 정하기
         ("나를 부를 이름을 정해볼까요?")와 같은 어투로 맞춘다. */}
@@ -106,7 +108,9 @@ export function AnonymousNameSettingsScreen({
         글이 네 줄로 쌓여 화면 위쪽이 무거웠다. '편지와 답장'을 '편지'로 묶어도
         뜻은 그대로다. 지난 편지는 그대로라는 말은 남겼다 — 이름을 바꿀 때
         사람들이 실제로 걱정하는 지점이라 빼면 안 되는 정보다. */}
-        <section className="auth-intro-copy nef-intro">
+        <section
+          className={`auth-intro-copy nef-intro ${nameSettings["nef-intro"]}`}
+        >
           <h1>
             새 이름을
             <br />
@@ -119,17 +123,19 @@ export function AnonymousNameSettingsScreen({
           </p>
         </section>
         <section
-          className="nef-field"
+          className={`nef-field ${nameSettings["nef-field"]}`}
           aria-labelledby="nickname-settings-label"
         >
           <label
             id="nickname-settings-label"
-            className="nef-label"
+            className={`nef-label ${nameSettings["nef-label"]}`}
             htmlFor="nickname-settings-input"
           >
             이름
           </label>
-          <div className="anonymous-name-input-wrap">
+          <div
+            className={`anonymous-name-input-wrap ${nameSettings["anonymous-name-input-wrap"]}`}
+          >
             <input
               id="nickname-settings-input"
               type="text"
@@ -153,16 +159,18 @@ export function AnonymousNameSettingsScreen({
               </button>
             )}
           </div>
-          <div className="anonymous-name-field__meta">
+          <div
+            className={`anonymous-name-field__meta ${nameSettings["anonymous-name-field__meta"]}`}
+          >
             <span id="nickname-settings-note">10자 이내로 입력해주세요.</span>
             <span id="nickname-settings-count" aria-live="polite">
               {name.length} / 10
             </span>
           </div>
         </section>
-        <div className="nef-suggest-wrap">
+        <div className={`nef-suggest-wrap ${nameSettings["nef-suggest-wrap"]}`}>
           <button
-            className="nef-suggest-button"
+            className={`nef-suggest-button ${nameSettings["nef-suggest-button"]}`}
             type="button"
             onClick={suggestRandom}
           >
@@ -176,7 +184,9 @@ export function AnonymousNameSettingsScreen({
           </div>
         )}
       </div>
-      <footer className="auth-actions nickname-settings-actions">
+      <footer
+        className={`auth-actions nickname-settings-actions ${nameSettings["nickname-settings-actions"]}`}
+      >
         <button
           className="auth-primary"
           type="button"
