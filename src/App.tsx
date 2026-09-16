@@ -65,6 +65,8 @@ import {
   NotFoundScreen,
   ServiceStateScreen,
 } from "./components/common/CommonStates";
+// CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import intro from "./IntroScreen.module.css";
 
 function goTo(path: string) {
   navigateTo(path);
@@ -103,22 +105,31 @@ function IntroScreen() {
     goTo("/onboarding");
   };
   return (
-    <ScreenShell className="intro-screen">
+    <ScreenShell className={`intro-screen ${intro["intro-screen"]}`}>
       <img
-        className="intro-art"
+        className={`intro-art ${intro["intro-art"]}`}
         src="/assets/intro-door-uploaded.png"
         alt="담쟁이덩굴이 감싼 보랏빛 현관문과 편지가 든 우편함"
       />
-      <section className="intro-copy" aria-labelledby="intro-title">
-        <p className="intro-brand">공감편지</p>
+      <section
+        className={`intro-copy ${intro["intro-copy"]}`}
+        aria-labelledby="intro-title"
+      >
+        <p className={`intro-brand ${intro["intro-brand"]}`}>공감편지</p>
         <h1 id="intro-title">
           오늘도,
           <br />
           마음이 도착했습니다
         </h1>
-        <p className="intro-note">마음을 담은 편지가 조용히 머무는 곳</p>
+        <p className={`intro-note ${intro["intro-note"]}`}>
+          마음을 담은 편지가 조용히 머무는 곳
+        </p>
       </section>
-      <button className="intro-cta" type="button" onClick={handleEntry}>
+      <button
+        className={`intro-cta ${intro["intro-cta"]}`}
+        type="button"
+        onClick={handleEntry}
+      >
         마음의 문 열기
       </button>
     </ScreenShell>
