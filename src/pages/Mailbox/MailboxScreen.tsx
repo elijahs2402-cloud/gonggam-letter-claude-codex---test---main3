@@ -62,24 +62,10 @@ export function MailboxScreen() {
     // 그 행들은 href 가 모두 /mailbox-demo 라 눌러도 자기 상세로 가지 못했다.
     // 실제 편지만 보여주고, 화면을 채울 표본은 저장소에 심어 쓴다.
   ].sort((left, right) => right.activityAt.localeCompare(left.activityAt));
-  return (
-    <MailboxCollection
-      records={records}
-      isDemo={false}
-      illustrationVariant="directional-status-inline"
-    />
-  );
+  return <MailboxCollection records={records} />;
 }
 
-function MailboxCollection({
-  records,
-  isDemo = false,
-  illustrationVariant = "default",
-}: {
-  records: UnifiedMailboxRecord[];
-  isDemo?: boolean;
-  illustrationVariant?: MailboxIllustrationVariant;
-}) {
+function MailboxCollection({ records }: { records: UnifiedMailboxRecord[] }) {
   const [activeFilter, setActiveFilter] = useState<MailboxFilter>("all");
   const visibleRecords =
     activeFilter === "all"
@@ -92,11 +78,9 @@ function MailboxCollection({
     { id: "sent", label: "답장 보냄" },
   ];
 
-  const usesInlineDirection =
-    illustrationVariant === "directional-status-inline";
   return (
     <main
-      className={`mobile-prototype mailbox-screen ${mailbox["mailbox-screen"]}${isDemo ? ` mailbox-screen--demo ${mailbox["mailbox-screen--demo"]}` : ""}${illustrationVariant !== "default" ? " mailbox-screen--icon-set" : ""}${illustrationVariant === "demo-status" ? ` mailbox-screen--status-icons ${mailbox["mailbox-screen--status-icons"]}` : ""}${usesInlineDirection ? ` mailbox-screen--inline-direction ${mailbox["mailbox-screen--inline-direction"]}` : ""}`}
+      className={`mobile-prototype mailbox-screen ${mailbox["mailbox-screen"]} mailbox-screen--icon-set mailbox-screen--inline-direction ${mailbox["mailbox-screen--inline-direction"]}`}
     >
       <div
         className={`mailbox-scroll-region ${mailbox["mailbox-scroll-region"]}${visibleRecords.length ? "" : ` mailbox-scroll-region--empty ${mailbox["mailbox-scroll-region--empty"]}`}`}
@@ -105,13 +89,8 @@ function MailboxCollection({
           className={`mailbox-heading ${mailbox["mailbox-heading"]} mailbox-heading--unified ${mailbox["mailbox-heading--unified"]}`}
           aria-labelledby="mailbox-title"
         >
-          {!usesInlineDirection && <p>편지함</p>}
-          <h1 id="mailbox-title">
-            {usesInlineDirection ? "편지함" : "내 편지"}
-          </h1>
-          {usesInlineDirection && (
-            <span>주고받은 마음을 다시 꺼내볼 수 있어요.</span>
-          )}
+          <h1 id="mailbox-title">편지함</h1>
+          <span>주고받은 마음을 다시 꺼내볼 수 있어요.</span>
         </header>
         <div
           className={`mailbox-filter-chips ${mailbox["mailbox-filter-chips"]}`}
@@ -136,58 +115,20 @@ function MailboxCollection({
             className={`mailbox-unified-list ${mailbox["mailbox-unified-list"]}`}
             aria-label="내 편지 목록"
           >
-            {visibleRecords.map((record) =>
-              usesInlineDirection ? (
-                <UnifiedMailboxRow key={record.id} record={record} />
-              ) : (
-                <button
-                  type="button"
-                  className={`mailbox-unified-item ${mailbox["mailbox-unified-item"]} mailbox-unified-item--${record.status}${record.isUnread ? " is-unread" : ""}`}
-                  key={record.id}
-                  onClick={() => navigateTo(record.href)}
-                >
-                  <MailboxStatusIllustration
-                    status={record.status}
-                    variant={illustrationVariant}
-                  />
-                  <span
-                    className={`mailbox-unified-copy ${mailbox["mailbox-unified-copy"]}`}
-                  >
-                    <time dateTime={record.activityAt}>
-                      {formatFullMailboxDate(record.activityAt)}
-                    </time>
-                    <strong>
-                      {record.nickname}
-                      {record.isUnread && (
-                        <i
-                          className={`mailbox-unified-unread ${mailbox["mailbox-unified-unread"]}`}
-                          aria-label="읽지 않은 답장"
-                        />
-                      )}
-                    </strong>
-                    <em>{record.label}</em>
-                  </span>
-                </button>
-              ),
-            )}
+            {visibleRecords.map((record) => (
+              <UnifiedMailboxRow key={record.id} record={record} />
+            ))}
           </section>
         ) : (
           <UnifiedMailboxEmpty />
         )}
       </div>
-      <AppBottomNavigation active="mailbox" showAttention={!isDemo} />
+      <AppBottomNavigation active="mailbox" />
     </main>
   );
 }
 
 type MailboxFilter = "all" | "waiting" | "arrived" | "sent";
-type MailboxIllustrationVariant =
-  | "default"
-  | "demo-status"
-  | "directional-status"
-  | "directional-status-inline"
-  | "icon-set"
-  | "icon-set-upload";
 type UnifiedMailboxRecord = {
   id: string;
   href: string;
@@ -298,76 +239,6 @@ function UnifiedMailboxRow({ record }: { record: UnifiedMailboxRecord }) {
       </time>
     </button>
   );
-}
-
-function formatFullMailboxDate(date: string) {
-  const value = new Date(date);
-  return `${value.getFullYear()}. ${String(value.getMonth() + 1).padStart(2, "0")}. ${String(value.getDate()).padStart(2, "0")}`;
-}
-
-function MailboxStatusIllustration({
-  status,
-  variant,
-}: {
-  status: Exclude<MailboxFilter, "all">;
-  variant: MailboxIllustrationVariant;
-}) {
-  if (variant === "directional-status-inline") return null;
-  if (variant === "directional-status") {
-    const mark = getDirectionMark(status);
-    const label =
-      status === "arrived"
-        ? "답장이 도착한 편지"
-        : status === "sent"
-          ? "답장을 보낸 편지"
-          : "답장을 기다리는 편지";
-    return (
-      <span
-        className={`mailbox-status-direction ${mailbox["mailbox-status-direction"]} mailbox-status-direction--${status}`}
-        aria-label={label}
-      >
-        {mark}
-      </span>
-    );
-  }
-  const source =
-    variant === "demo-status" && status === "waiting"
-      ? "/assets/mailbox-status/status-waiting-dots-uploaded.png"
-      : variant === "icon-set-upload"
-        ? status === "arrived"
-          ? "/assets/mailbox-status/uploaded-arrived.png"
-          : status === "sent"
-            ? "/assets/mailbox-status/uploaded-sent.png"
-            : "/assets/mailbox-status/uploaded-waiting.png"
-        : variant === "icon-set"
-          ? status === "arrived"
-            ? "/assets/mailbox-status/set-arrived.png"
-            : status === "sent"
-              ? "/assets/mailbox-status/set-sent.png"
-              : "/assets/mailbox-status/set-waiting.png"
-          : status === "arrived"
-            ? "/assets/mailbox-status/arrived.png"
-            : status === "sent"
-              ? "/assets/mailbox-status/sent.png"
-              : "/assets/mailbox-status/waiting.png";
-  const label =
-    status === "arrived"
-      ? "답장이 도착한 편지"
-      : status === "sent"
-        ? "답장을 보낸 편지"
-        : "답장을 기다리는 편지";
-  return (
-    <span
-      className={`mailbox-status-illustration ${mailbox["mailbox-status-illustration"]}`}
-      aria-label={label}
-    >
-      <img src={source} alt="" />
-    </span>
-  );
-}
-
-function getDirectionMark(status: Exclude<MailboxFilter, "all">) {
-  return status === "arrived" ? "←" : status === "sent" ? "→" : "–";
 }
 
 // 필터와 무관하게 같은 빈 상태를 보여준다. 상태별로 문구와 버튼이 달라지면

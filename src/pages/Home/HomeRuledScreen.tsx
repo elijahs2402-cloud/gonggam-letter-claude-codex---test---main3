@@ -58,6 +58,7 @@ export function HomeRuledScreen({
   // 그것과 아무 상관 없는 별도 저장소를 읽는다. 그래서 점을 보고 눌러도
   // '아직 새로운 알림이 없어요'만 나왔다.
   const hasUnreadNotifications = unreadNotificationCount(userId) > 0;
+  const notice = getHomeNotice();
   return (
     <main
       className={`mobile-prototype home-screen home-ruled-screen ${home["home-screen"]} ${home["home-ruled-screen"]} ${styles.screen}${isRefined ? ` ${refined.screen}` : refinedCardsOnly ? ` ${refined.cardsOnly}` : ""}`}
@@ -77,6 +78,47 @@ export function HomeRuledScreen({
           {hasUnreadNotifications && <i aria-hidden="true" />}
         </button>
       </div>
+
+      {notice && (
+        <aside
+          className={`home-notice-card ${home["home-notice-card"]}`}
+          role="status"
+        >
+          <button
+            className={`home-notice-dismiss ${home["home-notice-dismiss"]}`}
+            type="button"
+            aria-label="소식 닫기"
+            onClick={notice.onDismiss}
+          >
+            ×
+          </button>
+          <span className={`home-notice-copy ${home["home-notice-copy"]}`}>
+            <strong>{notice.title}</strong>
+            {notice.time && (
+              <span
+                className={`home-notice-countdown ${home["home-notice-countdown"]}${notice.isUrgent ? " is-over" : ""}`}
+              >
+                {notice.time}
+              </span>
+            )}
+            {!notice.time && (
+              <span
+                className={`home-notice-countdown home-notice-countdown--placeholder ${home["home-notice-countdown"]} ${home["home-notice-countdown--placeholder"]}`}
+                aria-hidden="true"
+              >
+                시간 여백
+              </span>
+            )}
+          </span>
+          <button
+            className={`home-notice-action ${home["home-notice-action"]}`}
+            type="button"
+            onClick={notice.onAction}
+          >
+            {notice.action}
+          </button>
+        </aside>
+      )}
 
       <div
         className={`home-scroll-region ${home["home-scroll-region"]} ${styles.scroll}${useRefinedCards ? ` ${refined.scroll}` : ""}`}
@@ -151,4 +193,22 @@ export function HomeRuledScreen({
       <AppBottomNavigation active="home" />
     </main>
   );
+}
+
+/** 홈 아래에 잠깐 뜨는 소식 카드의 내용.
+ *  1차 오픈에서는 띄우지 않기로 해서 항상 null 을 돌려준다(2026-09-16).
+ *  카드 자체(마크업·CSS)는 남겨 뒀다. 실제로 띄울 때는 여기서
+ *  맡은 편지의 기한·답장 도착을 읽어 아래 모양으로 돌려주면 된다:
+ *  { title: "맡은 편지에 답장을 전해주세요.", time: "1일 23:59:59 남음",
+ *    isUrgent: false, action: "답장 쓰기", onAction, onDismiss }
+ *  기한이 얼마 안 남았으면 isUrgent 를 켜서 시간을 주황색으로 보여준다. */
+function getHomeNotice(): {
+  title: string;
+  time?: string;
+  isUrgent?: boolean;
+  action: string;
+  onAction: () => void;
+  onDismiss: () => void;
+} | null {
+  return null;
 }
