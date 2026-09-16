@@ -11,6 +11,8 @@ import {
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
+  clearAppState,
+  replaceAppState,
 } from "../../utils/navigation";
 import {
   createReport,
@@ -378,9 +380,21 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // 편지 읽기 화면의 시트에서 이미 확인을 받고 왔다면(?start=1) 곧장 처리부터 시작한다.
   // 주소로 직접 들어온 경우에는 확인 시트부터 보여준다.
   const startNow = getCurrentAppSearchParams().get("start") === "1";
+  // 두고 가기를 마치면 주소에 state=done 을 남긴다(2026-09-16).
+  //
+  // 그러지 않으면 화면이 다시 그려질 때 방금 한 일을 잊는다. 저장소에는 두고 간
+  // 기록이 있으니 아래 가드가 걸려, '편지를 두고 왔어요'가 잠깐 떴다가
+  // '이미 두고 온 편지예요'로 튀었다. 뒤로 돌아왔을 때도 마찬가지였다
+  // (?start=1 이 남아 끝난 일을 다시 시작해 로딩까지 한 번 더 보였다).
+  const isDone = getCurrentAppSearchParams().get("state") === "done";
+  const alreadyReturned = Boolean(
+    letterId && getLetterReturn(letterId, readerId),
+  );
   const [phase, setPhase] = useState<
     "intro" | "processing" | "failed" | "complete"
-  >(startNow ? "processing" : "intro");
+  >(
+    isDone ? "complete" : startNow && !alreadyReturned ? "processing" : "intro",
+  );
   // 처리는 훅 규칙 때문에 가드보다 위에 정의해 둔다 — 아래 가드들이 먼저 return 해버리면
   // useEffect 가 조건부로 호출되어 버린다.
   const runReturn = () => {
@@ -411,6 +425,8 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
         completedAt: now,
       });
       if (hasDraft) deleteReplyDraft(current.id, readerId);
+      // 주소에 남겨 두면 화면이 다시 그려져도, 뒤로 돌아와도 이 화면이 그대로다.
+      replaceAppState("done");
       setPhase("complete");
     }, 1400);
   };
@@ -419,7 +435,7 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // 한 번만 돌게 문을 걸어둔다.
   const startedRef = useRef(false);
   useEffect(() => {
-    if (!startNow || startedRef.current) return;
+    if (!startNow || alreadyReturned || startedRef.current) return;
     startedRef.current = true;
     runReturn();
   }, []);
@@ -435,14 +451,22 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}
+            onClick={() => {
+              // 떠나면서 완료 표시를 지운다 — 뒤로 돌아오면 그때의 실제 상태
+              // ('이미 두고 온 편지예요')가 보여야 한다.
+              clearAppState();
+              navigateTo(getListenEntryPath(getCurrentUserId()));
+            }}
           >
             다른 편지 만나기
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => {
+              clearAppState();
+              navigateTo("/home");
+            }}
           >
             홈으로 돌아가기
           </button>
@@ -473,7 +497,12 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}
+            onClick={() => {
+              // 떠나면서 완료 표시를 지운다 — 뒤로 돌아오면 그때의 실제 상태
+              // ('이미 두고 온 편지예요')가 보여야 한다.
+              clearAppState();
+              navigateTo(getListenEntryPath(getCurrentUserId()));
+            }}
           >
             다른 편지 만나기
           </button>

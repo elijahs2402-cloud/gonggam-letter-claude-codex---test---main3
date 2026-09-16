@@ -285,3 +285,28 @@ export function replaceAppState(state: string) {
   url.searchParams.set("state", state);
   window.history.replaceState({}, "", url);
 }
+
+/**
+ * 주소에 남긴 화면 상태 표시를 지운다.
+ *
+ * 완료 화면처럼 '한 번만 보여주는' 자리에서 쓴다. 떠나기 직전에 지워 두면,
+ * 뒤로 돌아왔을 때 완료 화면이 다시 뜨지 않고 그때의 실제 상태가 보인다
+ * (예: 편지 두고 가기 → 돌아오면 '이미 두고 온 편지예요').
+ */
+export function clearAppState() {
+  if (window.location.protocol === "file:") {
+    const params = getCurrentAppSearchParams();
+    params.delete("state");
+    const query = params.toString();
+    window.history.replaceState(
+      {},
+      "",
+      `#${getCurrentAppPath()}${query ? `?${query}` : ""}`,
+    );
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.delete("state");
+  window.history.replaceState({}, "", url);
+}

@@ -22,6 +22,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <!-- 첫 배경색. CSS 파일이 도착하기 전 한 프레임 동안 브라우저 기본색(흰색)이
+         보여 화면을 옮길 때마다 깜빡였다. --paper 와 같은 값을 여기 직접 적어 둔다
+         (변수는 아직 읽히기 전이라 쓸 수 없다). 2026-09-16 -->
+    <style>
+      html,
+      body {
+        background-color: #f6f0e5;
+      }
+    </style>
     <!-- figma:head-end -->
     <!-- iOS 사파리는 본문의 이메일 주소·전화번호를 자동으로 링크(mailto:/tel:)로 바꾼다.
          계정 관리의 이메일 주소가 파란 밑줄 링크로 보이던 원인. DOM 에는 <a> 가 없어

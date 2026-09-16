@@ -1440,9 +1440,13 @@ html[data-ios-standalone="true"] .intro-copy {
   }
 }
 
+/* 화면을 옮길 때마다 문서를 새로 불러오는 구조라, 나가는 화면이 투명해진 뒤
+   빈 화면을 지나 새 화면이 0 에서 떠오르면 '두 번 로딩되는' 것처럼 깜빡였다.
+   (실측 2026-09-16: 화면이 거의 안 보이는 구간 220ms → 141ms)
+   움직임은 남기고 투명해지는 폭만 줄여, 글이 사라졌다 나타나지 않게 한다. */
 @keyframes app-page-enter {
   from {
-    opacity: 0;
+    opacity: 0.88;
     transform: translateY(var(--page-enter-distance));
   }
   to {
@@ -1457,7 +1461,7 @@ html[data-ios-standalone="true"] .intro-copy {
     transform: translateY(0);
   }
   to {
-    opacity: 0;
+    opacity: 0.9;
     transform: translateY(-4px);
   }
 }

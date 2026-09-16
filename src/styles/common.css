@@ -290,6 +290,12 @@ body {
    좋은 화면에서만 본문 종이색으로 바꾼다. statusBarColor.ts 가
    화면별로 이 값을 다시 덮어쓴다(매트 배경인 편지 읽기 등). */
 @media (max-width: 479px) {
+  /* html 까지 함께 칠한다(2026-09-16). 화면을 옮길 때마다 문서를 새로 불러오는데,
+     그 사이 잠깐 보이는 것은 body 가 아니라 html 의 배경이다. html 만 매트색
+     (--bg-app)으로 남아 있어 종이색 화면 사이에 어두운 색이 깜빡였다.
+     :root 로 적는 이유: 위쪽 :root 규칙과 힘이 같아야 이 값이 쓰인다
+     (html 로 적으면 :root 가 이긴다). */
+  :root,
   body {
     background-color: var(--paper);
   }
@@ -315,8 +321,10 @@ button:focus-visible {
 }
 
 .mobile-prototype {
-  --page-enter-duration: 400ms;
-  --page-exit-duration: 180ms;
+  /* 2026-09-16: 400/180 → 220/140. 화면마다 문서를 새로 불러오는 구조여서
+     전환이 길수록 빈 화면이 오래 보였다(깜빡임). @keyframes app-page-enter 주석 참고. */
+  --page-enter-duration: 220ms;
+  --page-exit-duration: 140ms;
   --page-enter-distance: 8px;
   width: 100vw;
   /* 키보드가 올라오면 dvh 는 그대로여서 실제 보이는 높이와 어긋난다.
