@@ -13,6 +13,8 @@ import { getReportsByUser } from "../../data/reports";
 import guide from "./GuideScreen.module.css";
 // 이름 바꾸기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import nameSettings from "./AnonymousNameSettingsScreen.module.css";
+// 약관·처리방침 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import policy from "./PolicyScreen.module.css";
 
 function Header({
   title,
@@ -324,7 +326,7 @@ export function PolicyScreen({
         <Header title={title} />
         <div className="my-detail-scroll">
           <section
-            className="privacy-policy-document"
+            className={`privacy-policy-document ${policy["privacy-policy-document"]}`}
             aria-label="개인정보 처리방침"
           >
             {privacySections.map(([heading, body]) => (
@@ -351,16 +353,24 @@ export function PolicyScreen({
     <main className="mobile-prototype policy-screen">
       <Header title={title} />
       <div className="my-detail-scroll">
-        <article className="policy-document">
-          <header className="policy-document-heading">
+        <article className={`policy-document ${policy["policy-document"]}`}>
+          <header
+            className={`policy-document-heading ${policy["policy-document-heading"]}`}
+          >
             <p>공감편지의 약속</p>
-            <span className="policy-document-mark" aria-hidden="true">
+            <span
+              className={`policy-document-mark ${policy["policy-document-mark"]}`}
+              aria-hidden="true"
+            >
               01
             </span>
             <h1>{title}</h1>
             <time>적용 예정일 · 실제 서비스 준비 후 확정</time>
           </header>
-          <aside className="policy-notice" aria-label="문서 안내">
+          <aside
+            className={`policy-notice ${policy["policy-notice"]}`}
+            aria-label="문서 안내"
+          >
             <span aria-hidden="true">✦</span>
             <div>
               <strong>{notice}</strong>
@@ -371,10 +381,12 @@ export function PolicyScreen({
             </div>
           </aside>
           <section
-            className="policy-contents"
+            className={`policy-contents ${policy["policy-contents"]}`}
             aria-labelledby="policy-contents-title"
           >
-            <div className="policy-section-label">
+            <div
+              className={`policy-section-label ${policy["policy-section-label"]}`}
+            >
               <span>contents</span>
               <h2 id="policy-contents-title">문서의 차례</h2>
             </div>
@@ -388,7 +400,9 @@ export function PolicyScreen({
               ))}
             </ol>
           </section>
-          <p className="policy-document-footnote">
+          <p
+            className={`policy-document-footnote ${policy["policy-document-footnote"]}`}
+          >
             궁금한 점이 있다면, 서비스가 정식으로 시작된 뒤 안내되는 문의 경로로
             연락해주세요.
           </p>
