@@ -273,3 +273,45 @@
   /* 꺼진 상태 배경. 테두리를 없애니 10% 로는 형태가 잘 안 잡혀 22% 로 올린다. */
   background: rgba(var(--deep-plum-rgb), 0.22);
 }
+/* 아래는 나중에 global.css 에서 추가로 옮긴 규칙이다. */
+.auth-dialog-backdrop {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 25px;
+  background: rgba(var(--ink-rgb), var(--a50));
+}
+.auth-dialog {
+  width: 100%;
+  padding: 26px 23px 22px;
+  border: 1px solid rgba(var(--gold-rgb), var(--a72));
+  background: #faf7f0;
+  animation: auth-dialog-in 0.32s ease both;
+}
+.auth-dialog p {
+  margin: 0 0 12px;
+  color: var(--status-caution-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+.auth-dialog h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 500;
+}
+.auth-dialog span {
+  display: block;
+  margin: 17px 0 23px;
+  color: var(--muted-ink);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.auth-dialog button {
+  width: 100%;
+}
+.notification-detail h2 {
+  font-size: 19px;
+}

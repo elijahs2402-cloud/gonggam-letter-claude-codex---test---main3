@@ -99,10 +99,6 @@
   border-top: 1px solid rgba(var(--gold-rgb), var(--a33));
   background: rgba(var(--paper-rgb), var(--a95));
 }
-.auth-actions--stacked {
-  display: grid;
-  gap: 8px;
-}
 .auth-primary,
 .auth-secondary {
   min-height: 51px;
@@ -122,11 +118,6 @@
   background: rgba(var(--deep-plum-rgb), var(--a20));
   color: rgba(var(--white-rgb), var(--a85));
   cursor: not-allowed;
-}
-.auth-secondary {
-  border: 1px solid rgba(var(--deep-plum-rgb), var(--a50));
-  background: rgba(var(--white-rgb), var(--a40));
-  color: var(--deep-plum);
 }
 .auth-text-action {
   justify-self: center;
@@ -155,12 +146,6 @@
 .terms-consent-heading {
   padding: 8px 0 51px;
   border-bottom: 1px solid rgba(var(--gold-rgb), var(--a50));
-}
-.terms-consent-heading h1 {
-  margin: 0;
-  color: var(--ink);
-  font: var(--fw-title) var(--fs-title)/var(--lh-title) var(--font-serif);
-  letter-spacing: var(--ls-title);
 }
 .terms-policy-document {
   margin: 0;
@@ -223,44 +208,6 @@
   background: rgba(var(--terracotta-rgb), var(--a05));
   color: #6d6459;
   font: 12px/var(--lh-relaxed) var(--font-sans);
-}
-.auth-dialog-backdrop {
-  position: absolute;
-  z-index: 12;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 25px;
-  background: rgba(var(--ink-rgb), var(--a50));
-}
-.auth-dialog {
-  width: 100%;
-  padding: 26px 23px 22px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a72));
-  background: #faf7f0;
-  animation: auth-dialog-in 0.32s ease both;
-}
-.auth-dialog p {
-  margin: 0 0 12px;
-  color: var(--status-caution-text);
-  font-size: 12px;
-  font-weight: 700;
-}
-.auth-dialog h2 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: 21px;
-  font-weight: 500;
-}
-.auth-dialog span {
-  display: block;
-  margin: 17px 0 23px;
-  color: var(--muted-ink);
-  font-size: 12px;
-  line-height: 1.7;
-}
-.auth-dialog button {
-  width: 100%;
 }
 @keyframes auth-dialog-in {
   from {
@@ -354,12 +301,6 @@
     opacity 0.72s ease,
     visibility 0s linear 0.72s;
 }
-.auth-redirect-screen {
-  display: grid;
-  place-items: center;
-  color: var(--muted-ink);
-  font-size: 12px;
-}
 @media (prefers-reduced-motion: reduce) {
   .auth-spinner {
     animation: none;
@@ -397,9 +338,6 @@
    여기는 padding 이 없이 min-height:77px 로 높이만 고정하고 flex 로 가운데
    맞추는 방식이었다 — 내용 51px 기준으로 계산하면 위아래 13px 짜리 padding 과
    같은 결과였다. min-height 를 padding:16px 0 으로 바꿔 명시적으로 맞춘다. */
-.notification-detail h2 {
-  font-size: 19px;
-}
 
 /* 4.5C report, block, hide, and return flows. */
 .report-screen--expanded {
@@ -2844,23 +2782,6 @@ html[data-ios-standalone="true"] .intro-copy {
   overflow-y: auto;
   padding: var(--scroll-top) var(--gutter) 58px;
 }
-.subpage-heading h1 {
-  margin: 0;
-  white-space: pre-line;
-  font: var(--fw-title) var(--fs-title)/var(--lh-title) var(--font-serif);
-  letter-spacing: var(--ls-title);
-}
-.subpage-heading p {
-  margin: 15px 0 0;
-  color: var(--muted-ink);
-  font: var(--fs-body-sm)/1.7 var(--font-sans);
-}
-.subpage-heading small {
-  display: block;
-  margin-top: 10px;
-  color: var(--muted-ink);
-  font: 12px/1.65 var(--font-sans);
-}
 
 /* Account settings — Figma node 22:96 */
 .account-settings-screen--figma {
@@ -2890,18 +2811,6 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 .account-withdrawal-scroll {
   padding-bottom: calc(100px + env(safe-area-inset-bottom));
-}
-.account-withdrawal-copy h1 {
-  color: var(--ink);
-  font: 500 28px/1.4 var(--font-serif);
-  letter-spacing: -0.035em;
-}
-.account-withdrawal-copy p {
-  max-width: 286px;
-  margin-top: 14px;
-  color: var(--muted-ink);
-  font: 400 14px/1.75 var(--font-sans);
-  letter-spacing: -0.03em;
 }
 .account-withdrawal-fixed-action .flow-primary-button {
   width: 100%;
@@ -2969,9 +2878,6 @@ html[data-ios-standalone="true"] .intro-copy {
 /* 계정 삭제 확인 — 되돌릴 수 없다는 안내라 경고색을 입힌다.
    이 화면의 본문은 설명이 아니라 마지막 경고라, 읽햘지면 곳란난다.
    색은 앱이 이미 쓰는 경고색(--terracotta)을 그대로 쓴다. */
-.account-withdrawal-copy p {
-  color: var(--terracotta);
-}
 /* 이용약관과 동일한 헤더 하단 시작점. --scroll-top은 짧은 화면에서 함께 조정된다. */
 .nef-scroll,
 .account-settings-scroll--figma,

@@ -20,6 +20,8 @@ import nickname from "./NicknameEntryScreen.module.css";
 import login from "./LoginScreen.module.css";
 // 환영 문구 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import welcome from "./ReturningWelcomeScreen.module.css";
+// CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import auth from "./AuthScreens.module.css";
 
 function AuthShell({
   children,
@@ -144,7 +146,7 @@ export function OnboardingRedesignScreen() {
         </section>
       </div>
       <footer
-        className={`auth-actions auth-actions--stacked onboarding-redesign-actions ${onboarding["onboarding-redesign-actions"]}`}
+        className={`auth-actions auth-actions--stacked ${auth["auth-actions--stacked"]} onboarding-redesign-actions ${onboarding["onboarding-redesign-actions"]}`}
       >
         <button
           className="auth-primary"
@@ -294,7 +296,7 @@ export function LoginScreen() {
             </button>
             <button
               type="button"
-              className="auth-secondary"
+              className={`auth-secondary ${auth["auth-secondary"]}`}
               onClick={() => {
                 retryMockLogin();
                 setSnapshot(getMockAuthSnapshot());
@@ -321,7 +323,9 @@ export function TermsConsentScreen() {
     <AuthShell className="terms-screen">
       <AuthHeader backTo="/login" />
       <div className="auth-scroll terms-policy-scroll">
-        <section className="terms-consent-heading">
+        <section
+          className={`terms-consent-heading ${auth["terms-consent-heading"]}`}
+        >
           <h1>
             공감편지를 시작하기 전에
             <br />
@@ -539,7 +543,9 @@ export function AuthGateRedirect({ to }: { to: string }) {
     replaceRoute(to);
   }, [to]);
   return (
-    <AuthShell className="auth-redirect-screen">
+    <AuthShell
+      className={`auth-redirect-screen ${auth["auth-redirect-screen"]}`}
+    >
       <span>공감편지를 준비하고 있어요.</span>
     </AuthShell>
   );

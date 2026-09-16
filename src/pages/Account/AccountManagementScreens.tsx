@@ -140,11 +140,11 @@ export function AccountSettingsScreen({
       <Header title="계정 관리" />
       <div className="my-detail-scroll account-settings-scroll--figma">
         <section
-          className={`account-settings-list--figma ${styles["account-settings-list--figma"]}`}
+          className={`account-settings-list--figma ${styles["account-settings-list--figma"]} ${styles[`account-settings-list--figma ${styles["account-settings-list--figma"]}`]}`}
           aria-label="계정 관리 메뉴"
         >
           <div
-            className={`account-settings-row account-settings-row--email ${styles["account-settings-row"]} ${styles["account-settings-row--email"]}`}
+            className={`account-settings-row ${styles["account-settings-row"]} account-settings-row--email ${styles["account-settings-row--email"]} ${styles[`account-settings-row ${styles["account-settings-row"]}`]} ${styles[`account-settings-row--email ${styles["account-settings-row--email"]}`]}`}
           >
             <span>
               <small>이메일</small>
@@ -152,7 +152,7 @@ export function AccountSettingsScreen({
             </span>
           </div>
           <div
-            className={`account-settings-row account-settings-row--provider ${styles["account-settings-row"]} ${styles["account-settings-row--provider"]}`}
+            className={`account-settings-row ${styles["account-settings-row"]} account-settings-row--provider ${styles["account-settings-row--provider"]} ${styles[`account-settings-row ${styles["account-settings-row"]}`]} ${styles[`account-settings-row--provider ${styles["account-settings-row--provider"]}`]}`}
           >
             <span>
               <small>연결된 계정</small>
@@ -160,19 +160,19 @@ export function AccountSettingsScreen({
             </span>
             {providerIcons[account?.authProvider ?? ""] ? (
               <img
-                className={`account-provider-icon ${styles["account-provider-icon"]}`}
+                className={`account-provider-icon ${styles["account-provider-icon"]} ${styles[`account-provider-icon ${styles["account-provider-icon"]}`]}`}
                 src={providerIcons[account!.authProvider].src}
                 alt={providerIcons[account!.authProvider].alt}
               />
             ) : (
               <i
-                className={`account-provider-mark account-provider-mark--${providerKey} ${styles["account-provider-mark"]}${providerMarkModule ? ` ${providerMarkModule}` : ""}`}
+                className={`account-provider-mark ${styles["account-provider-mark"]} account-provider-mark--${providerKey} ${styles[`account-provider-mark ${styles["account-provider-mark"]}`]}${providerMarkModule ? ` ${providerMarkModule}` : ""}`}
                 aria-label={`${providerName(account?.authProvider)} 계정`}
               />
             )}
           </div>
           <button
-            className={`account-settings-row ${styles["account-settings-row"]}`}
+            className={`account-settings-row ${styles["account-settings-row"]} ${styles[`account-settings-row ${styles["account-settings-row"]}`]}`}
             type="button"
             onClick={() => setConfirmLogout(true)}
           >
@@ -181,7 +181,7 @@ export function AccountSettingsScreen({
             </span>
           </button>
           <button
-            className={`account-settings-row account-settings-row--delete ${styles["account-settings-row"]} ${styles["account-settings-row--delete"]}`}
+            className={`account-settings-row ${styles["account-settings-row"]} account-settings-row--delete ${styles["account-settings-row--delete"]} ${styles[`account-settings-row ${styles["account-settings-row"]}`]} ${styles[`account-settings-row--delete ${styles["account-settings-row--delete"]}`]}`}
             type="button"
             onClick={() => navigateTo("/account-withdrawal")}
           >
@@ -263,12 +263,12 @@ export function AccountWithdrawalScreen() {
       >
         <Header title="계정 삭제" fallback="/account-settings" />
         <div className="my-detail-scroll account-withdrawal-reason-scroll">
-          <section className="subpage-heading">
+          <section className={`subpage-heading ${styles["subpage-heading"]}`}>
             <h1>이유를 알려주실래요?</h1>
             <p>선택하지 않아도 계정을 삭제할 수 있어요.</p>
           </section>
           <section
-            className={`withdrawal-reasons ${styles["withdrawal-reasons"]}`}
+            className={`withdrawal-reasons ${styles["withdrawal-reasons"]} ${styles[`withdrawal-reasons ${styles["withdrawal-reasons"]}`]}`}
             aria-label="계정 삭제 이유"
           >
             {withdrawalReasons.map((item) => (
@@ -284,7 +284,7 @@ export function AccountWithdrawalScreen() {
           </section>
           {reason === "직접입력" && (
             <label
-              className={`account-textarea account-withdrawal-textarea ${styles["account-textarea"]} ${styles["account-withdrawal-textarea"]}`}
+              className={`account-textarea ${styles["account-textarea"]} account-withdrawal-textarea ${styles["account-withdrawal-textarea"]} ${styles[`account-textarea ${styles["account-textarea"]}`]} ${styles[`account-withdrawal-textarea ${styles["account-withdrawal-textarea"]}`]}`}
             >
               <span>삭제 이유를 입력해주세요</span>
               <textarea
@@ -297,7 +297,7 @@ export function AccountWithdrawalScreen() {
           )}
         </div>
         <div
-          className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action account-withdrawal-reason-action ${styles["account-withdrawal-fixed-action"]}`}
+          className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]} account-withdrawal-reason-action ${styles[`account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]}`]}`}
         >
           <button className="flow-primary-button" onClick={showConfirmation}>
             다음
@@ -320,7 +320,9 @@ export function AccountWithdrawalScreen() {
         onBack={showReasons}
       />
       <div className="my-detail-scroll account-withdrawal-scroll">
-        <section className="subpage-heading account-withdrawal-copy">
+        <section
+          className={`subpage-heading ${styles["subpage-heading"]} account-withdrawal-copy ${styles["account-withdrawal-copy"]}`}
+        >
           <h1>계정을 삭제할까요?</h1>
           <p>
             계정이 삭제되면 기록된 모든 데이터가 완전히 삭제되며, 이후에는
@@ -329,10 +331,10 @@ export function AccountWithdrawalScreen() {
         </section>
       </div>
       <div
-        className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]}`}
+        className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]} ${styles[`account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]}`]}`}
       >
         <button
-          className={`flow-primary-button is-danger-action ${styles["is-danger-action"]}`}
+          className={`flow-primary-button is-danger-action ${styles["is-danger-action"]} ${styles[`is-danger-action ${styles["is-danger-action"]}`]}`}
           onClick={finish}
         >
           삭제하기
@@ -345,7 +347,7 @@ export function WithdrawalCompleteScreen() {
   return (
     <main className="mobile-prototype account-settings-screen">
       <section
-        className={`account-processing account-processing--withdrawal-complete ${styles["account-processing"]} ${styles["account-processing--withdrawal-complete"]}`}
+        className={`account-processing ${styles["account-processing"]} account-processing--withdrawal-complete ${styles["account-processing--withdrawal-complete"]} ${styles[`account-processing ${styles["account-processing"]}`]} ${styles[`account-processing--withdrawal-complete ${styles["account-processing--withdrawal-complete"]}`]}`}
       >
         <h1>
           계정 삭제가

@@ -196,3 +196,36 @@
 .account-settings-row {
   border-bottom-color: rgba(var(--ink-rgb), var(--a10));
 }
+/* 아래는 나중에 global.css 에서 추가로 옮긴 규칙이다. */
+.subpage-heading h1 {
+  margin: 0;
+  white-space: pre-line;
+  font: var(--fw-title) var(--fs-title)/var(--lh-title) var(--font-serif);
+  letter-spacing: var(--ls-title);
+}
+.subpage-heading p {
+  margin: 15px 0 0;
+  color: var(--muted-ink);
+  font: var(--fs-body-sm)/1.7 var(--font-sans);
+}
+.subpage-heading small {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted-ink);
+  font: 12px/1.65 var(--font-sans);
+}
+.account-withdrawal-copy h1 {
+  color: var(--ink);
+  font: 500 28px/1.4 var(--font-serif);
+  letter-spacing: -0.035em;
+}
+.account-withdrawal-copy p {
+  max-width: 286px;
+  margin-top: 14px;
+  color: var(--muted-ink);
+  font: 400 14px/1.75 var(--font-sans);
+  letter-spacing: -0.03em;
+}
+.account-withdrawal-copy p {
+  color: var(--terracotta);
+}
