@@ -671,147 +671,14 @@ export function LetterSentScreen({ letterId }: { letterId?: string }) {
   );
 }
 
-function ensureWaitingListTestLetters(_userId: string) {
-  const shortLetterContent = `요즘 회사에서 내가 하는 일이 아무 의미가 없는 것처럼 느껴져요.
-
-열심히 해도 달라지는 건 없고, 새로운 일을 시작할 힘도 없는 것 같아요. 주변에서는 조금만 더 버티라고 하지만, 언제까지 버텨야 하는지도 모르겠어요.
-
-해결 방법을 듣고 싶은 건 아닌데, 그냥 누군가가 이 마음을 알아줬으면 좋겠어요.
-
-하루를 마치고 돌아오면 마음이 더 조용해져요. 그래서 이 편지에 조금씩 마음을 적어봅니다.
-
-오늘만은 누군가에게 조용히 마음을 건네고 싶었어요.`;
-  const scenarios = [
-    {
-      id: "waiting-inline-test-short",
-      anonymousName: "고요한 구름",
-      content: "오늘은 누군가에게 조용히 마음을 건네고 싶었어요.",
-      hours: 2,
-    },
-    {
-      id: "waiting-inline-test-ten-character",
-      anonymousName: "별빛을닮은고요한새벽",
-      content: "오늘은 누군가에게 조용히 마음을 건네고 싶었어요.",
-      hours: 2,
-    },
-    {
-      id: "waiting-inline-test-long",
-      anonymousName: "느린 별빛",
-      content:
-        "요즘은 누구에게도 쉽게 말하지 못한 생각이 자꾸 마음에 남아요. 누군가가 판단하지 않고 끝까지 읽어준다면 조금 괜찮아질 것 같아요. 그래서 이 편지에 천천히 마음을 남겨봅니다.",
-      hours: 53,
-    },
-    {
-      id: "waiting-inline-test-special",
-      anonymousName: "따뜻한 달빛",
-      content: "오늘은 조금 복잡해요… 그래도 괜찮아질 거예요. ☁︎",
-      hours: 120,
-    },
-  ];
-  return scenarios.map((scenario) => {
-    const content =
-      scenario.id === "waiting-inline-test-short"
-        ? shortLetterContent
-        : scenario.content;
-    const existing = getLetterById(scenario.id);
-    if (existing) {
-      const refreshed = {
-        ...existing,
-        anonymousName: scenario.anonymousName,
-        content,
-      };
-      saveLetter(refreshed);
-      return refreshed;
-    }
-    const createdAt = new Date(
-      Date.now() - scenario.hours * 3_600_000,
-    ).toISOString();
-    const letter: Letter = {
-      id: scenario.id,
-      senderId: `waiting-inline-${scenario.id}`,
-      anonymousName: scenario.anonymousName,
-      content,
-      createdAt,
-      updatedAt: createdAt,
-      status: "waiting_for_reader",
-      retryCount: 0,
-      isPrototypeFixture: true,
-      prototypeScenario: "waiting-inline-test",
-      prototypeWaitingScenario: "normal",
-      safetyStatus: "clear",
-      moderationStatus: "not_required",
-      statusHistory: [{ status: "waiting_for_reader", changedAt: createdAt }],
-      lastStatusChangedAt: createdAt,
-    };
-    saveLetter(letter);
-    return letter;
-  });
-}
-
-function forceReplyTestAssignment(letterId: string, userId: string) {
-  const fixture = ensureWaitingListTestLetters(userId).find(
-    (letter) => letter.id === letterId,
-  );
-  if (!fixture) return undefined;
-  const now = new Date().toISOString();
-  const {
-    reply: _reply,
-    repliedAt: _repliedAt,
-    replyOpenedAt: _replyOpenedAt,
-    ...unrepliedFixture
-  } = fixture;
-  const assignedFixture = {
-    ...unrepliedFixture,
-    status: "assigned" as const,
-    assignedReaderId: userId,
-    assignedAt: now,
-    readAt: undefined,
-    waitingForReplyAt: undefined,
-    statusHistory: [
-      ...fixture.statusHistory,
-      { status: "assigned" as const, changedAt: now },
-    ],
-    lastStatusChangedAt: now,
-    updatedAt: now,
-  };
-  saveLetter(assignedFixture);
-  return assignedFixture;
-}
-
-function ensureForcedReplyTestDraft(letterId: string, userId: string) {
-  const existing = getReplyDraft(letterId, userId);
-  if (existing?.content.trim()) return existing;
-  return updateReplyDraft(letterId, userId, {
-    content:
-      "읽으며 마음이 많이 쓰였어요.\n오늘은 스스로에게도 조금 다정한 시간을 내어주세요.",
-    stage: "review",
-    letterStatusAtSave: "assigned",
-  });
-}
-
-export function ReadLetterFlowScreen({
-  letterId,
-  assignedReaderMode = false,
-}: {
-  letterId?: string;
-  assignedReaderMode?: boolean;
-}) {
+export function ReadLetterFlowScreen({ letterId }: { letterId?: string }) {
   // 두고 가기 확인은 페이지를 옳기지 않고 이 화면 위에 시트로 띄운다.
   // 뒤에 읽던 편지가 남아 있어야 '이 편지를'라는 말이 성립한다.
   // 가드보다 위에 두어야 훅이 조건부로 호출되지 않는다.
   const [showReturnSheet, setShowReturnSheet] = useState(false);
-  if (letterId?.startsWith("waiting-inline-test-"))
-    ensureWaitingListTestLetters(getCurrentUserId());
   if (letterId?.startsWith("sample-waiting-letter-")) seedSampleLetters();
   const letter = letterId ? getLetterById(letterId) : undefined;
   if (!letter)
-    return <MissingLetterScreen fallback="/home" title="편지 읽기" />;
-  if (
-    assignedReaderMode &&
-    (letter.assignedReaderId !== getCurrentUserId() ||
-      !["assigned", "read", "waiting_for_reply"].includes(letter.status) ||
-      getLetterReturn(letter.id, getCurrentUserId()))
-  )
     return <MissingLetterScreen fallback="/home" title="편지 읽기" />;
   if (letter.senderId === getCurrentUserId())
     return <MissingLetterScreen fallback="/home" title="편지 읽기" />;
@@ -1136,16 +1003,8 @@ export function ReadLetterFlowScreen({
 
 export function WriteReplyFlowScreen({ letterId }: { letterId?: string }) {
   const currentUserId = getCurrentUserId();
-  if (letterId === "reply-review-test")
-    ensureReplyReviewTestLetter(currentUserId);
   if (letterId?.startsWith("sample-waiting-letter-")) seedSampleLetters();
-  const forcedTestLetter =
-    letterId?.startsWith("waiting-inline-test-") &&
-    getCurrentAppSearchParams().get("force") === "1"
-      ? forceReplyTestAssignment(letterId, currentUserId)
-      : undefined;
-  let letter =
-    forcedTestLetter ?? (letterId ? getLetterById(letterId) : undefined);
+  let letter = letterId ? getLetterById(letterId) : undefined;
   // This first-meeting prototype is entered directly from the read screen.
   // Restore its reply-ready state even when a prior prototype session left no stored fixture.
   if (
@@ -1561,55 +1420,10 @@ function ReplySourceSheet({
   );
 }
 
-function ensureReplyReviewTestLetter(userId: string) {
-  const id = "reply-review-test";
-  const now = new Date().toISOString();
-  const existing = getLetterById(id);
-  const letter: Letter = {
-    id,
-    senderId: "reply-review-test-sender",
-    anonymousName: "별빛을닮은고요한새벽",
-    content:
-      "오늘은 마음이 조금 무거웠어요.\n누군가에게 조용히 이 이야기를 건네고 싶었어요.",
-    createdAt: existing?.createdAt ?? now,
-    updatedAt: now,
-    status: "waiting_for_reply",
-    assignedReaderId: userId,
-    assignedAt: existing?.assignedAt ?? now,
-    waitingForReplyAt: now,
-    retryCount: 0,
-    isPrototypeFixture: true,
-    prototypeScenario: "reply-review-test",
-    safetyStatus: "clear",
-    moderationStatus: "not_required",
-    statusHistory: [
-      { status: "waiting_for_reader", changedAt: existing?.createdAt ?? now },
-      { status: "assigned", changedAt: existing?.assignedAt ?? now },
-      { status: "waiting_for_reply", changedAt: now },
-    ],
-    lastStatusChangedAt: now,
-  };
-  saveLetter(letter);
-  updateReplyDraft(id, userId, {
-    content:
-      "읽으며 마음이 많이 쓰였어요.\n오늘은 스스로에게도 조금 다정한 시간을 내어주세요.",
-    stage: "review",
-    letterStatusAtSave: "waiting_for_reply",
-  });
-}
-
 export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
   const currentUserId = getCurrentUserId();
-  if (letterId === "reply-review-test")
-    ensureReplyReviewTestLetter(currentUserId);
   if (letterId?.startsWith("sample-waiting-letter-")) seedSampleLetters();
-  const forcedTestLetter = letterId?.startsWith("waiting-inline-test-")
-    ? forceReplyTestAssignment(letterId, currentUserId)
-    : undefined;
-  if (forcedTestLetter)
-    ensureForcedReplyTestDraft(forcedTestLetter.id, currentUserId);
-  let letter =
-    forcedTestLetter ?? (letterId ? getLetterById(letterId) : undefined);
+  let letter = letterId ? getLetterById(letterId) : undefined;
   if (
     letterId === "sample-waiting-letter-one" &&
     (!letter ||
@@ -1813,11 +1627,6 @@ export function ReplySendingTransitionScreen({
   letterId?: string;
 }) {
   const currentUserId = getCurrentUserId();
-  const forcedTestLetter = letterId?.startsWith("waiting-inline-test-")
-    ? forceReplyTestAssignment(letterId, currentUserId)
-    : undefined;
-  if (forcedTestLetter)
-    ensureForcedReplyTestDraft(forcedTestLetter.id, currentUserId);
   /* 보내는 중과 실패는 성격이 다른 화면이라 나눠 둔다.
      예전에는 로딩 화면의 문구만 갈아끼웠는데, 그러면 점 물결은 계속 돌아
      '진행 중'이라 말하면서 글은 '실패했다'고 하는 모순이 생겼다.
