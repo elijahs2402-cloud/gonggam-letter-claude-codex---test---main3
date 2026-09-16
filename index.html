@@ -17,6 +17,109 @@
       content="black-translucent"
     />
     <title><!-- figma:title --></title>
+    <!-- 글꼴 미리 받기 (2026-09-16).
+         글꼴은 CSS 를 읽고 글자를 배치한 뒤에야 요청돼서, 느린 연결에서는 1초 넘게
+         다른 글꼴로 보이다가 바뀌었다(실측 1.3~1.7초). 모든 화면이 쓰는 조각만 미리 받는다.
+         목록은 tools/screenshot/font-load.mjs 로 다시 뽑을 수 있다. -->
+
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/SUITE-Bold.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/pretendard/PretendardVariable.subset.91.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/pretendard/PretendardVariable.subset.90.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/pretendard/PretendardVariable.subset.88.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.119.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.118.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.117.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.116.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.115.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.114.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.113.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXduUBwuF9Wxop-KlAZIoTrf6uFZh_9Q.112.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/google/3Jn7SDn90Gmq2mr3blnHaTZXRudj1Q.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/pretendard/PretendardVariable.subset.89.woff2"
+    />
     <!-- figma:head-end -->
     <!-- iOS 사파리는 본문의 이메일 주소·전화번호를 자동으로 링크(mailto:/tel:)로 바꾼다.
          계정 관리의 이메일 주소가 파란 밑줄 링크로 보이던 원인. DOM 에는 <a> 가 없어
