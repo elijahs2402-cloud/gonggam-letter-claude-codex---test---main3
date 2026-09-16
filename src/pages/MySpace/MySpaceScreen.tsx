@@ -18,6 +18,8 @@ import {
 import { NotificationSettingsScreen } from "../Notifications/NotificationScreens";
 import { SafetyManagementScreen } from "../Safety/ReportScreens";
 import { TermsMockupScreen } from "./TermsMockup";
+// 나의 공간 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import mySpace from "./MySpaceScreen.module.css";
 type ViewKey =
   | "list"
   | "nickname"
@@ -170,12 +172,12 @@ export function MySpaceScreen() {
       className={`mobile-prototype my-space-screen${enteredViaPop ? " is-popped-in" : ""}${stage ? ` ${stage}` : ""}`}
     >
       <div className="my-space-scroll-region">
-        <header className="my-space-heading">
+        <header className={`my-space-heading ${mySpace["my-space-heading"]}`}>
           <h1>나의 공간</h1>
           <span>나에 대한 설정과 안내를 모아뒀어요.</span>
         </header>
         <section
-          className="my-space-menu my-space-menu--figma"
+          className={`my-space-menu ${mySpace["my-space-menu"]} my-space-menu--figma ${mySpace["my-space-menu--figma"]}`}
           aria-label="나의 공간 메뉴"
         >
           {menuItems.map((item) => (
@@ -188,7 +190,9 @@ export function MySpaceScreen() {
               }}
             >
               <span>{item.label}</span>
-              <span className="my-space-menu-value">
+              <span
+                className={`my-space-menu-value ${mySpace["my-space-menu-value"]}`}
+              >
                 {item.key === "nickname" ? summary.name : null}
               </span>
               <i aria-hidden="true">›</i>
