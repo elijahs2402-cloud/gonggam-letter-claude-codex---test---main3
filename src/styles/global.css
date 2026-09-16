@@ -340,97 +340,6 @@
    같은 결과였다. min-height 를 padding:16px 0 으로 바꿔 명시적으로 맞춘다. */
 
 /* 4.5C report, block, hide, and return flows. */
-.report-screen--expanded {
-  padding-bottom: 42px;
-}
-.report-screen--expanded fieldset {
-  margin: 23px 0 19px;
-  padding: 0;
-  border: 0;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a50));
-}
-.report-screen--expanded legend {
-  padding: 15px 0 9px;
-  color: var(--deep-plum);
-  font-size: 12px;
-  font-weight: 700;
-}
-.report-screen--expanded fieldset label {
-  min-height: 45px;
-  padding: 10px 5px;
-  display: flex;
-  align-items: center;
-  border: 0;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
-}
-.report-target-summary {
-  margin: 20px 0 0;
-  border-top: 1px solid rgba(var(--ink-rgb), var(--a15));
-}
-.report-target-summary div {
-  padding: 11px 1px;
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a15));
-}
-.report-target-summary dt {
-  color: var(--muted-ink);
-  font-size: 12px;
-  font-weight: 700;
-}
-.report-target-summary dd {
-  margin: 0;
-  color: var(--ink);
-  font-size: 12px;
-}
-.report-detail-label {
-  margin: 18px 0;
-  display: grid;
-  gap: 8px;
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 700;
-}
-.report-detail-label > span {
-  color: var(--muted-ink);
-  font-size: 12px;
-  font-weight: 400;
-}
-.report-detail-label textarea {
-  min-height: 95px;
-  padding: 11px;
-  resize: vertical;
-  border: 1px solid var(--frame-rule);
-  outline: 0;
-  background: rgba(var(--surface-card-rgb), var(--a50));
-  color: var(--ink);
-  font: 12px/1.65 var(--font-serif);
-}
-.report-block-choice {
-  margin: 12px 0;
-  padding: 13px 4px;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  border-top: 1px solid rgba(var(--ink-rgb), var(--a10));
-  border-bottom: 1px solid rgba(var(--ink-rgb), var(--a10));
-}
-.report-block-choice input {
-  margin: 3px 0 0;
-  accent-color: var(--deep-plum);
-}
-.report-block-choice span {
-  display: grid;
-  gap: 5px;
-}
-.report-block-choice strong {
-  font-size: 12px;
-}
-.report-block-choice small {
-  color: var(--muted-ink);
-  font-size: 12px;
-  line-height: 1.55;
-}
 
 /* 1A service shell: top-level home, mailbox, and personal space */
 
@@ -2562,12 +2471,10 @@ html[data-ios-standalone="true"] .intro-copy {
 }
 
 .safety-review,
-.report-screen,
 .management-screen {
   padding: 24px;
 }
 .safety-review h1,
-.report-screen h1,
 .management-screen h1 {
   margin: 0 0 12px;
   font-family: var(--font-serif);
@@ -2575,8 +2482,7 @@ html[data-ios-standalone="true"] .intro-copy {
   font-weight: var(--fw-title);
   letter-spacing: -0.035em;
 }
-.safety-review > p,
-.report-screen > p {
+.safety-review > p {
   margin: 0 0 18px;
   color: var(--muted-ink);
   font-size: 12px;
@@ -2586,10 +2492,6 @@ html[data-ios-standalone="true"] .intro-copy {
 /* 확인을 묻는 화면의 보조문구는 가이드 값(--fs-body-sm 14px)을 따른다.
    위의 12px 은 이유 선택처럼 목록이 이어지는 화면에 맞춰 둔 값이라,
    28px 제목 바로 아래 한 문단만 놓이는 여기서는 단계가 너무 벌어졌다. */
-.report-screen--confirm > p {
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-relaxed);
-}
 
 .safety-review ul {
   margin: 16px 0;
@@ -2616,21 +2518,6 @@ html[data-ios-standalone="true"] .intro-copy {
   margin: 0 0 12px;
   color: var(--deep-plum);
   font: 600 12px var(--font-sans);
-}
-.report-screen {
-  display: grid;
-  gap: 11px;
-}
-.report-screen label {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-  padding: 12px;
-  border: 1px solid rgba(var(--gold-rgb), var(--a33));
-  font-size: 12px;
-}
-.report-screen .flow-primary-button {
-  margin-top: 10px;
 }
 .figma-report-detail > label {
   display: block;
