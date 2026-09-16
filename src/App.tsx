@@ -238,12 +238,20 @@ export function App() {
       />
     );
   if (path === "/safety-management") return <SafetyManagementScreen />;
-  if (path.startsWith("/report-letter/"))
+  if (path.startsWith("/report-letter/")) {
+    // 답장 신고(/report-reply/:id/complete)와 같은 규칙으로 완료 화면을 연다.
+    const suffix = path.slice("/report-letter/".length);
+    const isComplete = suffix.endsWith("/complete");
+    const reportedLetterId = decodeURIComponent(
+      isComplete ? suffix.slice(0, -"/complete".length) : suffix,
+    );
     return (
       <LetterReportFigmaScreen
-        letterId={decodeURIComponent(path.slice("/report-letter/".length))}
+        letterId={reportedLetterId}
+        complete={isComplete}
       />
     );
+  }
   if (path === "/letter-sent")
     return (
       <LetterSentScreen

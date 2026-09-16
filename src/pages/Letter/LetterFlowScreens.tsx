@@ -1517,7 +1517,7 @@ function ReplySourceSheet({
   const sentAt = formatDateTime(letter.createdAt);
   return (
     <div
-      className={`reply-source-backdrop${closing ? ` is-closing ${flow["is-closing"]}` : ""}`}
+      className={`reply-source-backdrop ${flow["reply-source-backdrop"]}${closing ? ` is-closing ${flow["is-closing"]}` : ""}`}
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) setClosing(true);
@@ -1526,7 +1526,7 @@ function ReplySourceSheet({
       <div
         ref={sheetRef}
         tabIndex={-1}
-        className={`reply-source-sheet${closing ? ` is-closing ${flow["is-closing"]}` : ""}`}
+        className={`reply-source-sheet ${flow["reply-source-sheet"]}${closing ? ` is-closing ${flow["is-closing"]}` : ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="reply-source-title"

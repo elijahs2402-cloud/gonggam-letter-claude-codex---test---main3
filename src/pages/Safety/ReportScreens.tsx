@@ -68,7 +68,13 @@ function Shell({
   );
 }
 
-export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
+export function LetterReportFigmaScreen({
+  letterId,
+  complete = false,
+}: {
+  letterId?: string;
+  complete?: boolean;
+}) {
   const userId = getCurrentUserId();
   const letter = letterId ? getLetterById(letterId) : undefined;
   const existing = letter
@@ -80,7 +86,7 @@ export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
   const [block, setBlock] = useState(false);
   const [state, setState] = useState<
     "ready" | "processing" | "failed" | "complete"
-  >("ready");
+  >(complete ? "complete" : "ready");
   if (!letter)
     return (
       <Shell title="편지 신고">
@@ -92,6 +98,32 @@ export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
             onClick={() => navigateTo(getListenEntryPath(getCurrentUserId()))}
           >
             다른 편지 만나기
+          </button>
+        </section>
+      </Shell>
+    );
+  // 신고를 접수하면 /report-letter/:id/complete 로 옮겨와 이 화면을 본다
+  // (답장 신고와 같은 규칙). 2026-09-16 이전에는 /report-letter-complete-demo
+  // 라는 이름이었는데, 데모 주소를 정리하면서 실제 흐름과 같은 자리로 옮겼다.
+  if (state === "complete")
+    return (
+      <Shell title="신고 접수" showBackButton={false}>
+        <section className="flow-message">
+          <h1>신고가 접수되었어요</h1>
+          <p>이 편지는 대기 목록에서 숨겨졌어요.</p>
+          <button
+            className="flow-primary-button"
+            type="button"
+            onClick={() => navigateTo("/safety-management")}
+          >
+            신고 내역 확인
+          </button>
+          <button
+            className="flow-text-button"
+            type="button"
+            onClick={() => navigateTo("/home")}
+          >
+            홈으로 돌아가기
           </button>
         </section>
       </Shell>
@@ -121,48 +153,30 @@ export function LetterReportFigmaScreen({ letterId }: { letterId?: string }) {
     );
   function submit() {
     if (!reason || state === "processing") return;
+    // 아래 타이머 안에서는 letter 가 다시 undefined 로 보인다(타입 좁힘이 풀린다).
+    // 여기서 한 번 잡아 둔다.
+    const target = letter;
+    if (!target) return;
     setState("processing");
     window.setTimeout(() => {
       const report = createReport({
         reporterId: userId,
         targetType: "letter",
-        targetId: letter.id,
+        targetId: target.id,
         reason,
         detail: detail.trim() || undefined,
         hiddenByReporter: hide,
-        ...(block ? { blockedUserId: letter.senderId } : {}),
+        ...(block ? { blockedUserId: target.senderId } : {}),
       });
       if (!report) {
         setState("failed");
         return;
       }
-      if (hide) hideContent(userId, "letter", letter.id);
-      if (block) blockUser(userId, letter.senderId, "letter_report");
-      navigateTo("/report-letter-complete-demo");
+      if (hide) hideContent(userId, "letter", target.id);
+      if (block) blockUser(userId, target.senderId, "letter_report");
+      navigateTo(`/report-letter/${encodeURIComponent(target.id)}/complete`);
     }, 580);
   }
-  if (state === "complete")
-    return (
-      <Shell title="신고 접수">
-        <section className="flow-message">
-          <h1>
-            {block ? "신고를 접수하고 작성자를 차단했어요" : "신고를 받았어요"}
-          </h1>
-          <p>
-            {hide
-              ? "이 편지는 내 대기 목록에서 숨겨졌어요."
-              : "신고 내역은 안전 관리에서 확인할 수 있어요."}
-          </p>
-          <button
-            className="flow-primary-button"
-            type="button"
-            onClick={() => navigateTo("/home")}
-          >
-            홈으로 돌아가기
-          </button>
-        </section>
-      </Shell>
-    );
   return (
     <Shell
       title="편지 신고"
