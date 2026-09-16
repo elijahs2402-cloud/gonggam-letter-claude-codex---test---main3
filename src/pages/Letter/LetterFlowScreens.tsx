@@ -1105,7 +1105,7 @@ export function ReadLetterFlowScreen({
           aria-hidden="true"
         />
       </section>
-      <div className={`active-reading-mat ${flow["active-reading-mat"]}`}>
+      <div className={`active-reading-mat`}>
         <article
           className={`active-reading-paper ${flow["active-reading-paper"]}`}
         >

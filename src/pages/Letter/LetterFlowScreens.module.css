@@ -952,3 +952,43 @@
 .my-letter-reply-paper .my-letter-waiting-paper-heading span {
   color: var(--deep-plum);
 }
+
+/* 아래 @keyframes 는 global.css 에 있는 것과 같은 내용이다 (2026-09-16).
+   CSS Modules 는 애니메이션 이름도 파일별로 바꾸기 때문에, 정의가 global.css 에만 있으면
+   이름이 어긋나 애니메이션이 동작하지 않는다. 짝을 맞추려고 이 파일에도 둔다. */
+@keyframes app-overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes app-stage-enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--stage-rise, 14px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes app-overlay-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes app-stage-leave-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(var(--stage-rise, 14px));
+  }
+}

@@ -372,3 +372,25 @@
     var(--header-h) + env(safe-area-inset-top) + clamp(12px, 2.5dvh, 24px)
   );
 }
+
+/* 아래 @keyframes 는 global.css 에 있는 것과 같은 내용이다 (2026-09-16).
+   CSS Modules 는 애니메이션 이름도 파일별로 바꾸기 때문에, 정의가 global.css 에만 있으면
+   이름이 어긋나 애니메이션이 동작하지 않는다. 짝을 맞추려고 이 파일에도 둔다. */
+@keyframes home-notice-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes app-sheet-rise-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
