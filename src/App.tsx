@@ -2,20 +2,13 @@ import {
   ListenEntryAScreen,
   ListenEntryEmptyScreen,
 } from "./pages/Letter/ListenEntryVariants";
-import {
-  MailboxEmptyDemoScreen,
-  MailboxReplyArrivedDemoScreen,
-  MailboxScreen,
-} from "./pages/Mailbox/MailboxScreen";
+import { MailboxScreen } from "./pages/Mailbox/MailboxScreen";
 import { TermsMockupScreen } from "./pages/MySpace/TermsMockup";
 import { MySpaceScreen } from "./pages/MySpace/MySpaceScreen";
 import {
   LetterPreviewScreen,
   LetterSentScreen,
   MyLetterDetailScreen,
-  MyLetterRepliedDemoScreen,
-  MyLetterWaitingDemoScreen,
-  RepliedLetterDemoScreen,
   ReadLetterFlowScreen,
   RepliedLetterDetailScreen,
   ReplyReviewScreen,
@@ -31,7 +24,6 @@ import {
 } from "./utils/navigation";
 import { LetterSafetyReviewScreen } from "./pages/Safety/SafetyScreens";
 import {
-  LetterReportCompleteDemoScreen,
   LetterReportFigmaScreen,
   SafetyManagementScreen,
 } from "./pages/Safety/ReportScreens";
@@ -51,7 +43,6 @@ import {
   setPostLoginPath,
 } from "./data/mockAuth";
 import {
-  NotificationsAllCasesDemoScreen,
   NotificationsScreen,
   NotificationSettingsScreen,
 } from "./pages/Notifications/NotificationScreens";
@@ -148,10 +139,6 @@ export function App() {
 
   // Intro was formerly the fallback route; retain both direct and root entry.
   if (path === "/" || path === "/intro") return <IntroScreen />;
-  // 검토용 임시 화면: 알림의 여섯 가지 유형을 저장소 변경 없이 한 번에 보여준다.
-  if (path === "/notifications-all-demo")
-    return <NotificationsAllCasesDemoScreen />;
-
   if (path === "/onboarding") return <OnboardingRedesignScreen />;
   if (path === "/login") {
     if (isMockAuthenticated()) return <AuthGateRedirect to="/home" />;
@@ -236,9 +223,6 @@ export function App() {
   if (path === "/write-letter") return <WriteLetterFlowScreen />;
   if (path === "/letter-preview") return <LetterPreviewScreen />;
   if (path === "/letter-safety-review") return <LetterSafetyReviewScreen />;
-  if (path === "/report-reply-demo") return <ReplyReportScreen existingDemo />;
-  if (path === "/report-reply-complete-demo")
-    return <ReplyReportScreen completeDemo />;
   if (path.startsWith("/report-reply/")) {
     const suffix = path.slice("/report-reply/".length);
     const isComplete = suffix.endsWith("/complete");
@@ -254,10 +238,6 @@ export function App() {
       />
     );
   if (path === "/safety-management") return <SafetyManagementScreen />;
-  if (path === "/report-letter-demo")
-    return <LetterReportFigmaScreen letterId="sample-waiting-letter-one" />;
-  if (path === "/report-letter-complete-demo")
-    return <LetterReportCompleteDemoScreen />;
   if (path.startsWith("/report-letter/"))
     return (
       <LetterReportFigmaScreen
@@ -300,9 +280,6 @@ export function App() {
         letterId={decodeURIComponent(path.slice("/reply-sent/".length))}
       />
     );
-  if (path === "/mailbox-my-replied-demo") return <MyLetterRepliedDemoScreen />;
-  if (path === "/mailbox-my-waiting-demo") return <MyLetterWaitingDemoScreen />;
-  if (path === "/mailbox-replied-demo") return <RepliedLetterDemoScreen />;
   if (path.startsWith("/mailbox/my/"))
     return (
       <MyLetterDetailScreen
@@ -315,14 +292,6 @@ export function App() {
         letterId={decodeURIComponent(path.slice("/mailbox/replied/".length))}
       />
     );
-  // 답장 쓰기 확정본. 실제 흐름은 /write-reply/:letterId 로 들어오고,
-  // 이름만 부른 /write-reply 는 시안 확인용으로 표본 편지를 띄운다.
-  // (예전 /write-reply 시안 WriteReplyScreen 은 이 화면으로 대체되었다.)
-  if (path === "/write-reply")
-    return <WriteReplyFlowScreen letterId="sample-waiting-letter-one" />;
-  if (path === "/mailbox-empty") return <MailboxEmptyDemoScreen />;
-  if (path === "/mailbox-reply-arrived-demo")
-    return <MailboxReplyArrivedDemoScreen />;
   if (path === "/mailbox") return <MailboxScreen />;
   if (path === "/listen-entry-a") return <ListenEntryAScreen />;
   if (path === "/listen-entry-empty") return <ListenEntryEmptyScreen />;

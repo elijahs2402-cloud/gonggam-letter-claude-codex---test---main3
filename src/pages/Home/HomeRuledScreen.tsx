@@ -50,13 +50,6 @@ export function HomeRuledScreen({
   refinedCardsOnly?: boolean;
 }) {
   const useRefinedCards = isRefined || refinedCardsOnly;
-  // 소식 닫기 후 돌아갈 주소. refinedCardsOnly 는 지금 /home 이 쓰는 모습이다
-  // (/home-ruled-refined-cards 주소는 실험 라우트 정리 때 지웠다).
-  const homePath = isRefined
-    ? "/home-ruled-refined"
-    : refinedCardsOnly
-      ? "/home"
-      : "/home-ruled";
   const [isScrolled, setIsScrolled] = useState(false);
   const userId = getCurrentUserId();
   const name = getCurrentAnonymousName();
@@ -65,34 +58,6 @@ export function HomeRuledScreen({
   // 그것과 아무 상관 없는 별도 저장소를 읽는다. 그래서 점을 보고 눌러도
   // '아직 새로운 알림이 없어요'만 나왔다.
   const hasUnreadNotifications = unreadNotificationCount(userId) > 0;
-  const noticePreview = new URLSearchParams(window.location.search).get(
-    "preview",
-  );
-  const previewNotice =
-    noticePreview === "notice-assigned"
-      ? {
-          title: "맡은 편지에 답장을 전해주세요.",
-          time: "1일 23:59:59 남음",
-          action: "답장 쓰기",
-          onAction: () => navigateTo("/write-reply/sample-waiting-letter-one"),
-        }
-      : noticePreview === "notice-expiring"
-        ? {
-            title: "맡은 편지에 답장을 전해주세요.",
-            time: "곧 사라져요 · 00:15:00 남음",
-            action: "답장 쓰기",
-            onAction: () =>
-              navigateTo("/write-reply/sample-waiting-letter-one"),
-          }
-        : noticePreview === "notice-reply-arrived"
-          ? {
-              title: "답장이 도착했어요.",
-              time: undefined,
-              action: "편지함 가기",
-              onAction: () => navigateTo("/mailbox"),
-            }
-          : null;
-
   return (
     <main
       className={`mobile-prototype home-screen home-ruled-screen ${home["home-screen"]} ${home["home-ruled-screen"]} ${styles.screen}${isRefined ? ` ${refined.screen}` : refinedCardsOnly ? ` ${refined.cardsOnly}` : ""}`}
@@ -112,47 +77,6 @@ export function HomeRuledScreen({
           {hasUnreadNotifications && <i aria-hidden="true" />}
         </button>
       </div>
-
-      {previewNotice && (
-        <aside
-          className={`home-notice-card ${home["home-notice-card"]}`}
-          role="status"
-        >
-          <button
-            className={`home-notice-dismiss ${home["home-notice-dismiss"]}`}
-            type="button"
-            aria-label="소식 닫기"
-            onClick={() => navigateTo(homePath)}
-          >
-            ×
-          </button>
-          <span className={`home-notice-copy ${home["home-notice-copy"]}`}>
-            <strong>{previewNotice.title}</strong>
-            {previewNotice.time && (
-              <span
-                className={`home-notice-countdown ${home["home-notice-countdown"]}${noticePreview === "notice-expiring" ? " is-over" : ""}`}
-              >
-                {previewNotice.time}
-              </span>
-            )}
-            {!previewNotice.time && (
-              <span
-                className={`home-notice-countdown home-notice-countdown--placeholder ${home["home-notice-countdown"]} ${home["home-notice-countdown--placeholder"]}`}
-                aria-hidden="true"
-              >
-                시간 여백
-              </span>
-            )}
-          </span>
-          <button
-            className={`home-notice-action ${home["home-notice-action"]}`}
-            type="button"
-            onClick={previewNotice.onAction}
-          >
-            {previewNotice.action}
-          </button>
-        </aside>
-      )}
 
       <div
         className={`home-scroll-region ${home["home-scroll-region"]} ${styles.scroll}${useRefinedCards ? ` ${refined.scroll}` : ""}`}

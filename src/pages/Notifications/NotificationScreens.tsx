@@ -171,64 +171,6 @@ export function NotificationsScreen({
   );
 }
 
-/** 알림 화면에 표시할 수 있는 모든 유형을 한 번에 확인하는 임시 시안. */
-const allNotificationCases: MockNotification[] = [
-  {
-    id: "demo-reply-arrived",
-    userId: "demo",
-    type: "reply_arrived",
-    title: "답장이 도착했어요.",
-    message: "당신의 편지를 읽은 사람이 마음을 전했어요.",
-    targetRoute: "/mailbox-my-replied-demo",
-    isRead: false,
-    createdAt: "2026-09-15T08:45:00.000Z",
-  },
-  {
-    id: "demo-letter-assigned",
-    userId: "demo",
-    type: "letter_assigned",
-    title: "누군가가 편지를 맡았어요.",
-    message: "답장이 도착하면 다시 알려드릴게요.",
-    targetRoute: "/mailbox-my-waiting-demo",
-    isRead: false,
-    createdAt: "2026-09-14T15:20:00.000Z",
-  },
-  {
-    id: "demo-reply-reminder",
-    userId: "demo",
-    type: "reply_reminder",
-    title: "맡은 편지에 답장을 전해주세요.",
-    message: "하루 안에 사라져요. 짧은 한마디도 괜찮아요.",
-    targetRoute: "/write-reply",
-    isRead: false,
-    createdAt: "2026-09-14T05:00:00.000Z",
-  },
-  {
-    id: "demo-report-received",
-    userId: "demo",
-    type: "report_received",
-    title: "신고를 접수했어요.",
-    message: "확인 후 필요한 조치를 안내해 드릴게요.",
-    targetRoute: "/safety-management",
-    isRead: true,
-    createdAt: "2026-09-12T04:30:00.000Z",
-  },
-  {
-    id: "demo-report-resolved",
-    userId: "demo",
-    type: "report_resolved",
-    title: "신고 검토가 완료되었어요.",
-    message: "검토 결과와 조치 내용을 확인해 주세요.",
-    targetRoute: "/safety-management",
-    isRead: true,
-    createdAt: "2026-09-10T01:15:00.000Z",
-  },
-];
-
-export function NotificationsAllCasesDemoScreen() {
-  return <NotificationsScreen notices={allNotificationCases} />;
-}
-
 const settingRows = [
   ["replyArrived", "답장 도착", "답장이 도착했을 때 알려드려요."],
   [

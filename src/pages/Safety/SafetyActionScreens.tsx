@@ -378,20 +378,9 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // 편지 읽기 화면의 시트에서 이미 확인을 받고 왔다면(?start=1) 곧장 처리부터 시작한다.
   // 주소로 직접 들어온 경우에는 확인 시트부터 보여준다.
   const startNow = getCurrentAppSearchParams().get("start") === "1";
-  // preview=loading 은 화면 검수용이다. 실제 편지 상태·초안·반환 기록은 바꾸지 않는다.
-  const isLoadingPreview =
-    getCurrentAppSearchParams().get("preview") === "loading";
-  const isCompletePreview =
-    getCurrentAppSearchParams().get("preview") === "complete";
   const [phase, setPhase] = useState<
     "intro" | "processing" | "failed" | "complete"
-  >(
-    isCompletePreview
-      ? "complete"
-      : startNow || isLoadingPreview
-        ? "processing"
-        : "intro",
-  );
+  >(startNow ? "processing" : "intro");
   // 처리는 훅 규칙 때문에 가드보다 위에 정의해 둔다 — 아래 가드들이 먼저 return 해버리면
   // useEffect 가 조건부로 호출되어 버린다.
   const runReturn = () => {
@@ -430,13 +419,7 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // 한 번만 돌게 문을 걸어둔다.
   const startedRef = useRef(false);
   useEffect(() => {
-    if (
-      !startNow ||
-      isLoadingPreview ||
-      isCompletePreview ||
-      startedRef.current
-    )
-      return;
+    if (!startNow || startedRef.current) return;
     startedRef.current = true;
     runReturn();
   }, []);

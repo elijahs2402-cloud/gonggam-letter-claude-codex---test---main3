@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  blockUser,
-  getBlockedUsers,
-  unblockUser,
-  type UserBlock,
-} from "../../data/blocks";
+import { blockUser, getBlockedUsers, unblockUser } from "../../data/blocks";
 import { hideContent } from "../../data/contentVisibility";
 import {
   getCurrentUserId,
@@ -351,47 +346,8 @@ export function SafetyManagementScreen({
   const userId = getCurrentUserId();
   const [refresh, setRefresh] = useState(0);
   const [confirm, setConfirm] = useState<string | undefined>();
-  const isContentPreview =
-    new URLSearchParams(window.location.search).get("preview") === "content";
-  const previewBlocks: UserBlock[] = [
-    {
-      id: "preview-block-1",
-      blockerUserId: userId,
-      blockedUserId: "preview-blocked-user",
-      source: "letter_report",
-      createdAt: "2026-09-07T09:00:00.000Z",
-    },
-  ];
-  const previewReports: Report[] = [
-    {
-      id: "preview-report-1",
-      reporterId: userId,
-      targetType: "letter",
-      targetId: "preview-letter",
-      reason: "abusive",
-      createdAt: "2026-09-07T09:00:00.000Z",
-      status: "reviewing",
-      hiddenByReporter: true,
-      blockedUserId: "preview-blocked-user",
-    },
-    {
-      id: "preview-report-2",
-      reporterId: userId,
-      targetType: "reply",
-      targetId: "preview-reply",
-      reason: "sexual",
-      createdAt: "2026-09-05T09:00:00.000Z",
-      status: "resolved",
-      hiddenByReporter: false,
-    },
-  ];
-  const blocks = isContentPreview ? previewBlocks : getBlockedUsers(userId);
-  const reports = isContentPreview ? previewReports : getReportsByUser(userId);
-  const previewNames: Record<string, string> = {
-    "preview-block-1": "달빛산책",
-    "preview-report-1": "달빛산책",
-    "preview-report-2": "고요한 구름",
-  };
+  const blocks = getBlockedUsers(userId);
+  const reports = getReportsByUser(userId);
 
   return (
     <Shell
@@ -425,8 +381,7 @@ export function SafetyManagementScreen({
                     className={`management-record-copy ${mgmt["management-record-copy"]}`}
                   >
                     <strong>
-                      {previewNames[item.id] ??
-                        blockedNickname(item.blockedUserId, reports)}
+                      {blockedNickname(item.blockedUserId, reports)}
                     </strong>
                     <small>
                       {blockSource(item.source)} <i />{" "}
@@ -466,9 +421,7 @@ export function SafetyManagementScreen({
                   <span
                     className={`management-record-copy ${mgmt["management-record-copy"]}`}
                   >
-                    <strong>
-                      {previewNames[item.id] ?? reportedNickname(item)}
-                    </strong>
+                    <strong>{reportedNickname(item)}</strong>
                     <small>
                       {reasonLabels[item.reason] ?? "기타"} <i />{" "}
                       {managementDate(item.createdAt)}
