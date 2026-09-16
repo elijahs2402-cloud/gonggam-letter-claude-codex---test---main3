@@ -7,6 +7,8 @@ import {
   markWaitingLetterViewed,
 } from "../../data/waitingLetters";
 import { getListenEntryPath } from "../../data/waitingLetters";
+// 편지 고르기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import listen from "./ListenEntryVariants.module.css";
 
 type ListenVariant = "A" | "B" | "C";
 type ListenEntryState = "ready" | "loading";
@@ -65,7 +67,7 @@ function ListenHeading({
 }) {
   return (
     <section
-      className={`listen-entry-heading${compact ? " is-compact" : ""}${showBrand ? "" : " without-brand"}`}
+      className={`listen-entry-heading ${listen["listen-entry-heading"]}${compact ? " is-compact" : ""}${showBrand ? "" : ` without-brand ${listen["without-brand"]}`}`}
     >
       {showBrand && <p>공감편지</p>}
       <h1>
@@ -89,11 +91,14 @@ export function ListenEntryLoadingState({
 }) {
   return (
     <section
-      className="listen-entry-feedback"
+      className={`listen-entry-feedback ${listen["listen-entry-feedback"]}`}
       aria-live="polite"
       aria-busy="true"
     >
-      <div className="listen-entry-loading-mark" aria-hidden="true">
+      <div
+        className={`listen-entry-loading-mark ${listen["listen-entry-loading-mark"]}`}
+        aria-hidden="true"
+      >
         <i className="draft-exit-saving-dots">
           <b />
           <b />
@@ -115,7 +120,9 @@ function FixedActions({
   if (state === "loading") return null;
 
   return (
-    <div className="flow-fixed-action listen-entry-actions">
+    <div
+      className={`flow-fixed-action listen-entry-actions ${listen["listen-entry-actions"]}`}
+    >
       <button
         type="button"
         className="flow-primary-button"
@@ -196,14 +203,14 @@ export function ListenEntryAScreen() {
             </>
           }
         />
-        <figure className="listen-a-hero-art">
+        <figure className={`listen-a-hero-art ${listen["listen-a-hero-art"]}`}>
           <img
             src="/assets/read-letter-object-tight.png"
             alt="독서등과 펼쳐진 편지, 안경"
           />
         </figure>
         <section
-          className="listen-a-guide"
+          className={`listen-a-guide ${listen["listen-a-guide"]}`}
           aria-labelledby="listen-a-guide-title"
         >
           <div>
@@ -224,13 +231,18 @@ export function ListenEntryEmptyScreen() {
   return (
     <main className="mobile-prototype listen-entry-screen listen-entry-empty-screen">
       <ListenEntryHeader />
-      <div className="listen-entry-empty-content">
+      <div
+        className={`listen-entry-empty-content ${listen["listen-entry-empty-content"]}`}
+      >
         <img
-          className="listen-entry-empty-art"
+          className={`listen-entry-empty-art ${listen["listen-entry-empty-art"]}`}
           src="/assets/listen-entry-empty-background.png"
           alt="비어 있는 라벤더색 우편함"
         />
-        <section className="listen-entry-empty-copy" aria-live="polite">
+        <section
+          className={`listen-entry-empty-copy ${listen["listen-entry-empty-copy"]}`}
+          aria-live="polite"
+        >
           <h1>
             지금은
             <br />
@@ -245,7 +257,9 @@ export function ListenEntryEmptyScreen() {
           </p>
         </section>
       </div>
-      <div className="flow-fixed-action flow-fixed-action--split listen-entry-actions listen-entry-empty-actions">
+      <div
+        className={`flow-fixed-action flow-fixed-action--split listen-entry-actions ${listen["listen-entry-actions"]} listen-entry-empty-actions ${listen["listen-entry-empty-actions"]}`}
+      >
         <button
           type="button"
           className="flow-secondary-button"
