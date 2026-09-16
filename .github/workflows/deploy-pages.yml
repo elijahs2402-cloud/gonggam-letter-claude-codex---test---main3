@@ -1,0 +1,48 @@
+# GitHub Pages 배포 — design/system-integration 브랜치를 그대로 띄운다.
+# 주소: https://elijahs2402-cloud.github.io/gonggam-letter-claude-codex---test---main3/
+#
+# vite.config.ts 는 FIGMA_PUBLIC_URL 이 있으면 그 값을 base(자원 주소 앞부분)로 쓴다.
+# 저장소 이름이 주소에 들어가므로 여기서 넣어 준다. 설정 파일은 고치지 않는다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [design/system-integration]
+  workflow_dispatch: # GitHub 화면에서 직접 실행할 때
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 이미 배포 중이면 새 것이 끝날 때까지 기다린다(중간에 끊지 않는다).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          FIGMA_PUBLIC_URL: https://elijahs2402-cloud.github.io/gonggam-letter-claude-codex---test---main3
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
