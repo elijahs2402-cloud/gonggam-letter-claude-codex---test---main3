@@ -51,6 +51,8 @@ import {
 } from "../../constants/copy";
 import { getListenEntryPath } from "../../data/waitingLetters";
 import { LetterReturnSheet } from "../Safety/SafetyActionScreens";
+// CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
+import flow from "./LetterFlowScreens.module.css";
 
 function FocusShell({
   title,
@@ -148,7 +150,7 @@ function HighlightedPreviewContent({
     if (cursor < range.start) nodes.push(content.slice(cursor, range.start));
     nodes.push(
       <mark
-        className="preview-safety-highlight"
+        className={`preview-safety-highlight ${flow["preview-safety-highlight"]}`}
         key={`${range.start}-${range.end}-${index}`}
       >
         {content.slice(range.start, range.end)}
@@ -162,7 +164,10 @@ function HighlightedPreviewContent({
 
 function PreviewSafetyWarning() {
   return (
-    <aside className="preview-safety-warning" role="alert">
+    <aside
+      className={`preview-safety-warning ${flow["preview-safety-warning"]}`}
+      role="alert"
+    >
       <strong>상대에게 상처가 될 수 있는 표현이 있어요.</strong>
       <span>안전을 위해 내용을 조금 다듬어주세요.</span>
     </aside>
@@ -238,7 +243,7 @@ function DraftExitDialog({
             이어서 쓰기
           </button>
           <button
-            className={`flow-secondary-button draft-exit-save-button${isSaving ? " is-saving" : ""}`}
+            className={`flow-secondary-button draft-exit-save-button${isSaving ? ` is-saving ${flow["is-saving"]}` : ""}`}
             type="button"
             onClick={onSaveAndLeave}
             disabled={isSaving}
@@ -373,10 +378,12 @@ export function WriteLetterFlowScreen() {
     <FocusShell
       title="편지 쓰기"
       onBack={goHome}
-      className="write-letter-screen--figma"
+      className={`write-letter-screen--figma ${flow["write-letter-screen--figma"]}`}
       action={action}
     >
-      <section className="letter-compose-intro">
+      <section
+        className={`letter-compose-intro ${flow["letter-compose-intro"]}`}
+      >
         <h1>
           나의 이야기를
           <br />
@@ -388,7 +395,9 @@ export function WriteLetterFlowScreen() {
           alt="펜과 편지지, 잉크병"
         />
       </section>
-      <aside className="letter-compose-guidance">
+      <aside
+        className={`letter-compose-guidance ${flow["letter-compose-guidance"]}`}
+      >
         <strong>
           ✻ <span>마음을 보내기 전에</span>
         </strong>
@@ -399,17 +408,24 @@ export function WriteLetterFlowScreen() {
         </p>
       </aside>
       <section className="letter-compose-paper">
-        <div className="letter-compose-writing">
-          <div className="letter-compose-field-heading">
+        <div
+          className={`letter-compose-writing ${flow["letter-compose-writing"]}`}
+        >
+          <div
+            className={`letter-compose-field-heading ${flow["letter-compose-field-heading"]}`}
+          >
             <label htmlFor="letter-content">편지 내용</label>
             <small
-              className={`letter-write-state is-${writeState}`}
+              className={`letter-write-state ${flow["letter-write-state"]} is-${writeState}`}
               role="status"
             >
               {writingStateLabel}
             </small>
           </div>
-          <p className="flow-notice flow-notice--letter" role="status">
+          <p
+            className={`flow-notice flow-notice--letter ${flow["flow-notice--letter"]}`}
+            role="status"
+          >
             {notice}
           </p>
           <textarea
@@ -427,7 +443,7 @@ export function WriteLetterFlowScreen() {
           />
           <small
             ref={characterCountRef}
-            className="letter-compose-character-count"
+            className={`letter-compose-character-count ${flow["letter-compose-character-count"]}`}
           >
             글자 수 {meaningfulContentLength}자
           </small>
@@ -519,7 +535,7 @@ export function LetterPreviewScreen() {
     <FocusShell
       title="편지 미리보기"
       fallback="/write-letter"
-      className="letter-preview-screen"
+      className={`letter-preview-screen ${flow["letter-preview-screen"]}`}
       action={
         <div className="flow-fixed-action flow-fixed-action--split">
           <button
@@ -543,25 +559,27 @@ export function LetterPreviewScreen() {
         </div>
       }
     >
-      <section className="flow-review">
+      <section className={`flow-review ${flow["flow-review"]}`}>
         <h1>
           <strong>편지</strong>를 보내기 전에
           <br />
           살펴봐주세요
         </h1>
-        <p className="reply-review-intro">서두르지 않아도 괜찮아요.</p>
+        <p className={`reply-review-intro ${flow["reply-review-intro"]}`}>
+          서두르지 않아도 괜찮아요.
+        </p>
         <img
-          className="reply-review-header-illustration"
+          className={`reply-review-header-illustration ${flow["reply-review-header-illustration"]}`}
           src="/assets/reply-review-open-letter-glasses.png"
           alt=""
           aria-hidden="true"
         />
         <article
-          className={`flow-letter-paper${requiresRevision ? " flow-letter-paper--with-safety-warning" : ""}`}
+          className={`flow-letter-paper${requiresRevision ? ` flow-letter-paper--with-safety-warning ${flow["flow-letter-paper--with-safety-warning"]}` : ""}`}
         >
           {requiresRevision && <PreviewSafetyWarning />}
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -577,7 +595,7 @@ export function LetterPreviewScreen() {
             )}
           </blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
@@ -585,13 +603,18 @@ export function LetterPreviewScreen() {
           <span className="letter-preview-signature">
             ─ {draft.anonymousName.trim() || getCurrentAnonymousName()}
           </span>
-          <small className="reply-review-edited-at">
+          <small
+            className={`reply-review-edited-at ${flow["reply-review-edited-at"]}`}
+          >
             {formatDateTime(draft.updatedAt)}에 마지막으로 다듬었어요.
           </small>
         </article>
-        <section className="reply-review-guidance" aria-label="보내기 전 점검">
+        <section
+          className={`reply-review-guidance ${flow["reply-review-guidance"]}`}
+          aria-label="보내기 전 점검"
+        >
           <h2>보내기 전, 잠시 살펴봐주세요</h2>
-          <ul className="review-list">
+          <ul className={`review-list ${flow["review-list"]}`}>
             <li>보내고 나면 내용을 고칠 수 없어요.</li>
             <li>부적절하거나 불법적인 내용은 없나요?</li>
             <li>개인정보나 연락처를 적지 않았나요?</li>
@@ -620,7 +643,7 @@ export function LetterSentScreen({ letterId }: { letterId?: string }) {
   if (!letter) return <MissingLetterScreen fallback="/mailbox" />;
   return (
     <FocusShell title="발송 완료" fallback="/home" hideBack>
-      <section className="flow-complete">
+      <section className={`flow-complete ${flow["flow-complete"]}`}>
         <img
           src="/assets/reply-sent-lavender-envelope.png"
           alt="봉인된 편지 봉투"
@@ -1057,16 +1080,20 @@ export function ReadLetterFlowScreen({
       }
     >
       <section
-        className="active-reading-room"
+        className={`active-reading-room ${flow["active-reading-room"]}`}
         aria-label="조용한 편지 읽기 공간"
       >
-        <div className="active-reading-room-copy">
+        <div
+          className={`active-reading-room-copy ${flow["active-reading-room-copy"]}`}
+        >
           <h1>
             <strong>{letter.anonymousName}</strong>님이
             <br />
             보낸 편지
           </h1>
-          <p className="active-reading-kicker">
+          <p
+            className={`active-reading-kicker ${flow["active-reading-kicker"]}`}
+          >
             <time dateTime={letter.createdAt}>
               {formatLetterReadTime(letter.createdAt)}
             </time>
@@ -1078,10 +1105,12 @@ export function ReadLetterFlowScreen({
           aria-hidden="true"
         />
       </section>
-      <div className="active-reading-mat">
-        <article className="active-reading-paper">
+      <div className={`active-reading-mat ${flow["active-reading-mat"]}`}>
+        <article
+          className={`active-reading-paper ${flow["active-reading-paper"]}`}
+        >
           <span
-            className="active-reading-quote active-reading-quote--open"
+            className={`active-reading-quote active-reading-quote--open ${flow["active-reading-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -1106,7 +1135,9 @@ export function ReadLetterFlowScreen({
           </div>
         </article>
       </div>
-      <section className="active-reading-helper">
+      <section
+        className={`active-reading-helper ${flow["active-reading-helper"]}`}
+      >
         <img
           src="/assets/home-cards-ornaments-01.svg"
           alt=""
@@ -1311,7 +1342,9 @@ function WriteReplyForm({
     else navigateBack("/home");
   };
   const replyActions = (
-    <div className="flow-fixed-action flow-fixed-action--split reply-flow-fixed-action">
+    <div
+      className={`flow-fixed-action flow-fixed-action--split reply-flow-fixed-action ${flow["reply-flow-fixed-action"]}`}
+    >
       <button
         type="button"
         className="flow-secondary-button"
@@ -1338,7 +1371,7 @@ function WriteReplyForm({
     <FocusShell
       title="답장 쓰기"
       onBack={leave}
-      className="write-letter-screen--figma reply-compose-screen--figma"
+      className={`write-letter-screen--figma ${flow["write-letter-screen--figma"]} reply-compose-screen--figma ${flow["reply-compose-screen--figma"]}`}
       headerAction={
         <button
           className="reply-read-letter-button"
@@ -1352,7 +1385,7 @@ function WriteReplyForm({
       }
       action={replyActions}
     >
-      <section className="reply-compose-intro">
+      <section className={`reply-compose-intro ${flow["reply-compose-intro"]}`}>
         <h1>
           <strong>{letter.anonymousName}</strong>님에게
           <br />
@@ -1364,7 +1397,9 @@ function WriteReplyForm({
           alt="펜과 편지지, 잉크병"
         />
       </section>
-      <aside className="reply-compose-guidance">
+      <aside
+        className={`reply-compose-guidance ${flow["reply-compose-guidance"]}`}
+      >
         <strong>
           ✻ <span>마음을 전하기 전에</span>
         </strong>
@@ -1375,12 +1410,14 @@ function WriteReplyForm({
         </p>
       </aside>
       <section className="reply-compose-paper">
-        <div className="letter-compose-field-heading">
+        <div
+          className={`letter-compose-field-heading ${flow["letter-compose-field-heading"]}`}
+        >
           <label className="reply-compose-recipient" htmlFor="reply-content">
             {letter.anonymousName}님에게
           </label>
           <small
-            className={`letter-write-state is-${replyWriteState}`}
+            className={`letter-write-state ${flow["letter-write-state"]} is-${replyWriteState}`}
             role="status"
           >
             {replyWriteState === "saved"
@@ -1392,10 +1429,15 @@ function WriteReplyForm({
                   : "작성 전"}
           </small>
         </div>
-        <p className="flow-notice flow-notice--reply" role="status">
+        <p
+          className={`flow-notice flow-notice--reply ${flow["flow-notice--reply"]}`}
+          role="status"
+        >
           {notice}
         </p>
-        <div className="reply-compose-writing">
+        <div
+          className={`reply-compose-writing ${flow["reply-compose-writing"]}`}
+        >
           <textarea
             ref={replyContentInputRef}
             id="reply-content"
@@ -1500,7 +1542,7 @@ function ReplySourceSheet({
   const sentAt = formatDateTime(letter.createdAt);
   return (
     <div
-      className={`reply-source-backdrop${closing ? " is-closing" : ""}`}
+      className={`reply-source-backdrop${closing ? ` is-closing ${flow["is-closing"]}` : ""}`}
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) setClosing(true);
@@ -1509,7 +1551,7 @@ function ReplySourceSheet({
       <div
         ref={sheetRef}
         tabIndex={-1}
-        className={`reply-source-sheet${closing ? " is-closing" : ""}`}
+        className={`reply-source-sheet${closing ? ` is-closing ${flow["is-closing"]}` : ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="reply-source-title"
@@ -1518,22 +1560,24 @@ function ReplySourceSheet({
         }}
       >
         <button
-          className="reply-source-close"
+          className={`reply-source-close ${flow["reply-source-close"]}`}
           type="button"
           onClick={() => setClosing(true)}
           aria-label="원문 닫기"
         >
           ×
         </button>
-        <div className="reply-source-header">
+        <div className={`reply-source-header ${flow["reply-source-header"]}`}>
           <time dateTime={letter.createdAt}>{sentAt}</time>
           <h2 id="reply-source-title">
             <b>{letter.anonymousName}</b>님이 보낸 편지
           </h2>
         </div>
-        <div className="reply-source-body">
+        <div className={`reply-source-body ${flow["reply-source-body"]}`}>
           <p>원문 확인</p>
-          <article className="reply-source-letter">
+          <article
+            className={`reply-source-letter ${flow["reply-source-letter"]}`}
+          >
             <p>{letter.content}</p>
           </article>
         </div>
@@ -1664,9 +1708,11 @@ export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
     <FocusShell
       title="답장 미리보기"
       fallback={`/write-reply/${letter.id}`}
-      className="reply-review-screen"
+      className={`reply-review-screen ${flow["reply-review-screen"]}`}
       action={
-        <div className="flow-fixed-action flow-fixed-action--split reply-review-fixed-action">
+        <div
+          className={`flow-fixed-action flow-fixed-action--split reply-review-fixed-action ${flow["reply-review-fixed-action"]}`}
+        >
           <button
             type="button"
             className="flow-secondary-button"
@@ -1691,20 +1737,24 @@ export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
         </div>
       }
     >
-      <section className="flow-review">
+      <section className={`flow-review ${flow["flow-review"]}`}>
         <h1>
           <strong>답장</strong>을 보내기 전에
           <br />
           살펴봐주세요
         </h1>
-        <p className="reply-review-intro">서두르지 않아도 괜찮아요.</p>
+        <p className={`reply-review-intro ${flow["reply-review-intro"]}`}>
+          서두르지 않아도 괜찮아요.
+        </p>
         <img
-          className="reply-review-header-illustration"
+          className={`reply-review-header-illustration ${flow["reply-review-header-illustration"]}`}
           src="/assets/reply-review-open-letter-glasses.png"
           alt=""
           aria-hidden="true"
         />
-        <article className="flow-letter-paper reply-review-paper">
+        <article
+          className={`flow-letter-paper reply-review-paper ${flow["reply-review-paper"]}`}
+        >
           {requiresRevision && <PreviewSafetyWarning />}
           <p className="reply-compose-recipient">
             {letter.anonymousName}님에게
@@ -1719,13 +1769,18 @@ export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
               draft.content
             )}
           </blockquote>
-          <small className="reply-review-edited-at">
+          <small
+            className={`reply-review-edited-at ${flow["reply-review-edited-at"]}`}
+          >
             {formatDateWithYear(draft.updatedAt)}에 마지막으로 다듬었어요.
           </small>
         </article>
-        <section className="reply-review-guidance" aria-label="보내기 전 점검">
+        <section
+          className={`reply-review-guidance ${flow["reply-review-guidance"]}`}
+          aria-label="보내기 전 점검"
+        >
           <h2>보내기 전, 잠시 살펴봐주세요</h2>
-          <ul className="review-list">
+          <ul className={`review-list ${flow["review-list"]}`}>
             <li>보내고 나면 내용을 고칠 수 없어요.</li>
             <li>부적절하거나 불법적인 내용은 없나요?</li>
             <li>개인정보나 연락처를 적지 않았나요?</li>
@@ -1748,7 +1803,7 @@ export function ReplySentScreen({ letterId }: { letterId?: string }) {
     return <MissingLetterScreen fallback="/mailbox" />;
   return (
     <FocusShell title="답장 완료" fallback="/home" hideBack>
-      <section className="flow-complete">
+      <section className={`flow-complete ${flow["flow-complete"]}`}>
         <img
           src="/assets/reply-sent-lavender-envelope.png"
           alt="봉인된 편지 봉투"
@@ -1837,7 +1892,9 @@ export function ReplySendingTransitionScreen({
   };
 
   return (
-    <main className="mobile-prototype listen-entry-screen reply-sending-transition">
+    <main
+      className={`mobile-prototype listen-entry-screen reply-sending-transition ${flow["reply-sending-transition"]}`}
+    >
       {/* 뒤로가기는 쓰던 답장으로 돌아간다. 예전에는 편지 id 없이 "/write-reply" 였는데,
         그 경로는 시안 확인용 표본 편지를 띄우는 자리라 내가 쓰던 답장이 아니라
         엉뚱한 편지가 열렸다. id 가 없는 경우에만 편지함으로 보낸다. */}
@@ -1931,11 +1988,16 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
       <FocusShell
         title="내가 보낸 편지"
         fallback="/mailbox"
-        className="my-letter-waiting-screen"
+        className={`my-letter-waiting-screen ${flow["my-letter-waiting-screen"]}`}
         scrollClassName="my-letter-waiting-scroll"
       >
-        <section className="my-letter-waiting" aria-label="내가 보낸 편지 공간">
-          <header className="my-letter-waiting-heading">
+        <section
+          className={`my-letter-waiting ${flow["my-letter-waiting"]}`}
+          aria-label="내가 보낸 편지 공간"
+        >
+          <header
+            className={`my-letter-waiting-heading ${flow["my-letter-waiting-heading"]}`}
+          >
             <h1>
               내 마음에
               <br />
@@ -1946,53 +2008,66 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
               alt="보라색 봉인과 라벤더가 놓인 편지 봉투"
             />
           </header>
-          <article className="my-letter-waiting-paper">
-            <header className="my-letter-waiting-paper-heading">
+          <article
+            className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]}`}
+          >
+            <header
+              className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+            >
               <span>내가 보낸 편지</span>
               <time dateTime={letter.createdAt}>
                 {formatDateWithYear(letter.createdAt)}
               </time>
             </header>
             <span
-              className="my-letter-waiting-quote my-letter-waiting-quote--open"
+              className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
               aria-hidden="true"
             >
               “
             </span>
             <blockquote>{letter.content}</blockquote>
             <span
-              className="my-letter-waiting-quote my-letter-waiting-quote--close"
+              className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
               aria-hidden="true"
             >
               ”
             </span>
             <p>— {letter.anonymousName || "이름 없는 편지"}</p>
           </article>
-          <div className="my-letter-reply-connector" aria-hidden="true">
+          <div
+            className={`my-letter-reply-connector ${flow["my-letter-reply-connector"]}`}
+            aria-hidden="true"
+          >
             <span />
           </div>
-          <article className="my-letter-waiting-paper my-letter-reply-paper">
-            <header className="my-letter-waiting-paper-heading">
+          <article
+            className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]} my-letter-reply-paper ${flow["my-letter-reply-paper"]}`}
+          >
+            <header
+              className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+            >
               <span>받은 답장</span>
               <time dateTime={letter.reply.createdAt}>
                 {formatDateWithYear(letter.reply.createdAt)}
               </time>
             </header>
             <span
-              className="my-letter-waiting-quote my-letter-waiting-quote--open"
+              className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
               aria-hidden="true"
             >
               “
             </span>
             <blockquote>{letter.reply.content}</blockquote>
             <span
-              className="my-letter-waiting-quote my-letter-waiting-quote--close"
+              className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
               aria-hidden="true"
             >
               ”
             </span>
             <p>— {letter.reply.anonymousName || "익명의 누군가"}</p>
-            <div className="my-letter-reply-report">
+            <div
+              className={`my-letter-reply-report ${flow["my-letter-reply-report"]}`}
+            >
               <button
                 className="flow-text-button"
                 type="button"
@@ -2013,11 +2088,16 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
       <FocusShell
         title="내가 보낸 편지"
         fallback="/mailbox"
-        className="my-letter-waiting-screen"
+        className={`my-letter-waiting-screen ${flow["my-letter-waiting-screen"]}`}
         scrollClassName="my-letter-waiting-scroll"
       >
-        <section className="my-letter-waiting" aria-label="내가 보낸 편지 공간">
-          <header className="my-letter-waiting-heading">
+        <section
+          className={`my-letter-waiting ${flow["my-letter-waiting"]}`}
+          aria-label="내가 보낸 편지 공간"
+        >
+          <header
+            className={`my-letter-waiting-heading ${flow["my-letter-waiting-heading"]}`}
+          >
             <h1>
               <strong>답장</strong>을<br />
               기다리고 있어요
@@ -2027,22 +2107,26 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
               alt="보라색 봉인과 라벤더가 놓인 편지 봉투"
             />
           </header>
-          <article className="my-letter-waiting-paper">
-            <header className="my-letter-waiting-paper-heading">
+          <article
+            className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]}`}
+          >
+            <header
+              className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+            >
               <span>내가 보낸 편지</span>
               <time dateTime={letter.createdAt}>
                 {formatDateWithYear(letter.createdAt)}
               </time>
             </header>
             <span
-              className="my-letter-waiting-quote my-letter-waiting-quote--open"
+              className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
               aria-hidden="true"
             >
               “
             </span>
             <blockquote>{letter.content}</blockquote>
             <span
-              className="my-letter-waiting-quote my-letter-waiting-quote--close"
+              className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
               aria-hidden="true"
             >
               ”
@@ -2054,12 +2138,14 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
     );
   return (
     <FocusShell title="내가 보낸 편지" fallback="/mailbox">
-      <section className="letter-detail">
-        <p className="detail-kicker">내가 보낸 편지</p>
+      <section className={`letter-detail ${flow["letter-detail"]}`}>
+        <p className={`detail-kicker ${flow["detail-kicker"]}`}>
+          내가 보낸 편지
+        </p>
         <article className="flow-letter-paper">
           <blockquote>{letter.content}</blockquote>
         </article>
-        <section className="detail-status-card">
+        <section className={`detail-status-card ${flow["detail-status-card"]}`}>
           <strong>{display.label}</strong>
           <p>{display.description}</p>
         </section>
@@ -2085,11 +2171,11 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
         </dl>
         {letter.reply ? (
           showReply ? (
-            <section className="detail-reply">
+            <section className={`detail-reply ${flow["detail-reply"]}`}>
               <p>
                 받은 답장{" "}
                 <button
-                  className="reply-more-button"
+                  className={`reply-more-button ${flow["reply-more-button"]}`}
                   type="button"
                   onClick={() =>
                     navigateTo(`/report-reply/${encodeURIComponent(letter.id)}`)
@@ -2099,7 +2185,9 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
                 </button>
               </p>
               {replyBlocked ? (
-                <div className="content-restricted">
+                <div
+                  className={`content-restricted ${flow["content-restricted"]}`}
+                >
                   <strong>차단한 사용자의 콘텐츠예요.</strong>
                   <span>안전을 위해 이 내용은 기본적으로 숨겨져 있어요.</span>
                   <button
@@ -2110,7 +2198,9 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
                   </button>
                 </div>
               ) : replyHidden ? (
-                <div className="content-restricted">
+                <div
+                  className={`content-restricted ${flow["content-restricted"]}`}
+                >
                   <strong>숨긴 답장이에요.</strong>
                   <span>필요하면 다시 펼쳐볼 수 있어요.</span>
                   <button
@@ -2137,7 +2227,9 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
               )}
             </section>
           ) : (
-            <section className="detail-reply-arrival">
+            <section
+              className={`detail-reply-arrival ${flow["detail-reply-arrival"]}`}
+            >
               <strong>
                 {display.hasUnreadReply
                   ? "답장이 도착했어요."
@@ -2186,11 +2278,16 @@ export function MyLetterRepliedDemoScreen() {
     <FocusShell
       title="내가 보낸 편지"
       fallback="/mailbox"
-      className="my-letter-waiting-screen"
+      className={`my-letter-waiting-screen ${flow["my-letter-waiting-screen"]}`}
       scrollClassName="my-letter-waiting-scroll"
     >
-      <section className="my-letter-waiting" aria-label="내가 보낸 편지 공간">
-        <header className="my-letter-waiting-heading">
+      <section
+        className={`my-letter-waiting ${flow["my-letter-waiting"]}`}
+        aria-label="내가 보낸 편지 공간"
+      >
+        <header
+          className={`my-letter-waiting-heading ${flow["my-letter-waiting-heading"]}`}
+        >
           <h1>
             내 마음에
             <br />
@@ -2201,15 +2298,19 @@ export function MyLetterRepliedDemoScreen() {
             alt="보라색 봉인과 라벤더가 놓인 편지 봉투"
           />
         </header>
-        <article className="my-letter-waiting-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>내가 보낸 편지</span>
             <time dateTime="2026-08-25T14:38:00+09:00">
               {formatDateWithYear("2026-08-25T14:38:00+09:00")}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -2220,25 +2321,32 @@ export function MyLetterRepliedDemoScreen() {
             읽어주셔서 고마워요.
           </blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
           </span>
           <p>— 조용한 별빛</p>
         </article>
-        <div className="my-letter-reply-connector" aria-hidden="true">
+        <div
+          className={`my-letter-reply-connector ${flow["my-letter-reply-connector"]}`}
+          aria-hidden="true"
+        >
           <span />
         </div>
-        <article className="my-letter-waiting-paper my-letter-reply-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]} my-letter-reply-paper ${flow["my-letter-reply-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>받은 답장</span>
             <time dateTime="2026-08-26T15:53:00+09:00">
               {formatDateWithYear("2026-08-26T15:53:00+09:00")}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -2249,13 +2357,15 @@ export function MyLetterRepliedDemoScreen() {
             편안하시길 바라요.
           </blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
           </span>
           <p>— 달빛산책</p>
-          <div className="my-letter-reply-report">
+          <div
+            className={`my-letter-reply-report ${flow["my-letter-reply-report"]}`}
+          >
             <button className="flow-text-button" type="button">
               신고하기
             </button>
@@ -2271,14 +2381,16 @@ export function MyLetterWaitingDemoScreen() {
     <FocusShell
       title="내가 보낸 편지"
       fallback="/mailbox?preview=content"
-      className="my-letter-waiting-screen"
+      className={`my-letter-waiting-screen ${flow["my-letter-waiting-screen"]}`}
       scrollClassName="my-letter-waiting-scroll"
     >
       <section
-        className="my-letter-waiting"
+        className={`my-letter-waiting ${flow["my-letter-waiting"]}`}
         aria-label="답장을 기다리는 내가 보낸 편지"
       >
-        <header className="my-letter-waiting-heading">
+        <header
+          className={`my-letter-waiting-heading ${flow["my-letter-waiting-heading"]}`}
+        >
           <h1>
             <strong>답장</strong>을<br />
             기다리고 있어요
@@ -2288,15 +2400,19 @@ export function MyLetterWaitingDemoScreen() {
             alt="보라색 봉인과 라벤더가 놓인 편지 봉투"
           />
         </header>
-        <article className="my-letter-waiting-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>내가 보낸 편지</span>
             <time dateTime="2026-08-25T09:00:00.000Z">
               {formatDateWithYear("2026-08-25T09:00:00.000Z")}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -2306,7 +2422,7 @@ export function MyLetterWaitingDemoScreen() {
             오늘은 누군가에게 이 마음을 조용히 건네고 싶었어요.
           </blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
@@ -2323,14 +2439,16 @@ export function RepliedLetterDemoScreen() {
     <FocusShell
       title="내가 답한 편지"
       fallback="/mailbox?preview=content"
-      className="my-letter-waiting-screen my-letter-replied-demo-screen"
+      className={`my-letter-waiting-screen ${flow["my-letter-waiting-screen"]} my-letter-replied-demo-screen ${flow["my-letter-replied-demo-screen"]}`}
       scrollClassName="my-letter-waiting-scroll"
     >
       <section
-        className="my-letter-waiting replied-letter-detail"
+        className={`my-letter-waiting ${flow["my-letter-waiting"]} replied-letter-detail ${flow["replied-letter-detail"]}`}
         aria-label="내가 답한 편지"
       >
-        <header className="my-letter-waiting-heading">
+        <header
+          className={`my-letter-waiting-heading ${flow["my-letter-waiting-heading"]}`}
+        >
           <h1>
             마음을 담아
             <br />
@@ -2341,15 +2459,19 @@ export function RepliedLetterDemoScreen() {
             alt="날아가는 종이비행기"
           />
         </header>
-        <article className="my-letter-waiting-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>상대가 보낸 편지</span>
             <time dateTime="2026-08-23T09:10:00.000Z">
               {formatDateWithYear("2026-08-23T09:10:00.000Z")}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -2359,25 +2481,32 @@ export function RepliedLetterDemoScreen() {
             가벼워질 것 같아 편지를 남깁니다.
           </blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
           </span>
           <p>— 노을산책</p>
         </article>
-        <div className="my-letter-reply-connector" aria-hidden="true">
+        <div
+          className={`my-letter-reply-connector ${flow["my-letter-reply-connector"]}`}
+          aria-hidden="true"
+        >
           <span />
         </div>
-        <article className="my-letter-waiting-paper my-letter-reply-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]} my-letter-reply-paper ${flow["my-letter-reply-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>내가 보낸 답장</span>
             <time dateTime="2026-08-23T16:20:00.000Z">
               {formatDateWithYear("2026-08-23T16:20:00.000Z")}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
@@ -2387,7 +2516,7 @@ export function RepliedLetterDemoScreen() {
             시간이 되기를 바라요.
           </blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
@@ -2407,14 +2536,16 @@ export function RepliedLetterDetailScreen({ letterId }: { letterId?: string }) {
     <FocusShell
       title="내가 답한 편지"
       fallback="/mailbox"
-      className="my-letter-waiting-screen my-letter-replied-demo-screen"
+      className={`my-letter-waiting-screen ${flow["my-letter-waiting-screen"]} my-letter-replied-demo-screen ${flow["my-letter-replied-demo-screen"]}`}
       scrollClassName="my-letter-waiting-scroll"
     >
       <section
-        className="my-letter-waiting replied-letter-detail"
+        className={`my-letter-waiting ${flow["my-letter-waiting"]} replied-letter-detail ${flow["replied-letter-detail"]}`}
         aria-label="내가 답한 편지"
       >
-        <header className="my-letter-waiting-heading">
+        <header
+          className={`my-letter-waiting-heading ${flow["my-letter-waiting-heading"]}`}
+        >
           <h1>
             마음을 담아
             <br />
@@ -2425,47 +2556,58 @@ export function RepliedLetterDetailScreen({ letterId }: { letterId?: string }) {
             alt="날아가는 종이비행기"
           />
         </header>
-        <article className="my-letter-waiting-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>상대가 보낸 편지</span>
             <time dateTime={letter.createdAt}>
               {formatDateWithYear(letter.createdAt)}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
           </span>
           <blockquote>{letter.content}</blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
           </span>
           <p>— {letter.anonymousName || "이름 없는 편지"}</p>
         </article>
-        <div className="my-letter-reply-connector" aria-hidden="true">
+        <div
+          className={`my-letter-reply-connector ${flow["my-letter-reply-connector"]}`}
+          aria-hidden="true"
+        >
           <span />
         </div>
-        <article className="my-letter-waiting-paper my-letter-reply-paper">
-          <header className="my-letter-waiting-paper-heading">
+        <article
+          className={`my-letter-waiting-paper ${flow["my-letter-waiting-paper"]} my-letter-reply-paper ${flow["my-letter-reply-paper"]}`}
+        >
+          <header
+            className={`my-letter-waiting-paper-heading ${flow["my-letter-waiting-paper-heading"]}`}
+          >
             <span>내가 보낸 답장</span>
             <time dateTime={letter.reply.createdAt}>
               {formatDateWithYear(letter.reply.createdAt)}
             </time>
           </header>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--open"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--open ${flow["my-letter-waiting-quote--open"]}`}
             aria-hidden="true"
           >
             “
           </span>
           <blockquote>{letter.reply.content}</blockquote>
           <span
-            className="my-letter-waiting-quote my-letter-waiting-quote--close"
+            className={`my-letter-waiting-quote ${flow["my-letter-waiting-quote"]} my-letter-waiting-quote--close`}
             aria-hidden="true"
           >
             ”
