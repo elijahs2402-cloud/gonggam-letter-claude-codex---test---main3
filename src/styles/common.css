@@ -9,7 +9,7 @@
   src: url("/assets/fonts/SUITE-Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 700;
-  font-display: block;
+  font-display: swap;
 }
 
 :root {
