@@ -38,8 +38,8 @@
   height: 30px;
   display: block;
   background: #4e345e;
-  -webkit-mask: url("/assets/notification-bell.png") center / contain no-repeat;
-  mask: url("/assets/notification-bell.png") center / contain no-repeat;
+  -webkit-mask: url("/assets/notification-bell.webp") center / contain no-repeat;
+  mask: url("/assets/notification-bell.webp") center / contain no-repeat;
 }
 .home-notification-button i {
   position: absolute;
@@ -87,7 +87,7 @@
       rgba(var(--paper-rgb), var(--a50)),
       rgba(var(--paper-rgb), var(--a50))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -103,7 +103,7 @@
       rgba(var(--surface-card-rgb), var(--a95)),
       rgba(var(--surface-card-rgb), var(--a95))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -345,7 +345,7 @@
        덧칠 = (종이색 - 0.6 × 패턴평균) / 0.4 = RGB(241, 231, 222) */
   background-image:
     linear-gradient(rgba(241, 231, 222, 0.4), rgba(241, 231, 222, 0.4)),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   /* 사용자 요청으로 결을 902px(원본 크기)에서 650px 로 줄였다.
      위 주석대로 420px 까지 줄이면 세로 결이 화면 픽셀보다 촘촘해져 뭉개지므로,
      그 구간에 닿지 않는 선에서 멈춘 값이다(원본의 72%). */

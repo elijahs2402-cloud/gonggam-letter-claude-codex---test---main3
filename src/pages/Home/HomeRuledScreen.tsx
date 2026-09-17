@@ -26,7 +26,7 @@ import home from "./HomeScreen.module.css";
 const CHOICES = [
   {
     key: "write",
-    icon: "/assets/home-card-write.png",
+    icon: "/assets/home-card-write.webp",
     title: ["내 마음을", "털어놓고 싶어요"],
     helper: ["익명의 편지", "남기기"],
     path: "/write-letter",
@@ -34,7 +34,7 @@ const CHOICES = [
   },
   {
     key: "read",
-    icon: "/assets/home-card-read.png",
+    icon: "/assets/home-card-read.webp",
     title: ["누군가의 마음을", "들어주고 싶어요"],
     helper: ["천천히 읽고", "답하기"],
     path: "/listen-entry-a",

@@ -46,7 +46,7 @@
       rgba(var(--paper-rgb), var(--a95)),
       rgba(var(--paper-rgb), var(--a95))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center bottom;
   background-size:
     auto,

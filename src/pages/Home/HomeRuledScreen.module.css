@@ -1,6 +1,6 @@
 .screen.screen {
   background-color: #f8f4e8;
-  background-image: url("/assets/home-cards-room-02.jpg") !important;
+  background-image: url("/assets/home-cards-room-02.webp") !important;
   background-position: left 50% bottom
     calc(var(--nav-h) + 49px - min(41.54vw, 162px));
   background-repeat: no-repeat;
@@ -122,7 +122,7 @@
         rgba(var(--paper-rgb), var(--a50)),
         rgba(var(--paper-rgb), var(--a50))
       ),
-      url("/assets/paper-pattern.jpg") !important;
+      url("/assets/paper-pattern.webp") !important;
     background-position: center top;
     background-size:
       auto,

@@ -1,5 +1,5 @@
 .screen.screen.screen {
-  background-image: url("/assets/paper-pattern.jpg") !important;
+  background-image: url("/assets/paper-pattern.webp") !important;
   background-size: 650px auto !important;
   background-position: center top;
   background-repeat: repeat;
@@ -62,7 +62,7 @@
   min-height: 145px;
   max-height: 230px;
   margin: 18px -12px 0;
-  background: url("/assets/home-cards-room-02.jpg") center 77% / 100% auto
+  background: url("/assets/home-cards-room-02.webp") center 77% / 100% auto
     no-repeat;
   mix-blend-mode: multiply;
   opacity: 0.9;
@@ -148,7 +148,7 @@
       rgba(var(--paper-under), var(--a50)),
       rgba(var(--paper-under), var(--a50))
     ),
-    url("/assets/paper-pattern.jpg") !important;
+    url("/assets/paper-pattern.webp") !important;
   background-size:
     auto,
     650px auto !important;
@@ -435,7 +435,7 @@
      예전에는 방 전체 그림(1170x2700)의 위쪽 58% 가 빈 벽이라, 가구를 보이게
      하려고 center 77% 같은 값을 쓰고 기기마다 미디어쿼리로 위치를 찍어야 했다.
      그 계산이 이 아트워크로 전부 없어졌다. */
-  background: url("/assets/home-bottom-bg3.png") center top / 100% auto
+  background: url("/assets/home-bottom-bg3.webp") center top / 100% auto
     no-repeat;
   mix-blend-mode: normal;
   mask-image: none;
@@ -638,7 +638,7 @@
      아트워크 교체는 의도된 디자인 결정이라 남긴다. 위치를 px 로 찍던 보정은
      장면이 남는 공간을 흡수하게 되어 더 이상 필요 없다. */
   .cardsOnly .scene {
-    background-image: url("/assets/home-bottom-bg4.png");
+    background-image: url("/assets/home-bottom-bg4.webp");
     /* bg4 는 러그가 더 일찍 끝난다 - 픽셀 스캔으로 518 행(1170x1078, 44.27%),
        bg3 는 558 행(47.69%)이다. 그림만 바꾸고 비율을 그대로 두면 상자
        아랫변이 진짜 러그 끝보다 11.85px 아래에 생겨, 문구가 상자 안에서는

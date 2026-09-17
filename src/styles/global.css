@@ -16,7 +16,7 @@
       rgba(var(--paper-rgb), var(--a95)),
       rgba(var(--paper-rgb), var(--a95))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center;
   background-size:
     auto,
@@ -357,7 +357,7 @@
       rgba(var(--paper-rgb), var(--a85)),
       rgba(var(--paper-rgb), var(--a85))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center top;
   background-size:
     auto,
@@ -727,7 +727,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--paper-rgb), var(--a85)),
       rgba(var(--paper-rgb), var(--a85))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center top;
   background-size:
     auto,
@@ -880,7 +880,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--paper-rgb), var(--a72)),
       rgba(var(--paper-rgb), var(--a72))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center top;
   background-size:
     auto,
@@ -903,7 +903,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--paper-rgb), var(--a72)),
       rgba(var(--paper-rgb), var(--a72))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center top;
   background-size:
     auto,
@@ -1558,7 +1558,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--paper-rgb), var(--a72)),
       rgba(var(--paper-rgb), var(--a72))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -2210,7 +2210,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--surface-mat-rgb), var(--a40)),
       rgba(var(--surface-mat-rgb), var(--a40))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -2222,7 +2222,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--surface-mat-rgb), var(--a40)),
       rgba(var(--surface-mat-rgb), var(--a40))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -2920,7 +2920,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--surface-mat-rgb), var(--a40)),
       rgba(var(--surface-mat-rgb), var(--a40))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -2970,7 +2970,7 @@ html[data-ios-standalone="true"] .intro-copy {
       rgba(var(--surface-mat-rgb), var(--a40)),
       rgba(var(--surface-mat-rgb), var(--a40))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
@@ -4303,7 +4303,7 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
       rgba(var(--paper-rgb), var(--a85)),
       rgba(var(--paper-rgb), var(--a85))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size: auto, 650px;
 }
 
@@ -4423,7 +4423,7 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
       rgba(var(--surface-mat-rgb), var(--a40)),
       rgba(var(--surface-mat-rgb), var(--a40))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;

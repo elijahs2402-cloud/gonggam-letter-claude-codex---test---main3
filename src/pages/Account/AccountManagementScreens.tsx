@@ -28,8 +28,8 @@ function providerName(provider?: string) {
 // 연결된 계정 아이콘. 내부 id 는 kakao 지만 화면 표기는 토스다(로그인 화면과 동일).
 const providerIcons: Record<string, { src: string; alt: string }> = {
   apple: { src: "/assets/account-provider-apple.svg", alt: "Apple" },
-  google: { src: "/assets/account-provider-google.svg", alt: "Google" },
-  kakao: { src: "/assets/account-provider-toss.svg", alt: "토스" },
+  google: { src: "/assets/account-provider-google.webp", alt: "Google" },
+  kakao: { src: "/assets/account-provider-toss.webp", alt: "토스" },
 };
 function Header({
   title,

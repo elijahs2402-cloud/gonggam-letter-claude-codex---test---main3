@@ -78,7 +78,7 @@ export function OnboardingRedesignScreen() {
           </h1>
           <figure>
             <img
-              src="/assets/onboarding-new-hero.png"
+              src="/assets/onboarding-new-hero.webp"
               alt="편지지와 보랏빛 펜, 봉투가 놓인 나무 책상"
             />
           </figure>
@@ -257,10 +257,10 @@ export function LoginScreen() {
                 <img
                   src={
                     provider === "apple"
-                      ? "/assets/logo-apple.png"
+                      ? "/assets/logo-apple.webp"
                       : provider === "google"
-                        ? "/assets/logo-google.png"
-                        : "/assets/logo-toss.png"
+                        ? "/assets/logo-google.webp"
+                        : "/assets/logo-toss.webp"
                   }
                   alt=""
                 />

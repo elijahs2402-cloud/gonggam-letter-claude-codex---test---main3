@@ -34,7 +34,7 @@ export function IntroScreen() {
     <main className={`mobile-prototype intro-screen ${intro["intro-screen"]}`}>
       <img
         className={`intro-art ${intro["intro-art"]}`}
-        src="/assets/intro-door-uploaded.png"
+        src="/assets/intro-door-uploaded.webp"
         alt="담쟁이덩굴이 감싼 보랏빛 현관문과 편지가 든 우편함"
       />
       <section

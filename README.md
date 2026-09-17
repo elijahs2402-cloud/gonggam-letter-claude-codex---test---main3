@@ -47,6 +47,7 @@
 .
 ├── public/
 │   └── assets/            # 이미지·아이콘·폰트 (코드에서 /assets/... 로 부름, 쓰는 파일만 남김)
+│                          # 그림은 WebP(품질 90). 2026-09-18 PNG·JPG 24장을 바꿔 13MB → 2.1MB
 ├── src/
 │   ├── main.tsx           # 진입점: 화면 높이·키보드·상태 표시줄 대응 설치 후 App 렌더
 │   ├── App.tsx            # 모든 화면의 틀: 화면 key · 나의 공간 셸 · ?system= · 스크롤
@@ -157,9 +158,10 @@ npm run preview   # 빌드 결과 미리보기 (포트 8443)
 | Gelasio | 외부 — `fonts.googleapis.com` | Google Fonts | SIL OFL 1.1 (확인 필요) |
 | Pretendard Variable 1.3.9 | 외부 — `cdn.jsdelivr.net/gh/orioncactus/pretendard` | orioncactus/pretendard | SIL OFL 1.1 (확인 필요) |
 | SUITE Bold | 내부 — `public/assets/fonts/SUITE-Bold.woff2` | 확인 필요 | 확인 필요 |
-| 일러스트·배경·아이콘 이미지 | 내부 — `public/assets/` (PNG·JPG·SVG) | **확인 필요** (제작 방식·저작권 기록 없음) | 확인 필요 |
+| 일러스트·배경·아이콘 이미지 | 내부 — `public/assets/` (WebP·SVG) | **확인 필요** (제작 방식·저작권 기록 없음) | 확인 필요 |
 
 - 외부 폰트는 `src/styles/common.css` 맨 위의 `@import` 로 불러온다. 앱(WebView)이 오프라인이면 기본 폰트로 떨어지므로, 출시 전에 폰트를 프로젝트 안에 포함할지 결정이 필요하다.
+- 그림은 **WebP(품질 90)** 이다(2026-09-18). PNG·JPG 24장을 바꿔 `public/` 13MB → 2.1MB, 빌드 결과 15MB → 2.7MB 가 됐다. 화면의 픽셀은 조금 달라졌고(가장 큰 색 차이 65, 대부분 눈에 띄지 않음) 기준 스크린샷도 새로 찍었다. 계정 관리의 토스·구글 아이콘은 32px 로 보이는데 2000px 짜리 그림을 품은 SVG(1.2MB · 110KB)였다 — 128px WebP(각 3KB)로 바꿨다. **WebP 를 못 읽는 WebView 는 그림이 빈칸으로 나온다**(iOS 14 · Android 5 이상은 지원). 아주 오래된 기기를 지원해야 하면 되돌려야 한다.
 
 ## 10. Capacitor 설정
 

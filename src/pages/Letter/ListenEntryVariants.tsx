@@ -205,7 +205,7 @@ export function ListenEntryAScreen() {
         />
         <figure className={`listen-a-hero-art ${listen["listen-a-hero-art"]}`}>
           <img
-            src="/assets/read-letter-object-tight.png"
+            src="/assets/read-letter-object-tight.webp"
             alt="독서등과 펼쳐진 편지, 안경"
           />
         </figure>
@@ -236,7 +236,7 @@ export function ListenEntryEmptyScreen() {
       >
         <img
           className={`listen-entry-empty-art ${listen["listen-entry-empty-art"]}`}
-          src="/assets/listen-entry-empty-background.png"
+          src="/assets/listen-entry-empty-background.webp"
           alt="비어 있는 라벤더색 우편함"
         />
         <section

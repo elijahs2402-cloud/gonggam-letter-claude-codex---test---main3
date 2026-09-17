@@ -19,7 +19,7 @@
       rgba(var(--paper-rgb), var(--a72)),
       rgba(var(--paper-rgb), var(--a72))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-position: center top;
   background-size:
     auto,

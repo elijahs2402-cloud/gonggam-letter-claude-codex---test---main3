@@ -392,7 +392,7 @@ export function WriteLetterFlowScreen() {
         </h1>
         <p>정리되지 않아도, 한 문장도 괜찮아요.</p>
         <img
-          src="/assets/write-letter-object-reframed.png"
+          src="/assets/write-letter-object-reframed.webp"
           alt="펜과 편지지, 잉크병"
         />
       </section>
@@ -571,7 +571,7 @@ export function LetterPreviewScreen() {
         </p>
         <img
           className={`reply-review-header-illustration ${flow["reply-review-header-illustration"]}`}
-          src="/assets/reply-review-open-letter-glasses.png"
+          src="/assets/reply-review-open-letter-glasses.webp"
           alt=""
           aria-hidden="true"
         />
@@ -646,7 +646,7 @@ export function LetterSentScreen({ letterId }: { letterId?: string }) {
     <FocusShell title="발송 완료" fallback="/home" hideBack>
       <section className={`flow-complete ${flow["flow-complete"]}`}>
         <img
-          src="/assets/reply-sent-lavender-envelope.png"
+          src="/assets/reply-sent-lavender-envelope.webp"
           alt="봉인된 편지 봉투"
         />
         <h1>편지를 보냈어요</h1>
@@ -943,7 +943,7 @@ export function ReadLetterFlowScreen({ letterId }: { letterId?: string }) {
           </p>
         </div>
         <img
-          src="/assets/read-letter-room-framed-two-trimmed.png"
+          src="/assets/read-letter-room-framed-two-trimmed.webp"
           alt=""
           aria-hidden="true"
         />
@@ -1231,7 +1231,7 @@ function WriteReplyForm({
         </h1>
         <p>읽는 동안 떠오른 말이면 충분해요.</p>
         <img
-          src="/assets/write-letter-object-reframed.png"
+          src="/assets/write-letter-object-reframed.webp"
           alt="펜과 편지지, 잉크병"
         />
       </section>
@@ -1544,7 +1544,7 @@ export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
         </p>
         <img
           className={`reply-review-header-illustration ${flow["reply-review-header-illustration"]}`}
-          src="/assets/reply-review-open-letter-glasses.png"
+          src="/assets/reply-review-open-letter-glasses.webp"
           alt=""
           aria-hidden="true"
         />
@@ -1598,7 +1598,7 @@ export function ReplySentScreen({ letterId }: { letterId?: string }) {
     <FocusShell title="답장 완료" fallback="/home" hideBack>
       <section className={`flow-complete ${flow["flow-complete"]}`}>
         <img
-          src="/assets/reply-sent-lavender-envelope.png"
+          src="/assets/reply-sent-lavender-envelope.webp"
           alt="봉인된 편지 봉투"
         />
         <h1>따뜻한 마음을 전했어요</h1>
@@ -1789,7 +1789,7 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
               <strong>답장</strong>이 도착했어요
             </h1>
             <img
-              src="/assets/reply-sent-lavender-envelope.png"
+              src="/assets/reply-sent-lavender-envelope.webp"
               alt="보라색 봉인과 라벤더가 놓인 편지 봉투"
             />
           </header>
@@ -1888,7 +1888,7 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
               기다리고 있어요
             </h1>
             <img
-              src="/assets/reply-sent-lavender-envelope.png"
+              src="/assets/reply-sent-lavender-envelope.webp"
               alt="보라색 봉인과 라벤더가 놓인 편지 봉투"
             />
           </header>
@@ -2082,7 +2082,7 @@ export function RepliedLetterDetailScreen({ letterId }: { letterId?: string }) {
             <strong>답장</strong>을 전했어요
           </h1>
           <img
-            src="/assets/reply-sent-paper-airplane.png"
+            src="/assets/reply-sent-paper-airplane.webp"
             alt="날아가는 종이비행기"
           />
         </header>

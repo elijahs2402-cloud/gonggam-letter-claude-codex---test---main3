@@ -49,13 +49,13 @@
   mask: var(--nav-mark) center / contain no-repeat;
 }
 .app-nav-mark--home {
-  --nav-mark: url("/assets/home_icon.png");
+  --nav-mark: url("/assets/home_icon.webp");
 }
 .app-nav-mark--mailbox {
-  --nav-mark: url("/assets/letter_icon.png");
+  --nav-mark: url("/assets/letter_icon.webp");
 }
 .app-nav-mark--space {
-  --nav-mark: url("/assets/notebook_icon.png");
+  --nav-mark: url("/assets/notebook_icon.webp");
 }
 .app-bottom-navigation,
 .emotion-fixed-action,
@@ -67,7 +67,7 @@
       rgba(var(--paper-rgb), var(--a95)),
       rgba(var(--paper-rgb), var(--a95))
     ),
-    url("/assets/paper-pattern.jpg");
+    url("/assets/paper-pattern.webp");
   background-size:
     auto,
     650px auto;
