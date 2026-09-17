@@ -1,0 +1,6 @@
+# 코드 모양만 바꾼 커밋 — git blame 에서 건너뛴다.
+# GitHub 은 이 파일을 자동으로 읽는다. 로컬에서는 한 번만 설정한다:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Format the codebase with Prettier (2026-09-14, 58개 파일 — 줄바꿈·따옴표 등 모양만)
+42b3c4d9951861b4f6265c6a05921ad27afe3b45
