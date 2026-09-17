@@ -76,7 +76,10 @@
   border: 1px solid rgba(var(--gold-rgb), var(--a50));
   border-radius: 0;
   background: rgba(var(--surface-card-rgb), var(--a72));
-  font: var(--fs-body-sm)/1.6 var(--font-sans);
+  /* 16px(--fs-letter) 이어야 한다. iOS 는 글자가 16px 보다 작은 입력칸을 누르면
+     화면을 자동으로 확대한다 — 이 칸만 14px 이라 계정 삭제에서 화면이 커졌다
+     (2026-09-18 기기 제보). 앱의 다른 입력칸은 모두 16px 이다. */
+  font: var(--fs-letter)/1.6 var(--font-sans);
   resize: vertical;
 }
 .is-danger-action {

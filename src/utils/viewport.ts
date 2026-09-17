@@ -21,7 +21,9 @@ function findScrollPort(element: Element | null): HTMLElement | null {
   while (node) {
     const overflowY = window.getComputedStyle(node).overflowY;
     const scrolls = overflowY === "auto" || overflowY === "scroll";
-    if (scrolls && node.scrollHeight > node.clientHeight) return node;
+    // 넘치는 중인지는 보지 않는다. 키보드가 막 열린 순간에는 셸이 줄어드는
+    // 중이라 아직 넘치지 않아, 그 조건을 걸면 스크롤 영역을 놓쳤다(2026-09-18).
+    if (scrolls) return node;
     node = node.parentElement;
   }
   return null;
@@ -87,6 +89,26 @@ function textContentHeight(element: HTMLTextAreaElement): number {
 }
 
 /**
+ * 실제로 글이 보이는 바닥선.
+ *
+ * 하단 버튼 바는 화면에 따라 흐름에 있기도 하고(이름 정하기 · 나의 이름),
+ * 스크롤 영역 위에 겹쳐 떠 있기도 하다(편지 쓰기 · 계정 삭제 등). 겹쳐 있으면
+ * 스크롤 영역의 바닥이 아니라 바의 윗변이 '보이는 끝'이다(2026-09-18).
+ */
+function visibleBottom(scroller: HTMLElement, portBottom: number): number {
+  const screen = scroller.closest("main");
+  if (!screen) return portBottom;
+  let bottom = portBottom;
+  for (const bar of screen.querySelectorAll<HTMLElement>(
+    ".flow-fixed-action, .auth-actions, .reading-fixed-action",
+  )) {
+    const rect = bar.getBoundingClientRect();
+    if (rect.height > 0 && rect.top > 0 && rect.top < bottom) bottom = rect.top;
+  }
+  return bottom;
+}
+
+/**
  * 입력창이 화면에 한 조각도 안 보일 때만, 보이도록 스크롤한다.
  *
  * 아래 window.scrollTo(0, 0) 이 iOS 의 '쓰는 자리 보여주기'까지 없애버리기
@@ -106,11 +128,23 @@ function revealWritingAreaIfHidden(element: Element | null) {
   const rect = element.getBoundingClientRect();
   const port = scroller.getBoundingClientRect();
   const margin = 12;
+  const bottom = visibleBottom(scroller, port.bottom);
 
   // 1) 한 조각도 안 보이면 맨 위가 보이게 데려온다.
-  const overlaps = rect.bottom > port.top && rect.top < port.bottom;
+  const overlaps = rect.bottom > port.top && rect.top < bottom;
   if (!overlaps) {
     scroller.scrollTop += rect.top - (port.top + margin);
+    return;
+  }
+
+  // 1-1) 한 줄 입력칸(이름 정하기 · 나의 이름)은 아래가 조금이라도 잘리면 올려준다.
+  //      키보드가 열리면 셸이 '보이는 높이'로 줄고, 그만큼 스크롤 영역도 짧아져
+  //      입력칸이 하단 버튼 바 뒤로 밀려났다(2026-09-18 기기 제보).
+  //      여러 줄 입력창과 달리 한 줄 입력칸은 커서가 늘 칸 안에 있으므로,
+  //      칸의 아랫변만 보이게 최소한으로 내려도 iOS 의 보정과 부딪히지 않는다.
+  if (element instanceof HTMLInputElement) {
+    if (rect.bottom > bottom - margin)
+      scroller.scrollTop += rect.bottom - (bottom - margin);
     return;
   }
 
@@ -137,8 +171,27 @@ function revealWritingAreaIfHidden(element: Element | null) {
   // 아래로 빈 줄이 길게 남아, 아랫변에 맞추면 빈 줄만 보이고 정작 쓴 글이 화면
   // 위로 밀려난다(20자짜리 답장에서 빈 줄만 보이던 증상이 이것이었다).
   const textEnd = rect.top + textContentHeight(element);
-  if (textEnd > port.bottom - margin)
-    scroller.scrollTop += textEnd - (port.bottom - margin);
+  if (textEnd > bottom - margin)
+    scroller.scrollTop += textEnd - (bottom - margin);
+}
+
+/**
+ * 키보드가 열린 직후 몇 번에 나눠 확인한다.
+ *
+ * --app-viewport-height 를 내려도 셸이 새 높이로 자리 잡는 데 몇 프레임이 걸린다.
+ * 한 번만 재면 줄어들기 전(또는 줄어드는 중) 크기를 보고 "가려지지 않았다"고 판단해
+ * 그냥 지나갔다 — 이름 정하기 · 나의 이름에서 입력칸이 하단 바 뒤로 숨던 원인이다
+ * (2026-09-18 기기 제보). 각 확인은 "가려졌을 때만 최소한으로" 움직이므로
+ * 여러 번 불러도 화면이 튀지 않는다.
+ */
+function revealAfterResize(focused: Element | null) {
+  const delays = [0, 80, 180, 320];
+  for (const delay of delays)
+    window.setTimeout(
+      () =>
+        window.requestAnimationFrame(() => revealWritingAreaIfHidden(focused)),
+      delay,
+    );
 }
 
 export function installViewportHeightSync() {
@@ -251,7 +304,7 @@ export function installViewportHeightSync() {
     // 키보드가 막 열린 순간에만 한 번. 계속 돌리면 글을 쓰다 손으로 스크롤한 것을
     // 되돌리게 된다.
     if (keyboardVisible && !wasKeyboardVisible)
-      revealWritingAreaIfHidden(document.activeElement);
+      revealAfterResize(document.activeElement);
     wasKeyboardVisible = keyboardVisible;
   };
   // 키보드 전환 중에는 resize 가 연달아 오므로 프레임당 한 번만 반영한다.
