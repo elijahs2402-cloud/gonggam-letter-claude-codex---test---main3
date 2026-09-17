@@ -7,8 +7,13 @@
   - 소제목 · 문단: 개인정보 처리방침(.privacy-policy-document h2 / p)
   - 구분선: 알림 목록과 같은 금색 선
 */
+/* 다른 상세 화면(.guide-screen · .policy-screen 공통 규칙)과 같은 배치.
+   세로 flex 여야 .my-detail-scroll(flex: 1)이 화면 높이에 묶여 스크롤된다. */
 .service-notice-screen {
-  position: relative;
+  display: flex;
+  min-height: var(--app-viewport-height, 100dvh);
+  flex-direction: column;
+  background: var(--paper);
 }
 
 .service-notice-document {
