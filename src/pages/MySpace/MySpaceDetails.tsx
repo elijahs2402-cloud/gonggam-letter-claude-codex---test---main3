@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { getBlockedUsers } from "../../data/blocks";
-import { getCurrentUserId, getReceivedRepliesByUser } from "../../data/letters";
 import {
   generateAnonymousName,
   getCurrentAnonymousName,
   updateAnonymousName,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo } from "../../utils/navigation";
-import { getNotificationSettings } from "../../data/notifications";
-import { getReportsByUser } from "../../data/reports";
 // 이용 안내 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import guide from "./GuideScreen.module.css";
 // 이름 바꾸기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
@@ -441,16 +437,4 @@ export function AppInfoScreen() {
       </div>
     </main>
   );
-}
-
-export function getMySpaceSummary(userId = getCurrentUserId()) {
-  const replies = getReceivedRepliesByUser(userId);
-  const reports = getReportsByUser(userId);
-  return {
-    name: getCurrentAnonymousName(),
-    replies,
-    settings: getNotificationSettings(userId),
-    blocks: getBlockedUsers(userId),
-    reports,
-  };
 }

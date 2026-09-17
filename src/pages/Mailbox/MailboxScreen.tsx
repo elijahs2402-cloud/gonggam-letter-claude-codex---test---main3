@@ -15,38 +15,6 @@ import { formatDate } from "../../utils/datetime";
 // 편지함 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import mailbox from "./MailboxScreen.module.css";
 
-export type MailboxKey = "sent" | "replied" | "favorite";
-
-export const MAILBOX_RECORDS: ReadonlyArray<{
-  id: MailboxKey;
-  title: string;
-  description: string;
-  count: number;
-}> = [
-  {
-    id: "sent",
-    title: "내가 보낸 편지",
-    description: "내 마음을 털어놓았던 기록",
-    count: 8,
-  },
-  {
-    id: "replied",
-    title: "내가 답한 편지",
-    description: "누군가에게 건넨 마음",
-    count: 12,
-  },
-  {
-    id: "favorite",
-    title: "즐겨찾기",
-    description: "오래 간직하고 싶은 편지",
-    count: 4,
-  },
-];
-
-export function formatMailboxCount(count: number) {
-  return `${count > 999 ? "999+" : count}통`;
-}
-
 export function MailboxScreen() {
   const userId = getCurrentUserId();
   const myLetters = sortSentLettersByActivity(getMyLetters(userId), userId);

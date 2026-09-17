@@ -10,8 +10,8 @@ import {
   AnonymousNameSettingsScreen,
   GuideScreen,
   PolicyScreen,
-  getMySpaceSummary,
 } from "./MySpaceDetails";
+import { getMySpaceSummary } from "../../data/mySpaceSummary";
 import {
   AccountSettingsScreen,
   AccountWithdrawalScreen,
@@ -100,11 +100,13 @@ export function MySpaceScreen() {
   // 않아야 페이지 단위 진입 모션(push-in/pop-in)이 그대로 살아난다.
   const [moved, setMoved] = useState(false);
 
+  // 지금 보이는 뷰. 셸의 go/back 과 popstate 처리가 나중에 읽는다.
+  // 뷰는 goToView 로만 바뀌므로 거기서 함께 맞춘다(그리는 도중에 ref 를 바꾸지 않는다).
   const viewRef = useRef<ViewKey>("list");
-  viewRef.current = view;
 
   const goToView = (next: ViewKey) => {
     const from = viewRef.current;
+    viewRef.current = next;
     setDirection(VIEW_DEPTH[next] < VIEW_DEPTH[from] ? "back" : "forward");
     setMoved(true);
     setView(next);

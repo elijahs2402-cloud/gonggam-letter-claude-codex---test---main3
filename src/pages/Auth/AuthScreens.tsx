@@ -5,7 +5,6 @@ import {
   confirmAnonymousName,
   generateAnonymousName,
   getMockAuthSnapshot,
-  getOnboardingNextPath,
   getPostLoginPath,
   resolveMockLogin,
   retryMockLogin,
@@ -549,8 +548,4 @@ export function AuthGateRedirect({ to }: { to: string }) {
       <span>공감편지를 준비하고 있어요.</span>
     </AuthShell>
   );
-}
-
-export function getRequiredOnboardingPath() {
-  return getOnboardingNextPath();
 }

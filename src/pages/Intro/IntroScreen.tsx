@@ -1,5 +1,8 @@
-import { getMockAuthSnapshot, isMockAuthenticated } from "../../data/mockAuth";
-import { getRequiredOnboardingPath } from "../Auth/AuthScreens";
+import {
+  getMockAuthSnapshot,
+  getOnboardingNextPath,
+  isMockAuthenticated,
+} from "../../data/mockAuth";
 import { navigateTo } from "../../utils/navigation";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import intro from "./IntroScreen.module.css";
@@ -18,7 +21,7 @@ export function IntroScreen() {
       navigateTo("/home");
       return;
     }
-    const nextOnboarding = getRequiredOnboardingPath();
+    const nextOnboarding = getOnboardingNextPath();
     if (nextOnboarding && nextOnboarding !== "/login") {
       navigateTo(nextOnboarding);
       return;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { blockUser } from "../../data/blocks";
 import { deleteReplyDraft, getReplyDraft } from "../../data/letterDraft";
 import {
@@ -439,11 +439,16 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // StrictMode 는 개발 중 효과를 두 번 실행한다. 그대로 두면 두 번째 실행이
   // 이미 두고 온 편지를 다시 두려다 실패해 '이미 두고 온 편지예요'가 떴다.
   // 한 번만 돌게 문을 걸어둔다.
+  // 화면이 처음 붙을 때 한 번만 확인한다. useEffectEvent 는 그때의 최신 값을 읽으면서도
+  // effect 를 다시 돌리지 않는다(예전에는 의존성 목록을 비워 두어 lint 경고가 났다).
   const startedRef = useRef(false);
-  useEffect(() => {
+  const startOnOpen = useEffectEvent(() => {
     if (!startNow || alreadyReturned || startedRef.current) return;
     startedRef.current = true;
     runReturn();
+  });
+  useEffect(() => {
+    startOnOpen();
   }, []);
   // 이 분기는 반드시 아래 가드보다 위에 있어야 한다.
   // runReturn 이 saveLetterReturn 까지 마치면 getLetterReturn 이 기록을 돌려주어

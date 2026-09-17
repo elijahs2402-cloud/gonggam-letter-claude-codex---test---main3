@@ -29,7 +29,7 @@ function run(action?: Action) {
   if (action.href) navigateTo(action.href);
   else action.onClick?.();
 }
-export function isDevelopmentPreview() {
+function isDevelopmentPreview() {
   return (
     typeof window !== "undefined" &&
     ["localhost", "127.0.0.1"].includes(window.location.hostname)

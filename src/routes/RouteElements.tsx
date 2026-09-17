@@ -6,7 +6,11 @@
  */
 import type { ReactNode } from "react";
 import { Outlet, useParams } from "react-router-dom";
-import { isMockAuthenticated, setPostLoginPath } from "../data/mockAuth";
+import {
+  getOnboardingNextPath,
+  isMockAuthenticated,
+  setPostLoginPath,
+} from "../data/mockAuth";
 import {
   getCurrentAppPath,
   getCurrentAppSearchParams,
@@ -15,7 +19,6 @@ import {
   AuthGateRedirect,
   LoginScreen,
   ReturningWelcomeScreen,
-  getRequiredOnboardingPath,
 } from "../pages/Auth/AuthScreens";
 import { ServiceNoticeScreen } from "../pages/Notifications/ServiceNoticeScreen";
 import {
@@ -43,7 +46,7 @@ export function LoginRoute() {
 
 export function ReturningWelcomeRoute() {
   if (!isMockAuthenticated())
-    return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
+    return <AuthGateRedirect to={getOnboardingNextPath() ?? "/login"} />;
   return <ReturningWelcomeScreen />;
 }
 
@@ -55,7 +58,7 @@ export function OnboardingStepRoute({
   step: string;
   children: ReactNode;
 }) {
-  const next = getRequiredOnboardingPath();
+  const next = getOnboardingNextPath();
   if (next && next !== step) return <AuthGateRedirect to={next} />;
   return children;
 }
@@ -66,7 +69,7 @@ export function OnboardingStepRoute({
 export function RequireAuth() {
   if (!isMockAuthenticated()) {
     setPostLoginPath(getCurrentAppPath());
-    return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
+    return <AuthGateRedirect to={getOnboardingNextPath() ?? "/login"} />;
   }
   return <Outlet />;
 }
