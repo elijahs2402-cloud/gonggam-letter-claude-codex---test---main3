@@ -86,35 +86,33 @@ export function NotificationsScreen({
   };
   return (
     <main
-      className={`mobile-prototype notification-screen ${styles["notification-screen"]} ${styles[`notification-screen ${styles["notification-screen"]}`]}${stageClassName ? ` ${stageClassName}` : ""}`}
+      className={`mobile-prototype notification-screen ${styles["notification-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
       data-version={version}
     >
       <Header title="알림" fallback="/home" />
-      <div
-        className={`notification-scroll ${styles["notification-scroll"]} ${styles[`notification-scroll ${styles["notification-scroll"]}`]}`}
-      >
+      <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         {notices.length ? (
           <section
-            className={`notification-list ${styles["notification-list"]} ${styles[`notification-list ${styles["notification-list"]}`]}`}
+            className={`notification-list ${styles["notification-list"]}`}
             aria-label="알림 목록"
           >
             {notices.map((notice) => (
               <button
                 key={notice.id}
-                className={`notification-row ${styles["notification-row"]} ${styles[`notification-row ${styles["notification-row"]}`]}${notice.isRead ? "" : " is-unread"}`}
+                className={`notification-row ${styles["notification-row"]}${notice.isRead ? "" : " is-unread"}`}
                 type="button"
                 onClick={() => open(notice)}
               >
                 <span
-                  className={`notification-row-copy ${styles["notification-row-copy"]} ${styles[`notification-row-copy ${styles["notification-row-copy"]}`]}`}
+                  className={`notification-row-copy ${styles["notification-row-copy"]}`}
                 >
                   <span
-                    className={`notification-row-title ${styles["notification-row-title"]} ${styles[`notification-row-title ${styles["notification-row-title"]}`]}`}
+                    className={`notification-row-title ${styles["notification-row-title"]}`}
                   >
                     {notice.title}
                     {!notice.isRead && (
                       <i
-                        className={`notification-row-dot ${styles["notification-row-dot"]} ${styles[`notification-row-dot ${styles["notification-row-dot"]}`]}`}
+                        className={`notification-row-dot ${styles["notification-row-dot"]}`}
                         aria-label="읽지 않은 알림"
                       />
                     )}
@@ -127,7 +125,7 @@ export function NotificationsScreen({
           </section>
         ) : (
           <section
-            className={`notification-empty ${styles["notification-empty"]} ${styles[`notification-empty ${styles["notification-empty"]}`]}`}
+            className={`notification-empty ${styles["notification-empty"]}`}
           >
             <h1>아직 새로운 알림이 없어요</h1>
             <p>
@@ -192,14 +190,12 @@ export function NotificationSettingsScreen({
   };
   return (
     <main
-      className={`mobile-prototype notification-settings-screen ${styles["notification-settings-screen"]} ${styles[`notification-settings-screen ${styles["notification-settings-screen"]}`]}${stageClassName ? ` ${stageClassName}` : ""}`}
+      className={`mobile-prototype notification-settings-screen ${styles["notification-settings-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
     >
       <Header title="알림 설정" fallback="/my-space" />
-      <div
-        className={`notification-scroll ${styles["notification-scroll"]} ${styles[`notification-scroll ${styles["notification-scroll"]}`]}`}
-      >
+      <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         <section
-          className={`notification-settings-list ${styles["notification-settings-list"]} ${styles[`notification-settings-list ${styles["notification-settings-list"]}`]}`}
+          className={`notification-settings-list ${styles["notification-settings-list"]}`}
           aria-label="알림 종류 설정"
         >
           {settingRows.map(([key, title, description]) => (
