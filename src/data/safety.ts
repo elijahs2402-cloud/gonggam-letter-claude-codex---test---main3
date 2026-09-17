@@ -107,7 +107,8 @@ export function reviewSafety(
     : matches.length
       ? "warning"
       : "none";
-  const review = {
+  // 타입을 적어 두지 않으면 status 가 그냥 string 으로 넓어져 storeReview 에 넘길 수 없다.
+  const review: SafetyReviewResult = {
     id: createId(),
     targetType,
     targetId,

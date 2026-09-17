@@ -517,7 +517,7 @@ export function LetterPreviewScreen() {
     }
     const letter = createLetter({
       senderId: userId,
-      anonymousName: draft.anonymousName.trim() || getCurrentAnonymousName(),
+      anonymousName: draft.anonymousName?.trim() || getCurrentAnonymousName(),
       content: draft.content,
       sourceDraftId: draft.id,
     });
@@ -601,7 +601,7 @@ export function LetterPreviewScreen() {
             ”
           </span>
           <span className="letter-preview-signature">
-            ─ {draft.anonymousName.trim() || getCurrentAnonymousName()}
+            ─ {draft.anonymousName?.trim() || getCurrentAnonymousName()}
           </span>
           <small
             className={`reply-review-edited-at ${flow["reply-review-edited-at"]}`}
@@ -1482,16 +1482,19 @@ export function ReplyReviewScreen({ letterId }: { letterId?: string }) {
     });
   const review = reviewReplySafety(draft.content, draft.id);
   const requiresRevision = review.status !== "clear";
+  // 아래 submit 은 함수 선언이라 위 가드의 '편지가 있다'는 판단이 전달되지 않는다.
+  // 가드를 지난 편지를 상수로 받아 두고 그것을 쓴다.
+  const readyLetter = letter;
   function submit() {
     if (submitting) return;
     if (shouldFailDraftOperation("reply-submit")) {
-      recordDeliveryIssue("reply-send", letter.id, currentUserId);
+      recordDeliveryIssue("reply-send", readyLetter.id, currentUserId);
       setNotice(
         "답장을 보내지 못했어요. 작성한 내용은 그대로 보관되어 있어요.",
       );
       return;
     }
-    navigateTo(`/reply-sending/${encodeURIComponent(letter.id)}`);
+    navigateTo(`/reply-sending/${encodeURIComponent(readyLetter.id)}`);
   }
   return (
     <FocusShell

@@ -174,6 +174,8 @@ function ReplyReportForm({
       </Shell>
     );
   const returnTo = `/mailbox/my/${encodeURIComponent(letter.id)}`;
+  // 아래 submit 은 함수 선언이라 위 가드의 '답장이 있다'는 판단이 전달되지 않는다.
+  const reportedReply = reply;
   if (reportedBeforeOpening && !complete)
     return (
       <Shell title="편지 신고" fallback={returnTo}>
@@ -204,17 +206,17 @@ function ReplyReportForm({
       const report = createReport({
         reporterId: userId,
         targetType: "reply",
-        targetId: reply.id,
+        targetId: reportedReply.id,
         reason,
         detail: detail.trim() || undefined,
         hiddenByReporter: false,
-        ...(withBlock ? { blockedUserId: reply.writerId } : {}),
+        ...(withBlock ? { blockedUserId: reportedReply.writerId } : {}),
       });
       if (!report) {
         setStatus("failed");
         return;
       }
-      if (withBlock) blockUser(userId, reply.writerId, "reply_report");
+      if (withBlock) blockUser(userId, reportedReply.writerId, "reply_report");
       setStatus("complete");
     }, 640);
   }

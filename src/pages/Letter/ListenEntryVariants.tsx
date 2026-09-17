@@ -123,12 +123,7 @@ function FixedActions({
     <div
       className={`flow-fixed-action listen-entry-actions ${listen["listen-entry-actions"]}`}
     >
-      <button
-        type="button"
-        className="flow-primary-button"
-        onClick={onMeet}
-        disabled={state === "loading"}
-      >
+      <button type="button" className="flow-primary-button" onClick={onMeet}>
         {/* 헤더가 "편지 만나기"라 버튼까지 같은 말이면 한 단어가 두 일을 겸한다.
             이 앱의 다른 흐름 화면은 헤더가 '어디', 버튼이 '다음 단계'를 말한다
             (편지 쓰기 화면: 헤더 "편지 쓰기" / 버튼 "보내기 전 미리보기").

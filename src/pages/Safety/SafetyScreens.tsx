@@ -116,7 +116,8 @@ export function LetterSafetyReviewScreen() {
     }
     const letter = createLetter({
       senderId: userId,
-      anonymousName: latest.anonymousName,
+      // 초안을 읽을 때 이름이 없으면 "" 로 채워지므로 실제 값은 달라지지 않는다.
+      anonymousName: latest.anonymousName ?? "",
       content: latest.content,
       sourceDraftId: latest.id,
     });
