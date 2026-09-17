@@ -5,7 +5,6 @@
   - 머리말 작은 문구: 약관 문서 머리말(.policy-document-heading > p)
   - 제목: 인사말 제목 크기(--fs-title-sm) + 세리프 제목 굵기·줄간격 토큰
   - 소제목 · 문단: 개인정보 처리방침(.privacy-policy-document h2 / p)
-  - 끝맺음: 편지 미리보기의 서명(.letter-preview-signature, "─ 이름")
   선은 제목과 본문 사이에 하나만 두고, 본문 단락 사이는 여백으로만 나눈다(사용자 요청).
 */
 /* 다른 상세 화면(.guide-screen · .policy-screen 공통 규칙)과 같은 배치.
@@ -72,14 +71,4 @@
   color: var(--ink);
   font: 500 16px/var(--lh-title) var(--font-sans);
   letter-spacing: -0.02em;
-}
-
-/* 편지 미리보기 서명과 같은 모양(global.css
-   .letter-preview-screen .flow-letter-paper > .letter-preview-signature). */
-.service-notice-sign {
-  margin: 40px 0 0;
-  color: var(--muted-ink);
-  font: 400 14px/20px var(--font-serif);
-  letter-spacing: 0;
-  text-align: right;
 }
