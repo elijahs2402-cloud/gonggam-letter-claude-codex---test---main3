@@ -13,6 +13,7 @@ import {
   navigateTo,
   clearAppState,
   replaceAppState,
+  setPageTimeout,
 } from "../../utils/navigation";
 import {
   createReport,
@@ -202,7 +203,8 @@ function ReplyReportForm({
   function submit() {
     if (!reason || status === "submitting") return;
     setStatus("submitting");
-    window.setTimeout(() => {
+    // 접수 중에 화면을 떠나면 신고를 만들지 않는다.
+    setPageTimeout(() => {
       const report = createReport({
         reporterId: userId,
         targetType: "reply",
@@ -406,7 +408,9 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
       return;
     }
     setPhase("processing");
-    window.setTimeout(() => {
+    // 처리 중에 화면을 떠나면 두고 가기를 하지 않는다 — 떠난 뒤의 주소에
+    // 완료 표시(?state=done)를 남기지 않기 위해서이기도 하다.
+    setPageTimeout(() => {
       const latest = getLetterById(current.id);
       const returned = latest
         ? returnLetterToWaiting(current.id, readerId)

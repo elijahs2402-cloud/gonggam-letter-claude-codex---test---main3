@@ -3,6 +3,7 @@ import {
   getCurrentAppSearchParams,
   navigateBack,
   navigateTo,
+  setPageTimeout,
 } from "../../utils/navigation";
 import {
   assignLetterToReader,
@@ -457,7 +458,7 @@ export function WriteLetterFlowScreen() {
           onSaveAndLeave={() => {
             if (isSavingAndLeaving) return;
             setIsSavingAndLeaving(true);
-            window.setTimeout(() => {
+            setPageTimeout(() => {
               if (!saveNow()) {
                 setNotice(
                   "임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요.",
@@ -1305,7 +1306,7 @@ function WriteReplyForm({
           onSaveAndLeave={() => {
             if (isSavingReplyAndLeaving) return;
             setIsSavingReplyAndLeaving(true);
-            window.setTimeout(() => {
+            setPageTimeout(() => {
               if (!saveReplyNow()) {
                 setNotice(
                   "임시 저장하지 못했어요. 작성한 내용은 현재 화면에 남아 있어요.",

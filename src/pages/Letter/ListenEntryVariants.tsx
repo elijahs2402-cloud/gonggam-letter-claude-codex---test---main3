@@ -1,5 +1,9 @@
 import { type ReactNode, useState } from "react";
-import { navigateBack, navigateTo } from "../../utils/navigation";
+import {
+  navigateBack,
+  navigateTo,
+  setPageTimeout,
+} from "../../utils/navigation";
 import { getCurrentUserId } from "../../data/letters";
 import { seedSampleLetters } from "../../data/sampleLetters";
 import {
@@ -156,7 +160,8 @@ function ListenEntryFrame({
   function meetLetter() {
     if (state === "loading") return;
     setState("loading");
-    window.setTimeout(() => {
+    // 불러오는 중에 뒤로 가면 편지를 열지 않는다.
+    setPageTimeout(() => {
       if (onMeet) {
         onMeet();
         return;

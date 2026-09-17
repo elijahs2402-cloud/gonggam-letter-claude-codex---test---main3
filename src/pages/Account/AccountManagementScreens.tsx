@@ -8,6 +8,7 @@ import {
   consumePopEntry,
   navigateBack,
   navigateTo,
+  setPageTimeout,
 } from "../../utils/navigation";
 import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
@@ -224,7 +225,8 @@ export function AccountWithdrawalScreen() {
   >("forward");
   const finish = () => {
     setStep("processing");
-    window.setTimeout(() => {
+    // 처리 중에 화면을 떠나면 계정을 지우지 않는다(문서를 새로 불러오던 때와 같게).
+    setPageTimeout(() => {
       deleteMockAccount();
       navigateTo("/withdrawal-complete");
     }, 1700);

@@ -13,7 +13,11 @@ import {
   type Report,
   type ReportReason,
 } from "../../data/reports";
-import { navigateBack, navigateTo } from "../../utils/navigation";
+import {
+  navigateBack,
+  navigateTo,
+  setPageTimeout,
+} from "../../utils/navigation";
 import { formatDate } from "../../utils/datetime";
 import { getListenEntryPath } from "../../data/waitingLetters";
 // 차단 및 신고 관리 화면 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
@@ -158,7 +162,8 @@ export function LetterReportFigmaScreen({
     const target = letter;
     if (!target) return;
     setState("processing");
-    window.setTimeout(() => {
+    // 접수 중에 화면을 떠나면 신고를 만들지 않는다.
+    setPageTimeout(() => {
       const report = createReport({
         reporterId: userId,
         targetType: "letter",

@@ -3,6 +3,7 @@ import { AppBottomNavigation } from "../../components/common/AppBottomNavigation
 import {
   consumePopEntry,
   getCurrentAppPath,
+  pushShellRoute,
   registerShellRouter,
 } from "../../utils/navigation";
 import {
@@ -83,7 +84,8 @@ const BACK_TARGET: Partial<Record<ViewKey, ViewKey>> = {
 // 나가는 화면과 들어오는 화면 사이에 빈 구간이 생기지 않고, React 가 노드를
 // 통째로 교체해 주어 어느 방향으로 가든 진입 애니메이션이 매번 재생된다.
 //
-// URL 은 pushState 로만 맞춰 둔다. 새로고침하거나 링크로 바로 들어오면
+// 주소는 pushShellRoute 로 라우터에 알리고, App 은 셸이 맡은 주소에서 이 화면을
+// 새로 만들지 않고 그대로 둔다(isShellPath). 새로고침하거나 링크로 바로 들어오면
 // App.tsx 의 라우터가 그 화면을 단독으로 그리고(기존 동작 그대로),
 // 그때는 페이지 단위 push/pop 모션이 쓰인다.
 export function MySpaceScreen() {
@@ -116,9 +118,10 @@ export function MySpaceScreen() {
         const next = PATH_TO_VIEW.get(path);
         if (!next) return false;
         goToView(next);
-        window.history.pushState({}, "", path);
+        pushShellRoute(path);
         return true;
       },
+      owns: (path) => PATH_TO_VIEW.has(path),
       back: (fallbackPath) => {
         const current = viewRef.current;
         if (current === "list") return false;
@@ -186,7 +189,7 @@ export function MySpaceScreen() {
               type="button"
               onClick={() => {
                 goToView(item.key);
-                window.history.pushState({}, "", item.path);
+                pushShellRoute(item.path);
               }}
             >
               <span>{item.label}</span>

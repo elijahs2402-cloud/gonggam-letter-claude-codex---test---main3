@@ -17,11 +17,16 @@ import {
   WriteLetterFlowScreen,
   WriteReplyFlowScreen,
 } from "./pages/Letter/LetterFlowScreens";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
 import {
   getCurrentAppPath,
   getCurrentAppSearchParams,
+  isShellPath,
+  markPageChanged,
   navigateTo,
 } from "./utils/navigation";
+import { syncDerivedNotifications } from "./data/notificationEvents";
 import { LetterSafetyReviewScreen } from "./pages/Safety/SafetyScreens";
 import {
   LetterReportFigmaScreen,
@@ -136,7 +141,39 @@ function IntroScreen() {
   );
 }
 
+// 주소 기록이 바뀔 때마다(셸 안 이동 포함) 한 번만 하는 일.
+// effect 가 아니라 그리기 전에 부른다 — 새 화면이 그리면서 알림을 읽고,
+// 새 화면의 effect(자식이 부모보다 먼저 돈다)가 타이머를 걸기 전에 끝나 있어야 한다.
+// - 알림 목록을 지금 상태에 맞춘다. 문서를 새로 불러오던 때는 main.tsx 에서
+//   화면마다 한 번씩 돌았다. 로그인 전에는 볼 편지가 없으므로 건너뛴다.
+// - 떠난 화면의 타이머가 실행되지 않도록 화면 번호를 올린다(setPageTimeout).
+let lastLocationKey: string | null = null;
+function handleLocationChange(locationKey: string) {
+  if (lastLocationKey === locationKey) return;
+  lastLocationKey = locationKey;
+  markPageChanged();
+  if (getMockAuthSnapshot().account) syncDerivedNotifications();
+}
+
 export function App() {
+  const location = useLocation();
+  const path = getCurrentAppPath();
+  handleLocationChange(location.key);
+  // 화면마다 key 를 바꿔 새로 만든다 — 문서를 새로 불러오던 때처럼 화면 상태가
+  // 처음부터 시작하고, 들어오는 모션(.mobile-prototype)도 매번 재생된다.
+  // 나의 공간 셸이 맡은 주소는 같은 key 를 써서 셸을 그대로 둔다(셸 안 전환 모션).
+  const shell = isShellPath(path);
+  const screenKey = shell ? "my-space-shell" : location.key;
+
+  useEffect(() => {
+    // 문서를 새로 불러오면 맨 위에서 시작했다. 같은 동작을 맞춘다.
+    if (!shell) window.scrollTo(0, 0);
+  }, [screenKey, shell]);
+
+  return <AppScreen key={screenKey} shell={shell} />;
+}
+
+function AppScreen({ shell }: { shell: boolean }) {
   const path = getCurrentAppPath();
   const systemState = getCurrentAppSearchParams().get("system");
   if (
@@ -217,11 +254,14 @@ export function App() {
     return <AuthGateRedirect to={getRequiredOnboardingPath() ?? "/login"} />;
   }
 
+  // 셸이 맡은 주소(나의 공간 목록 + 하위 화면)는 셸이 스스로 그린다.
+  // 하위 화면 주소의 단독 분기(아래 /notification-settings 등)보다 먼저 봐야 한다.
+  if (shell) return <MySpaceScreen />;
+
   if (path === "/notifications") return <NotificationsScreen />;
   if (path === "/notification-settings") return <NotificationSettingsScreen />;
 
   if (path === "/home") return <HomeRuledScreen refinedCardsOnly />;
-  if (path === "/my-space") return <MySpaceScreen />;
   if (path === "/anonymous-name-settings")
     return <AnonymousNameSettingsScreen />;
   if (path === "/account-settings") return <AccountSettingsScreen />;

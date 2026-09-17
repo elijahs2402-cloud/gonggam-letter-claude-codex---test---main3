@@ -19,6 +19,49 @@ export function getCurrentAppSearchParams() {
 let isPageNavigationInProgress = false;
 let pageNavigationTimer: number | null = null;
 
+// 화면 이동은 React Router 가 맡는다(2026-09-17). 예전에는 화면마다 문서를 새로
+// 불러와(window.location.href) 그 사이 빈 틈과 멈춤이 생겼다.
+// 라우터는 main.tsx 에서 만들고 여기에 이동 함수만 등록한다 — 이 파일이 라우터를
+// 직접 import 하면 main → App → navigation → main 으로 순환이 생긴다.
+type RouterNavigate = (path: string, options: { replace: boolean }) => void;
+let routerNavigate: RouterNavigate | null = null;
+
+export function registerRouterNavigate(navigate: RouterNavigate) {
+  routerNavigate = navigate;
+}
+
+function goToPath(path: string, replace = false) {
+  if (routerNavigate) {
+    routerNavigate(path, { replace });
+    return;
+  }
+  // 라우터가 없을 때(등록 전)만 옛 방식으로 문서를 새로 불러온다.
+  if (window.location.protocol === "file:") {
+    window.location.hash = path;
+    window.location.reload();
+    return;
+  }
+  if (replace) window.location.replace(path);
+  else window.location.href = path;
+}
+
+// 화면이 바뀔 때마다 올라가는 번호. 문서를 새로 불러오던 때는 화면을 떠나면
+// 그 화면이 걸어 둔 타이머도 함께 사라졌지만, 이제는 남아서 실행된다.
+// setPageTimeout 은 걸어 둘 때의 번호를 기억했다가, 그사이 화면이 바뀌었으면
+// 실행하지 않는다(예: 계정 삭제 처리 중 뒤로 갔는데 1.7초 뒤 계정이 지워지는 일).
+let pageEpoch = 0;
+
+export function markPageChanged() {
+  pageEpoch += 1;
+}
+
+export function setPageTimeout(callback: () => void, delay: number) {
+  const epoch = pageEpoch;
+  return window.setTimeout(() => {
+    if (epoch === pageEpoch) callback();
+  }, delay);
+}
+
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
@@ -151,15 +194,22 @@ function leavePage(complete: () => void) {
   isPageNavigationInProgress = true;
   const page = getCurrentPage();
   const exitDuration = getExitDuration(page);
+  // 문서를 새로 불러오지 않으므로, 이동을 마치면 '이동 중' 표시를 직접 푼다.
+  // 떠난 화면은 곧 사라지므로 그 화면의 클래스는 건드릴 필요가 없다.
+  const finish = () => {
+    isPageNavigationInProgress = false;
+    pageNavigationTimer = null;
+    complete();
+  };
 
   if (!page || exitDuration === 0) {
-    complete();
+    finish();
     return;
   }
 
   page.classList.add("is-page-leaving");
   page.setAttribute("aria-busy", "true");
-  pageNavigationTimer = window.setTimeout(complete, exitDuration);
+  pageNavigationTimer = window.setTimeout(finish, exitDuration);
 }
 
 function isCurrentDestination(path: string) {
@@ -174,12 +224,12 @@ function isCurrentDestination(path: string) {
   );
 }
 
+// 앱 안에서 뒤로 갈 곳이 있는지. 문서를 새로 불러오지 않으니 document.referrer 는
+// 첫 화면의 값에 머문다. 대신 라우터가 기록마다 남기는 순번(idx)을 본다 —
+// 앱을 연 첫 기록은 0 이고, 앱 안에서 이동할 때마다 1씩 늘어난다.
 function canGoBackInApp() {
-  return (
-    document.referrer !== "" &&
-    new URL(document.referrer).origin === window.location.origin &&
-    window.history.length > 1
-  );
+  const state = window.history.state as { idx?: unknown } | null;
+  return typeof state?.idx === "number" && state.idx > 0;
 }
 
 window.addEventListener("pageshow", resetPageTransition);
@@ -192,27 +242,20 @@ export function navigateTo(path: string) {
 
   markPushTransition(getCurrentPage(), path);
 
-  leavePage(() => {
-    if (window.location.protocol === "file:") {
-      window.location.hash = path;
-      window.location.reload();
-      return;
-    }
-
-    window.location.href = path;
-  });
+  leavePage(() => goToPath(path));
 }
 
 export function replaceRoute(path: string) {
   if (isCurrentDestination(path)) return;
+  goToPath(path, true);
+}
 
-  if (window.location.protocol === "file:") {
-    window.location.hash = path;
-    window.location.reload();
-    return;
-  }
-
-  window.location.replace(path);
+// 나의 공간 셸이 하위 화면으로 바꿀 때 주소만 앞으로 한 칸 옮긴다(나가는 모션 없음).
+// 예전에는 history.pushState 를 직접 불렀는데, 라우터가 모르는 기록이 끼면
+// 뒤로 가기 순번(idx)이 어긋난다.
+export function pushShellRoute(path: string) {
+  if (isCurrentDestination(path)) return;
+  goToPath(path);
 }
 
 // 한 화면 안에서 하위 뷰를 state 로 전환하는 '셸' 화면(나의 공간)이 등록해 둔다.
@@ -223,9 +266,17 @@ export function replaceRoute(path: string) {
 type ShellRouter = {
   go: (path: string) => boolean;
   back: (fallbackPath: string) => boolean;
+  // 셸이 스스로 그리는 주소인지. App 은 이 주소들로 옮겨 갈 때 화면을 새로
+  // 만들지 않고 셸을 그대로 둔다(그래야 셸 안의 전환 모션이 산다).
+  owns: (path: string) => boolean;
 };
 
 let shellRouter: ShellRouter | null = null;
+
+// 나의 공간 목록 자체이거나, 떠 있는 셸이 맡은 주소이면 참.
+export function isShellPath(path: string) {
+  return path === "/my-space" || Boolean(shellRouter?.owns(path));
+}
 
 export function registerShellRouter(router: ShellRouter) {
   shellRouter = router;
@@ -243,21 +294,13 @@ export function navigateBack(fallbackPath: string) {
   const page = getCurrentPage();
 
   if (isPoppingBack(page, fallbackPath)) {
-    // history.back() 이 아니라 항상 새로 불러온다 — bfcache 로 조용히
-    // 복원되면 아래 pop-in 애니메이션이 재생되지 않기 때문이다. navigateTo()
-    // 를 재사용하지 않는 이유: 그 함수도 내부에서 leavePage() 를 다시 부르는데,
-    // 지금 이 함수가 이미 leavePage() 를 호출해 isPageNavigationInProgress 를
-    // true 로 만들어둔 뒤라 navigateTo() 의 가드에 걸려 아무 일도 안 일어난다.
+    // history.back() 이 아니라 목록 주소로 앞으로 이동한다 — 도착 화면이
+    // 표시(markPopEntry)를 읽어 pop-in 애니메이션을 고른다. navigateTo() 를
+    // 재사용하지 않는 이유: 그 함수는 나가는 모션을 기본(push)으로 다시 고르고,
+    // 이 화면에는 이미 pop 방향 클래스를 붙였기 때문이다.
     page?.classList.add("is-popped-away");
     markPopEntry();
-    leavePage(() => {
-      if (window.location.protocol === "file:") {
-        window.location.hash = fallbackPath;
-        window.location.reload();
-        return;
-      }
-      window.location.href = fallbackPath;
-    });
+    leavePage(() => goToPath(fallbackPath));
     return;
   }
 
@@ -274,16 +317,17 @@ export function replaceAppState(state: string) {
     const params = getCurrentAppSearchParams();
     params.set("state", state);
     window.history.replaceState(
-      {},
+      window.history.state,
       "",
       `#${getCurrentAppPath()}?${params.toString()}`,
     );
     return;
   }
 
+  // 기록에 남은 라우터 정보(idx 등)는 그대로 둔다 — 비우면 뒤로 가기 판단이 틀어진다.
   const url = new URL(window.location.href);
   url.searchParams.set("state", state);
-  window.history.replaceState({}, "", url);
+  window.history.replaceState(window.history.state, "", url);
 }
 
 /**
@@ -299,7 +343,7 @@ export function clearAppState() {
     params.delete("state");
     const query = params.toString();
     window.history.replaceState(
-      {},
+      window.history.state,
       "",
       `#${getCurrentAppPath()}${query ? `?${query}` : ""}`,
     );
@@ -308,5 +352,5 @@ export function clearAppState() {
 
   const url = new URL(window.location.href);
   url.searchParams.delete("state");
-  window.history.replaceState({}, "", url);
+  window.history.replaceState(window.history.state, "", url);
 }

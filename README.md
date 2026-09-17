@@ -13,7 +13,7 @@
 | 앱 아이콘 · Splash Screen | 없음 | |
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 34곳 · TS/TSX 27곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
 | `build` 스크립트 `tsc -b && vite build` (규격 §22) | 지금은 `vite build` | TypeScript 오류가 0개가 되어(2026-09-17) `tsc -b` 가 통과한다. 적용하면 `tsconfig.tsbuildinfo` 가 생기므로 `.gitignore` 추가도 함께 필요 — 적용 여부 결정 필요 |
-| React Router (규격 §12) | 아직 없음. 주소별 분기(`src/App.tsx`) + 페이지 새로고침 이동(`src/utils/navigation.ts`) | 전환 예정 |
+| React Router (규격 §12) | 적용(`react-router` 8, 2026-09-17). 다만 라우트는 `*` 하나이고 화면 분기는 여전히 `src/App.tsx` 가 주소를 보고 한다. 이동은 모두 `src/utils/navigation.ts` 가 라우터로 넘긴다 | 규격의 라우트 목록(`routes/AppRoutes.tsx`)으로 나누는 일은 남음 |
 | CSS Modules (규격 §6) | 앱 정보 화면을 뺀 모든 화면에 적용(모듈 파일 22개). `src/styles/global.css`(약 4,500줄)에는 여러 화면이 함께 쓰는 규칙, `@media` · `!important` 규칙, 옮기면 우선순위가 바뀌어 화면이 달라지는 규칙이 남아 있다 | 앱 정보 화면은 전환 대상에서 뺐다(결정) |
 | `globals.css` 의 옛 Tailwind 유틸리티 17개 | Tailwind 는 제거했다. 대신 Tailwind 가 만들던 CSS 를 `src/styles/globals.css` 에 그대로 옮겼는데, 그중 유틸리티 18개(`.flex`, `.hidden`, `.border` 등) 가운데 확인된 사용은 `.sr-only` 뿐이다 | 나머지 17개는 사용 여부를 확인한 뒤 정리 |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
@@ -82,7 +82,7 @@
 - **규격과 다른 점**
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
   - 한 파일에 여러 화면이 들어 있는 경우가 있다(예: `pages/Letter/LetterFlowScreens.tsx` 에 20여 개). 규격의 `pages/[Page]/[Page].tsx` 형태로 나누는 일은 CSS Modules 전환 때 화면별로 한다.
-  - `routes/AppRoutes.tsx` 는 아직 없다. React Router 전환 때 만든다.
+  - `routes/AppRoutes.tsx` 는 아직 없다. 지금은 `main.tsx` 가 라우터를 만들고 모든 주소를 `App.tsx` 로 보낸다.
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.
@@ -121,7 +121,7 @@ npm run build     # 결과물: dist/
 npm run preview   # 빌드 결과 미리보기 (포트 8443)
 ```
 
-`vite build` 중 청크 크기 경고는 현재 나오지 않는다(JS 약 374KB · CSS 약 171KB).
+`vite build` 중 청크 크기 경고는 현재 나오지 않는다(JS 약 467KB · CSS 약 171KB — React Router 가 약 93KB). 500KB 에 가까워지면 경고가 다시 나온다.
 
 ## 7. 환경변수
 
@@ -216,8 +216,11 @@ npx cap open ios
 ### Routing
 - `src/App.tsx` 의 `App()` 이 현재 주소(`getCurrentAppPath()`)를 `if (path === …)` 로 비교해 화면을 고른다.
 - 로그인이 필요한 주소는 `protectedPaths` · `protectedFlowPrefixes` 에 있고, 목업 로그인이 없으면 로그인·온보딩으로 보낸다.
-- 화면 이동(`navigateTo`, `navigateBack` — `src/utils/navigation.ts`)은 대부분 **페이지 새로고침**이다. 나의 공간(`MySpaceScreen`)만 일부 이동을 새로고침 없이 처리한다(`registerShellRouter`). 홈(`/home`)은 해당하지 않는다.
-- 새로고침을 전제로 한 로직이 있다(예: `main.tsx` 가 화면마다 알림을 다시 맞춤). React Router 로 바꿀 때 함께 검토해야 한다.
+- 화면 이동(`navigateTo`, `navigateBack`, `replaceRoute` — `src/utils/navigation.ts`)은 React Router 로 **문서를 새로 불러오지 않고** 일어난다. 나가는 모션(140ms) 뒤 라우터로 옮긴다.
+- `App.tsx` 는 주소 기록마다 화면에 새 `key` 를 주어 처음부터 다시 그린다(화면 상태 초기화 · 들어오는 모션 재생 · 맨 위에서 시작). 나의 공간(`MySpaceScreen`)이 맡은 주소는 같은 `key` 를 써서 셸 안 전환을 유지한다(`registerShellRouter`, `isShellPath`).
+- 주소 기록이 바뀔 때마다 `App.tsx` 가 알림 목록을 다시 맞춘다(예전에는 `main.tsx` 가 페이지마다 했다).
+- 화면을 떠난 뒤 실행되면 안 되는 타이머(계정 삭제 · 신고 접수 · 편지 만나기 · 두고 가기 · 임시 저장 후 나가기)는 `setPageTimeout` 을 쓴다. 그사이 화면이 바뀌면 실행하지 않는다.
+- '뒤로 갈 곳이 있는지'는 라우터가 기록에 남기는 순번(`history.state.idx`)으로 판단한다. 주소만 바꾸는 `replaceAppState` 등도 이 값을 지우지 않게 되어 있다.
 
 ### State Management
 - 화면 안 상태: `useState`.
@@ -247,7 +250,8 @@ npx cap open ios
 - 1차 오픈에서 뺀 기능은 코드에서 지웠다(2026-09-15): 답장 문장 간직하기 · 고마움 전하기 · 받은 답장 목록 · 편지의 여정 · 답장 도착 봉투 화면 · 편지 거두기/기다림 연장/다시 보내기, 옛 읽기 단계(`/waiting-letters`, `/reader-promise`, `/assign-letter/`, `/assigned-letter/`), `?qa=1` 테스트 패널과 `?state=` 옵션.
 - CSS Modules 로 옮긴 화면은 JSX 에 기존 전역 class 이름과 모듈 class 를 함께 쓴다. 모듈 CSS 는 `global.css` 보다 **먼저** 불러와지므로(`main.tsx` 의 import 순서), 전역의 같은 우선순위 규칙과 겹치는 규칙은 `global.css` 에 남겨 두었다.
 - CSS Modules 는 `@keyframes` 이름도 바꾸므로, 모듈 안에서 쓰는 애니메이션은 같은 모듈 파일에 `@keyframes` 를 함께 둔다.
-- 화면을 옮길 때마다 문서를 새로 불러오므로(React Router 전환 전) 이동 사이에 짧은 빈 화면(약 140ms)이 있다. 첫 페인트 배경을 종이색으로 칠해 깜빡임을 줄였다(`index.html`, `common.css`).
+- 뒤로 가기로 돌아온 화면은 새로 그려지므로 목록의 스크롤 위치가 맨 위로 돌아간다(예전에는 브라우저 캐시로 복원될 때가 있었다).
+- 첫 페인트 배경을 종이색으로 칠해 두었다(`index.html`, `common.css`). 새로고침·첫 진입 때 흰 화면이 보이지 않게 하기 위해서다.
 
 ### 검증 방법
 - 화면이 바뀌지 않았는지는 기준 스크린샷(375×667 · 390×844 · 430×932)과 파일 해시로 비교해 확인해 왔다. 촬영 도구와 기준 이미지는 저장소 밖에 있다(인계 시 별도 전달 여부 결정 필요).
