@@ -1,0 +1,52 @@
+/*
+  환영 문구(/returning-welcome, ReturningWelcomeScreen) 스타일 (CSS Modules 전환, 2026-09-15)
+
+  src/styles/global.css 에서 이 화면만 쓰는 .anonymous-name-welcome 규칙을 원래 순서대로 옮겼다.
+  선택자와 선언은 그대로다.
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.
+  - 모듈 CSS 는 global.css 보다 먼저 불러와진다(main.tsx 가 App 을 global.css 보다 먼저 import).
+  - is-visible 은 상태 class 라 :global() 로 감쌌다.
+  - global.css 에 남긴 규칙:
+    .anonymous-name-screen — common.css 의 .mobile-prototype(--page-exit-duration: 180ms)과
+      우선순위가 같아, 옮기면 뒤에 불러와지는 쪽에 져 값이 바뀔 수 있다.
+    .anonymous-name-screen.is-completing … — 이 화면에 없는 요소(.auth-scroll 등)를 가리킨다.
+    .is-leaving p · @media 안의 규칙 · !important 규칙
+*/
+.anonymous-name-welcome {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  pointer-events: none;
+  background: var(--paper);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+.anonymous-name-welcome p {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.035em;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(42px);
+  transition:
+    opacity 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.82s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.anonymous-name-welcome strong {
+  color: var(--deep-plum);
+  font-weight: 600;
+}
+.anonymous-name-welcome:global(.is-visible) {
+  opacity: 1;
+}
+.anonymous-name-welcome:global(.is-visible) p {
+  opacity: 1;
+  transform: translateY(0);
+}

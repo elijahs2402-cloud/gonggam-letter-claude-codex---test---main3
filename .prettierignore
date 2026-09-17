@@ -1,0 +1,19 @@
+# 빌드 결과물·설치 폴더
+dist
+node_modules
+package-lock.json
+
+# 정적 파일·디자인 산출물
+public
+artifacts
+.figma
+
+# AI 도구 설정 (앱 코드가 아님)
+.claude
+.gemini
+
+# 보관용 옛 코드
+src/_archive
+
+# 작업 문서 (코드가 아님)
+*.md

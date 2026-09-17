@@ -1,0 +1,31 @@
+/*
+  가입·약관 공통 스타일 (CSS Modules 전환, 2026-09-16)
+
+  src/styles/global.css 에서 AuthScreens.tsx 만 쓰는 규칙(보조 버튼 · 약관 동의 머리말 ·
+  리디렉션 화면)을 원래 순서대로 옮겼다. 선택자와 선언은 그대로다.
+  - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.
+  - global.css 에 남긴 규칙: @media 안의 규칙 · !important 규칙 ·
+    .anonymous-name-screen · .direct-nickname-scroll · .direct-nickname-actions —
+      앞서 확인한 대로 옮기면 우선순위가 뒤집힌다.
+*/
+.auth-actions--stacked {
+  display: grid;
+  gap: 8px;
+}
+.auth-secondary {
+  border: 1px solid rgba(var(--deep-plum-rgb), var(--a50));
+  background: rgba(var(--white-rgb), var(--a40));
+  color: var(--deep-plum);
+}
+.terms-consent-heading h1 {
+  margin: 0;
+  color: var(--ink);
+  font: var(--fw-title) var(--fs-title)/var(--lh-title) var(--font-serif);
+  letter-spacing: var(--ls-title);
+}
+.auth-redirect-screen {
+  display: grid;
+  place-items: center;
+  color: var(--muted-ink);
+  font-size: 12px;
+}

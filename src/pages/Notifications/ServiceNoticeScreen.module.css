@@ -1,0 +1,74 @@
+/*
+  서비스 안내 세부 화면(/service-notices/:id, ServiceNoticeScreen) 스타일 (2026-09-17)
+
+  1차 오픈에는 열지 않는 화면이다. 값은 기존 화면에서 가져왔다.
+  - 머리말 작은 문구: 약관 문서 머리말(.policy-document-heading > p)
+  - 제목: 인사말 제목 크기(--fs-title-sm) + 세리프 제목 굵기·줄간격 토큰
+  - 소제목 · 문단: 개인정보 처리방침(.privacy-policy-document h2 / p)
+  선은 제목과 본문 사이에 하나만 두고, 본문 단락 사이는 여백으로만 나눈다(사용자 요청).
+*/
+/* 다른 상세 화면(.guide-screen · .policy-screen 공통 규칙)과 같은 배치.
+   세로 flex 여야 .my-detail-scroll(flex: 1)이 화면 높이에 묶여 스크롤된다. */
+.service-notice-screen {
+  display: flex;
+  min-height: var(--app-viewport-height, 100dvh);
+  flex-direction: column;
+  background: var(--paper);
+}
+
+.service-notice-document {
+  margin: 0;
+}
+
+/* 제목(머리말)과 본문 사이에만 선 하나를 둔다(사용자 요청). 알림 목록과 같은 금색 선. */
+.service-notice-heading {
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a40));
+}
+.service-notice-heading > p {
+  margin: 0 0 12px;
+  color: var(--deep-plum);
+  font: 600 12px var(--font-sans);
+  letter-spacing: 0.08em;
+}
+.service-notice-heading h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--fs-title-sm);
+  font-weight: var(--fw-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  text-wrap: balance;
+}
+.service-notice-heading time {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted-ink);
+  font: 12px/1.6 var(--font-sans);
+}
+
+.service-notice-intro {
+  margin-top: 24px;
+}
+
+.service-notice-intro p,
+.service-notice-section p {
+  margin: 10px 0 0;
+  color: var(--muted-ink);
+  font: 14px/var(--lh-relaxed) var(--font-sans);
+  letter-spacing: -0.01em;
+}
+.service-notice-intro p:first-child {
+  margin-top: 0;
+}
+
+.service-notice-section {
+  margin-top: 32px;
+}
+.service-notice-section h2 {
+  margin: 0;
+  color: var(--ink);
+  font: 500 16px/var(--lh-title) var(--font-sans);
+  letter-spacing: -0.02em;
+}

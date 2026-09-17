@@ -5,8 +5,14 @@
       "name": "gonggam-letter-app",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 8443,
+      "port": 6334,
       "autoPort": true
+    },
+    {
+      "name": "gonggam-letter-app-8443",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "8443", "--strictPort"],
+      "port": 8443
     }
   ]
 }
