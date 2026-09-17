@@ -1163,6 +1163,9 @@ function WriteReplyForm({
       );
       return;
     }
+    // 방금 '검토' 단계로 저장했다. 화면을 떠날 때 자동저장이 '작성 중'으로
+    // 되돌려 쓰지 않도록 끈다.
+    cancelAutosave();
     navigateTo(`/reply-review/${encodeURIComponent(letter.id)}`);
   }
   // 뒤로가기는 되돌아가는 것이지, 새 화면을 밀어 넣는 것이 아니다.

@@ -14,9 +14,8 @@
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 34곳 · TS/TSX 27곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
 | 화면 이동 함수 (규격 §12 "URL 문자열을 직접 조작하지 않는다") | 라우트는 `react-router-dom` 7 의 `src/routes/AppRoutes.tsx` 에 있다. 다만 화면들은 `useNavigate` 대신 `src/utils/navigation.ts` 의 `navigateTo('/주소')` 를 부른다(안에서 라우터로 넘김). 나가는 모션 · 탭 전환 · 나의 공간 셸 처리를 한곳에 모으려고 둔 층이다 | 주소 문자열을 상수로 모을지는 개발팀과 결정 |
 | CSS Modules (규격 §6) | 앱 정보 화면을 뺀 모든 화면에 적용(모듈 파일 22개). `src/styles/global.css`(약 4,500줄)에는 여러 화면이 함께 쓰는 규칙, `@media` · `!important` 규칙, 옮기면 우선순위가 바뀌어 화면이 달라지는 규칙이 남아 있다 | 앱 정보 화면은 전환 대상에서 뺐다(결정) |
-| `globals.css` 의 옛 Tailwind 유틸리티 17개 | Tailwind 는 제거했다. 대신 Tailwind 가 만들던 CSS 를 `src/styles/globals.css` 에 그대로 옮겼는데, 그중 유틸리티 18개(`.flex`, `.hidden`, `.border` 등) 가운데 확인된 사용은 `.sr-only` 뿐이다 | 나머지 17개는 사용 여부를 확인한 뒤 정리 |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
-| lint 경고 10건 | 오류는 0. Fast Refresh 5 · Hook 의존성 3 · React Compiler 기준 규칙(refs) 2 | 규칙을 경고로 둔 이유는 `eslint.config.ts` 주석 참고 |
+| lint 규칙 수준 | 오류 0 · 경고 0(2026-09-17). React Compiler 기준 규칙 등 일부는 `eslint.config.ts` 에서 경고로 낮춰 두었다 | 오류로 올릴지는 개발팀과 결정. 이유는 `eslint.config.ts` 주석 참고 |
 | 이미지·폰트 라이선스 | "9. Asset 출처" 의 "확인 필요" 항목 | |
 | `@capacitor/cli` 보안 경고 | `npm audit` 보통(moderate) 3건 — CLI 가 쓰는 `xcode` 패키지의 `uuid` | 개발 도구 쪽 의존성이며 앱 번들에는 들어가지 않음. npm 제안은 CLI 8.4.3 으로 내리기 |
 | 가로 모드 | 대응하지 않음(결정) | |
@@ -110,7 +109,7 @@ npm run dev
 기타 명령:
 
 ```bash
-npm run lint          # ESLint (오류 0 · 경고 10 이 현재 기준)
+npm run lint          # ESLint (오류 0 · 경고 0 이 현재 기준)
 npx tsc --noEmit      # TypeScript 검사 (오류 0 이 현재 기준)
 npm run format        # Prettier 로 정리
 npm run format:check  # 정리 필요 여부만 검사
@@ -224,6 +223,7 @@ npx cap open ios
 - `App.tsx` 는 주소 기록마다 화면에 새 `key` 를 주어 처음부터 다시 그린다(화면 상태 초기화 · 들어오는 모션 재생 · 맨 위에서 시작). 나의 공간(`MySpaceScreen`)이 맡은 주소는 같은 `key` 를 써서 셸 안 전환을 유지한다(`registerShellRouter`, `isShellPath`).
 - 주소 기록이 바뀔 때마다 `App.tsx` 가 알림 목록을 다시 맞춘다(예전에는 `main.tsx` 가 페이지마다 했다).
 - 화면을 떠난 뒤 실행되면 안 되는 타이머(계정 삭제 · 신고 접수 · 편지 만나기 · 두고 가기 · 임시 저장 후 나가기)는 `setPageTimeout` 을 쓴다. 그사이 화면이 바뀌면 실행하지 않는다.
+- 답장 자동 저장(`src/hooks/draftGuards.ts`)은 앱 안에서 화면을 떠날 때도 저장되지 않은 입력을 저장한다. 문서를 닫지 않으므로 `beforeunload` 만으로는 부족하다. 일부러 떠나는 경로(다음 단계 저장 · 지우고 나가기)는 `cancel()` 로 이 저장을 끈다.
 - '뒤로 갈 곳이 있는지'는 라우터가 기록에 남기는 순번(`history.state.idx`)으로 판단한다. 주소만 바꾸는 `replaceAppState` 등도 이 값을 지우지 않게 되어 있다.
 
 ### State Management
