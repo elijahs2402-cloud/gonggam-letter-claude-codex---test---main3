@@ -280,8 +280,10 @@
 }
 
 /* Direct nickname entry — a focused alternative to the existing random-name flow. */
+/* 2026-09-17: 42px 28px → 공통 토큰(--scroll-top · --gutter). 바로 앞 화면인 약관 동의와
+   제목 시작점(왼쪽 24px · 위 96px)이 달라, 가입 흐름에서 넘어갈 때 제목이 움직였다(사용자 요청). */
 .direct-nickname-scroll {
-  padding: 42px 28px 30px;
+  padding: var(--scroll-top) var(--gutter) 30px;
 }
 /* font-weight 가 없어 기본값 400 으로 그려졌다. 편지함 리스트와 나의 공간에서
    같은 이름이 16px/500 으로 나오므로, 입력하는 동안 보이는 모습이 실제로 보일
