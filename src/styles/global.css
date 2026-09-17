@@ -1293,14 +1293,15 @@ html[data-ios-standalone="true"] .intro-copy {
   }
 }
 
+/* 나가는 화면은 움직이지 않는다(2026-09-17). 모션이 끝난 뒤 다음 문서를 불러오는 동안
+   마지막 모습이 그대로 남는데, 위로 4px 올라간 채 멈춰 있어 기기에서 '올라갔다 멈춘'
+   것처럼 보였다. 제자리에서 살짝 흐려지기만 한다. */
 @keyframes app-page-exit {
   from {
     opacity: 1;
-    transform: translateY(0);
   }
   to {
     opacity: 0.9;
-    transform: translateY(-4px);
   }
 }
 
