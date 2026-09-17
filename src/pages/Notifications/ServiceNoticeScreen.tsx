@@ -61,7 +61,8 @@ export function ServiceNoticeScreen({ noticeId }: { noticeId: string }) {
               ))}
             </section>
           ))}
-          <p className={styles["service-notice-sign"]}>공감편지 드림</p>
+          {/* 편지 미리보기의 서명("─ 이름")과 같은 모양 */}
+          <p className={styles["service-notice-sign"]}>─ 공감편지 드림</p>
         </article>
       </div>
     </main>

@@ -5,7 +5,8 @@
   - 머리말 작은 문구: 약관 문서 머리말(.policy-document-heading > p)
   - 제목: 인사말 제목 크기(--fs-title-sm) + 세리프 제목 굵기·줄간격 토큰
   - 소제목 · 문단: 개인정보 처리방침(.privacy-policy-document h2 / p)
-  - 구분선: 알림 목록과 같은 금색 선
+  - 끝맺음: 편지 미리보기의 서명(.letter-preview-signature, "─ 이름")
+  단락 사이에는 구분선을 두지 않고 여백으로만 나눈다(사용자 요청).
 */
 /* 다른 상세 화면(.guide-screen · .policy-screen 공통 규칙)과 같은 배치.
    세로 flex 여야 .my-detail-scroll(flex: 1)이 화면 높이에 묶여 스크롤된다. */
@@ -20,10 +21,6 @@
   margin: 0;
 }
 
-.service-notice-heading {
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a40));
-}
 .service-notice-heading > p {
   margin: 0 0 12px;
   color: var(--deep-plum);
@@ -48,7 +45,7 @@
 }
 
 .service-notice-intro {
-  padding: 24px 0 4px;
+  margin-top: 32px;
 }
 
 .service-notice-intro p,
@@ -63,9 +60,7 @@
 }
 
 .service-notice-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a40));
+  margin-top: 32px;
 }
 .service-notice-section h2 {
   margin: 0;
@@ -74,12 +69,12 @@
   letter-spacing: -0.02em;
 }
 
+/* 편지 미리보기 서명과 같은 모양(global.css
+   .letter-preview-screen .flow-letter-paper > .letter-preview-signature). */
 .service-notice-sign {
-  margin: 32px 0 0;
-  padding-top: 20px;
-  border-top: 1px solid rgba(var(--gold-rgb), var(--a40));
+  margin: 40px 0 0;
   color: var(--muted-ink);
-  font: 400 14px/var(--lh-title) var(--font-serif);
-  letter-spacing: var(--ls-title);
+  font: 400 14px/20px var(--font-serif);
+  letter-spacing: 0;
   text-align: right;
 }
