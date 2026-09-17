@@ -53,6 +53,7 @@ import {
   NotificationsScreen,
   NotificationSettingsScreen,
 } from "./pages/Notifications/NotificationScreens";
+import { ServiceNoticeScreen } from "./pages/Notifications/ServiceNoticeScreen";
 import {
   LetterReturnScreen,
   ReplyReportScreen,
@@ -251,6 +252,7 @@ function AppScreen({ shell }: { shell: boolean }) {
     "/reply-sent/",
     "/mailbox/my/",
     "/mailbox/replied/",
+    "/service-notices/",
   ];
   const isProtectedServicePath =
     protectedPaths.has(path) ||
@@ -266,6 +268,13 @@ function AppScreen({ shell }: { shell: boolean }) {
   if (shell) return <MySpaceScreen />;
 
   if (path === "/notifications") return <NotificationsScreen />;
+  // 서비스 안내 세부 — 1차 오픈 제외. 디자인 확인용으로 주소로만 연다(연결하는 곳 없음).
+  if (path.startsWith("/service-notices/"))
+    return (
+      <ServiceNoticeScreen
+        noticeId={decodeURIComponent(path.slice("/service-notices/".length))}
+      />
+    );
   if (path === "/notification-settings") return <NotificationSettingsScreen />;
 
   if (path === "/home") return <HomeRuledScreen refinedCardsOnly />;

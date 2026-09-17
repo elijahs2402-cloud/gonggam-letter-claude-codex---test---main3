@@ -1,0 +1,80 @@
+/*
+  서비스 안내 세부 화면(/service-notices/:id, ServiceNoticeScreen) 스타일 (2026-09-17)
+
+  1차 오픈에는 열지 않는 화면이다. 값은 기존 화면에서 가져왔다.
+  - 머리말 작은 문구: 약관 문서 머리말(.policy-document-heading > p)
+  - 제목: 인사말 제목 크기(--fs-title-sm) + 세리프 제목 굵기·줄간격 토큰
+  - 소제목 · 문단: 개인정보 처리방침(.privacy-policy-document h2 / p)
+  - 구분선: 알림 목록과 같은 금색 선
+*/
+.service-notice-screen {
+  position: relative;
+}
+
+.service-notice-document {
+  margin: 0;
+}
+
+.service-notice-heading {
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a40));
+}
+.service-notice-heading > p {
+  margin: 0 0 12px;
+  color: var(--deep-plum);
+  font: 600 12px var(--font-sans);
+  letter-spacing: 0.08em;
+}
+.service-notice-heading h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--fs-title-sm);
+  font-weight: var(--fw-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  text-wrap: balance;
+}
+.service-notice-heading time {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted-ink);
+  font: 12px/1.6 var(--font-sans);
+}
+
+.service-notice-intro {
+  padding: 24px 0 4px;
+}
+
+.service-notice-intro p,
+.service-notice-section p {
+  margin: 10px 0 0;
+  color: var(--muted-ink);
+  font: 14px/var(--lh-relaxed) var(--font-sans);
+  letter-spacing: -0.01em;
+}
+.service-notice-intro p:first-child {
+  margin-top: 0;
+}
+
+.service-notice-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(var(--gold-rgb), var(--a40));
+}
+.service-notice-section h2 {
+  margin: 0;
+  color: var(--ink);
+  font: 500 16px/var(--lh-title) var(--font-sans);
+  letter-spacing: -0.02em;
+}
+
+.service-notice-sign {
+  margin: 32px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(var(--gold-rgb), var(--a40));
+  color: var(--muted-ink);
+  font: 400 14px/var(--lh-title) var(--font-serif);
+  letter-spacing: var(--ls-title);
+  text-align: right;
+}

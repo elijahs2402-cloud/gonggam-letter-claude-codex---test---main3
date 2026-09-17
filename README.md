@@ -247,6 +247,7 @@ npx cap open ios
 ### 알려진 제약
 - 가로 모드 미대응, 시스템 푸시 없음(앱 안 목록만).
 - 알림 설정에 "편지 맡음" 알림을 끄는 스위치가 없다(코드는 `letterUpdates` 로 제어).
+- 서비스 안내 세부 화면(`/service-notices/:id`, `ServiceNoticeScreen`)은 디자인만 만들어 두었다(1차 오픈 제외). 앱 어디에서도 연결하지 않고, 서비스 안내 알림(`service_notice`)도 알림 목록에서 걸러진다. 예시 글은 `src/data/serviceNotices.ts` 에 있다.
 - 홈 하단 소식 카드는 1차 오픈에서 빠졌다. 화면 코드는 `HomeRuledScreen.tsx` 에 남아 있고, `getHomeNotice()` 가 항상 `null` 을 돌려주게 막아 두었다. 실제 데이터는 연결되지 않았다.
 - 1차 오픈에서 뺀 기능은 코드에서 지웠다(2026-09-15): 답장 문장 간직하기 · 고마움 전하기 · 받은 답장 목록 · 편지의 여정 · 답장 도착 봉투 화면 · 편지 거두기/기다림 연장/다시 보내기, 옛 읽기 단계(`/waiting-letters`, `/reader-promise`, `/assign-letter/`, `/assigned-letter/`), `?qa=1` 테스트 패널과 `?state=` 옵션.
 - CSS Modules 로 옮긴 화면은 JSX 에 기존 전역 class 이름과 모듈 class 를 함께 쓴다. 모듈 CSS 는 `global.css` 보다 **먼저** 불러와지므로(`main.tsx` 의 import 순서), 전역의 같은 우선순위 규칙과 겹치는 규칙은 `global.css` 에 남겨 두었다.
