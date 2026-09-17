@@ -88,7 +88,12 @@ function resetPageTransition() {
   }
 
   const page = getCurrentPage();
-  page?.classList.remove("is-page-leaving", "is-pushed-away", "is-popped-away");
+  page?.classList.remove(
+    "is-page-leaving",
+    "is-tab-leaving",
+    "is-pushed-away",
+    "is-popped-away",
+  );
   page?.removeAttribute("aria-busy");
 }
 
@@ -238,6 +243,8 @@ window.addEventListener("pageshow", resetPageTransition);
 // (2026-09-17). 하단 메뉴가 각 화면 안에 있어, 모션을 타면 메뉴까지 8px
 // 내려갔다 올라와 탭을 누를 때마다 툭툭 튀었다. 각 화면 안쪽 모션은 그대로 둔다.
 const TAB_PATHS = new Set(["/home", "/mailbox", "/my-space"]);
+// global.css 의 app-tab-content-exit 길이와 같아야 한다.
+const TAB_EXIT_DURATION = 120;
 
 export function isTabPath(path: string) {
   return TAB_PATHS.has(path);
@@ -253,9 +260,21 @@ export function markTabSwitch(isTabSwitch: boolean) {
 export function navigateTo(path: string) {
   if (isPageNavigationInProgress || isCurrentDestination(path)) return;
 
-  // 탭 → 탭: 나가는 흐려짐 없이 바로 바꾼다.
+  // 탭 → 탭: 화면 전체가 아니라 하단 메뉴를 뺀 내용만 잠깐 옅어진 뒤 바꾼다
+  // (global.css 의 .is-tab-leaving). 메뉴는 끝까지 제자리에 있다.
   if (isTabPath(getCurrentAppPath()) && isTabPath(path)) {
-    goToPath(path);
+    const page = getCurrentPage();
+    if (!page || prefersReducedMotion()) {
+      goToPath(path);
+      return;
+    }
+    isPageNavigationInProgress = true;
+    page.classList.add("is-tab-leaving");
+    pageNavigationTimer = window.setTimeout(() => {
+      isPageNavigationInProgress = false;
+      pageNavigationTimer = null;
+      goToPath(path);
+    }, TAB_EXIT_DURATION);
     return;
   }
 

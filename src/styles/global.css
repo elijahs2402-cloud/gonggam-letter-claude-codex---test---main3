@@ -1071,10 +1071,30 @@ html[data-ios-standalone="true"] .intro-copy {
   /* 탭(홈 · 편지함 · 나의 공간)끼리 옮길 때는 화면 전체 모션을 끈다(2026-09-17).
      하단 메뉴가 각 화면 안에 있어서, 화면이 8px 아래에서 올라오면 메뉴도 함께
      내려갔다 올라와 탭을 누를 때마다 튀었다. 표시는 navigation.ts 의
-     markTabSwitch 가 붙이고 뗀다. 안쪽 요소의 모션(홈 카드 계단 등)은 그대로다.
-     :not(.is-page-leaving) — 탭 화면에서 상세로 나갈 때의 흐려짐은 살린다. */
+     markTabSwitch 가 붙이고 뗀다.
+     :not(.is-page-leaving) — 탭 화면에서 상세로 나갈 때의 흐려짐은 살린다.
+     대신 하단 메뉴를 뺀 '내용'만 움직인다:
+     - 나갈 때: 내용이 120ms 동안 옅어진다(.is-tab-leaving, navigation.ts 가 붙임)
+     - 들어올 때: 편지함 · 나의 공간의 내용이 홈 카드와 같은 모양(아래 14px 에서
+       떠오르기)으로 나타난다. 홈은 카드 계단 모션이 이미 있어 건드리지 않는다.
+       backwards — 끝난 뒤 transform 을 남기지 않는다(안쪽 fixed 요소의 기준이 바뀌지 않게). */
   html[data-tab-switch] .mobile-prototype:not(.is-page-leaving) {
     animation: none;
+  }
+
+  .mobile-prototype.is-tab-leaving {
+    pointer-events: none;
+  }
+
+  .mobile-prototype.is-tab-leaving > :not(.app-bottom-navigation) {
+    animation: app-tab-content-exit 120ms ease-in both;
+  }
+
+  html[data-tab-switch]
+    .mobile-prototype:not(.home-screen):not(.is-tab-leaving)
+    > :not(.app-bottom-navigation) {
+    animation: app-tab-content-enter 480ms cubic-bezier(0.22, 1, 0.36, 1)
+      backwards;
   }
 
   /* 나의 공간 목록의 일곱 항목(닉네임·계정 관리·알림 설정·차단 및 신고 관리·
@@ -1311,6 +1331,27 @@ html[data-ios-standalone="true"] .intro-copy {
   }
   to {
     opacity: 0.9;
+  }
+}
+
+/* 탭끼리 옮길 때 내용만 움직이는 모션. 위의 html[data-tab-switch] 주석 참고. */
+@keyframes app-tab-content-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes app-tab-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
