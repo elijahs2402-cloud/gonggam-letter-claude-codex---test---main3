@@ -6,7 +6,7 @@
   - 제목: 인사말 제목 크기(--fs-title-sm) + 세리프 제목 굵기·줄간격 토큰
   - 소제목 · 문단: 개인정보 처리방침(.privacy-policy-document h2 / p)
   - 끝맺음: 편지 미리보기의 서명(.letter-preview-signature, "─ 이름")
-  단락 사이에는 구분선을 두지 않고 여백으로만 나눈다(사용자 요청).
+  선은 제목과 본문 사이에 하나만 두고, 본문 단락 사이는 여백으로만 나눈다(사용자 요청).
 */
 /* 다른 상세 화면(.guide-screen · .policy-screen 공통 규칙)과 같은 배치.
    세로 flex 여야 .my-detail-scroll(flex: 1)이 화면 높이에 묶여 스크롤된다. */
@@ -21,6 +21,11 @@
   margin: 0;
 }
 
+/* 제목(머리말)과 본문 사이에만 선 하나를 둔다(사용자 요청). 알림 목록과 같은 금색 선. */
+.service-notice-heading {
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(var(--gold-rgb), var(--a40));
+}
 .service-notice-heading > p {
   margin: 0 0 12px;
   color: var(--deep-plum);
@@ -45,7 +50,7 @@
 }
 
 .service-notice-intro {
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .service-notice-intro p,
