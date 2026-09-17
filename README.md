@@ -12,7 +12,6 @@
 | Capacitor `appId` | `com.example.placeholder` (자리표시자) | 스토어 등록 전 확정 |
 | 앱 아이콘 · Splash Screen | 없음 | |
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 34곳 · TS/TSX 27곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
-| `build` 스크립트 `tsc -b && vite build` (규격 §22) | 지금은 `vite build` | TypeScript 오류가 0개가 되어(2026-09-17) `tsc -b` 가 통과한다. 적용하면 `tsconfig.tsbuildinfo` 가 생기므로 `.gitignore` 추가도 함께 필요 — 적용 여부 결정 필요 |
 | React Router (규격 §12) | 적용(`react-router` 8, 2026-09-17). 다만 라우트는 `*` 하나이고 화면 분기는 여전히 `src/App.tsx` 가 주소를 보고 한다. 이동은 모두 `src/utils/navigation.ts` 가 라우터로 넘긴다 | 규격의 라우트 목록(`routes/AppRoutes.tsx`)으로 나누는 일은 남음 |
 | CSS Modules (규격 §6) | 앱 정보 화면을 뺀 모든 화면에 적용(모듈 파일 22개). `src/styles/global.css`(약 4,500줄)에는 여러 화면이 함께 쓰는 규칙, `@media` · `!important` 규칙, 옮기면 우선순위가 바뀌어 화면이 달라지는 규칙이 남아 있다 | 앱 정보 화면은 전환 대상에서 뺐다(결정) |
 | `globals.css` 의 옛 Tailwind 유틸리티 17개 | Tailwind 는 제거했다. 대신 Tailwind 가 만들던 CSS 를 `src/styles/globals.css` 에 그대로 옮겼는데, 그중 유틸리티 18개(`.flex`, `.hidden`, `.border` 등) 가운데 확인된 사용은 `.sr-only` 뿐이다 | 나머지 17개는 사용 여부를 확인한 뒤 정리 |
@@ -117,7 +116,7 @@ npm run format:check  # 정리 필요 여부만 검사
 ## 6. 빌드 방법
 
 ```bash
-npm run build     # 결과물: dist/
+npm run build     # tsc -b(타입 검사) 후 vite build. 결과물: dist/ — 타입 오류가 있으면 빌드가 멈춘다
 npm run preview   # 빌드 결과 미리보기 (포트 8443)
 ```
 

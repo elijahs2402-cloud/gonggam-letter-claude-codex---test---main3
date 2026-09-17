@@ -4,3 +4,5 @@ dist/
 *.local
 .env
 .env.local
+# tsc -b 가 남기는 증분 빌드 기록
+*.tsbuildinfo
