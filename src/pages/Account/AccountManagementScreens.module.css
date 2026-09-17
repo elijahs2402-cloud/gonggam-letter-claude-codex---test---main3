@@ -66,6 +66,11 @@
   color: var(--muted-ink);
   font: 12px var(--font-sans);
 }
+/* 필수 입력 표시. 앱의 주의색(계정 삭제 · 위험 동작에 쓰는 색)과 같다. */
+.required-mark {
+  color: var(--terracotta);
+  font-style: normal;
+}
 .account-textarea textarea {
   display: block;
   width: 100%;

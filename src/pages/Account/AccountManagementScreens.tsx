@@ -207,18 +207,28 @@ export function AccountSettingsScreen({
   );
 }
 
+// 2026-09-18 항목 확정. '기타'를 고르면 아래 입력칸이 열리고, 한 자 이상 써야 다음으로 간다.
+const OTHER_REASON = "기타(직접 입력)";
 const withdrawalReasons = [
   "더 이상 이용하지 않아요",
   "잠시 쉬고 싶어요",
-  "원하는 사용 방식과 달라요",
-  "직접입력",
+  "사용이 불편했어요",
+  "기대했던 서비스가 아니에요",
+  OTHER_REASON,
 ];
 
 export function AccountWithdrawalScreen() {
   const [step, setStep] = useState<"reason" | "confirm" | "processing">(
     "reason",
   );
-  const [reason, setReason] = useState("");
+  // 이유는 여러 개를 고를 수 있다(2026-09-18). 고른 순서를 그대로 둔다.
+  const [reasons, setReasons] = useState<string[]>([]);
+  const toggleReason = (item: string) =>
+    setReasons((current) =>
+      current.includes(item)
+        ? current.filter((value) => value !== item)
+        : [...current, item],
+    );
   const [detail, setDetail] = useState("");
   const [transitionDirection, setTransitionDirection] = useState<
     "forward" | "back"
@@ -266,29 +276,45 @@ export function AccountWithdrawalScreen() {
         <Header title="계정 삭제" fallback="/account-settings" />
         <div className="my-detail-scroll account-withdrawal-reason-scroll">
           <section className={`subpage-heading ${styles["subpage-heading"]}`}>
-            <h1>이유를 알려주실래요?</h1>
-            <p>선택하지 않아도 계정을 삭제할 수 있어요.</p>
+            <h1>
+              계정 삭제 이유를
+              <br />
+              모두 선택해주세요
+            </h1>
           </section>
           <section
             className={`withdrawal-reasons ${styles["withdrawal-reasons"]}`}
             aria-label="계정 삭제 이유"
           >
-            {withdrawalReasons.map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={reason === item ? "is-selected" : ""}
-                onClick={() => setReason(item)}
-              >
-                {item}
-              </button>
-            ))}
+            {withdrawalReasons.map((item) => {
+              const selected = reasons.includes(item);
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  className={selected ? "is-selected" : ""}
+                  aria-pressed={selected}
+                  onClick={() => toggleReason(item)}
+                >
+                  {item}
+                </button>
+              );
+            })}
           </section>
-          {reason === "직접입력" && (
+          {reasons.includes(OTHER_REASON) && (
             <label
               className={`account-textarea ${styles["account-textarea"]} account-withdrawal-textarea ${styles["account-withdrawal-textarea"]}`}
             >
-              <span>삭제 이유를 입력해주세요</span>
+              <span>
+                삭제 이유를 작성해주세요.{" "}
+                <i
+                  className={styles["required-mark"]}
+                  aria-label="필수 입력"
+                  role="img"
+                >
+                  *
+                </i>
+              </span>
               <textarea
                 value={detail}
                 onChange={(event) => setDetail(event.target.value)}
@@ -301,11 +327,17 @@ export function AccountWithdrawalScreen() {
         <div
           className={`flow-fixed-action flow-fixed-action--single account-withdrawal-fixed-action ${styles["account-withdrawal-fixed-action"]} account-withdrawal-reason-action`}
         >
-          <button className="flow-primary-button" onClick={showConfirmation}>
+          {/* 하나도 고르지 않으면 다음으로 갈 수 없다(2026-09-18). 건너뛰기는 없앴다.
+              '기타'를 골랐다면 이유를 한 자 이상 써야 한다. */}
+          <button
+            className="flow-primary-button"
+            onClick={showConfirmation}
+            disabled={
+              reasons.length === 0 ||
+              (reasons.includes(OTHER_REASON) && detail.trim().length === 0)
+            }
+          >
             다음
-          </button>
-          <button className="flow-text-button" onClick={showConfirmation}>
-            건너뛰기
           </button>
         </div>
       </main>
