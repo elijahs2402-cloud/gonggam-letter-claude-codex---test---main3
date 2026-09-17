@@ -234,8 +234,30 @@ function canGoBackInApp() {
 
 window.addEventListener("pageshow", resetPageTransition);
 
+// 하단 메뉴가 있는 세 탭 화면. 탭끼리 옮길 때는 화면 전체 모션을 쓰지 않는다
+// (2026-09-17). 하단 메뉴가 각 화면 안에 있어, 모션을 타면 메뉴까지 8px
+// 내려갔다 올라와 탭을 누를 때마다 툭툭 튀었다. 각 화면 안쪽 모션은 그대로 둔다.
+const TAB_PATHS = new Set(["/home", "/mailbox", "/my-space"]);
+
+export function isTabPath(path: string) {
+  return TAB_PATHS.has(path);
+}
+
+// App 이 주소가 바뀔 때마다 부른다. 탭 → 탭 이동이면 html 에 표시를 붙이고
+// (CSS 가 화면 전체 모션을 끈다), 아니면 뗀다. 기기 뒤로 가기도 여기를 지난다.
+export function markTabSwitch(isTabSwitch: boolean) {
+  if (isTabSwitch) document.documentElement.dataset.tabSwitch = "";
+  else delete document.documentElement.dataset.tabSwitch;
+}
+
 export function navigateTo(path: string) {
   if (isPageNavigationInProgress || isCurrentDestination(path)) return;
+
+  // 탭 → 탭: 나가는 흐려짐 없이 바로 바꾼다.
+  if (isTabPath(getCurrentAppPath()) && isTabPath(path)) {
+    goToPath(path);
+    return;
+  }
 
   // 셸 안에서 갈 수 있는 곳이면 페이지를 새로 불러오지 않는다.
   if (shellRouter?.go(path)) return;

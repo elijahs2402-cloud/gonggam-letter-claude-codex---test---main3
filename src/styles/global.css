@@ -1068,6 +1068,15 @@ html[data-ios-standalone="true"] .intro-copy {
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* 탭(홈 · 편지함 · 나의 공간)끼리 옮길 때는 화면 전체 모션을 끈다(2026-09-17).
+     하단 메뉴가 각 화면 안에 있어서, 화면이 8px 아래에서 올라오면 메뉴도 함께
+     내려갔다 올라와 탭을 누를 때마다 튀었다. 표시는 navigation.ts 의
+     markTabSwitch 가 붙이고 뗀다. 안쪽 요소의 모션(홈 카드 계단 등)은 그대로다.
+     :not(.is-page-leaving) — 탭 화면에서 상세로 나갈 때의 흐려짐은 살린다. */
+  html[data-tab-switch] .mobile-prototype:not(.is-page-leaving) {
+    animation: none;
+  }
+
   /* 나의 공간 목록의 일곱 항목(닉네임·계정 관리·알림 설정·차단 및 신고 관리·
      이용 안내·개인정보 처리방침·서비스 이용약관) 진입만 밀고 들어오기로 바꾼다.
      전체 페이지를 새로 불러오는 구조라(navigation.ts, window.location.href)

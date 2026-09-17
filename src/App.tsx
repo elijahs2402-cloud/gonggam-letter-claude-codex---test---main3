@@ -23,7 +23,9 @@ import {
   getCurrentAppPath,
   getCurrentAppSearchParams,
   isShellPath,
+  isTabPath,
   markPageChanged,
+  markTabSwitch,
   navigateTo,
 } from "./utils/navigation";
 import { syncDerivedNotifications } from "./data/notificationEvents";
@@ -147,10 +149,15 @@ function IntroScreen() {
 // - 알림 목록을 지금 상태에 맞춘다. 문서를 새로 불러오던 때는 main.tsx 에서
 //   화면마다 한 번씩 돌았다. 로그인 전에는 볼 편지가 없으므로 건너뛴다.
 // - 떠난 화면의 타이머가 실행되지 않도록 화면 번호를 올린다(setPageTimeout).
+// - 탭 → 탭 이동인지 표시한다(화면 전체 모션을 끄는 CSS 가 읽는다). 새 화면이
+//   붙기 전에 정해져 있어야 첫 프레임부터 모션 없이 그려진다.
 let lastLocationKey: string | null = null;
-function handleLocationChange(locationKey: string) {
+let lastPath: string | null = null;
+function handleLocationChange(locationKey: string, path: string) {
   if (lastLocationKey === locationKey) return;
   lastLocationKey = locationKey;
+  markTabSwitch(lastPath !== null && isTabPath(lastPath) && isTabPath(path));
+  lastPath = path;
   markPageChanged();
   if (getMockAuthSnapshot().account) syncDerivedNotifications();
 }
@@ -158,7 +165,7 @@ function handleLocationChange(locationKey: string) {
 export function App() {
   const location = useLocation();
   const path = getCurrentAppPath();
-  handleLocationChange(location.key);
+  handleLocationChange(location.key, path);
   // 화면마다 key 를 바꿔 새로 만든다 — 문서를 새로 불러오던 때처럼 화면 상태가
   // 처음부터 시작하고, 들어오는 모션(.mobile-prototype)도 매번 재생된다.
   // 나의 공간 셸이 맡은 주소는 같은 key 를 써서 셸을 그대로 둔다(셸 안 전환 모션).

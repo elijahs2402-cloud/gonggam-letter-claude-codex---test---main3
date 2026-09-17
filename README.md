@@ -217,6 +217,7 @@ npx cap open ios
 - `src/App.tsx` 의 `App()` 이 현재 주소(`getCurrentAppPath()`)를 `if (path === …)` 로 비교해 화면을 고른다.
 - 로그인이 필요한 주소는 `protectedPaths` · `protectedFlowPrefixes` 에 있고, 목업 로그인이 없으면 로그인·온보딩으로 보낸다.
 - 화면 이동(`navigateTo`, `navigateBack`, `replaceRoute` — `src/utils/navigation.ts`)은 React Router 로 **문서를 새로 불러오지 않고** 일어난다. 나가는 모션(140ms) 뒤 라우터로 옮긴다.
+- 하단 메뉴의 세 탭(홈 · 편지함 · 나의 공간)끼리는 나가는 모션과 화면 전체 들어오는 모션 없이 바로 바뀐다(`html[data-tab-switch]`, `markTabSwitch`). 하단 메뉴가 각 화면 안에 있어 모션을 타면 메뉴가 함께 흔들리기 때문이다. 화면 안쪽 모션(홈 카드 등)은 그대로 돈다.
 - `App.tsx` 는 주소 기록마다 화면에 새 `key` 를 주어 처음부터 다시 그린다(화면 상태 초기화 · 들어오는 모션 재생 · 맨 위에서 시작). 나의 공간(`MySpaceScreen`)이 맡은 주소는 같은 `key` 를 써서 셸 안 전환을 유지한다(`registerShellRouter`, `isShellPath`).
 - 주소 기록이 바뀔 때마다 `App.tsx` 가 알림 목록을 다시 맞춘다(예전에는 `main.tsx` 가 페이지마다 했다).
 - 화면을 떠난 뒤 실행되면 안 되는 타이머(계정 삭제 · 신고 접수 · 편지 만나기 · 두고 가기 · 임시 저장 후 나가기)는 `setPageTimeout` 을 쓴다. 그사이 화면이 바뀌면 실행하지 않는다.
