@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
+import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 import { ServiceStateScreen } from "./components/common/CommonStates";
 import { syncDerivedNotifications } from "./data/notificationEvents";
 import { getMockAuthSnapshot, isMockAuthenticated } from "./data/mockAuth";
@@ -12,6 +12,7 @@ import {
   markPageChanged,
   markTabSwitch,
 } from "./utils/navigation";
+import { rememberScroll, restoreScroll } from "./utils/scrollMemory";
 
 /**
  * 모든 화면의 틀. 어느 주소에 어떤 화면이 오는지는 src/routes/AppRoutes.tsx 가 정하고,
@@ -26,10 +27,12 @@ import {
 // - 떠난 화면의 타이머가 실행되지 않도록 화면 번호를 올린다(setPageTimeout).
 // - 탭 → 탭 이동인지 표시한다(화면 전체 모션을 끄는 CSS 가 읽는다). 새 화면이
 //   붙기 전에 정해져 있어야 첫 프레임부터 모션 없이 그려진다.
+// - 떠나는 화면의 스크롤 위치를 적어 둔다. 그리기 전이라 아직 떠나는 화면이 보인다.
 let lastLocationKey: string | null = null;
 let lastPath: string | null = null;
 function handleLocationChange(locationKey: string, path: string) {
   if (lastLocationKey === locationKey) return;
+  if (lastLocationKey !== null) rememberScroll(lastLocationKey);
   lastLocationKey = locationKey;
   markTabSwitch(lastPath !== null && isTabPath(lastPath) && isTabPath(path));
   lastPath = path;
@@ -64,6 +67,14 @@ export function App() {
     // 문서를 새로 불러오면 맨 위에서 시작했다. 같은 동작을 맞춘다.
     if (!shell) window.scrollTo(0, 0);
   }, [screenKey, shell]);
+
+  // 뒤로 · 앞으로 가기(POP)로 돌아온 화면은 떠날 때의 스크롤 위치로 되돌린다.
+  // 화면이 붙은 직후, 그려지기 전에 맞춰 위치가 튀어 보이지 않게 한다.
+  // 나의 공간 셸 안 이동은 셸이 스스로 화면을 바꾸므로 제외한다(목록이 짧다).
+  const navigationType = useNavigationType();
+  useLayoutEffect(() => {
+    if (navigationType === "POP" && !shell) restoreScroll(location.key);
+  }, [location.key, navigationType, shell]);
 
   // ?system= 은 어느 주소에서든 서비스 상태 화면을 먼저 보여준다.
   const systemState = getCurrentAppSearchParams().get("system");
