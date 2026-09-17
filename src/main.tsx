@@ -1,8 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, createHashRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
-import { App } from "./App";
+import { RouterProvider } from "react-router-dom";
+import { createAppRouter } from "./routes/AppRoutes";
 import "./styles/global.css";
 import { installViewportHeightSync } from "./utils/viewport";
 import { installTapToDismissKeyboard } from "./utils/dismissKeyboard";
@@ -13,11 +12,9 @@ installViewportHeightSync();
 installTapToDismissKeyboard();
 installStatusBarColorSync();
 
-// 화면 분기는 App.tsx 가 주소를 보고 직접 한다. 라우터는 주소 기록과 이동만 맡으므로
-// 모든 주소를 App 하나로 보낸다. 빌드 결과를 파일로 바로 열면(file:) 주소 뒤 # 로 옮긴다.
-const createRouter =
-  window.location.protocol === "file:" ? createHashRouter : createBrowserRouter;
-const router = createRouter([{ path: "*", element: <App /> }]);
+// 주소와 화면의 목록은 src/routes/AppRoutes.tsx 에 있다.
+// 화면 이동 함수(utils/navigation.ts)가 이 라우터로 옮기도록 등록한다.
+const router = createAppRouter();
 registerRouterNavigate((path, { replace }) => {
   void router.navigate(path, { replace });
 });

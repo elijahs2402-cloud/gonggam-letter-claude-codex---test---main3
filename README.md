@@ -12,7 +12,7 @@
 | Capacitor `appId` | `com.example.placeholder` (자리표시자) | 스토어 등록 전 확정 |
 | 앱 아이콘 · Splash Screen | 없음 | |
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 34곳 · TS/TSX 27곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
-| React Router (규격 §12) | 적용(`react-router` 8, 2026-09-17). 다만 라우트는 `*` 하나이고 화면 분기는 여전히 `src/App.tsx` 가 주소를 보고 한다. 이동은 모두 `src/utils/navigation.ts` 가 라우터로 넘긴다 | 규격의 라우트 목록(`routes/AppRoutes.tsx`)으로 나누는 일은 남음 |
+| 화면 이동 함수 (규격 §12 "URL 문자열을 직접 조작하지 않는다") | 라우트는 `react-router-dom` 7 의 `src/routes/AppRoutes.tsx` 에 있다. 다만 화면들은 `useNavigate` 대신 `src/utils/navigation.ts` 의 `navigateTo('/주소')` 를 부른다(안에서 라우터로 넘김). 나가는 모션 · 탭 전환 · 나의 공간 셸 처리를 한곳에 모으려고 둔 층이다 | 주소 문자열을 상수로 모을지는 개발팀과 결정 |
 | CSS Modules (규격 §6) | 앱 정보 화면을 뺀 모든 화면에 적용(모듈 파일 22개). `src/styles/global.css`(약 4,500줄)에는 여러 화면이 함께 쓰는 규칙, `@media` · `!important` 규칙, 옮기면 우선순위가 바뀌어 화면이 달라지는 규칙이 남아 있다 | 앱 정보 화면은 전환 대상에서 뺐다(결정) |
 | `globals.css` 의 옛 Tailwind 유틸리티 17개 | Tailwind 는 제거했다. 대신 Tailwind 가 만들던 CSS 를 `src/styles/globals.css` 에 그대로 옮겼는데, 그중 유틸리티 18개(`.flex`, `.hidden`, `.border` 등) 가운데 확인된 사용은 `.sr-only` 뿐이다 | 나머지 17개는 사용 여부를 확인한 뒤 정리 |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
@@ -50,8 +50,12 @@
 │   └── assets/            # 이미지·아이콘·폰트 (코드에서 /assets/... 로 부름, 쓰는 파일만 남김)
 ├── src/
 │   ├── main.tsx           # 진입점: 화면 높이·키보드·상태 표시줄 대응 설치 후 App 렌더
-│   ├── App.tsx            # 주소 → 화면 분기 (라우팅)
+│   ├── App.tsx            # 모든 화면의 틀: 화면 key · 나의 공간 셸 · ?system= · 스크롤
+│   ├── routes/
+│   │   ├── AppRoutes.tsx  # 주소 → 화면 목록, 라우터 만들기 (규격 §12)
+│   │   └── RouteElements.tsx # 로그인 확인 · 가입 단계 조건 · :id 연결 컴포넌트
 │   ├── pages/             # 주소로 열리는 화면
+│   │   ├── Intro/         # 인트로 (/, /intro)
 │   │   ├── Auth/          # 인트로 뒤 온보딩 · 로그인 · 약관 · 이름 정하기
 │   │   ├── Home/          # 홈 (HomeRuledScreen + CSS Modules)
 │   │   ├── Letter/        # 편지 쓰기 · 읽기 · 답장 (LetterFlowScreens.tsx), 편지 만나기
@@ -81,7 +85,6 @@
 - **규격과 다른 점**
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
   - 한 파일에 여러 화면이 들어 있는 경우가 있다(예: `pages/Letter/LetterFlowScreens.tsx` 에 20여 개). 규격의 `pages/[Page]/[Page].tsx` 형태로 나누는 일은 CSS Modules 전환 때 화면별로 한다.
-  - `routes/AppRoutes.tsx` 는 아직 없다. 지금은 `main.tsx` 가 라우터를 만들고 모든 주소를 `App.tsx` 로 보낸다.
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.
@@ -120,7 +123,7 @@ npm run build     # tsc -b(타입 검사) 후 vite build. 결과물: dist/ — �
 npm run preview   # 빌드 결과 미리보기 (포트 8443)
 ```
 
-`vite build` 중 청크 크기 경고는 현재 나오지 않는다(JS 약 467KB · CSS 약 171KB — React Router 가 약 93KB). 500KB 에 가까워지면 경고가 다시 나온다.
+`vite build` 중 청크 크기 경고는 현재 나오지 않는다(JS 약 470KB · CSS 약 171KB — React Router 가 약 95KB). 500KB 에 가까워지면 경고가 다시 나온다.
 
 ## 7. 환경변수
 
@@ -213,8 +216,9 @@ npx cap open ios
 ## 13. 개발자 인계 사항
 
 ### Routing
-- `src/App.tsx` 의 `App()` 이 현재 주소(`getCurrentAppPath()`)를 `if (path === …)` 로 비교해 화면을 고른다.
-- 로그인이 필요한 주소는 `protectedPaths` · `protectedFlowPrefixes` 에 있고, 목업 로그인이 없으면 로그인·온보딩으로 보낸다.
+- 라우터는 `react-router-dom` 7(`createBrowserRouter`, 파일로 열면 `createHashRouter`). 주소와 화면의 목록은 `src/routes/AppRoutes.tsx` 에 있다.
+- 목록은 세 묶음이다: 로그인 없이 여는 화면 · 가입 단계 화면(`LoginRoute` · `OnboardingStepRoute` 등 자체 조건) · 로그인이 필요한 화면(`RequireAuth` 아래). 로그인이 필요한데 목업 로그인이 없으면 지금 주소를 기억해 두고(`setPostLoginPath`) 가입 단계나 로그인으로 보낸다. 목록에 없는 주소는 `NotFoundScreen`.
+- 모든 라우트는 `App`(틀) 아래에 있고, `App` 이 `<Outlet>` 으로 화면을 그린다.
 - 화면 이동(`navigateTo`, `navigateBack`, `replaceRoute` — `src/utils/navigation.ts`)은 React Router 로 **문서를 새로 불러오지 않고** 일어난다. 나가는 모션(140ms) 뒤 라우터로 옮긴다.
 - 하단 메뉴의 세 탭(홈 · 편지함 · 나의 공간)끼리는 나가는 모션과 화면 전체 들어오는 모션 없이 바로 바뀐다(`html[data-tab-switch]`, `markTabSwitch`). 하단 메뉴가 각 화면 안에 있어 모션을 타면 메뉴가 함께 흔들리기 때문이다. 화면 안쪽 모션(홈 카드 등)은 그대로 돈다.
 - `App.tsx` 는 주소 기록마다 화면에 새 `key` 를 주어 처음부터 다시 그린다(화면 상태 초기화 · 들어오는 모션 재생 · 맨 위에서 시작). 나의 공간(`MySpaceScreen`)이 맡은 주소는 같은 `key` 를 써서 셸 안 전환을 유지한다(`registerShellRouter`, `isShellPath`).
