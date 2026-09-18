@@ -25,7 +25,8 @@
   font-size: 28px;
   font-weight: var(--fw-title);
   line-height: var(--lh-title);
-  letter-spacing: -0.035em;
+  /* 2026-09-18: -0.035em → 약관 동의 제목과 같은 --ls-title(-0.03em). 사용자 요청 */
+  letter-spacing: var(--ls-title);
 }
 .direct-nickname-content > p {
   margin: 22px 0 0;

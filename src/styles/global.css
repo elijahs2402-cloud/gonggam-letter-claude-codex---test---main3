@@ -288,8 +288,10 @@
 /* font-weight 가 없어 기본값 400 으로 그려졌다. 편지함 리스트와 나의 공간에서
    같은 이름이 16px/500 으로 나오므로, 입력하는 동안 보이는 모습이 실제로 보일
    모습과 달랐다. 500 으로 맞춘다(placeholder 는 input 에서 상속받는다). */
+/* 2026-09-18: 18px → 28px. 약관 동의(.auth-actions 기본 28px)와 버튼 폭이 달라
+   넘어갈 때 버튼이 넓어졌다(사용자 요청으로 약관 동의에 맞춤). */
 .direct-nickname-actions {
-  padding-inline: 18px;
+  padding-inline: 28px;
 }
 .direct-nickname-actions .auth-primary {
   width: 100%;
