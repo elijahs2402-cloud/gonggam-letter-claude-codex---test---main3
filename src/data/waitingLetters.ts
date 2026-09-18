@@ -4,6 +4,7 @@ import { getLetters, type Letter } from "./letters";
 import { getLetterReturn } from "./letterReturns";
 import { seedSampleLetters } from "./sampleLetters";
 import { getReportForTarget } from "./reports";
+import { ROUTES, routeTo } from "../routes/paths";
 
 const VIEWED_KEY = "gonggam_waiting_letters_viewed_v1";
 const ORDER_KEY = "gonggam_waiting_letters_order_v1";
@@ -101,8 +102,8 @@ export function markWaitingLetterViewed(letterId: string) {
 export function getListenEntryPath(userId: string) {
   seedSampleLetters();
   return getAvailableWaitingLetters(userId).length > 0
-    ? "/listen-entry-a"
-    : "/listen-entry-empty";
+    ? ROUTES.listenEntryA
+    : ROUTES.listenEntryEmpty;
 }
 
 /**
@@ -154,7 +155,5 @@ export function getHeldLetter(userId: string) {
 export function getReadCardPath(userId: string) {
   seedSampleLetters();
   const held = getHeldLetter(userId);
-  return held
-    ? "/read-letter/" + encodeURIComponent(held.id)
-    : getListenEntryPath(userId);
+  return held ? routeTo.readLetter(held.id) : getListenEntryPath(userId);
 }

@@ -1,5 +1,6 @@
 import { getCurrentUserId, resetCurrentUserId } from "./letters";
 import { resetSampleLetters } from "./sampleLetters";
+import { ROUTES } from "../routes/paths";
 
 /**
  * Prototype-only authentication state. Replace this module with the real
@@ -462,7 +463,7 @@ export function getCurrentAnonymousName() {
   return getMockAuthSnapshot().account?.anonymousName ?? "조용한 별빛";
 }
 
-export function getPostLoginPath(fallback = "/home") {
+export function getPostLoginPath(fallback = ROUTES.home) {
   if (!canUseStorage()) return fallback;
   const path = window.localStorage.getItem(RETURN_PATH_KEY);
   window.localStorage.removeItem(RETURN_PATH_KEY);
@@ -521,11 +522,11 @@ export function getOnboardingNextPath() {
     !snapshot.account ||
     !["new_user", "existing_user", "logged_in"].includes(snapshot.state)
   )
-    return "/login";
+    return ROUTES.login;
   if (!snapshot.account.termsAccepted || !snapshot.account.ageConfirmed)
-    return "/terms-consent";
+    return ROUTES.termsConsent;
   if (!snapshot.account.anonymousName || !snapshot.account.onboardingCompleted)
-    return "/nickname-entry";
+    return ROUTES.nicknameEntry;
   return undefined;
 }
 

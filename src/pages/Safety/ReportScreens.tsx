@@ -20,6 +20,7 @@ import {
 } from "../../utils/navigation";
 import { formatDate } from "../../utils/datetime";
 import { getListenEntryPath } from "../../data/waitingLetters";
+import { ROUTES, routeTo } from "../../routes/paths";
 // 차단 및 신고 관리 화면 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import mgmt from "./SafetyManagementScreen.module.css";
 // 신고 화면 CSS Modules(답장 신고 SafetyActionScreens.tsx 와 함께 쓴다).
@@ -37,7 +38,7 @@ const reasons: ReadonlyArray<[ReportReason, string]> = [
 function Shell({
   title,
   children,
-  fallback = "/home",
+  fallback = ROUTES.home,
   action,
   screenClassName = "",
   showBackButton = true,
@@ -118,14 +119,14 @@ export function LetterReportFigmaScreen({
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/safety-management")}
+            onClick={() => navigateTo(ROUTES.safetyManagement)}
           >
             신고 내역 확인
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -141,14 +142,14 @@ export function LetterReportFigmaScreen({
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/safety-management")}
+            onClick={() => navigateTo(ROUTES.safetyManagement)}
           >
             신고 내역 확인
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -179,7 +180,7 @@ export function LetterReportFigmaScreen({
       }
       if (hide) hideContent(userId, "letter", target.id);
       if (block) blockUser(userId, target.senderId, "letter_report");
-      navigateTo(`/report-letter/${encodeURIComponent(target.id)}/complete`);
+      navigateTo(routeTo.reportLetterComplete(target.id));
     }, 580);
   }
   return (
@@ -191,7 +192,7 @@ export function LetterReportFigmaScreen({
           <button
             className="flow-secondary-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로
           </button>
@@ -283,14 +284,14 @@ export function LetterReportCompleteDemoScreen() {
         <button
           className="flow-primary-button"
           type="button"
-          onClick={() => navigateTo("/safety-management")}
+          onClick={() => navigateTo(ROUTES.safetyManagement)}
         >
           신고 내역 확인
         </button>
         <button
           className="flow-text-button"
           type="button"
-          onClick={() => navigateTo("/home")}
+          onClick={() => navigateTo(ROUTES.home)}
         >
           홈으로 돌아가기
         </button>
@@ -371,7 +372,7 @@ export function SafetyManagementScreen({
   return (
     <Shell
       title="차단 및 신고 관리"
-      fallback="/my-space"
+      fallback={ROUTES.mySpace}
       screenClassName={`safety-management-screen${stageClassName ? ` ${stageClassName}` : ""}`}
     >
       <section

@@ -9,6 +9,7 @@ import {
 } from "../../data/notifications";
 import { navigateBack, navigateTo } from "../../utils/navigation";
 import { formatDate } from "../../utils/datetime";
+import { ROUTES } from "../../routes/paths";
 // CSS Modules 시범 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
 import styles from "./NotificationScreens.module.css";
@@ -67,7 +68,7 @@ export function NotificationsScreen({
       notice.type === "report_received" ||
       notice.type === "report_resolved"
     ) {
-      navigateTo("/safety-management");
+      navigateTo(ROUTES.safetyManagement);
       return;
     }
     if (!notice.targetRoute) {
@@ -89,7 +90,7 @@ export function NotificationsScreen({
       className={`mobile-prototype notification-screen ${styles["notification-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
       data-version={version}
     >
-      <Header title="알림" fallback="/home" />
+      <Header title="알림" fallback={ROUTES.home} />
       <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         {notices.length ? (
           <section
@@ -136,7 +137,7 @@ export function NotificationsScreen({
             <button
               className="flow-secondary-button"
               type="button"
-              onClick={() => navigateTo("/home")}
+              onClick={() => navigateTo(ROUTES.home)}
             >
               홈으로 돌아가기
             </button>
@@ -192,7 +193,7 @@ export function NotificationSettingsScreen({
     <main
       className={`mobile-prototype notification-settings-screen ${styles["notification-settings-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
     >
-      <Header title="알림 설정" fallback="/my-space" />
+      <Header title="알림 설정" fallback={ROUTES.mySpace} />
       <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         <section
           className={`notification-settings-list ${styles["notification-settings-list"]}`}

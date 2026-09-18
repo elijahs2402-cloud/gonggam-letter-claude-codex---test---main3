@@ -5,6 +5,7 @@ import {
   updateAnonymousName,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo } from "../../utils/navigation";
+import { ROUTES } from "../../routes/paths";
 // 이용 안내 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import guide from "./GuideScreen.module.css";
 // 이름 바꾸기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
@@ -14,7 +15,7 @@ import policy from "./PolicyScreen.module.css";
 
 function Header({
   title,
-  fallback = "/my-space",
+  fallback = ROUTES.mySpace,
 }: {
   title: string;
   fallback?: string;
@@ -86,7 +87,7 @@ export function AnonymousNameSettingsScreen({
       <header className="auth-header">
         <button
           type="button"
-          onClick={() => navigateBack("/my-space")}
+          onClick={() => navigateBack(ROUTES.mySpace)}
           aria-label="이전 화면으로 돌아가기"
         >
           ←
@@ -427,10 +428,16 @@ export function AppInfoScreen() {
               <dd>문의 경로는 실제 서비스 운영 준비 후 연결됩니다.</dd>
             </div>
           </dl>
-          <button type="button" onClick={() => navigateTo("/privacy-policy")}>
+          <button
+            type="button"
+            onClick={() => navigateTo(ROUTES.privacyPolicy)}
+          >
             개인정보 처리방침
           </button>
-          <button type="button" onClick={() => navigateTo("/terms-of-service")}>
+          <button
+            type="button"
+            onClick={() => navigateTo(ROUTES.termsOfService)}
+          >
             서비스 이용약관
           </button>
         </section>

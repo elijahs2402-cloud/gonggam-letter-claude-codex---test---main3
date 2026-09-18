@@ -36,17 +36,18 @@ import {
   LetterReturnScreen,
   ReplyReportScreen,
 } from "../pages/Safety/SafetyActionScreens";
+import { ROUTES } from "./paths";
 
 // ── 가입 단계 화면: 각자 들어올 수 있는 조건이 있다 ─────────────────────
 
 export function LoginRoute() {
-  if (isMockAuthenticated()) return <AuthGateRedirect to="/home" />;
+  if (isMockAuthenticated()) return <AuthGateRedirect to={ROUTES.home} />;
   return <LoginScreen />;
 }
 
 export function ReturningWelcomeRoute() {
   if (!isMockAuthenticated())
-    return <AuthGateRedirect to={getOnboardingNextPath() ?? "/login"} />;
+    return <AuthGateRedirect to={getOnboardingNextPath() ?? ROUTES.login} />;
   return <ReturningWelcomeScreen />;
 }
 
@@ -69,7 +70,7 @@ export function OnboardingStepRoute({
 export function RequireAuth() {
   if (!isMockAuthenticated()) {
     setPostLoginPath(getCurrentAppPath());
-    return <AuthGateRedirect to={getOnboardingNextPath() ?? "/login"} />;
+    return <AuthGateRedirect to={getOnboardingNextPath() ?? ROUTES.login} />;
   }
   return <Outlet />;
 }

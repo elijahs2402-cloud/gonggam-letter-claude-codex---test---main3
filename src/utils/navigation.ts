@@ -1,12 +1,15 @@
 import { BASE_PATH, stripBasePath } from "./basePath";
+import { ROUTES } from "../routes/paths";
 
 export function getCurrentAppPath() {
   if (window.location.protocol === "file:") {
     const hashRoute = window.location.hash.replace(/^#/, "").split("?")[0];
-    return hashRoute.replace(/\/$/, "") || "/intro";
+    return hashRoute.replace(/\/$/, "") || ROUTES.intro;
   }
 
-  return stripBasePath(window.location.pathname).replace(/\/$/, "") || "/intro";
+  return (
+    stripBasePath(window.location.pathname).replace(/\/$/, "") || ROUTES.intro
+  );
 }
 
 export function getCurrentAppSearchParams() {
@@ -103,14 +106,14 @@ function resetPageTransition() {
 // 이 목록 자체는 항상 같아서 route.ts 쪽을 건드리지 않고 여기 하드코딩해도
 // 안전하다. 바텀 내비게이션으로 홈·편지함 등 다른 곳으로 가는 경우는
 // my-space-screen 이 나가는 화면이어도 이 목록에 없어 기본 모션을 쓴다.
-const MY_SPACE_DETAIL_PATHS = new Set([
-  "/anonymous-name-settings",
-  "/account-settings",
-  "/notification-settings",
-  "/safety-management",
-  "/service-guide",
-  "/privacy-policy",
-  "/terms-of-service",
+const MY_SPACE_DETAIL_PATHS = new Set<string>([
+  ROUTES.anonymousNameSettings,
+  ROUTES.accountSettings,
+  ROUTES.notificationSettings,
+  ROUTES.safetyManagement,
+  ROUTES.serviceGuide,
+  ROUTES.privacyPolicy,
+  ROUTES.termsOfService,
 ]);
 
 // 위 목록과 같은 화면들을, 이번엔 경로가 아니라 각 화면 루트에 붙는
@@ -150,9 +153,9 @@ const POP_PAIRS: ReadonlyArray<{
   fallbackPath: string;
   fromClasses: readonly string[];
 }> = [
-  { fallbackPath: "/my-space", fromClasses: MY_SPACE_DETAIL_CLASSES },
+  { fallbackPath: ROUTES.mySpace, fromClasses: MY_SPACE_DETAIL_CLASSES },
   {
-    fallbackPath: "/account-settings",
+    fallbackPath: ROUTES.accountSettings,
     fromClasses: ["account-withdrawal-screen"],
   },
 ];
@@ -244,7 +247,11 @@ window.addEventListener("pageshow", resetPageTransition);
 // 하단 메뉴가 있는 세 탭 화면. 탭끼리 옮길 때는 화면 전체 모션을 쓰지 않는다
 // (2026-09-17). 하단 메뉴가 각 화면 안에 있어, 모션을 타면 메뉴까지 8px
 // 내려갔다 올라와 탭을 누를 때마다 툭툭 튀었다. 각 화면 안쪽 모션은 그대로 둔다.
-const TAB_PATHS = new Set(["/home", "/mailbox", "/my-space"]);
+const TAB_PATHS = new Set<string>([
+  ROUTES.home,
+  ROUTES.mailbox,
+  ROUTES.mySpace,
+]);
 // global.css 의 app-tab-content-exit 길이와 같아야 한다.
 const TAB_EXIT_DURATION = 120;
 
@@ -318,7 +325,7 @@ let shellRouter: ShellRouter | null = null;
 
 // 나의 공간 목록 자체이거나, 떠 있는 셸이 맡은 주소이면 참.
 export function isShellPath(path: string) {
-  return path === "/my-space" || Boolean(shellRouter?.owns(path));
+  return path === ROUTES.mySpace || Boolean(shellRouter?.owns(path));
 }
 
 export function registerShellRouter(router: ShellRouter) {

@@ -11,6 +11,7 @@ import {
   hasNotificationFor,
   type MockNotificationType,
 } from "./notifications";
+import { routeTo } from "../routes/paths";
 
 /**
  * 알림을 실제로 만들어 넣는 곳.
@@ -64,7 +65,7 @@ export function syncDerivedNotifications(userId = getCurrentUserId()) {
         letter,
         "답장이 도착했어요.",
         "당신의 편지를 읽은 사람이 마음을 전했어요.",
-        `/mailbox/my/${encodeURIComponent(letter.id)}`,
+        routeTo.myLetter(letter.id),
       );
     }
     if (
@@ -77,7 +78,7 @@ export function syncDerivedNotifications(userId = getCurrentUserId()) {
         letter,
         "누군가가 편지를 맡았어요.",
         "답장이 도착하면 다시 알려드릴게요.",
-        `/mailbox/my/${encodeURIComponent(letter.id)}`,
+        routeTo.myLetter(letter.id),
       );
     }
   }
@@ -99,7 +100,7 @@ export function syncDerivedNotifications(userId = getCurrentUserId()) {
       letter,
       "맡은 편지에 답장을 전해주세요.",
       "하루 안에 사라져요. 짧은 한마디도 괜찮아요.",
-      `/write-reply/${encodeURIComponent(letter.id)}`,
+      routeTo.writeReply(letter.id),
     );
   }
 }

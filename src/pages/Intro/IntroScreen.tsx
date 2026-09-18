@@ -5,6 +5,7 @@ import {
 } from "../../data/mockAuth";
 import { navigateTo } from "../../utils/navigation";
 import { assetUrl } from "../../utils/basePath";
+import { ROUTES } from "../../routes/paths";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import intro from "./IntroScreen.module.css";
 
@@ -15,21 +16,21 @@ export function IntroScreen() {
     // 탈퇴한 사람은 처음 온 사람과 같다 — 약관도 이름도 다시 받아야 하므로
     // 로그인이 아니라 온보딩부터 시작한다.
     if (auth.state === "withdrawn") {
-      navigateTo("/onboarding");
+      navigateTo(ROUTES.onboarding);
       return;
     }
     if (isMockAuthenticated()) {
-      navigateTo("/home");
+      navigateTo(ROUTES.home);
       return;
     }
     const nextOnboarding = getOnboardingNextPath();
-    if (nextOnboarding && nextOnboarding !== "/login") {
+    if (nextOnboarding && nextOnboarding !== ROUTES.login) {
       navigateTo(nextOnboarding);
       return;
     }
     // 로그아웃 상태면 신규·기존 모두 공감편지 소개부터 본다(2026-09-15 확정 흐름).
     // 소개의 '시작하기'는 신규회원용, '이미 이용하고 있어요'는 기존회원용 로그인으로 간다.
-    navigateTo("/onboarding");
+    navigateTo(ROUTES.onboarding);
   };
   return (
     <main className={`mobile-prototype intro-screen ${intro["intro-screen"]}`}>

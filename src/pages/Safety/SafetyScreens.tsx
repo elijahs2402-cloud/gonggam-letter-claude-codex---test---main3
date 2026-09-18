@@ -12,11 +12,12 @@ import {
 import { canSubmitLetter, reviewLetterSafety } from "../../data/safety";
 import { navigateBack, navigateTo } from "../../utils/navigation";
 import { resolveDeliveryIssues } from "../../data/deliveryIssues";
+import { ROUTES, routeTo } from "../../routes/paths";
 
 function Shell({
   title,
   children,
-  fallback = "/home",
+  fallback = ROUTES.home,
   action,
 }: {
   title: string;
@@ -85,14 +86,14 @@ export function LetterSafetyReviewScreen() {
   const [error, setError] = useState("");
   if (!draft?.content.trim())
     return (
-      <Shell title="편지 안전 검토" fallback="/write-letter">
+      <Shell title="편지 안전 검토" fallback={ROUTES.writeLetter}>
         <section className="flow-message">
           <h1>검토할 편지가 없어요</h1>
           <p>편지를 작성한 뒤 다시 확인해주세요.</p>
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/write-letter")}
+            onClick={() => navigateTo(ROUTES.writeLetter)}
           >
             편지 쓰기
           </button>
@@ -111,7 +112,7 @@ export function LetterSafetyReviewScreen() {
       lastSafetyCheckedAt: latestReview.checkedAt,
     });
     if (!canSubmitLetter(latestReview)) {
-      navigateTo("/letter-safety-review");
+      navigateTo(ROUTES.letterSafetyReview);
       return;
     }
     const letter = createLetter({
@@ -127,7 +128,7 @@ export function LetterSafetyReviewScreen() {
     }
     resolveDeliveryIssues("letter-send", undefined, userId);
     clearLetterDraft();
-    navigateTo(`/letter-sent?id=${encodeURIComponent(letter.id)}`);
+    navigateTo(routeTo.letterSent(letter.id));
   }
 
   // 높은 위험(high_risk)도 다듬기 요청과 같은 화면을 보여준다
@@ -136,20 +137,20 @@ export function LetterSafetyReviewScreen() {
     return (
       <Shell
         title="편지 안전 검토"
-        fallback="/letter-preview"
+        fallback={ROUTES.letterPreview}
         action={
           <div className="flow-fixed-action flow-fixed-action--split">
             <button
               className="flow-secondary-button"
               type="button"
-              onClick={() => navigateTo("/letter-preview")}
+              onClick={() => navigateTo(ROUTES.letterPreview)}
             >
               미리보기로
             </button>
             <button
               className="flow-primary-button"
               type="button"
-              onClick={() => navigateTo("/write-letter")}
+              onClick={() => navigateTo(ROUTES.writeLetter)}
             >
               내용 수정하기
             </button>
@@ -166,13 +167,13 @@ export function LetterSafetyReviewScreen() {
   return (
     <Shell
       title="편지 안전 검토"
-      fallback="/letter-preview"
+      fallback={ROUTES.letterPreview}
       action={
         <div className="flow-fixed-action flow-fixed-action--split">
           <button
             className="flow-secondary-button"
             type="button"
-            onClick={() => navigateTo("/write-letter")}
+            onClick={() => navigateTo(ROUTES.writeLetter)}
           >
             수정하기
           </button>

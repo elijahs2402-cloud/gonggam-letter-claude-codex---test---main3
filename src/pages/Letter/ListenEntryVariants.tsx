@@ -12,6 +12,7 @@ import {
 } from "../../data/waitingLetters";
 import { getListenEntryPath } from "../../data/waitingLetters";
 import { assetUrl } from "../../utils/basePath";
+import { ROUTES, routeTo } from "../../routes/paths";
 // 편지 고르기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import listen from "./ListenEntryVariants.module.css";
 
@@ -34,11 +35,11 @@ function openAssignedLetter() {
   seedSampleLetters();
   const [assigned] = getAvailableWaitingLetters(getCurrentUserId());
   if (!assigned) {
-    navigateTo("/listen-entry-empty");
+    navigateTo(ROUTES.listenEntryEmpty);
     return;
   }
   markWaitingLetterViewed(assigned.id);
-  navigateTo(`/read-letter/${encodeURIComponent(assigned.id)}`);
+  navigateTo(routeTo.readLetter(assigned.id));
 }
 
 function goTo(path: string) {
@@ -50,7 +51,7 @@ function ListenEntryHeader() {
     <header className="flow-header listen-entry-topbar">
       <button
         type="button"
-        onClick={() => navigateBack("/home")}
+        onClick={() => navigateBack(ROUTES.home)}
         aria-label="이전으로 돌아가기"
       >
         <span aria-hidden="true">←</span>
@@ -147,7 +148,7 @@ function FixedActions({
 function ListenEntryFrame({
   className,
   // B and C remain pinned to the single sample letter they were designed against.
-  meetPath = "/read-letter/sample-waiting-letter-one",
+  meetPath = routeTo.readLetter("sample-waiting-letter-one"),
   onMeet,
   children,
 }: {
@@ -264,7 +265,7 @@ export function ListenEntryEmptyScreen() {
         <button
           type="button"
           className="flow-secondary-button"
-          onClick={() => goTo("/home")}
+          onClick={() => goTo(ROUTES.home)}
         >
           홈으로
         </button>

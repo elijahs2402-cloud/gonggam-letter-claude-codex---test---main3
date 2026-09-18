@@ -2,6 +2,7 @@ import { navigateTo } from "../../utils/navigation";
 import { getCurrentUserId } from "../../data/letters";
 import { getLetterDraft } from "../../data/letterDraft";
 import { hasMailboxAttention } from "../../data/mailboxAttention";
+import { ROUTES } from "../../routes/paths";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import styles from "./AppBottomNavigation.module.css";
 
@@ -14,9 +15,9 @@ const items: ReadonlyArray<{
   path: string;
   mark: string;
 }> = [
-  { id: "home", label: "홈", path: "/home", mark: "home" },
-  { id: "mailbox", label: "편지함", path: "/mailbox", mark: "mailbox" },
-  { id: "my-space", label: "나의 공간", path: "/my-space", mark: "space" },
+  { id: "home", label: "홈", path: ROUTES.home, mark: "home" },
+  { id: "mailbox", label: "편지함", path: ROUTES.mailbox, mark: "mailbox" },
+  { id: "my-space", label: "나의 공간", path: ROUTES.mySpace, mark: "space" },
 ];
 
 export function AppBottomNavigation({

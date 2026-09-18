@@ -1,4 +1,5 @@
 import { navigateBack } from "../../utils/navigation";
+import { ROUTES } from "../../routes/paths";
 
 const TERMS_SECTIONS = [
   {
@@ -51,7 +52,7 @@ export function TermsMockupScreen({
       <header className="auth-header">
         <button
           type="button"
-          onClick={() => navigateBack("/my-space")}
+          onClick={() => navigateBack(ROUTES.mySpace)}
           aria-label="이전 화면으로 돌아가기"
         >
           ←

@@ -73,20 +73,21 @@ import {
   ServiceNoticeRoute,
   WriteReplyRoute,
 } from "./RouteElements";
+import { ROUTES, ROUTE_PATTERNS } from "./paths";
 
 // ── 라우트 목록 ─────────────────────────────────────────────────────
 
 const publicRoutes: RouteObject[] = [
   // 인트로는 예전에 대체 주소였다 — / 와 /intro 둘 다 연다.
-  { path: "/", element: <IntroScreen /> },
-  { path: "/intro", element: <IntroScreen /> },
-  { path: "/onboarding", element: <OnboardingRedesignScreen /> },
-  { path: "/login", element: <LoginRoute /> },
-  { path: "/returning-welcome", element: <ReturningWelcomeRoute /> },
+  { path: ROUTES.root, element: <IntroScreen /> },
+  { path: ROUTES.intro, element: <IntroScreen /> },
+  { path: ROUTES.onboarding, element: <OnboardingRedesignScreen /> },
+  { path: ROUTES.login, element: <LoginRoute /> },
+  { path: ROUTES.returningWelcome, element: <ReturningWelcomeRoute /> },
   {
-    path: "/terms-consent",
+    path: ROUTES.termsConsent,
     element: (
-      <OnboardingStepRoute step="/terms-consent">
+      <OnboardingStepRoute step={ROUTES.termsConsent}>
         <TermsConsentScreen />
       </OnboardingStepRoute>
     ),
@@ -94,71 +95,74 @@ const publicRoutes: RouteObject[] = [
   // 이름 화면은 두 개다 — 신규 가입자용 /nickname-entry,
   // 기존 회원용 /anonymous-name-settings(아래, 로그인 필요).
   {
-    path: "/nickname-entry",
+    path: ROUTES.nicknameEntry,
     element: (
-      <OnboardingStepRoute step="/nickname-entry">
+      <OnboardingStepRoute step={ROUTES.nicknameEntry}>
         <DirectNicknameScreen />
       </OnboardingStepRoute>
     ),
   },
   // 로그인 없이도 열리는 화면(예전 분기와 같다)
-  { path: "/withdrawal-complete", element: <WithdrawalCompleteScreen /> },
-  { path: "/terms-of-service", element: <TermsMockupScreen /> },
-  { path: "/listen-entry-empty", element: <ListenEntryEmptyScreen /> },
+  { path: ROUTES.withdrawalComplete, element: <WithdrawalCompleteScreen /> },
+  { path: ROUTES.termsOfService, element: <TermsMockupScreen /> },
+  { path: ROUTES.listenEntryEmpty, element: <ListenEntryEmptyScreen /> },
 ];
 
 const protectedRoutes: RouteObject[] = [
   // 탭
-  { path: "/home", element: <HomeRuledScreen refinedCardsOnly /> },
-  { path: "/mailbox", element: <MailboxScreen /> },
+  { path: ROUTES.home, element: <HomeRuledScreen refinedCardsOnly /> },
+  { path: ROUTES.mailbox, element: <MailboxScreen /> },
   // 나의 공간 — 목록과 하위 화면은 셸이 떠 있으면 App 이 셸로 그린다.
   // 아래 하위 화면 라우트는 주소로 바로 들어왔을 때(셸 없음) 쓰인다.
-  { path: "/my-space", element: <MySpaceScreen /> },
+  { path: ROUTES.mySpace, element: <MySpaceScreen /> },
   {
-    path: "/anonymous-name-settings",
+    path: ROUTES.anonymousNameSettings,
     element: <AnonymousNameSettingsScreen />,
   },
-  { path: "/account-settings", element: <AccountSettingsScreen /> },
-  { path: "/account-withdrawal", element: <AccountWithdrawalScreen /> },
-  { path: "/notification-settings", element: <NotificationSettingsScreen /> },
-  { path: "/safety-management", element: <SafetyManagementScreen /> },
-  { path: "/service-guide", element: <GuideScreen /> },
-  { path: "/privacy-policy", element: <PolicyScreen kind="privacy" /> },
-  { path: "/app-info", element: <AppInfoScreen /> },
+  { path: ROUTES.accountSettings, element: <AccountSettingsScreen /> },
+  { path: ROUTES.accountWithdrawal, element: <AccountWithdrawalScreen /> },
+  {
+    path: ROUTES.notificationSettings,
+    element: <NotificationSettingsScreen />,
+  },
+  { path: ROUTES.safetyManagement, element: <SafetyManagementScreen /> },
+  { path: ROUTES.serviceGuide, element: <GuideScreen /> },
+  { path: ROUTES.privacyPolicy, element: <PolicyScreen kind="privacy" /> },
+  { path: ROUTES.appInfo, element: <AppInfoScreen /> },
   // 알림
-  { path: "/notifications", element: <NotificationsScreen /> },
-  { path: "/service-notices/:id", element: <ServiceNoticeRoute /> },
+  { path: ROUTES.notifications, element: <NotificationsScreen /> },
+  { path: ROUTE_PATTERNS.serviceNotice, element: <ServiceNoticeRoute /> },
   // 편지 쓰기
-  { path: "/write-letter", element: <WriteLetterFlowScreen /> },
-  { path: "/letter-preview", element: <LetterPreviewScreen /> },
-  { path: "/letter-safety-review", element: <LetterSafetyReviewScreen /> },
-  { path: "/letter-sent", element: <LetterSentRoute /> },
+  { path: ROUTES.writeLetter, element: <WriteLetterFlowScreen /> },
+  { path: ROUTES.letterPreview, element: <LetterPreviewScreen /> },
+  { path: ROUTES.letterSafetyReview, element: <LetterSafetyReviewScreen /> },
+  { path: ROUTES.letterSent, element: <LetterSentRoute /> },
   // 편지 만나기 · 읽기 · 답장
-  { path: "/listen-entry-a", element: <ListenEntryAScreen /> },
-  { path: "/read-letter/:id", element: <ReadLetterRoute /> },
-  { path: "/write-reply/:id", element: <WriteReplyRoute /> },
-  { path: "/reply-review/:id", element: <ReplyReviewRoute /> },
-  { path: "/reply-sending/:id", element: <ReplySendingRoute /> },
-  { path: "/reply-sent/:id", element: <ReplySentRoute /> },
-  { path: "/return-letter/:id", element: <LetterReturnRoute /> },
+  { path: ROUTES.listenEntryA, element: <ListenEntryAScreen /> },
+  { path: ROUTE_PATTERNS.readLetter, element: <ReadLetterRoute /> },
+  { path: ROUTE_PATTERNS.writeReply, element: <WriteReplyRoute /> },
+  { path: ROUTE_PATTERNS.replyReview, element: <ReplyReviewRoute /> },
+  { path: ROUTE_PATTERNS.replySending, element: <ReplySendingRoute /> },
+  { path: ROUTE_PATTERNS.replySent, element: <ReplySentRoute /> },
+  { path: ROUTE_PATTERNS.returnLetter, element: <LetterReturnRoute /> },
   // 편지함 상세
-  { path: "/mailbox/my/:id", element: <MyLetterDetailRoute /> },
-  { path: "/mailbox/replied/:id", element: <RepliedLetterDetailRoute /> },
+  { path: ROUTE_PATTERNS.myLetter, element: <MyLetterDetailRoute /> },
+  { path: ROUTE_PATTERNS.repliedLetter, element: <RepliedLetterDetailRoute /> },
   // 신고
   {
-    path: "/report-reply/:id",
+    path: ROUTE_PATTERNS.reportReply,
     element: <ReplyReportRoute complete={false} />,
   },
   {
-    path: "/report-reply/:id/complete",
+    path: ROUTE_PATTERNS.reportReplyComplete,
     element: <ReplyReportRoute complete />,
   },
   {
-    path: "/report-letter/:id",
+    path: ROUTE_PATTERNS.reportLetter,
     element: <LetterReportRoute complete={false} />,
   },
   {
-    path: "/report-letter/:id/complete",
+    path: ROUTE_PATTERNS.reportLetterComplete,
     element: <LetterReportRoute complete />,
   },
 ];

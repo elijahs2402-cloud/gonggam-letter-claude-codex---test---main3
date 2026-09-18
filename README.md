@@ -12,7 +12,7 @@
 | Capacitor `appId` | `com.example.placeholder` (자리표시자) | 스토어 등록 전 확정 |
 | 앱 아이콘 · Splash Screen | 없음 | |
 | Vite `base: './'` (규격 §23) | 지금은 `"/"` (`FIGMA_PUBLIC_URL` 이 있으면 그 값). GitHub Pages 배포는 저장소 이름 폴더를 넣어 빌드한다 | 코드 속 그림 주소는 `assetUrl()`(`src/utils/basePath.ts`)로 base 를 붙이고, CSS 의 `/assets/...` 는 Vite 가 빌드 때 base 를 붙인다. `'./'` 로 바꿀지는 개발팀과 결정 |
-| 화면 이동 함수 (규격 §12 "URL 문자열을 직접 조작하지 않는다") | 라우트는 `react-router-dom` 7 의 `src/routes/AppRoutes.tsx` 에 있다. 다만 화면들은 `useNavigate` 대신 `src/utils/navigation.ts` 의 `navigateTo('/주소')` 를 부른다(안에서 라우터로 넘김). 나가는 모션 · 탭 전환 · 나의 공간 셸 처리를 한곳에 모으려고 둔 층이다 | 주소 문자열을 상수로 모을지는 개발팀과 결정 |
+| 화면 이동 함수 (규격 §12 "URL 문자열을 직접 조작하지 않는다") | 라우트는 `react-router-dom` 7 의 `src/routes/AppRoutes.tsx` 에 있다. 다만 화면들은 `useNavigate` 대신 `src/utils/navigation.ts` 의 `navigateTo('/주소')` 를 부른다(안에서 라우터로 넘김). 나가는 모션 · 탭 전환 · 나의 공간 셸 처리를 한곳에 모으려고 둔 층이다. 주소는 문자열로 쓰지 않고 `src/routes/paths.ts` 의 `ROUTES` · `routeTo()` 를 쓴다(2026-09-18) | `useNavigate` 로 바꿀지는 개발팀과 결정 |
 | CSS Modules (규격 §6) | 앱 정보 화면을 뺀 모든 화면에 적용(모듈 파일 22개). `src/styles/global.css`(약 4,500줄)에는 여러 화면이 함께 쓰는 규칙, `@media` · `!important` 규칙, 옮기면 우선순위가 바뀌어 화면이 달라지는 규칙이 남아 있다 | 앱 정보 화면은 전환 대상에서 뺐다(결정) |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
 | lint 규칙 수준 | 오류 0 · 경고 0(2026-09-17). React Compiler 기준 규칙 등 일부는 `eslint.config.ts` 에서 경고로 낮춰 두었다 | 오류로 올릴지는 개발팀과 결정. 이유는 `eslint.config.ts` 주석 참고 |

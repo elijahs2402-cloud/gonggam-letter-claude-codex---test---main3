@@ -12,6 +12,7 @@ import {
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
 import { assetUrl } from "../../utils/basePath";
+import { ROUTES } from "../../routes/paths";
 // 공감편지 소개 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import onboarding from "./OnboardingScreen.module.css";
 // 닉네임 정하기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
@@ -38,7 +39,7 @@ function AuthShell({
 }
 
 function AuthHeader({
-  backTo = "/intro",
+  backTo = ROUTES.intro,
   title = "공감편지",
 }: {
   backTo?: string;
@@ -151,14 +152,14 @@ export function OnboardingRedesignScreen() {
         <button
           className="auth-primary"
           type="button"
-          onClick={() => navigateTo("/login?new=1")}
+          onClick={() => navigateTo(`${ROUTES.login}?new=1`)}
         >
           시작하기
         </button>
         <button
           className="auth-text-action"
           type="button"
-          onClick={() => navigateTo("/login")}
+          onClick={() => navigateTo(ROUTES.login)}
         >
           이미 이용하고 있어요
         </button>
@@ -184,8 +185,8 @@ export function LoginScreen() {
     const timer = window.setTimeout(() => {
       const result = resolveMockLogin();
       setSnapshot(result);
-      if (result.state === "logged_in") replaceRoute("/returning-welcome");
-      else if (result.state === "new_user") replaceRoute("/terms-consent");
+      if (result.state === "logged_in") replaceRoute(ROUTES.returningWelcome);
+      else if (result.state === "new_user") replaceRoute(ROUTES.termsConsent);
     }, 760);
     return () => window.clearTimeout(timer);
   }, [loggingIn]);
@@ -205,7 +206,7 @@ export function LoginScreen() {
 
   return (
     <AuthShell className="login-screen">
-      <AuthHeader backTo="/onboarding" />
+      <AuthHeader backTo={ROUTES.onboarding} />
       <div className="auth-scroll">
         <section
           className={`auth-intro-copy auth-intro-copy--login ${login["auth-intro-copy--login"]}`}
@@ -307,7 +308,7 @@ export function LoginScreen() {
             <button
               type="button"
               className="auth-text-action"
-              onClick={() => navigateTo("/intro")}
+              onClick={() => navigateTo(ROUTES.intro)}
             >
               처음으로 돌아가기
             </button>
@@ -321,7 +322,7 @@ export function LoginScreen() {
 export function TermsConsentScreen() {
   return (
     <AuthShell className="terms-screen">
-      <AuthHeader backTo="/login" />
+      <AuthHeader backTo={ROUTES.login} />
       <div className="auth-scroll terms-policy-scroll">
         <section
           className={`terms-consent-heading ${auth["terms-consent-heading"]}`}
@@ -401,7 +402,7 @@ export function TermsConsentScreen() {
           type="button"
           onClick={() => {
             acceptTerms();
-            navigateTo("/nickname-entry");
+            navigateTo(ROUTES.nicknameEntry);
           }}
         >
           동의하고 시작하기
@@ -423,14 +424,14 @@ export function DirectNicknameScreen() {
     const finalizedName = name.trim();
     if (!finalizedName) return;
     confirmAnonymousName(finalizedName);
-    navigateTo("/returning-welcome");
+    navigateTo(ROUTES.returningWelcome);
   };
 
   return (
     <AuthShell
       className={`direct-nickname-screen ${nickname["direct-nickname-screen"]}`}
     >
-      <AuthHeader backTo="/terms-consent" title="이름 정하기" />
+      <AuthHeader backTo={ROUTES.termsConsent} title="이름 정하기" />
       <div className="auth-scroll direct-nickname-scroll">
         <section
           className={`direct-nickname-content ${nickname["direct-nickname-content"]}`}
@@ -513,7 +514,7 @@ export function ReturningWelcomeScreen() {
     const revealTimer = window.setTimeout(() => setVisible(true), 90);
     const leaveTimer = window.setTimeout(() => setLeaving(true), 2510);
     const finishTimer = window.setTimeout(
-      () => navigateTo(getPostLoginPath("/home")),
+      () => navigateTo(getPostLoginPath(ROUTES.home)),
       3230,
     );
     return () => {

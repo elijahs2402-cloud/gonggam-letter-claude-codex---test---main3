@@ -19,6 +19,7 @@ import {
 import { NotificationSettingsScreen } from "../Notifications/NotificationScreens";
 import { SafetyManagementScreen } from "../Safety/ReportScreens";
 import { TermsMockupScreen } from "./TermsMockup";
+import { ROUTES } from "../../routes/paths";
 // 나의 공간 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import mySpace from "./MySpaceScreen.module.css";
 type ViewKey =
@@ -34,20 +35,28 @@ type ViewKey =
 
 const menuItems: ReadonlyArray<{ label: string; path: string; key: ViewKey }> =
   [
-    { label: "나의 이름", path: "/anonymous-name-settings", key: "nickname" },
-    { label: "계정 관리", path: "/account-settings", key: "account" },
-    { label: "알림 설정", path: "/notification-settings", key: "notification" },
-    { label: "차단 및 신고 관리", path: "/safety-management", key: "safety" },
-    { label: "이용 안내", path: "/service-guide", key: "guide" },
-    { label: "개인정보 처리방침", path: "/privacy-policy", key: "privacy" },
-    { label: "서비스 이용약관", path: "/terms-of-service", key: "terms" },
+    { label: "나의 이름", path: ROUTES.anonymousNameSettings, key: "nickname" },
+    { label: "계정 관리", path: ROUTES.accountSettings, key: "account" },
+    {
+      label: "알림 설정",
+      path: ROUTES.notificationSettings,
+      key: "notification",
+    },
+    {
+      label: "차단 및 신고 관리",
+      path: ROUTES.safetyManagement,
+      key: "safety",
+    },
+    { label: "이용 안내", path: ROUTES.serviceGuide, key: "guide" },
+    { label: "개인정보 처리방침", path: ROUTES.privacyPolicy, key: "privacy" },
+    { label: "서비스 이용약관", path: ROUTES.termsOfService, key: "terms" },
   ];
 
 // 셸이 스스로 처리하는 경로들. 계정 삭제는 목록에 없는 한 단계 더 깊은 곳이라
 // 메뉴가 아니라 계정 관리 화면 안에서 열린다.
 const PATH_TO_VIEW = new Map<string, ViewKey>([
   ...menuItems.map((item) => [item.path, item.key] as const),
-  ["/account-withdrawal", "withdrawal"] as const,
+  [ROUTES.accountWithdrawal, "withdrawal"] as const,
 ]);
 
 const VIEW_TO_PATH = new Map<ViewKey, string>(
@@ -131,7 +140,7 @@ export function MySpaceScreen() {
         // ← 가 향하는 곳이 셸이 아는 그 화면일 때만 가로챈다.
         const targetPath =
           target === "list"
-            ? "/my-space"
+            ? ROUTES.mySpace
             : target
               ? VIEW_TO_PATH.get(target)
               : undefined;

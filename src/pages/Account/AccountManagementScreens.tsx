@@ -12,6 +12,7 @@ import {
 } from "../../utils/navigation";
 import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
 import { assetUrl } from "../../utils/basePath";
+import { ROUTES } from "../../routes/paths";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
 import styles from "./AccountManagementScreens.module.css";
@@ -37,7 +38,7 @@ const providerIcons: Record<string, { src: string; alt: string }> = {
 };
 function Header({
   title,
-  fallback = "/my-space",
+  fallback = ROUTES.mySpace,
   onBack,
 }: {
   title: string;
@@ -118,7 +119,7 @@ export function AccountSettingsScreen({
   const logout = () => {
     logoutMockAccount();
     // 로그아웃하면 인트로로 간다(2026-09-15). 다시 들어올 때는 소개 → 기존회원용 로그인.
-    navigateTo("/intro");
+    navigateTo(ROUTES.intro);
   };
   const emailAddress =
     account?.authProvider === "apple"
@@ -188,7 +189,7 @@ export function AccountSettingsScreen({
           <button
             className={`account-settings-row ${styles["account-settings-row"]} account-settings-row--delete ${styles["account-settings-row--delete"]}`}
             type="button"
-            onClick={() => navigateTo("/account-withdrawal")}
+            onClick={() => navigateTo(ROUTES.accountWithdrawal)}
           >
             <span>
               <strong>계정 삭제</strong>
@@ -242,7 +243,7 @@ export function AccountWithdrawalScreen() {
     // 처리 중에 화면을 떠나면 계정을 지우지 않는다(문서를 새로 불러오던 때와 같게).
     setPageTimeout(() => {
       deleteMockAccount();
-      navigateTo("/withdrawal-complete");
+      navigateTo(ROUTES.withdrawalComplete);
     }, 1700);
   };
   const showConfirmation = () => {
@@ -277,7 +278,7 @@ export function AccountWithdrawalScreen() {
         key="withdrawal-reason"
         className={`mobile-prototype account-settings-screen account-withdrawal-screen account-withdrawal-stage account-withdrawal-stage--${transitionDirection}`}
       >
-        <Header title="계정 삭제" fallback="/account-settings" />
+        <Header title="계정 삭제" fallback={ROUTES.accountSettings} />
         <div className="my-detail-scroll account-withdrawal-reason-scroll">
           <section className={`subpage-heading ${styles["subpage-heading"]}`}>
             <h1>
@@ -354,7 +355,7 @@ export function AccountWithdrawalScreen() {
     >
       <Header
         title="계정 삭제"
-        fallback="/account-settings"
+        fallback={ROUTES.accountSettings}
         onBack={showReasons}
       />
       <div className="my-detail-scroll account-withdrawal-scroll">
@@ -395,7 +396,7 @@ export function WithdrawalCompleteScreen() {
         <p>함께한 편지들은 탈퇴와 함께 모두 사라져요.</p>
         <button
           className="flow-primary-button"
-          onClick={() => navigateTo("/intro")}
+          onClick={() => navigateTo(ROUTES.intro)}
         >
           처음으로
         </button>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { navigateTo } from "../../utils/navigation";
+import { ROUTES } from "../../routes/paths";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import styles from "./CommonStates.module.css";
 
@@ -122,7 +123,7 @@ export function NotFoundScreen() {
         variant="not_found"
         title="이 화면은 지금 없어요"
         description="홈에서 다시 시작할 수 있어요."
-        primaryAction={{ label: "홈으로 돌아가기", href: "/home" }}
+        primaryAction={{ label: "홈으로 돌아가기", href: ROUTES.home }}
       />
     </main>
   );
@@ -172,7 +173,7 @@ export function ServiceStateScreen({
                 onClick: () => window.location.reload(),
               }
         }
-        secondaryAction={{ label: "홈으로 돌아가기", href: "/home" }}
+        secondaryAction={{ label: "홈으로 돌아가기", href: ROUTES.home }}
         developerMessage={`prototype system state: ${variant}`}
       />
     </main>

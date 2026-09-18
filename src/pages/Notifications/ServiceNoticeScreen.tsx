@@ -3,6 +3,7 @@ import { getServiceNotice } from "../../data/serviceNotices";
 import { formatDate } from "../../utils/datetime";
 import { navigateBack } from "../../utils/navigation";
 import styles from "./ServiceNoticeScreen.module.css";
+import { ROUTES } from "../../routes/paths";
 
 /**
  * 서비스 안내 세부 화면 (/service-notices/:id) — 2026-09-17 디자인만 만들어 둠
@@ -25,7 +26,7 @@ export function ServiceNoticeScreen({ noticeId }: { noticeId: string }) {
       <header className="flow-header">
         <button
           type="button"
-          onClick={() => navigateBack("/notifications")}
+          onClick={() => navigateBack(ROUTES.notifications)}
           aria-label="이전으로 돌아가기"
         >
           ←

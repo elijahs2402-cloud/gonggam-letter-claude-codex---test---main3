@@ -8,6 +8,7 @@ import { getReadCardPath } from "../../data/waitingLetters";
 import styles from "./HomeRuledScreen.module.css";
 import refined from "./HomeRuledRefinedScreen.module.css";
 import { assetUrl } from "../../utils/basePath";
+import { ROUTES } from "../../routes/paths";
 // 홈 머리·소식 카드 CSS Modules(전역에서 옮김): 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 // 두 홈 모듈보다 뒤에 import 해야 원래(전역) 적용 순서가 유지된다 — HomeScreen.module.css 머리 주석 참고.
 import home from "./HomeScreen.module.css";
@@ -30,7 +31,7 @@ const CHOICES = [
     icon: assetUrl("/assets/home-card-write.webp"),
     title: ["내 마음을", "털어놓고 싶어요"],
     helper: ["익명의 편지", "남기기"],
-    path: "/write-letter",
+    path: ROUTES.writeLetter,
     label: "익명의 편지 남기기",
   },
   {
@@ -38,7 +39,7 @@ const CHOICES = [
     icon: assetUrl("/assets/home-card-read.webp"),
     title: ["누군가의 마음을", "들어주고 싶어요"],
     helper: ["천천히 읽고", "답하기"],
-    path: "/listen-entry-a",
+    path: ROUTES.listenEntryA,
     label: "누군가의 편지를 천천히 읽고 답하기",
   },
 ] as const;
@@ -71,7 +72,7 @@ export function HomeRuledScreen({
         <button
           className={`home-notification-button ${home["home-notification-button"]}`}
           type="button"
-          onClick={() => navigateTo("/notifications")}
+          onClick={() => navigateTo(ROUTES.notifications)}
           aria-label={
             hasUnreadNotifications ? "알림, 확인이 필요한 새 소식 있음" : "알림"
           }

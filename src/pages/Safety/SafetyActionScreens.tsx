@@ -26,6 +26,7 @@ import {
 } from "../../constants/copy";
 import { getListenEntryPath } from "../../data/waitingLetters";
 import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
+import { ROUTES, routeTo } from "../../routes/paths";
 // 신고 화면 CSS Modules(편지 신고 ReportScreens.tsx 와 함께 쓴다).
 import reportForm from "./ReportForm.module.css";
 
@@ -88,21 +89,21 @@ export function ReplyReportScreen({
 }) {
   if (existingDemo)
     return (
-      <Shell title="편지 신고" fallback="/mailbox" showBackButton={false}>
+      <Shell title="편지 신고" fallback={ROUTES.mailbox} showBackButton={false}>
         <section className="flow-message">
           <h1>이미 신고한 편지예요</h1>
           <p>신고 내역은 차단 및 신고 관리에서 확인할 수 있어요.</p>
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/safety-management")}
+            onClick={() => navigateTo(ROUTES.safetyManagement)}
           >
             신고 내역 확인
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -111,21 +112,21 @@ export function ReplyReportScreen({
     );
   if (completeDemo)
     return (
-      <Shell title="신고 접수" fallback="/mailbox" showBackButton={false}>
+      <Shell title="신고 접수" fallback={ROUTES.mailbox} showBackButton={false}>
         <section className="flow-message">
           <h1>신고를 접수했어요</h1>
           <p>신고 내역은 차단 및 신고 관리에서 확인할 수 있어요.</p>
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/safety-management")}
+            onClick={() => navigateTo(ROUTES.safetyManagement)}
           >
             신고 내역 확인
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -161,20 +162,20 @@ function ReplyReportForm({
   >(complete || reportedBeforeOpening ? "complete" : "ready");
   if (!letter || !reply || letter.senderId !== userId)
     return (
-      <Shell title="편지 신고" fallback="/mailbox">
+      <Shell title="편지 신고" fallback={ROUTES.mailbox}>
         <section className="flow-message">
           <h1>신고할 편지를 찾을 수 없어요</h1>
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/mailbox")}
+            onClick={() => navigateTo(ROUTES.mailbox)}
           >
             편지함 가기
           </button>
         </section>
       </Shell>
     );
-  const returnTo = `/mailbox/my/${encodeURIComponent(letter.id)}`;
+  const returnTo = routeTo.myLetter(letter.id);
   // 아래 submit 은 함수 선언이라 위 가드의 '답장이 있다'는 판단이 전달되지 않는다.
   const reportedReply = reply;
   if (reportedBeforeOpening && !complete)
@@ -186,14 +187,14 @@ function ReplyReportForm({
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/safety-management")}
+            onClick={() => navigateTo(ROUTES.safetyManagement)}
           >
             신고 내역 확인
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -235,14 +236,14 @@ function ReplyReportForm({
           <button
             className="flow-primary-button"
             type="button"
-            onClick={() => navigateTo("/safety-management")}
+            onClick={() => navigateTo(ROUTES.safetyManagement)}
           >
             신고 내역 확인
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -455,7 +456,11 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // 가드가 먼저 걸리고, 완료 화면은 한 번도 보이지 않았다('이미 두고 온 편지예요'가 대신 떴다).
   if (phase === "complete")
     return (
-      <Shell title="편지 두고 가기" fallback="/home" showBackButton={false}>
+      <Shell
+        title="편지 두고 가기"
+        fallback={ROUTES.home}
+        showBackButton={false}
+      >
         <section className="flow-message">
           <h1>편지를 두고 왔어요</h1>
           <p>이 편지는 다시 누군가를 기다려요.</p>
@@ -476,7 +481,7 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
             type="button"
             onClick={() => {
               clearAppState();
-              navigateTo("/home");
+              navigateTo(ROUTES.home);
             }}
           >
             홈으로 돌아가기
@@ -490,7 +495,11 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   // 그 밖에서는 버튼 속 크기 그대로라 전체 화면에서 너무 작게 나온다.
   if (phase === "processing")
     return (
-      <Shell title="편지 두고 가기" fallback="/home" showBackButton={false}>
+      <Shell
+        title="편지 두고 가기"
+        fallback={ROUTES.home}
+        showBackButton={false}
+      >
         <ListenEntryLoadingState message="편지를 제자리에 두고 있어요" />
       </Shell>
     );
@@ -501,7 +510,11 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
     getLetterReturn(letter.id, readerId)
   )
     return (
-      <Shell title="편지 두고 가기" fallback="/home" showBackButton={false}>
+      <Shell
+        title="편지 두고 가기"
+        fallback={ROUTES.home}
+        showBackButton={false}
+      >
         <section className="flow-message">
           <h1>{RETURNED_LETTER_TITLE}</h1>
           <p>{RETURNED_LETTER_BODY}</p>
@@ -520,7 +533,7 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 돌아가기
           </button>
@@ -529,7 +542,7 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
     );
   if (phase === "failed")
     return (
-      <Shell title="편지 두고 가기" fallback={`/write-reply/${letter.id}`}>
+      <Shell title="편지 두고 가기" fallback={routeTo.writeReply(letter.id)}>
         <section className="flow-message">
           <h1>편지를 두고 오지 못했어요</h1>
           <p>잠시 후 다시 시도해주세요.</p>
@@ -543,14 +556,14 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
           <button
             className="flow-secondary-button"
             type="button"
-            onClick={() => navigateTo(`/write-reply/${letter.id}`)}
+            onClick={() => navigateTo(routeTo.writeReply(letter.id))}
           >
             답장으로 돌아가기
           </button>
           <button
             className="flow-text-button"
             type="button"
-            onClick={() => navigateTo("/home")}
+            onClick={() => navigateTo(ROUTES.home)}
           >
             홈으로 이동
           </button>
@@ -560,7 +573,7 @@ export function LetterReturnScreen({ letterId }: { letterId?: string }) {
   return (
     <LetterReturnSheet
       hasDraft={hasDraft}
-      onCancel={() => navigateTo(`/write-reply/${letter.id}`)}
+      onCancel={() => navigateTo(routeTo.writeReply(letter.id))}
       onConfirm={runReturn}
     />
   );

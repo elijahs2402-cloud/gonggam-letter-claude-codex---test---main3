@@ -12,6 +12,7 @@ import {
   sortSentLettersByActivity,
 } from "../../data/mailboxStatus";
 import { formatDate } from "../../utils/datetime";
+import { ROUTES, routeTo } from "../../routes/paths";
 // 편지함 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import mailbox from "./MailboxScreen.module.css";
 
@@ -122,7 +123,7 @@ function toUnifiedMailboxRecord(
   if (mode === "replied")
     return {
       id: letter.id,
-      href: `/mailbox/replied/${encodeURIComponent(letter.id)}`,
+      href: routeTo.repliedLetter(letter.id),
       status: "sent",
       label: "답장 보냄",
       nickname: letter.anonymousName || "누군가",
@@ -143,7 +144,7 @@ function toUnifiedMailboxRecord(
     : previewText(letter.content);
   return {
     id: letter.id,
-    href: `/mailbox/my/${encodeURIComponent(letter.id)}`,
+    href: routeTo.myLetter(letter.id),
     status: arrived ? "arrived" : "waiting",
     label: arrived ? "답장 도착" : "기다리는 중",
     nickname: letter.anonymousName || "익명",
@@ -222,7 +223,7 @@ function UnifiedMailboxEmpty() {
         <br />
         이곳에 차분히 기록할게요.
       </span>
-      <button type="button" onClick={() => navigateTo("/write-letter")}>
+      <button type="button" onClick={() => navigateTo(ROUTES.writeLetter)}>
         편지 쓰기
       </button>
     </section>
