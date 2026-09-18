@@ -18,6 +18,7 @@ import {
   type RouteObject,
 } from "react-router-dom";
 import { App } from "../App";
+import { BASE_PATH } from "../utils/basePath";
 import { NotFoundScreen } from "../components/common/CommonStates";
 import {
   DirectNicknameScreen,
@@ -173,11 +174,11 @@ export const appRoutes: RouteObject[] = [
   },
 ];
 
-/** 앱 라우터. 빌드 결과를 파일로 바로 열면(file:) 주소 뒤 # 로 옮긴다. */
+/**
+ * 앱 라우터. 빌드 결과를 파일로 바로 열면(file:) 주소 뒤 # 로 옮긴다.
+ * GitHub Pages 처럼 폴더 아래에 놓이면 basename 으로 그 폴더를 알려 준다.
+ */
 export function createAppRouter() {
-  const create =
-    window.location.protocol === "file:"
-      ? createHashRouter
-      : createBrowserRouter;
-  return create(appRoutes);
+  if (window.location.protocol === "file:") return createHashRouter(appRoutes);
+  return createBrowserRouter(appRoutes, { basename: BASE_PATH || "/" });
 }

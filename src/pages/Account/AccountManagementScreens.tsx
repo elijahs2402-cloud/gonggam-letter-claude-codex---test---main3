@@ -11,6 +11,7 @@ import {
   setPageTimeout,
 } from "../../utils/navigation";
 import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
+import { assetUrl } from "../../utils/basePath";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
 import styles from "./AccountManagementScreens.module.css";
@@ -27,9 +28,12 @@ function providerName(provider?: string) {
 
 // 연결된 계정 아이콘. 내부 id 는 kakao 지만 화면 표기는 토스다(로그인 화면과 동일).
 const providerIcons: Record<string, { src: string; alt: string }> = {
-  apple: { src: "/assets/account-provider-apple.svg", alt: "Apple" },
-  google: { src: "/assets/account-provider-google.webp", alt: "Google" },
-  kakao: { src: "/assets/account-provider-toss.webp", alt: "토스" },
+  apple: { src: assetUrl("/assets/account-provider-apple.svg"), alt: "Apple" },
+  google: {
+    src: assetUrl("/assets/account-provider-google.webp"),
+    alt: "Google",
+  },
+  kakao: { src: assetUrl("/assets/account-provider-toss.webp"), alt: "토스" },
 };
 function Header({
   title,

@@ -11,6 +11,7 @@ import {
   type MockAuthProvider,
 } from "../../data/mockAuth";
 import { navigateBack, navigateTo, replaceRoute } from "../../utils/navigation";
+import { assetUrl } from "../../utils/basePath";
 // 공감편지 소개 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import onboarding from "./OnboardingScreen.module.css";
 // 닉네임 정하기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
@@ -78,7 +79,7 @@ export function OnboardingRedesignScreen() {
           </h1>
           <figure>
             <img
-              src="/assets/onboarding-new-hero.webp"
+              src={assetUrl("/assets/onboarding-new-hero.webp")}
               alt="편지지와 보랏빛 펜, 봉투가 놓인 나무 책상"
             />
           </figure>
@@ -257,10 +258,10 @@ export function LoginScreen() {
                 <img
                   src={
                     provider === "apple"
-                      ? "/assets/logo-apple.webp"
+                      ? assetUrl("/assets/logo-apple.webp")
                       : provider === "google"
-                        ? "/assets/logo-google.webp"
-                        : "/assets/logo-toss.webp"
+                        ? assetUrl("/assets/logo-google.webp")
+                        : assetUrl("/assets/logo-toss.webp")
                   }
                   alt=""
                 />

@@ -11,7 +11,7 @@
 | 푸시 알림 | 없음. 앱 안의 알림 목록만 있음 | |
 | Capacitor `appId` | `com.example.placeholder` (자리표시자) | 스토어 등록 전 확정 |
 | 앱 아이콘 · Splash Screen | 없음 | |
-| Vite `base: './'` (규격 §23) | 지금은 `"/"` (Figma 배포용 `FIGMA_PUBLIC_URL` 이 있으면 그 주소) | CSS 34곳 · TS/TSX 27곳이 `/assets/...` 절대 경로를 쓴다. 바꾸면 경로 검토 필요 |
+| Vite `base: './'` (규격 §23) | 지금은 `"/"` (`FIGMA_PUBLIC_URL` 이 있으면 그 값). GitHub Pages 배포는 저장소 이름 폴더를 넣어 빌드한다 | 코드 속 그림 주소는 `assetUrl()`(`src/utils/basePath.ts`)로 base 를 붙이고, CSS 의 `/assets/...` 는 Vite 가 빌드 때 base 를 붙인다. `'./'` 로 바꿀지는 개발팀과 결정 |
 | 화면 이동 함수 (규격 §12 "URL 문자열을 직접 조작하지 않는다") | 라우트는 `react-router-dom` 7 의 `src/routes/AppRoutes.tsx` 에 있다. 다만 화면들은 `useNavigate` 대신 `src/utils/navigation.ts` 의 `navigateTo('/주소')` 를 부른다(안에서 라우터로 넘김). 나가는 모션 · 탭 전환 · 나의 공간 셸 처리를 한곳에 모으려고 둔 층이다 | 주소 문자열을 상수로 모을지는 개발팀과 결정 |
 | CSS Modules (규격 §6) | 앱 정보 화면을 뺀 모든 화면에 적용(모듈 파일 22개). `src/styles/global.css`(약 4,500줄)에는 여러 화면이 함께 쓰는 규칙, `@media` · `!important` 규칙, 옮기면 우선순위가 바뀌어 화면이 달라지는 규칙이 남아 있다 | 앱 정보 화면은 전환 대상에서 뺐다(결정) |
 | 직접 DOM 조작 (규격 §25) | 키보드·화면 높이·상태 표시줄 대응에서 `document`·`window` 를 직접 쓴다 | `src/utils/` 의 `viewport.ts` · `dismissKeyboard.ts` · `statusBarColor.ts` · `navigation.ts` 등 |
@@ -133,7 +133,7 @@ npm run preview   # 빌드 결과 미리보기 (포트 8443)
 | 이름 | 쓰는 곳 | 의미 | 기본값 |
 |---|---|---|---|
 | `PORT` | 개발 서버 · 미리보기 | 포트 번호 | `8443` |
-| `FIGMA_PUBLIC_URL` | 빌드 `base` | Figma 배포 미리보기용 공개 주소 | 없으면 `"/"` |
+| `FIGMA_PUBLIC_URL` | 빌드 `base` | 앱이 놓일 주소(폴더). GitHub Pages 배포 워크플로가 `/저장소이름` 을 넣는다 | 없으면 `"/"` |
 
 `.env`, `.env.local` 은 `.gitignore` 에 들어 있다.
 

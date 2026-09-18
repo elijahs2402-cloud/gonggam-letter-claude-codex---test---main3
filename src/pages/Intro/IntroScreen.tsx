@@ -4,6 +4,7 @@ import {
   isMockAuthenticated,
 } from "../../data/mockAuth";
 import { navigateTo } from "../../utils/navigation";
+import { assetUrl } from "../../utils/basePath";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import intro from "./IntroScreen.module.css";
 
@@ -34,7 +35,7 @@ export function IntroScreen() {
     <main className={`mobile-prototype intro-screen ${intro["intro-screen"]}`}>
       <img
         className={`intro-art ${intro["intro-art"]}`}
-        src="/assets/intro-door-uploaded.webp"
+        src={assetUrl("/assets/intro-door-uploaded.webp")}
         alt="담쟁이덩굴이 감싼 보랏빛 현관문과 편지가 든 우편함"
       />
       <section

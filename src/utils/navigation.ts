@@ -1,10 +1,12 @@
+import { BASE_PATH, stripBasePath } from "./basePath";
+
 export function getCurrentAppPath() {
   if (window.location.protocol === "file:") {
     const hashRoute = window.location.hash.replace(/^#/, "").split("?")[0];
     return hashRoute.replace(/\/$/, "") || "/intro";
   }
 
-  return window.location.pathname.replace(/\/$/, "") || "/intro";
+  return stripBasePath(window.location.pathname).replace(/\/$/, "") || "/intro";
 }
 
 export function getCurrentAppSearchParams() {
@@ -41,8 +43,8 @@ function goToPath(path: string, replace = false) {
     window.location.reload();
     return;
   }
-  if (replace) window.location.replace(path);
-  else window.location.href = path;
+  if (replace) window.location.replace(BASE_PATH + path);
+  else window.location.href = BASE_PATH + path;
 }
 
 // 화면이 바뀔 때마다 올라가는 번호. 문서를 새로 불러오던 때는 화면을 떠나면
@@ -224,7 +226,7 @@ function isCurrentDestination(path: string) {
 
   const destination = new URL(path, window.location.origin);
   return (
-    destination.pathname === window.location.pathname &&
+    destination.pathname === stripBasePath(window.location.pathname) &&
     destination.search === window.location.search
   );
 }

@@ -11,6 +11,7 @@ import {
   markWaitingLetterViewed,
 } from "../../data/waitingLetters";
 import { getListenEntryPath } from "../../data/waitingLetters";
+import { assetUrl } from "../../utils/basePath";
 // 편지 고르기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import listen from "./ListenEntryVariants.module.css";
 
@@ -205,7 +206,7 @@ export function ListenEntryAScreen() {
         />
         <figure className={`listen-a-hero-art ${listen["listen-a-hero-art"]}`}>
           <img
-            src="/assets/read-letter-object-tight.webp"
+            src={assetUrl("/assets/read-letter-object-tight.webp")}
             alt="독서등과 펼쳐진 편지, 안경"
           />
         </figure>
@@ -236,7 +237,7 @@ export function ListenEntryEmptyScreen() {
       >
         <img
           className={`listen-entry-empty-art ${listen["listen-entry-empty-art"]}`}
-          src="/assets/listen-entry-empty-background.webp"
+          src={assetUrl("/assets/listen-entry-empty-background.webp")}
           alt="비어 있는 라벤더색 우편함"
         />
         <section

@@ -1,15 +1,17 @@
-# GitHub Pages 배포 — design/system-integration 브랜치를 그대로 띄운다.
+# GitHub Pages 배포 — main 브랜치에 push 하면 자동으로 띄운다.
 # 주소: https://elijahs2402-cloud.github.io/gonggam-letter-claude-codex---test---main3/
 #
-# vite.config.ts 는 FIGMA_PUBLIC_URL 이 있으면 그 값을 base(자원 주소 앞부분)로 쓴다.
-# 저장소 이름이 주소에 들어가므로 여기서 넣어 준다. 설정 파일은 고치지 않는다.
+# 사이트가 도메인 맨 앞이 아니라 저장소 이름 폴더 아래에 놓인다.
+# - vite.config.ts 는 FIGMA_PUBLIC_URL 이 있으면 그 값을 base(자원 주소 앞부분)로 쓴다.
+#   여기서 저장소 이름 폴더를 넣어 준다. 설정 파일은 고치지 않는다.
+# - 앱은 이 값을 src/utils/basePath.ts 로 읽어 화면 주소에서 폴더 부분을 떼고(라우터 basename),
+#   코드 속 그림 주소 앞에 붙인다(assetUrl).
 name: Deploy to GitHub Pages
 
-# 2026-09-16 자동 배포를 잠시 꺼 둔다. 주소 앞부분(저장소 이름) 처리를 아직 고치지 않아
-# 배포해도 "이 화면은 지금 없어요"만 보인다. 고친 뒤 push 줄의 주석을 푼다.
+# 2026-09-16 에 꺼 두었다가 2026-09-18 주소 앞부분 처리를 고치고 다시 켰다.
 on:
-  # push:
-  #   branches: [design/system-integration]
+  push:
+    branches: [main]
   workflow_dispatch: # GitHub 화면에서 직접 실행할 때
 
 permissions:
@@ -34,7 +36,10 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          FIGMA_PUBLIC_URL: https://elijahs2402-cloud.github.io/gonggam-letter-claude-codex---test---main3
+          FIGMA_PUBLIC_URL: /gonggam-letter-claude-codex---test---main3
+      # GitHub Pages 는 /…/home 같은 주소의 파일이 없으면 404.html 을 보여준다.
+      # 앱 자체를 404.html 로도 두면, 하위 화면에서 새로고침해도 앱이 떠서 주소에 맞는 화면을 연다.
+      - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
