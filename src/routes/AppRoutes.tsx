@@ -49,10 +49,8 @@ import {
   ListenEntryAScreen,
   ListenEntryEmptyScreen,
 } from "../pages/Letter/ListenEntryVariants";
-import {
-  LetterPreviewScreen,
-  WriteLetterFlowScreen,
-} from "../pages/Letter/LetterFlowScreens";
+import { WriteLetterFlowScreen } from "../pages/WriteLetter/WriteLetter";
+import { LetterPreviewScreen } from "../pages/LetterPreview/LetterPreview";
 import { LetterSafetyReviewScreen } from "../pages/Safety/SafetyScreens";
 import { SafetyManagementScreen } from "../pages/Safety/ReportScreens";
 import {

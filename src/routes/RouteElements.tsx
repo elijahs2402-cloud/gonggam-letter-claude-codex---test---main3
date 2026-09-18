@@ -21,16 +21,14 @@ import {
   ReturningWelcomeScreen,
 } from "../pages/Auth/AuthScreens";
 import { ServiceNoticeScreen } from "../pages/Notifications/ServiceNoticeScreen";
-import {
-  LetterSentScreen,
-  MyLetterDetailScreen,
-  ReadLetterFlowScreen,
-  RepliedLetterDetailScreen,
-  ReplyReviewScreen,
-  ReplySendingTransitionScreen,
-  ReplySentScreen,
-  WriteReplyFlowScreen,
-} from "../pages/Letter/LetterFlowScreens";
+import { LetterSentScreen } from "../pages/LetterSent/LetterSent";
+import { MyLetterDetailScreen } from "../pages/MyLetterDetail/MyLetterDetail";
+import { ReadLetterFlowScreen } from "../pages/ReadLetter/ReadLetter";
+import { RepliedLetterDetailScreen } from "../pages/RepliedLetterDetail/RepliedLetterDetail";
+import { ReplyReviewScreen } from "../pages/ReplyReview/ReplyReview";
+import { ReplySendingTransitionScreen } from "../pages/ReplySending/ReplySending";
+import { ReplySentScreen } from "../pages/ReplySent/ReplySent";
+import { WriteReplyFlowScreen } from "../pages/WriteReply/WriteReply";
 import { LetterReportFigmaScreen } from "../pages/Safety/ReportScreens";
 import {
   LetterReturnScreen,

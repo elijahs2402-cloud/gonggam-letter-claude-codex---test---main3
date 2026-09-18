@@ -58,14 +58,19 @@
 │   │   ├── Intro/         # 인트로 (/, /intro)
 │   │   ├── Auth/          # 인트로 뒤 온보딩 · 로그인 · 약관 · 이름 정하기
 │   │   ├── Home/          # 홈 (HomeRuledScreen + CSS Modules)
-│   │   ├── Letter/        # 편지 쓰기 · 읽기 · 답장 (LetterFlowScreens.tsx), 편지 만나기
+│   │   ├── Letter/        # 편지 만나기(ListenEntryVariants) · 편지 흐름 화면들이 함께 쓰는 CSS(LetterFlowScreens.module.css)
+│   │   ├── WriteLetter/ · LetterPreview/ · LetterSent/        # 편지 쓰기 · 미리보기 · 발송 완료
+│   │   ├── ReadLetter/ · WriteReply/ · ReplyReview/          # 편지 읽기 · 답장 쓰기 · 보내기 전 점검
+│   │   ├── ReplySending/ · ReplySent/                         # 답장 보내는 중 · 답장 완료
+│   │   ├── MyLetterDetail/ · RepliedLetterDetail/            # 편지함 상세(내가 보낸 편지 · 내가 답장한 편지)
 │   │   ├── Mailbox/       # 편지함
 │   │   ├── MySpace/       # 나의 공간 · 이름 바꾸기 · 안내 · 약관
 │   │   ├── Account/       # 계정 설정 · 로그인 정보 · 탈퇴
 │   │   ├── Notifications/ # 알림 · 알림 설정
 │   │   └── Safety/        # 신고 · 차단 관리 · 안전 점검 · 편지 두고 가기
 │   ├── components/
-│   │   └── common/        # 하단 내비 · 공통 상태 화면(없는 페이지, 서비스 상태)
+│   │   ├── common/        # 하단 내비 · 공통 상태 화면(없는 페이지, 서비스 상태)
+│   │   └── letter/        # 편지 흐름 공용: FocusShell(틀) · MissingLetterScreen · DraftExitDialog · PreviewSafety
 │   ├── hooks/             # 임시 저장 자동 저장 Hook (draftGuards.ts)
 │   ├── constants/         # 문구 상수 (copy.ts)
 │   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
@@ -74,7 +79,6 @@
 │   │   ├── global.css     # 전역 스타일 — main.tsx 가 불러옴 (맨 위에서 common.css 를 불러옴)
 │   │   ├── common.css     # 외부 폰트 · 디자인 토큰(:root 변수) (globals.css 를 불러옴)
 │   │   └── globals.css    # 기본 스타일 초기화(Preflight) · @layer 구조 — 옛 Tailwind 생성 결과
-│   └── _archive/          # 보관용 옛 CSS (빌드에 쓰이지 않음)
 ├── capacitor.config.ts
 ├── eslint.config.ts
 ├── vite.config.ts
@@ -84,7 +88,8 @@
 - 규격 §4 의 구조로 파일을 옮겼다. 코드와 파일명은 그대로다.
 - **규격과 다른 점**
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
-  - 한 파일에 여러 화면이 들어 있는 경우가 있다(예: `pages/Letter/LetterFlowScreens.tsx` 에 20여 개). 규격의 `pages/[Page]/[Page].tsx` 형태로 나누는 일은 CSS Modules 전환 때 화면별로 한다.
+  - 편지 흐름 화면(옛 `pages/Letter/LetterFlowScreens.tsx`, 10개 화면)은 2026-09-18 규격의 `pages/[Page]/[Page].tsx` 형태로 나눴다(코드 그대로). 다만 CSS 는 화면별로 쪼개지 않고 `pages/Letter/LetterFlowScreens.module.css` 하나를 함께 불러온다 — 쪼개면 규칙 적용 순서가 바뀌어 화면이 달라질 위험이 있다.
+  - 아직 한 파일에 여러 화면이 있는 곳: `Auth/AuthScreens.tsx` · `Safety/SafetyActionScreens.tsx` · `MySpace/MySpaceDetails.tsx` · `Account/AccountManagementScreens.tsx` 등.
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.

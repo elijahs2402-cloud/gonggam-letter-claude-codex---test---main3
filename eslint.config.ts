@@ -10,7 +10,7 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig([
   // 검사하지 않는 곳: 빌드 결과물, 정적 파일, 보관용 옛 코드
-  globalIgnores(["dist", "public", "artifacts", "src/_archive"]),
+  globalIgnores(["dist", "public", "artifacts"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
