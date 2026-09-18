@@ -6,16 +6,12 @@ import {
   pushShellRoute,
   registerShellRouter,
 } from "../../utils/navigation";
-import {
-  AnonymousNameSettingsScreen,
-  GuideScreen,
-  PolicyScreen,
-} from "./MySpaceDetails";
+import { AnonymousNameSettingsScreen } from "../AnonymousNameSettings/AnonymousNameSettings";
+import { GuideScreen } from "../ServiceGuide/ServiceGuide";
+import { PolicyScreen } from "../PrivacyPolicy/PrivacyPolicy";
 import { getMySpaceSummary } from "../../data/mySpaceSummary";
-import {
-  AccountSettingsScreen,
-  AccountWithdrawalScreen,
-} from "../Account/AccountManagementScreens";
+import { AccountSettingsScreen } from "../AccountSettings/AccountSettings";
+import { AccountWithdrawalScreen } from "../AccountWithdrawal/AccountWithdrawal";
 import { NotificationSettingsScreen } from "../Notifications/NotificationScreens";
 import { SafetyManagementScreen } from "../Safety/ReportScreens";
 import { TermsMockupScreen } from "./TermsMockup";

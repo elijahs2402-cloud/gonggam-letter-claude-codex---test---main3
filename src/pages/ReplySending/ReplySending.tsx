@@ -6,7 +6,7 @@ import { getCurrentUserId, getLetterById, sendReply } from "../../data/letters";
 import { clearReplyDraft, getReplyDraft } from "../../data/letterDraft";
 import { resolveDeliveryIssues } from "../../data/deliveryIssues";
 import { canSubmitReply, reviewReplySafety } from "../../data/safety";
-import { ListenEntryLoadingState } from "../Letter/ListenEntryVariants";
+import { ListenEntryLoadingState } from "../../components/letter/ListenEntryLoadingState";
 import { ROUTES, routeTo } from "../../routes/paths";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import flow from "../Letter/LetterFlowScreens.module.css";

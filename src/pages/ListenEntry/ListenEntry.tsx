@@ -1,22 +1,23 @@
+// 편지 만나기 (/listen-entry-a)
+// 2026-09-18 src/pages/Letter/ListenEntryVariants.tsx 에서 옮겼다(코드 그대로).
 import { type ReactNode, useState } from "react";
-import {
-  navigateBack,
-  navigateTo,
-  setPageTimeout,
-} from "../../utils/navigation";
+import { navigateTo, setPageTimeout } from "../../utils/navigation";
 import { getCurrentUserId } from "../../data/letters";
 import { seedSampleLetters } from "../../data/sampleLetters";
 import {
   getAvailableWaitingLetters,
   markWaitingLetterViewed,
 } from "../../data/waitingLetters";
-import { getListenEntryPath } from "../../data/waitingLetters";
 import { assetUrl } from "../../utils/basePath";
 import { ROUTES, routeTo } from "../../routes/paths";
+import { goTo } from "../../utils/listenEntryGoTo";
+import { ListenEntryHeader } from "../../components/letter/ListenEntryHeader";
+import { ListenEntryLoadingState } from "../../components/letter/ListenEntryLoadingState";
 // 편지 고르기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import listen from "./ListenEntryVariants.module.css";
+import listen from "../Letter/ListenEntryVariants.module.css";
 
 type ListenVariant = "A" | "B" | "C";
+
 type ListenEntryState = "ready" | "loading";
 
 const HELPER_COPY = (
@@ -40,26 +41,6 @@ function openAssignedLetter() {
   }
   markWaitingLetterViewed(assigned.id);
   navigateTo(routeTo.readLetter(assigned.id));
-}
-
-function goTo(path: string) {
-  navigateTo(path);
-}
-
-function ListenEntryHeader() {
-  return (
-    <header className="flow-header listen-entry-topbar">
-      <button
-        type="button"
-        onClick={() => navigateBack(ROUTES.home)}
-        aria-label="이전으로 돌아가기"
-      >
-        <span aria-hidden="true">←</span>
-      </button>
-      <strong>편지 만나기</strong>
-      <span aria-hidden="true" />
-    </header>
-  );
 }
 
 function ListenHeading({
@@ -86,32 +67,6 @@ function ListenHeading({
         )}
       </h1>
       <div>{HELPER_COPY}</div>
-    </section>
-  );
-}
-
-export function ListenEntryLoadingState({
-  message = "편지를 가져오고 있어요",
-}: {
-  message?: string;
-}) {
-  return (
-    <section
-      className={`listen-entry-feedback ${listen["listen-entry-feedback"]}`}
-      aria-live="polite"
-      aria-busy="true"
-    >
-      <div
-        className={`listen-entry-loading-mark ${listen["listen-entry-loading-mark"]}`}
-        aria-hidden="true"
-      >
-        <i className="draft-exit-saving-dots">
-          <b />
-          <b />
-          <b />
-        </i>
-      </div>
-      <h1>{message}</h1>
     </section>
   );
 }
@@ -226,57 +181,5 @@ export function ListenEntryAScreen() {
         </section>
       </>
     </ListenEntryFrame>
-  );
-}
-
-export function ListenEntryEmptyScreen() {
-  return (
-    <main className="mobile-prototype listen-entry-screen listen-entry-empty-screen">
-      <ListenEntryHeader />
-      <div
-        className={`listen-entry-empty-content ${listen["listen-entry-empty-content"]}`}
-      >
-        <img
-          className={`listen-entry-empty-art ${listen["listen-entry-empty-art"]}`}
-          src={assetUrl("/assets/listen-entry-empty-background.webp")}
-          alt="비어 있는 라벤더색 우편함"
-        />
-        <section
-          className={`listen-entry-empty-copy ${listen["listen-entry-empty-copy"]}`}
-          aria-live="polite"
-        >
-          <h1>
-            지금은
-            <br />
-            기다리는 편지가
-            <br />
-            없어요
-          </h1>
-          <p>
-            새로운 마음이 도착하면
-            <br />
-            이곳에서 만날 수 있어요.
-          </p>
-        </section>
-      </div>
-      <div
-        className={`flow-fixed-action flow-fixed-action--split listen-entry-actions ${listen["listen-entry-actions"]} listen-entry-empty-actions ${listen["listen-entry-empty-actions"]}`}
-      >
-        <button
-          type="button"
-          className="flow-secondary-button"
-          onClick={() => goTo(ROUTES.home)}
-        >
-          홈으로
-        </button>
-        <button
-          type="button"
-          className="flow-primary-button"
-          onClick={() => goTo(getListenEntryPath(getCurrentUserId()))}
-        >
-          다시 확인하기
-        </button>
-      </div>
-    </main>
   );
 }

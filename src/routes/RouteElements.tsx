@@ -15,11 +15,9 @@ import {
   getCurrentAppPath,
   getCurrentAppSearchParams,
 } from "../utils/navigation";
-import {
-  AuthGateRedirect,
-  LoginScreen,
-  ReturningWelcomeScreen,
-} from "../pages/Auth/AuthScreens";
+import { AuthGateRedirect } from "../components/auth/AuthGateRedirect";
+import { LoginScreen } from "../pages/Login/Login";
+import { ReturningWelcomeScreen } from "../pages/ReturningWelcome/ReturningWelcome";
 import { ServiceNoticeScreen } from "../pages/Notifications/ServiceNoticeScreen";
 import { LetterSentScreen } from "../pages/LetterSent/LetterSent";
 import { MyLetterDetailScreen } from "../pages/MyLetterDetail/MyLetterDetail";
@@ -30,10 +28,8 @@ import { ReplySendingTransitionScreen } from "../pages/ReplySending/ReplySending
 import { ReplySentScreen } from "../pages/ReplySent/ReplySent";
 import { WriteReplyFlowScreen } from "../pages/WriteReply/WriteReply";
 import { LetterReportFigmaScreen } from "../pages/Safety/ReportScreens";
-import {
-  LetterReturnScreen,
-  ReplyReportScreen,
-} from "../pages/Safety/SafetyActionScreens";
+import { LetterReturnScreen } from "../pages/ReturnLetter/ReturnLetter";
+import { ReplyReportScreen } from "../pages/ReportReply/ReportReply";
 import { ROUTES } from "./paths";
 
 // ── 가입 단계 화면: 각자 들어올 수 있는 조건이 있다 ─────────────────────

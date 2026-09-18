@@ -16,7 +16,7 @@ import {
   RETURNED_LETTER_TITLE,
 } from "../../constants/copy";
 import { getListenEntryPath } from "../../data/waitingLetters";
-import { LetterReturnSheet } from "../Safety/SafetyActionScreens";
+import { LetterReturnSheet } from "../../components/letter/LetterReturnSheet";
 import { assetUrl } from "../../utils/basePath";
 import { ROUTES, routeTo } from "../../routes/paths";
 import { FocusShell } from "../../components/letter/FocusShell";

@@ -20,35 +20,27 @@ import {
 import { App } from "../App";
 import { BASE_PATH } from "../utils/basePath";
 import { NotFoundScreen } from "../components/common/CommonStates";
-import {
-  DirectNicknameScreen,
-  OnboardingRedesignScreen,
-  TermsConsentScreen,
-} from "../pages/Auth/AuthScreens";
+import { DirectNicknameScreen } from "../pages/NicknameEntry/NicknameEntry";
+import { OnboardingRedesignScreen } from "../pages/Onboarding/Onboarding";
+import { TermsConsentScreen } from "../pages/TermsConsent/TermsConsent";
 import { IntroScreen } from "../pages/Intro/IntroScreen";
 import { HomeRuledScreen } from "../pages/Home/HomeRuledScreen";
 import { MailboxScreen } from "../pages/Mailbox/MailboxScreen";
 import { MySpaceScreen } from "../pages/MySpace/MySpaceScreen";
-import {
-  AnonymousNameSettingsScreen,
-  AppInfoScreen,
-  GuideScreen,
-  PolicyScreen,
-} from "../pages/MySpace/MySpaceDetails";
+import { AnonymousNameSettingsScreen } from "../pages/AnonymousNameSettings/AnonymousNameSettings";
+import { AppInfoScreen } from "../pages/AppInfo/AppInfo";
+import { GuideScreen } from "../pages/ServiceGuide/ServiceGuide";
+import { PolicyScreen } from "../pages/PrivacyPolicy/PrivacyPolicy";
 import { TermsMockupScreen } from "../pages/MySpace/TermsMockup";
-import {
-  AccountSettingsScreen,
-  AccountWithdrawalScreen,
-  WithdrawalCompleteScreen,
-} from "../pages/Account/AccountManagementScreens";
+import { AccountSettingsScreen } from "../pages/AccountSettings/AccountSettings";
+import { AccountWithdrawalScreen } from "../pages/AccountWithdrawal/AccountWithdrawal";
+import { WithdrawalCompleteScreen } from "../pages/WithdrawalComplete/WithdrawalComplete";
 import {
   NotificationsScreen,
   NotificationSettingsScreen,
 } from "../pages/Notifications/NotificationScreens";
-import {
-  ListenEntryAScreen,
-  ListenEntryEmptyScreen,
-} from "../pages/Letter/ListenEntryVariants";
+import { ListenEntryAScreen } from "../pages/ListenEntry/ListenEntry";
+import { ListenEntryEmptyScreen } from "../pages/ListenEntryEmpty/ListenEntryEmpty";
 import { WriteLetterFlowScreen } from "../pages/WriteLetter/WriteLetter";
 import { LetterPreviewScreen } from "../pages/LetterPreview/LetterPreview";
 import { LetterSafetyReviewScreen } from "../pages/Safety/SafetyScreens";
