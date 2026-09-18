@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 import { ServiceStateScreen } from "./components/common/CommonStates";
 import { syncDerivedNotifications } from "./data/notificationEvents";
 import { getMockAuthSnapshot, isMockAuthenticated } from "./data/mockAuth";
-import { MySpaceScreen } from "./pages/MySpace/MySpaceScreen";
+import { MySpaceScreen } from "./pages/MySpace/MySpace";
 import {
   getCurrentAppPath,
   getCurrentAppSearchParams,

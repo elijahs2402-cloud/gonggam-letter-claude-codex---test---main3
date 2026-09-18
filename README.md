@@ -56,15 +56,16 @@
 │   │   └── RouteElements.tsx # 로그인 확인 · 가입 단계 조건 · :id 연결 컴포넌트
 │   ├── pages/             # 주소로 열리는 화면 — 화면 하나 = 폴더 하나(규격 §5, 2026-09-18 나눔)
 │   │   ├── Intro/ · Onboarding/ · Login/ · TermsConsent/ · NicknameEntry/ · ReturningWelcome/   # 가입 · 로그인
-│   │   ├── Home/ · Mailbox/ · MySpace/                                  # 탭 화면 (MySpace/ 에 약관 목업 TermsMockup 도 있음)
+│   │   ├── Home/ · Mailbox/ · MySpace/                                  # 탭 화면
 │   │   ├── WriteLetter/ · LetterPreview/ · LetterSent/                  # 편지 쓰기 · 미리보기 · 발송 완료
 │   │   ├── ListenEntry/ · ListenEntryEmpty/ · ReadLetter/               # 편지 만나기 · 만날 편지 없음 · 편지 읽기
 │   │   ├── WriteReply/ · ReplyReview/ · ReplySending/ · ReplySent/      # 답장 쓰기 · 점검 · 보내는 중 · 완료
 │   │   ├── MyLetterDetail/ · RepliedLetterDetail/                       # 편지함 상세
+│   │   ├── TermsOfService/ · ServiceNotice/                             # 서비스 이용약관 · 서비스 안내 세부(숨은 화면)
 │   │   ├── ReportLetter/ · ReportReply/ · ReturnLetter/ · LetterSafetyReview/   # 편지 신고 · 답장 신고 · 두고 가기 · 편지 안전 점검
 │   │   ├── AnonymousNameSettings/ · NotificationSettings/ · SafetyManagement/ · ServiceGuide/ · PrivacyPolicy/ · AppInfo/   # 나의 공간 하위 화면
 │   │   ├── AccountSettings/ · AccountWithdrawal/ · WithdrawalComplete/  # 계정 관리 · 삭제 · 삭제 완료
-│   │   ├── Notifications/ # 알림(Notifications.tsx) · 서비스 안내 세부(ServiceNoticeScreen.tsx)
+│   │   ├── Notifications/ # 알림
 │   │   └── Auth/ · Account/ · Letter/ · MySpace/ · Safety/   # 나누기 전 화면들의 CSS Modules 파일 (아래 설명)
 │   ├── components/
 │   │   ├── common/        # 하단 내비 · 공통 상태 화면(없는 페이지, 서비스 상태)
@@ -90,7 +91,7 @@
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
   - 2026-09-18 한 파일에 여러 화면이 있던 파일 9개(`LetterFlowScreens` · `AuthScreens` · `SafetyActionScreens` · `MySpaceDetails` · `AccountManagementScreens` · `ListenEntryVariants` · `NotificationScreens` · `SafetyScreens` · `ReportScreens`)를 규격의 `pages/[Page]/[Page].tsx` 형태로 나눴다. 코드 본문과 컴포넌트 이름(`WriteLetterFlowScreen` 등)은 그대로다.
   - **CSS Modules 파일은 옮기지 않았다.** 나눈 화면들이 원래 자리(`pages/Auth/*.module.css` · `pages/Account/` · `pages/Letter/` · `pages/MySpace/`)의 파일을 불러온다. 파일을 옮기거나 화면별로 쪼개면 class 이름과 불러오는 순서가 바뀌어 화면이 달라질 위험이 있다. 나눈 뒤 CSS 묶음의 불러오는 순서가 일부 바뀌었지만, 빌드 결과물을 전후로 띄워 찍은 스크린샷 253장이 같았다.
-  - 한 파일에 여러 화면이 있는 곳은 이제 없다. 규격의 파일 이름 모양(`[Page]/[Page].tsx`)과 다른 곳: `Home/HomeRuledScreen.tsx` · `Intro/IntroScreen.tsx` · `Mailbox/MailboxScreen.tsx` · `MySpace/MySpaceScreen.tsx` · `MySpace/TermsMockup.tsx` · `Notifications/ServiceNoticeScreen.tsx`(화면 하나씩이라 그대로 둠).
+  - 한 파일에 여러 화면이 있는 곳은 이제 없고, 화면 파일 이름도 모두 `[Page]/[Page].tsx` 모양이다(2026-09-18). 컴포넌트 이름(`HomeRuledScreen` · `TermsMockupScreen` 등)은 바꾸지 않았다.
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.
@@ -259,7 +260,7 @@ npx cap open ios
 - 가로 모드 미대응, 시스템 푸시 없음(앱 안 목록만).
 - 알림 설정에 "편지 맡음" 알림을 끄는 스위치가 없다(코드는 `letterUpdates` 로 제어).
 - 서비스 안내 세부 화면(`/service-notices/:id`, `ServiceNoticeScreen`)은 디자인만 만들어 두었다(1차 오픈 제외). 앱 어디에서도 연결하지 않고, 서비스 안내 알림(`service_notice`)도 알림 목록에서 걸러진다. 예시 글은 `src/data/serviceNotices.ts` 에 있다.
-- 홈 하단 소식 카드는 1차 오픈에서 빠졌다. 화면 코드는 `HomeRuledScreen.tsx` 에 남아 있고, `getHomeNotice()` 가 항상 `null` 을 돌려주게 막아 두었다. 실제 데이터는 연결되지 않았다.
+- 홈 하단 소식 카드는 1차 오픈에서 빠졌다. 화면 코드는 `pages/Home/Home.tsx` 에 남아 있고, `getHomeNotice()` 가 항상 `null` 을 돌려주게 막아 두었다. 실제 데이터는 연결되지 않았다.
 - 1차 오픈에서 뺀 기능은 코드에서 지웠다(2026-09-15): 답장 문장 간직하기 · 고마움 전하기 · 받은 답장 목록 · 편지의 여정 · 답장 도착 봉투 화면 · 편지 거두기/기다림 연장/다시 보내기, 옛 읽기 단계(`/waiting-letters`, `/reader-promise`, `/assign-letter/`, `/assigned-letter/`), `?qa=1` 테스트 패널과 `?state=` 옵션.
 - CSS Modules 로 옮긴 화면은 JSX 에 기존 전역 class 이름과 모듈 class 를 함께 쓴다. 모듈 CSS 는 `global.css` 보다 **먼저** 불러와지므로(`main.tsx` 의 import 순서), 전역의 같은 우선순위 규칙과 겹치는 규칙은 `global.css` 에 남겨 두었다.
 - CSS Modules 는 `@keyframes` 이름도 바꾸므로, 모듈 안에서 쓰는 애니메이션은 같은 모듈 파일에 `@keyframes` 를 함께 둔다.

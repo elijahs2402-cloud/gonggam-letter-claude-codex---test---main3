@@ -175,7 +175,7 @@ function isPoppingBack(page: HTMLElement | null, fallbackPath: string) {
 // history.back() 은 bfcache 로 복원될 수 있는데, 그러면 이미 한 번 끝난
 // CSS 진입 애니메이션이 다시 재생되지 않아 모션이 매번 다르게(또는 아예
 // 안 보이게) 나온다. 이 세션스토리지 표시를 도착 화면이 마운트될 때 읽어
-// (MySpaceScreen.tsx, AccountSettingsScreen) 진입 애니메이션을 켤지 정한다 —
+// (pages/MySpace/MySpace.tsx, AccountSettingsScreen) 진입 애니메이션을 켤지 정한다 —
 // 새로 불러오기라 매번 확실히 재생된다. 한 번에 한 화면만 새로 마운트되므로
 // 목적지가 둘이어도 플래그 하나면 충분하다.
 const POP_ENTRY_FLAG_KEY = "gonggam:pop-entry";

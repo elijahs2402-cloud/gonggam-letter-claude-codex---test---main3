@@ -227,28 +227,3 @@ export function LetterReportFigmaScreen({
     </Shell>
   );
 }
-
-export function LetterReportCompleteDemoScreen() {
-  return (
-    <Shell title="신고 접수" showBackButton={false}>
-      <section className="flow-message">
-        <h1>신고가 접수되었어요</h1>
-        <p>이 편지는 대기 목록에서 숨겨졌어요.</p>
-        <button
-          className="flow-primary-button"
-          type="button"
-          onClick={() => navigateTo(ROUTES.safetyManagement)}
-        >
-          신고 내역 확인
-        </button>
-        <button
-          className="flow-text-button"
-          type="button"
-          onClick={() => navigateTo(ROUTES.home)}
-        >
-          홈으로 돌아가기
-        </button>
-      </section>
-    </Shell>
-  );
-}
