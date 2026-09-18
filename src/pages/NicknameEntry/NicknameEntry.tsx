@@ -11,7 +11,7 @@ import { AuthShell, AuthHeader } from "../../components/auth/AuthShell";
 // 닉네임 정하기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import nickname from "../Auth/NicknameEntryScreen.module.css";
 
-export function DirectNicknameScreen() {
+export function NicknameEntryScreen() {
   const [name, setName] = useState("");
   const validName = Boolean(name.trim());
   const recommendName = () => setName(generateAnonymousName(name || undefined));

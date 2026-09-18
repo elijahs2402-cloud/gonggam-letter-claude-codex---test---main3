@@ -9,7 +9,7 @@ import onboarding from "../Auth/OnboardingScreen.module.css";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import auth from "../Auth/AuthScreens.module.css";
 
-export function OnboardingRedesignScreen() {
+export function OnboardingScreen() {
   return (
     <AuthShell
       className={`onboarding-redesign-screen ${onboarding["onboarding-redesign-screen"]}`}

@@ -4,7 +4,7 @@ import { Header } from "../../components/mySpace/Header";
 // 약관·처리방침 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import policy from "../MySpace/PolicyScreen.module.css";
 
-export function PolicyScreen({
+export function PrivacyPolicyScreen({
   kind,
   stageClassName = "",
 }: {

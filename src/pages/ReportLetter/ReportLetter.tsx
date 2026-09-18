@@ -26,7 +26,7 @@ const reasons: ReadonlyArray<[ReportReason, string]> = [
   ["other", "기타"],
 ];
 
-export function LetterReportFigmaScreen({
+export function ReportLetterScreen({
   letterId,
   complete = false,
 }: {

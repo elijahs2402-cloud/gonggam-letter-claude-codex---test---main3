@@ -1,5 +1,5 @@
 /*
-  신고 화면 스타일 — 편지 신고(/report-letter/:id, LetterReportFigmaScreen)와
+  신고 화면 스타일 — 편지 신고(/report-letter/:id, ReportLetterScreen)와
   답장 신고(/report-reply/:id, ReplyReportForm)가 함께 쓴다 (CSS Modules 전환, 2026-09-15)
 
   src/styles/global.css 에서 이 두 화면만 쓰는 figma-report-* 규칙을 원래 순서대로 옮겼다. 선택자와 선언은 그대로다.

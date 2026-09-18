@@ -21,15 +21,15 @@ import { ReturningWelcomeScreen } from "../pages/ReturningWelcome/ReturningWelco
 import { ServiceNoticeScreen } from "../pages/ServiceNotice/ServiceNotice";
 import { LetterSentScreen } from "../pages/LetterSent/LetterSent";
 import { MyLetterDetailScreen } from "../pages/MyLetterDetail/MyLetterDetail";
-import { ReadLetterFlowScreen } from "../pages/ReadLetter/ReadLetter";
+import { ReadLetterScreen } from "../pages/ReadLetter/ReadLetter";
 import { RepliedLetterDetailScreen } from "../pages/RepliedLetterDetail/RepliedLetterDetail";
 import { ReplyReviewScreen } from "../pages/ReplyReview/ReplyReview";
-import { ReplySendingTransitionScreen } from "../pages/ReplySending/ReplySending";
+import { ReplySendingScreen } from "../pages/ReplySending/ReplySending";
 import { ReplySentScreen } from "../pages/ReplySent/ReplySent";
-import { WriteReplyFlowScreen } from "../pages/WriteReply/WriteReply";
-import { LetterReportFigmaScreen } from "../pages/ReportLetter/ReportLetter";
-import { LetterReturnScreen } from "../pages/ReturnLetter/ReturnLetter";
-import { ReplyReportScreen } from "../pages/ReportReply/ReportReply";
+import { WriteReplyScreen } from "../pages/WriteReply/WriteReply";
+import { ReportLetterScreen } from "../pages/ReportLetter/ReportLetter";
+import { ReturnLetterScreen } from "../pages/ReturnLetter/ReturnLetter";
+import { ReportReplyScreen } from "../pages/ReportReply/ReportReply";
 import { ROUTES } from "./paths";
 
 // ── 가입 단계 화면: 각자 들어올 수 있는 조건이 있다 ─────────────────────
@@ -76,16 +76,14 @@ function useIdParam() {
 }
 
 export function ReplyReportRoute({ complete }: { complete: boolean }) {
-  return <ReplyReportScreen letterId={useIdParam()} complete={complete} />;
+  return <ReportReplyScreen letterId={useIdParam()} complete={complete} />;
 }
 export function LetterReportRoute({ complete }: { complete: boolean }) {
   // 답장 신고(/report-reply/:id/complete)와 같은 규칙으로 완료 화면을 연다.
-  return (
-    <LetterReportFigmaScreen letterId={useIdParam()} complete={complete} />
-  );
+  return <ReportLetterScreen letterId={useIdParam()} complete={complete} />;
 }
 export function LetterReturnRoute() {
-  return <LetterReturnScreen letterId={useIdParam()} />;
+  return <ReturnLetterScreen letterId={useIdParam()} />;
 }
 export function LetterSentRoute() {
   return (
@@ -95,16 +93,16 @@ export function LetterSentRoute() {
   );
 }
 export function ReadLetterRoute() {
-  return <ReadLetterFlowScreen letterId={useIdParam()} />;
+  return <ReadLetterScreen letterId={useIdParam()} />;
 }
 export function WriteReplyRoute() {
-  return <WriteReplyFlowScreen letterId={useIdParam()} />;
+  return <WriteReplyScreen letterId={useIdParam()} />;
 }
 export function ReplyReviewRoute() {
   return <ReplyReviewScreen letterId={useIdParam()} />;
 }
 export function ReplySendingRoute() {
-  return <ReplySendingTransitionScreen letterId={useIdParam()} />;
+  return <ReplySendingScreen letterId={useIdParam()} />;
 }
 export function ReplySentRoute() {
   return <ReplySentScreen letterId={useIdParam()} />;

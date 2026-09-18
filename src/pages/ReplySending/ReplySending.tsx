@@ -11,11 +11,7 @@ import { ROUTES, routeTo } from "../../routes/paths";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import flow from "../Letter/LetterFlowScreens.module.css";
 
-export function ReplySendingTransitionScreen({
-  letterId,
-}: {
-  letterId?: string;
-}) {
+export function ReplySendingScreen({ letterId }: { letterId?: string }) {
   const currentUserId = getCurrentUserId();
   /* 보내는 중과 실패는 성격이 다른 화면이라 나눠 둔다.
      예전에는 로딩 화면의 문구만 갈아끼웠는데, 그러면 점 물결은 계속 돌아

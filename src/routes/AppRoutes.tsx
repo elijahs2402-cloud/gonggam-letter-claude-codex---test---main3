@@ -20,26 +20,26 @@ import {
 import { App } from "../App";
 import { BASE_PATH } from "../utils/basePath";
 import { NotFoundScreen } from "../components/common/CommonStates";
-import { DirectNicknameScreen } from "../pages/NicknameEntry/NicknameEntry";
-import { OnboardingRedesignScreen } from "../pages/Onboarding/Onboarding";
+import { NicknameEntryScreen } from "../pages/NicknameEntry/NicknameEntry";
+import { OnboardingScreen } from "../pages/Onboarding/Onboarding";
 import { TermsConsentScreen } from "../pages/TermsConsent/TermsConsent";
 import { IntroScreen } from "../pages/Intro/Intro";
-import { HomeRuledScreen } from "../pages/Home/Home";
+import { HomeScreen } from "../pages/Home/Home";
 import { MailboxScreen } from "../pages/Mailbox/Mailbox";
 import { MySpaceScreen } from "../pages/MySpace/MySpace";
 import { AnonymousNameSettingsScreen } from "../pages/AnonymousNameSettings/AnonymousNameSettings";
 import { AppInfoScreen } from "../pages/AppInfo/AppInfo";
-import { GuideScreen } from "../pages/ServiceGuide/ServiceGuide";
-import { PolicyScreen } from "../pages/PrivacyPolicy/PrivacyPolicy";
-import { TermsMockupScreen } from "../pages/TermsOfService/TermsOfService";
+import { ServiceGuideScreen } from "../pages/ServiceGuide/ServiceGuide";
+import { PrivacyPolicyScreen } from "../pages/PrivacyPolicy/PrivacyPolicy";
+import { TermsOfServiceScreen } from "../pages/TermsOfService/TermsOfService";
 import { AccountSettingsScreen } from "../pages/AccountSettings/AccountSettings";
 import { AccountWithdrawalScreen } from "../pages/AccountWithdrawal/AccountWithdrawal";
 import { WithdrawalCompleteScreen } from "../pages/WithdrawalComplete/WithdrawalComplete";
 import { NotificationsScreen } from "../pages/Notifications/Notifications";
 import { NotificationSettingsScreen } from "../pages/NotificationSettings/NotificationSettings";
-import { ListenEntryAScreen } from "../pages/ListenEntry/ListenEntry";
+import { ListenEntryScreen } from "../pages/ListenEntry/ListenEntry";
 import { ListenEntryEmptyScreen } from "../pages/ListenEntryEmpty/ListenEntryEmpty";
-import { WriteLetterFlowScreen } from "../pages/WriteLetter/WriteLetter";
+import { WriteLetterScreen } from "../pages/WriteLetter/WriteLetter";
 import { LetterPreviewScreen } from "../pages/LetterPreview/LetterPreview";
 import { LetterSafetyReviewScreen } from "../pages/LetterSafetyReview/LetterSafetyReview";
 import { SafetyManagementScreen } from "../pages/SafetyManagement/SafetyManagement";
@@ -69,7 +69,7 @@ const publicRoutes: RouteObject[] = [
   // 인트로는 예전에 대체 주소였다 — / 와 /intro 둘 다 연다.
   { path: ROUTES.root, element: <IntroScreen /> },
   { path: ROUTES.intro, element: <IntroScreen /> },
-  { path: ROUTES.onboarding, element: <OnboardingRedesignScreen /> },
+  { path: ROUTES.onboarding, element: <OnboardingScreen /> },
   { path: ROUTES.login, element: <LoginRoute /> },
   { path: ROUTES.returningWelcome, element: <ReturningWelcomeRoute /> },
   {
@@ -86,19 +86,19 @@ const publicRoutes: RouteObject[] = [
     path: ROUTES.nicknameEntry,
     element: (
       <OnboardingStepRoute step={ROUTES.nicknameEntry}>
-        <DirectNicknameScreen />
+        <NicknameEntryScreen />
       </OnboardingStepRoute>
     ),
   },
   // 로그인 없이도 열리는 화면(예전 분기와 같다)
   { path: ROUTES.withdrawalComplete, element: <WithdrawalCompleteScreen /> },
-  { path: ROUTES.termsOfService, element: <TermsMockupScreen /> },
+  { path: ROUTES.termsOfService, element: <TermsOfServiceScreen /> },
   { path: ROUTES.listenEntryEmpty, element: <ListenEntryEmptyScreen /> },
 ];
 
 const protectedRoutes: RouteObject[] = [
   // 탭
-  { path: ROUTES.home, element: <HomeRuledScreen refinedCardsOnly /> },
+  { path: ROUTES.home, element: <HomeScreen refinedCardsOnly /> },
   { path: ROUTES.mailbox, element: <MailboxScreen /> },
   // 나의 공간 — 목록과 하위 화면은 셸이 떠 있으면 App 이 셸로 그린다.
   // 아래 하위 화면 라우트는 주소로 바로 들어왔을 때(셸 없음) 쓰인다.
@@ -114,19 +114,22 @@ const protectedRoutes: RouteObject[] = [
     element: <NotificationSettingsScreen />,
   },
   { path: ROUTES.safetyManagement, element: <SafetyManagementScreen /> },
-  { path: ROUTES.serviceGuide, element: <GuideScreen /> },
-  { path: ROUTES.privacyPolicy, element: <PolicyScreen kind="privacy" /> },
+  { path: ROUTES.serviceGuide, element: <ServiceGuideScreen /> },
+  {
+    path: ROUTES.privacyPolicy,
+    element: <PrivacyPolicyScreen kind="privacy" />,
+  },
   { path: ROUTES.appInfo, element: <AppInfoScreen /> },
   // 알림
   { path: ROUTES.notifications, element: <NotificationsScreen /> },
   { path: ROUTE_PATTERNS.serviceNotice, element: <ServiceNoticeRoute /> },
   // 편지 쓰기
-  { path: ROUTES.writeLetter, element: <WriteLetterFlowScreen /> },
+  { path: ROUTES.writeLetter, element: <WriteLetterScreen /> },
   { path: ROUTES.letterPreview, element: <LetterPreviewScreen /> },
   { path: ROUTES.letterSafetyReview, element: <LetterSafetyReviewScreen /> },
   { path: ROUTES.letterSent, element: <LetterSentRoute /> },
   // 편지 만나기 · 읽기 · 답장
-  { path: ROUTES.listenEntryA, element: <ListenEntryAScreen /> },
+  { path: ROUTES.listenEntryA, element: <ListenEntryScreen /> },
   { path: ROUTE_PATTERNS.readLetter, element: <ReadLetterRoute /> },
   { path: ROUTE_PATTERNS.writeReply, element: <WriteReplyRoute /> },
   { path: ROUTE_PATTERNS.replyReview, element: <ReplyReviewRoute /> },

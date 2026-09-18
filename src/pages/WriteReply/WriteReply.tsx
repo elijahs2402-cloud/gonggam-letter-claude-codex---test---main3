@@ -35,7 +35,7 @@ import { DraftExitDialog } from "../../components/letter/DraftExitDialog";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import flow from "../Letter/LetterFlowScreens.module.css";
 
-export function WriteReplyFlowScreen({ letterId }: { letterId?: string }) {
+export function WriteReplyScreen({ letterId }: { letterId?: string }) {
   const currentUserId = getCurrentUserId();
   if (letterId?.startsWith("sample-waiting-letter-")) seedSampleLetters();
   let letter = letterId ? getLetterById(letterId) : undefined;

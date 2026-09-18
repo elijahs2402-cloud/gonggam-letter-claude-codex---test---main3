@@ -91,7 +91,7 @@
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
   - 2026-09-18 한 파일에 여러 화면이 있던 파일 9개(`LetterFlowScreens` · `AuthScreens` · `SafetyActionScreens` · `MySpaceDetails` · `AccountManagementScreens` · `ListenEntryVariants` · `NotificationScreens` · `SafetyScreens` · `ReportScreens`)를 규격의 `pages/[Page]/[Page].tsx` 형태로 나눴다. 코드 본문과 컴포넌트 이름(`WriteLetterFlowScreen` 등)은 그대로다.
   - **CSS Modules 파일은 옮기지 않았다.** 나눈 화면들이 원래 자리(`pages/Auth/*.module.css` · `pages/Account/` · `pages/Letter/` · `pages/MySpace/`)의 파일을 불러온다. 파일을 옮기거나 화면별로 쪼개면 class 이름과 불러오는 순서가 바뀌어 화면이 달라질 위험이 있다. 나눈 뒤 CSS 묶음의 불러오는 순서가 일부 바뀌었지만, 빌드 결과물을 전후로 띄워 찍은 스크린샷 253장이 같았다.
-  - 한 파일에 여러 화면이 있는 곳은 이제 없고, 화면 파일 이름도 모두 `[Page]/[Page].tsx` 모양이다(2026-09-18). 컴포넌트 이름(`HomeRuledScreen` · `TermsMockupScreen` 등)은 바꾸지 않았다.
+  - 한 파일에 여러 화면이 있는 곳은 이제 없고, 화면 파일 이름도 모두 `[Page]/[Page].tsx` 모양이다(2026-09-18). 화면 컴포넌트 이름도 `<폴더>Screen` 으로 맞췄다(예: `HomeScreen` · `TermsOfServiceScreen` · `ReportLetterScreen`).
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.

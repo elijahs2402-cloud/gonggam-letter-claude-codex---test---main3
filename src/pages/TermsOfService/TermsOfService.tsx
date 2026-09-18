@@ -42,7 +42,7 @@ const TERMS_SECTIONS = [
   },
 ];
 
-export function TermsMockupScreen({
+export function TermsOfServiceScreen({
   stageClassName = "",
 }: { stageClassName?: string } = {}) {
   return (

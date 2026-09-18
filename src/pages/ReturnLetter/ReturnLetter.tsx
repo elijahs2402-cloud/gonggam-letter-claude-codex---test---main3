@@ -25,7 +25,7 @@ import { ROUTES, routeTo } from "../../routes/paths";
 import { Shell } from "../../components/safety/Shell";
 import { LetterReturnSheet } from "../../components/letter/LetterReturnSheet";
 
-export function LetterReturnScreen({ letterId }: { letterId?: string }) {
+export function ReturnLetterScreen({ letterId }: { letterId?: string }) {
   const readerId = getCurrentUserId();
   const letter = letterId ? getLetterById(letterId) : undefined;
   const draft = letterId ? getReplyDraft(letterId, readerId) : undefined;

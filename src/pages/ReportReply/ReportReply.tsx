@@ -24,7 +24,7 @@ const reportReasons: ReadonlyArray<[ReportReason, string]> = [
   ["other", "기타"],
 ];
 
-export function ReplyReportScreen({
+export function ReportReplyScreen({
   letterId,
   complete = false,
   existingDemo = false,
@@ -198,7 +198,7 @@ function ReplyReportForm({
         </section>
       </Shell>
     );
-  // 화면은 편지 신고 최종본(/report-letter/:id, LetterReportFigmaScreen)과 같은 figma-report-* 마크업을 쓴다.
+  // 화면은 편지 신고 최종본(/report-letter/:id, ReportLetterScreen)과 같은 figma-report-* 마크업을 쓴다.
   // 신고 대상은 답장(reply.id), 차단 대상은 답장 작성자(reply.writerId) 그대로다 — 동작은 바꾸지 않았다.
   return (
     <Shell

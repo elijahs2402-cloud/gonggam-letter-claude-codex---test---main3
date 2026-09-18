@@ -1,5 +1,5 @@
 /*
-  이용 안내(/service-guide, GuideScreen) 스타일 (CSS Modules 전환, 2026-09-15)
+  이용 안내(/service-guide, ServiceGuideScreen) 스타일 (CSS Modules 전환, 2026-09-15)
 
   src/styles/global.css 에서 이 화면만 쓰는 규칙(항목 목록 · 구분선 · 도움 안내 문구)을
   원래 순서대로 옮겼다. 선택자와 선언은 그대로다.

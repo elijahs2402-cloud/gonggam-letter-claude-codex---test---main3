@@ -44,7 +44,7 @@ const CHOICES = [
   },
 ] as const;
 
-export function HomeRuledScreen({
+export function HomeScreen({
   isRefined = false,
   refinedCardsOnly = false,
 }: {

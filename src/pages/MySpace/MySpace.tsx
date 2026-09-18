@@ -7,14 +7,14 @@ import {
   registerShellRouter,
 } from "../../utils/navigation";
 import { AnonymousNameSettingsScreen } from "../AnonymousNameSettings/AnonymousNameSettings";
-import { GuideScreen } from "../ServiceGuide/ServiceGuide";
-import { PolicyScreen } from "../PrivacyPolicy/PrivacyPolicy";
+import { ServiceGuideScreen } from "../ServiceGuide/ServiceGuide";
+import { PrivacyPolicyScreen } from "../PrivacyPolicy/PrivacyPolicy";
 import { getMySpaceSummary } from "../../data/mySpaceSummary";
 import { AccountSettingsScreen } from "../AccountSettings/AccountSettings";
 import { AccountWithdrawalScreen } from "../AccountWithdrawal/AccountWithdrawal";
 import { NotificationSettingsScreen } from "../NotificationSettings/NotificationSettings";
 import { SafetyManagementScreen } from "../SafetyManagement/SafetyManagement";
-import { TermsMockupScreen } from "../TermsOfService/TermsOfService";
+import { TermsOfServiceScreen } from "../TermsOfService/TermsOfService";
 import { ROUTES } from "../../routes/paths";
 // 나의 공간 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import mySpace from "./MySpaceScreen.module.css";
@@ -168,10 +168,11 @@ export function MySpaceScreen() {
       return <NotificationSettingsScreen stageClassName={stage} />;
     if (view === "safety")
       return <SafetyManagementScreen stageClassName={stage} />;
-    if (view === "guide") return <GuideScreen stageClassName={stage} />;
+    if (view === "guide") return <ServiceGuideScreen stageClassName={stage} />;
     if (view === "privacy")
-      return <PolicyScreen kind="privacy" stageClassName={stage} />;
-    if (view === "terms") return <TermsMockupScreen stageClassName={stage} />;
+      return <PrivacyPolicyScreen kind="privacy" stageClassName={stage} />;
+    if (view === "terms")
+      return <TermsOfServiceScreen stageClassName={stage} />;
     // 계정 삭제는 자체 단계 전환(account-withdrawal-stage)을 갖고 있다.
     // 셸 클래스를 덧씌우면 내부 '이유↔확인' 뒤로가기가 앞으로 방향으로 덮여버린다.
     return <AccountWithdrawalScreen />;

@@ -25,7 +25,7 @@ import { MissingLetterScreen } from "../../components/letter/MissingLetterScreen
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import flow from "../Letter/LetterFlowScreens.module.css";
 
-export function ReadLetterFlowScreen({ letterId }: { letterId?: string }) {
+export function ReadLetterScreen({ letterId }: { letterId?: string }) {
   // 두고 가기 확인은 페이지를 옳기지 않고 이 화면 위에 시트로 띄운다.
   // 뒤에 읽던 편지가 남아 있어야 '이 편지를'라는 말이 성립한다.
   // 가드보다 위에 두어야 훅이 조건부로 호출되지 않는다.

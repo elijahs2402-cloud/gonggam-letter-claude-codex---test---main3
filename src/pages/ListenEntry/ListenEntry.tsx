@@ -142,7 +142,7 @@ function ListenEntryFrame({
   );
 }
 
-export function ListenEntryAScreen() {
+export function ListenEntryScreen() {
   return (
     <ListenEntryFrame
       variant="A"

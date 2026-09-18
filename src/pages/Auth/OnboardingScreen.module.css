@@ -1,5 +1,5 @@
 /*
-  공감편지 소개(/onboarding, OnboardingRedesignScreen) 스타일 (CSS Modules 전환, 2026-09-15)
+  공감편지 소개(/onboarding, OnboardingScreen) 스타일 (CSS Modules 전환, 2026-09-15)
 
   src/styles/global.css 에서 이 화면만 쓰는 onboarding-redesign-* 규칙을 원래 순서대로 옮겼다. 선택자와 선언은 그대로다.
   - JSX 는 기존 전역 class 이름을 그대로 두고 이 모듈의 class 를 함께 붙인다.

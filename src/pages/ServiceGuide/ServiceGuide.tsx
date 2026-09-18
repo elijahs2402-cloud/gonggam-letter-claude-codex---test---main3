@@ -26,7 +26,7 @@ const guideContent = [
 ];
 
 // 이용 안내 화면. 안전 가이드(/safety-guide) 분기는 앱에서 갈 수 없어 2026-09-15 지웠다.
-export function GuideScreen({
+export function ServiceGuideScreen({
   stageClassName = "",
 }: {
   stageClassName?: string;
