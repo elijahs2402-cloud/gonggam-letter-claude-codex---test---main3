@@ -81,6 +81,9 @@
   border: 1px solid rgba(var(--gold-rgb), var(--a50));
   border-radius: 0;
   background: rgba(var(--surface-card-rgb), var(--a72));
+  /* 입력한 글자는 편지 신고의 추가 설명 입력칸과 같은 색(2026-09-18 사용자 지시).
+     지정하지 않으면 라벨(.account-textarea)의 흐린 글자색을 물려받는다. */
+  color: var(--ink);
   /* 16px(--fs-letter) 이어야 한다. iOS 는 글자가 16px 보다 작은 입력칸을 누르면
      화면을 자동으로 확대한다 — 이 칸만 14px 이라 계정 삭제에서 화면이 커졌다
      (2026-09-18 기기 제보). 앱의 다른 입력칸은 모두 16px 이다. */
