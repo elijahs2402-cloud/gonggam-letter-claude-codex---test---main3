@@ -15,7 +15,7 @@ import { FocusShell } from "../../components/letter/FocusShell";
 import { formatDate, formatDateWithYear } from "../../utils/letterDates";
 import { MissingLetterScreen } from "../../components/letter/MissingLetterScreen";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import flow from "../Letter/LetterFlowScreens.module.css";
+import flow from "../../components/letter/LetterFlow.module.css";
 
 export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
   const letter = letterId ? getLetterById(letterId) : undefined;

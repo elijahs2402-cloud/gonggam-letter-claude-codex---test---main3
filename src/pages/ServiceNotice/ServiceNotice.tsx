@@ -2,7 +2,7 @@ import { NotFoundScreen } from "../../components/common/CommonStates";
 import { getServiceNotice } from "../../data/serviceNotices";
 import { formatDate } from "../../utils/datetime";
 import { navigateBack } from "../../utils/navigation";
-import styles from "../Notifications/ServiceNoticeScreen.module.css";
+import styles from "./ServiceNotice.module.css";
 import { ROUTES } from "../../routes/paths";
 
 /**

@@ -8,7 +8,7 @@ import { ROUTES } from "../../routes/paths";
 import { Header } from "../../components/account/Header";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
-import styles from "../Account/AccountManagementScreens.module.css";
+import styles from "../../components/account/Account.module.css";
 
 function providerName(provider?: string) {
   return provider === "apple"

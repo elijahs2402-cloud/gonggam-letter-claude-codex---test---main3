@@ -14,7 +14,7 @@ import {
 import { formatDate } from "../../utils/datetime";
 import { ROUTES, routeTo } from "../../routes/paths";
 // 편지함 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import mailbox from "./MailboxScreen.module.css";
+import mailbox from "./Mailbox.module.css";
 
 export function MailboxScreen() {
   const userId = getCurrentUserId();

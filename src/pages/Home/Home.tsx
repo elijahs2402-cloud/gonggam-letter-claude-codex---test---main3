@@ -11,7 +11,7 @@ import { assetUrl } from "../../utils/basePath";
 import { ROUTES } from "../../routes/paths";
 // 홈 머리·소식 카드 CSS Modules(전역에서 옮김): 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 // 두 홈 모듈보다 뒤에 import 해야 원래(전역) 적용 순서가 유지된다 — HomeScreen.module.css 머리 주석 참고.
-import home from "./HomeScreen.module.css";
+import home from "./Home.module.css";
 
 // 피그마 168-316 시안(괘선 2단 + 어두운 골동품 가구)에 '옅은 면'을 더한 홈.
 // 기존 /home 은 건드리지 않고 이 라우트에서만 비교한다.

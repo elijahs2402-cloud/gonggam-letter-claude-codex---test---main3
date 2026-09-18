@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { replaceRoute } from "../../utils/navigation";
 import { AuthShell } from "./AuthShell";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import auth from "../../pages/Auth/AuthScreens.module.css";
+import auth from "./Auth.module.css";
 
 export function AuthGateRedirect({ to }: { to: string }) {
   useEffect(() => {

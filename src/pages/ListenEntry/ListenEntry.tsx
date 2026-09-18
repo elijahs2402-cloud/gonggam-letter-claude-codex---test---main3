@@ -14,7 +14,7 @@ import { goTo } from "../../utils/listenEntryGoTo";
 import { ListenEntryHeader } from "../../components/letter/ListenEntryHeader";
 import { ListenEntryLoadingState } from "../../components/letter/ListenEntryLoadingState";
 // 편지 고르기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import listen from "../Letter/ListenEntryVariants.module.css";
+import listen from "../../components/letter/ListenEntry.module.css";
 
 type ListenVariant = "A" | "B" | "C";
 

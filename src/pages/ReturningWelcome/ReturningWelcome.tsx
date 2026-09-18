@@ -6,7 +6,7 @@ import { navigateTo } from "../../utils/navigation";
 import { ROUTES } from "../../routes/paths";
 import { AuthShell } from "../../components/auth/AuthShell";
 // 환영 문구 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import welcome from "../Auth/ReturningWelcomeScreen.module.css";
+import welcome from "./ReturningWelcome.module.css";
 
 export function ReturningWelcomeScreen() {
   const name = getMockAuthSnapshot().account?.anonymousName ?? "조용한 별빛";

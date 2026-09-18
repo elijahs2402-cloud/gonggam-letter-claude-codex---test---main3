@@ -13,7 +13,7 @@ import { ROUTES } from "../../routes/paths";
 import { Header } from "../../components/notifications/Header";
 // CSS Modules 시범 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
-import styles from "./NotificationScreens.module.css";
+import styles from "../../components/notifications/Notifications.module.css";
 
 function timeText(value: string) {
   const diff = Math.max(0, Date.now() - new Date(value).getTime());

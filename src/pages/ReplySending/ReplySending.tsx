@@ -9,7 +9,7 @@ import { canSubmitReply, reviewReplySafety } from "../../data/safety";
 import { ListenEntryLoadingState } from "../../components/letter/ListenEntryLoadingState";
 import { ROUTES, routeTo } from "../../routes/paths";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import flow from "../Letter/LetterFlowScreens.module.css";
+import flow from "../../components/letter/LetterFlow.module.css";
 
 export function ReplySendingScreen({ letterId }: { letterId?: string }) {
   const currentUserId = getCurrentUserId();

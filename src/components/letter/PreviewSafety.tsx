@@ -2,7 +2,7 @@
 // 2026-09-18 src/pages/Letter/LetterFlowScreens.tsx 에서 옮겼다(코드 그대로).
 import { reviewLetterSafety } from "../../data/safety";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import flow from "../../pages/Letter/LetterFlowScreens.module.css";
+import flow from "./LetterFlow.module.css";
 
 type PreviewSafetyMatch = ReturnType<
   typeof reviewLetterSafety

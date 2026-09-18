@@ -2,7 +2,7 @@
 // 2026-09-18 src/pages/MySpace/MySpaceDetails.tsx 에서 옮겼다(코드 그대로).
 import { Header } from "../../components/mySpace/Header";
 // 이용 안내 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import guide from "../MySpace/GuideScreen.module.css";
+import guide from "./ServiceGuide.module.css";
 
 const guideContent = [
   [

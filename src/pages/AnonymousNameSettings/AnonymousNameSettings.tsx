@@ -9,7 +9,7 @@ import {
 import { navigateBack } from "../../utils/navigation";
 import { ROUTES } from "../../routes/paths";
 // 이름 바꾸기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import nameSettings from "../MySpace/AnonymousNameSettingsScreen.module.css";
+import nameSettings from "./AnonymousNameSettings.module.css";
 
 export function AnonymousNameSettingsScreen({
   stageClassName = "",

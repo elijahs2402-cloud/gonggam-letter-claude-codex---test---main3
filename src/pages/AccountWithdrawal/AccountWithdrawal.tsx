@@ -8,7 +8,7 @@ import { ROUTES } from "../../routes/paths";
 import { Header } from "../../components/account/Header";
 // CSS Modules 전환: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다
 // (전역에 남은 공유 규칙과 utils/navigation.ts 가 기존 이름을 쓴다).
-import styles from "../Account/AccountManagementScreens.module.css";
+import styles from "../../components/account/Account.module.css";
 
 // 2026-09-18 항목 확정. '기타'를 고르면 아래 입력칸이 열리고, 한 자 이상 써야 다음으로 간다.
 const OTHER_REASON = "기타(직접 입력)";

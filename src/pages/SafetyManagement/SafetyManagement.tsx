@@ -12,7 +12,7 @@ import { formatDate } from "../../utils/datetime";
 import { ROUTES } from "../../routes/paths";
 import { Shell } from "../../components/safety/ReportShell";
 // 차단 및 신고 관리 화면 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import mgmt from "../Safety/SafetyManagementScreen.module.css";
+import mgmt from "./SafetyManagement.module.css";
 
 const reasonLabels: Record<string, string> = {
   abusive: "모욕적 표현",

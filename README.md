@@ -65,13 +65,13 @@
 │   │   ├── ReportLetter/ · ReportReply/ · ReturnLetter/ · LetterSafetyReview/   # 편지 신고 · 답장 신고 · 두고 가기 · 편지 안전 점검
 │   │   ├── AnonymousNameSettings/ · NotificationSettings/ · SafetyManagement/ · ServiceGuide/ · PrivacyPolicy/ · AppInfo/   # 나의 공간 하위 화면
 │   │   ├── AccountSettings/ · AccountWithdrawal/ · WithdrawalComplete/  # 계정 관리 · 삭제 · 삭제 완료
-│   │   ├── Notifications/ # 알림
-│   │   └── Auth/ · Account/ · Letter/ · MySpace/ · Safety/   # 나누기 전 화면들의 CSS Modules 파일 (아래 설명)
+│   │   └── Notifications/ # 알림
 │   ├── components/
 │   │   ├── common/        # 하단 내비 · 공통 상태 화면(없는 페이지, 서비스 상태)
 │   │   ├── letter/        # 편지 흐름 공용: FocusShell(틀) · MissingLetterScreen · DraftExitDialog · PreviewSafety · LetterReturnSheet · ListenEntryHeader · ListenEntryLoadingState
 │   │   ├── auth/          # AuthShell · AuthHeader · AuthGateRedirect
 │   │   ├── account/ · mySpace/ · safety/ · notifications/   # 각 묶음 화면들이 함께 쓰는 머리글 · 틀
+│   │   │                  # 여러 화면이 함께 쓰는 CSS Modules 도 여기 있다: letter/LetterFlow · letter/ListenEntry · auth/Auth · account/Account · notifications/Notifications · safety/ReportForm
 │   ├── hooks/             # 임시 저장 자동 저장 Hook (draftGuards.ts)
 │   ├── constants/         # 문구 상수 (copy.ts)
 │   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
@@ -90,7 +90,8 @@
 - **규격과 다른 점**
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
   - 2026-09-18 한 파일에 여러 화면이 있던 파일 9개(`LetterFlowScreens` · `AuthScreens` · `SafetyActionScreens` · `MySpaceDetails` · `AccountManagementScreens` · `ListenEntryVariants` · `NotificationScreens` · `SafetyScreens` · `ReportScreens`)를 규격의 `pages/[Page]/[Page].tsx` 형태로 나눴다. 코드 본문과 컴포넌트 이름(`WriteLetterFlowScreen` 등)은 그대로다.
-  - **CSS Modules 파일은 옮기지 않았다.** 나눈 화면들이 원래 자리(`pages/Auth/*.module.css` · `pages/Account/` · `pages/Letter/` · `pages/MySpace/`)의 파일을 불러온다. 파일을 옮기거나 화면별로 쪼개면 class 이름과 불러오는 순서가 바뀌어 화면이 달라질 위험이 있다. 나눈 뒤 CSS 묶음의 불러오는 순서가 일부 바뀌었지만, 빌드 결과물을 전후로 띄워 찍은 스크린샷 253장이 같았다.
+  - **CSS Modules 파일**: 한 화면만 쓰는 파일은 그 화면 폴더에 `[Page].module.css` 로 두었다(홈만 `Home.module.css` 외에 `HomeRuledScreen` · `HomeRuledRefinedScreen` 두 파일이 더 있다). 여러 화면이 함께 쓰는 파일은 `components/` 의 해당 묶음에 있다. 파일 안의 규칙은 하나도 바꾸지 않았고 쪼개지도 않았다 — 쪼개면 규칙 적용 순서가 바뀌어 화면이 달라질 위험이 있다. 옮긴 뒤 빌드된 CSS 는 옮기기 전과 바이트까지 같다(Vite 는 class 해시를 파일 위치가 아니라 내용으로 만든다).
+  - 화면을 나눌 때 CSS 묶음의 불러오는 순서가 일부 바뀌었지만, 빌드 결과물을 전후로 띄워 찍은 스크린샷 253장이 같았다.
   - 한 파일에 여러 화면이 있는 곳은 이제 없고, 화면 파일 이름도 모두 `[Page]/[Page].tsx` 모양이다(2026-09-18). 화면 컴포넌트 이름도 `<폴더>Screen` 으로 맞췄다(예: `HomeScreen` · `TermsOfServiceScreen` · `ReportLetterScreen`).
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.

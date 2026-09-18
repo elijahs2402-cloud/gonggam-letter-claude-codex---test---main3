@@ -7,7 +7,7 @@ import { navigateTo } from "../../utils/navigation";
 import { assetUrl } from "../../utils/basePath";
 import { ROUTES } from "../../routes/paths";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import intro from "./IntroScreen.module.css";
+import intro from "./Intro.module.css";
 
 /** 인트로(/, /intro). 2026-09-17 App.tsx 에서 옮겨 왔다 — 내용은 그대로다. */
 export function IntroScreen() {

@@ -5,9 +5,9 @@ import { assetUrl } from "../../utils/basePath";
 import { ROUTES } from "../../routes/paths";
 import { AuthShell, AuthHeader } from "../../components/auth/AuthShell";
 // 공감편지 소개 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import onboarding from "../Auth/OnboardingScreen.module.css";
+import onboarding from "./Onboarding.module.css";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
-import auth from "../Auth/AuthScreens.module.css";
+import auth from "../../components/auth/Auth.module.css";
 
 export function OnboardingScreen() {
   return (

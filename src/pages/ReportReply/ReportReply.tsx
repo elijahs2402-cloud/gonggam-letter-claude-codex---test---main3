@@ -12,7 +12,7 @@ import {
 import { ROUTES, routeTo } from "../../routes/paths";
 import { Shell } from "../../components/safety/Shell";
 // 신고 화면 CSS Modules(편지 신고 ReportScreens.tsx 와 함께 쓴다).
-import reportForm from "../Safety/ReportForm.module.css";
+import reportForm from "../../components/safety/ReportForm.module.css";
 
 const reportReasons: ReadonlyArray<[ReportReason, string]> = [
   ["abusive", "모욕적이거나 공격적인 표현"],
