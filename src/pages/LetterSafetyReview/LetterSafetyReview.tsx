@@ -1,3 +1,5 @@
+// 편지 안전 점검 (/letter-safety-review)
+// 2026-09-18 src/pages/Safety/SafetyScreens.tsx 에서 옮겼다(코드 그대로).
 import { useState } from "react";
 import {
   createLetter,

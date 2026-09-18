@@ -61,17 +61,16 @@
 │   │   ├── ListenEntry/ · ListenEntryEmpty/ · ReadLetter/               # 편지 만나기 · 만날 편지 없음 · 편지 읽기
 │   │   ├── WriteReply/ · ReplyReview/ · ReplySending/ · ReplySent/      # 답장 쓰기 · 점검 · 보내는 중 · 완료
 │   │   ├── MyLetterDetail/ · RepliedLetterDetail/                       # 편지함 상세
-│   │   ├── ReportReply/ · ReturnLetter/                                 # 답장 신고 · 편지 두고 가기
-│   │   ├── AnonymousNameSettings/ · ServiceGuide/ · PrivacyPolicy/ · AppInfo/   # 나의 공간 하위 화면
+│   │   ├── ReportLetter/ · ReportReply/ · ReturnLetter/ · LetterSafetyReview/   # 편지 신고 · 답장 신고 · 두고 가기 · 편지 안전 점검
+│   │   ├── AnonymousNameSettings/ · NotificationSettings/ · SafetyManagement/ · ServiceGuide/ · PrivacyPolicy/ · AppInfo/   # 나의 공간 하위 화면
 │   │   ├── AccountSettings/ · AccountWithdrawal/ · WithdrawalComplete/  # 계정 관리 · 삭제 · 삭제 완료
-│   │   ├── Notifications/ # 알림 · 알림 설정 · 서비스 안내 (아직 한 파일에 여러 화면)
-│   │   ├── Safety/        # 편지 안전 점검 · 편지 신고 · 차단 및 신고 관리 (아직 한 파일에 여러 화면)
-│   │   └── Auth/ · Account/ · Letter/ · MySpace/   # 나누기 전 화면들의 CSS Modules 파일 (아래 설명)
+│   │   ├── Notifications/ # 알림(Notifications.tsx) · 서비스 안내 세부(ServiceNoticeScreen.tsx)
+│   │   └── Auth/ · Account/ · Letter/ · MySpace/ · Safety/   # 나누기 전 화면들의 CSS Modules 파일 (아래 설명)
 │   ├── components/
 │   │   ├── common/        # 하단 내비 · 공통 상태 화면(없는 페이지, 서비스 상태)
 │   │   ├── letter/        # 편지 흐름 공용: FocusShell(틀) · MissingLetterScreen · DraftExitDialog · PreviewSafety · LetterReturnSheet · ListenEntryHeader · ListenEntryLoadingState
 │   │   ├── auth/          # AuthShell · AuthHeader · AuthGateRedirect
-│   │   ├── account/ · mySpace/ · safety/   # 각 묶음 화면들이 함께 쓰는 머리글 · 틀
+│   │   ├── account/ · mySpace/ · safety/ · notifications/   # 각 묶음 화면들이 함께 쓰는 머리글 · 틀
 │   ├── hooks/             # 임시 저장 자동 저장 Hook (draftGuards.ts)
 │   ├── constants/         # 문구 상수 (copy.ts)
 │   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
@@ -89,9 +88,9 @@
 - 규격 §4 의 구조로 파일을 옮겼다. 코드와 파일명은 그대로다.
 - **규격과 다른 점**
   - `utils/` 는 규격 목록에 없다. 화면이 아닌 공용 도우미 8개를 모으려고 추가했다.
-  - 2026-09-18 한 파일에 여러 화면이 있던 파일 6개(`LetterFlowScreens` · `AuthScreens` · `SafetyActionScreens` · `MySpaceDetails` · `AccountManagementScreens` · `ListenEntryVariants`)를 규격의 `pages/[Page]/[Page].tsx` 형태로 나눴다. 코드 본문과 컴포넌트 이름(`WriteLetterFlowScreen` 등)은 그대로다.
+  - 2026-09-18 한 파일에 여러 화면이 있던 파일 9개(`LetterFlowScreens` · `AuthScreens` · `SafetyActionScreens` · `MySpaceDetails` · `AccountManagementScreens` · `ListenEntryVariants` · `NotificationScreens` · `SafetyScreens` · `ReportScreens`)를 규격의 `pages/[Page]/[Page].tsx` 형태로 나눴다. 코드 본문과 컴포넌트 이름(`WriteLetterFlowScreen` 등)은 그대로다.
   - **CSS Modules 파일은 옮기지 않았다.** 나눈 화면들이 원래 자리(`pages/Auth/*.module.css` · `pages/Account/` · `pages/Letter/` · `pages/MySpace/`)의 파일을 불러온다. 파일을 옮기거나 화면별로 쪼개면 class 이름과 불러오는 순서가 바뀌어 화면이 달라질 위험이 있다. 나눈 뒤 CSS 묶음의 불러오는 순서가 일부 바뀌었지만, 빌드 결과물을 전후로 띄워 찍은 스크린샷 253장이 같았다.
-  - 아직 한 파일에 여러 화면이 있는 곳: `Notifications/NotificationScreens.tsx` · `Safety/SafetyScreens.tsx` · `Safety/ReportScreens.tsx`.
+  - 한 파일에 여러 화면이 있는 곳은 이제 없다. 규격의 파일 이름 모양(`[Page]/[Page].tsx`)과 다른 곳: `Home/HomeRuledScreen.tsx` · `Intro/IntroScreen.tsx` · `Mailbox/MailboxScreen.tsx` · `MySpace/MySpaceScreen.tsx` · `MySpace/TermsMockup.tsx` · `Notifications/ServiceNoticeScreen.tsx`(화면 하나씩이라 그대로 둠).
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
   - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.

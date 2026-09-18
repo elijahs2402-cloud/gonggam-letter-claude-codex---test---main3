@@ -35,16 +35,14 @@ import { TermsMockupScreen } from "../pages/MySpace/TermsMockup";
 import { AccountSettingsScreen } from "../pages/AccountSettings/AccountSettings";
 import { AccountWithdrawalScreen } from "../pages/AccountWithdrawal/AccountWithdrawal";
 import { WithdrawalCompleteScreen } from "../pages/WithdrawalComplete/WithdrawalComplete";
-import {
-  NotificationsScreen,
-  NotificationSettingsScreen,
-} from "../pages/Notifications/NotificationScreens";
+import { NotificationsScreen } from "../pages/Notifications/Notifications";
+import { NotificationSettingsScreen } from "../pages/NotificationSettings/NotificationSettings";
 import { ListenEntryAScreen } from "../pages/ListenEntry/ListenEntry";
 import { ListenEntryEmptyScreen } from "../pages/ListenEntryEmpty/ListenEntryEmpty";
 import { WriteLetterFlowScreen } from "../pages/WriteLetter/WriteLetter";
 import { LetterPreviewScreen } from "../pages/LetterPreview/LetterPreview";
-import { LetterSafetyReviewScreen } from "../pages/Safety/SafetyScreens";
-import { SafetyManagementScreen } from "../pages/Safety/ReportScreens";
+import { LetterSafetyReviewScreen } from "../pages/LetterSafetyReview/LetterSafetyReview";
+import { SafetyManagementScreen } from "../pages/SafetyManagement/SafetyManagement";
 import {
   LetterReportRoute,
   LetterReturnRoute,

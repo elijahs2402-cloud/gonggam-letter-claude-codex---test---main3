@@ -27,7 +27,7 @@ import { ReplyReviewScreen } from "../pages/ReplyReview/ReplyReview";
 import { ReplySendingTransitionScreen } from "../pages/ReplySending/ReplySending";
 import { ReplySentScreen } from "../pages/ReplySent/ReplySent";
 import { WriteReplyFlowScreen } from "../pages/WriteReply/WriteReply";
-import { LetterReportFigmaScreen } from "../pages/Safety/ReportScreens";
+import { LetterReportFigmaScreen } from "../pages/ReportLetter/ReportLetter";
 import { LetterReturnScreen } from "../pages/ReturnLetter/ReturnLetter";
 import { ReplyReportScreen } from "../pages/ReportReply/ReportReply";
 import { ROUTES } from "./paths";

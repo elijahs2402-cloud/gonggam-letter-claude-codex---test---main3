@@ -12,8 +12,8 @@ import { PolicyScreen } from "../PrivacyPolicy/PrivacyPolicy";
 import { getMySpaceSummary } from "../../data/mySpaceSummary";
 import { AccountSettingsScreen } from "../AccountSettings/AccountSettings";
 import { AccountWithdrawalScreen } from "../AccountWithdrawal/AccountWithdrawal";
-import { NotificationSettingsScreen } from "../Notifications/NotificationScreens";
-import { SafetyManagementScreen } from "../Safety/ReportScreens";
+import { NotificationSettingsScreen } from "../NotificationSettings/NotificationSettings";
+import { SafetyManagementScreen } from "../SafetyManagement/SafetyManagement";
 import { TermsMockupScreen } from "./TermsMockup";
 import { ROUTES } from "../../routes/paths";
 // 나의 공간 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
