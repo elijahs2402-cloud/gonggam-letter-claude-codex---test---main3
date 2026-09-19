@@ -35,7 +35,7 @@ export function ServiceGuideScreen({
     <main
       className={`mobile-prototype guide-screen ${guide["guide-screen"]} guide-screen--my-space${stageClassName ? ` ${stageClassName}` : ""}`}
     >
-      <Header title="이용 안내" />
+      <Header title="이용 안내" headingTitle />
       <div className="my-detail-scroll">
         {/* 이용 안내는 헤더 타이틀("이용 안내")이 곧 제목이라
       본문 대제목이 같은 말을 두 번 하는 꼴이었다. 헤더만 남긴다. */}

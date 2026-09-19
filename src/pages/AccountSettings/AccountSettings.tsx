@@ -114,7 +114,7 @@ export function AccountSettingsScreen({
     <main
       className={`mobile-prototype account-settings-screen account-settings-screen--figma${enteredViaPop ? " is-popped-in" : ""}${stageClassName ? ` ${stageClassName}` : ""}`}
     >
-      <Header title="계정 관리" />
+      <Header title="계정 관리" headingTitle />
       <div className="my-detail-scroll account-settings-scroll--figma">
         <section
           className={`account-settings-list--figma ${styles["account-settings-list--figma"]}`}

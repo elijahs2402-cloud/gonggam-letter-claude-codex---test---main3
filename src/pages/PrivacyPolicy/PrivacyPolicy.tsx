@@ -36,7 +36,7 @@ export function PrivacyPolicyScreen({
       <main
         className={`mobile-prototype policy-screen privacy-policy-screen${stageClassName ? ` ${stageClassName}` : ""}`}
       >
-        <Header title={title} />
+        <Header title={title} headingTitle />
         <div className="my-detail-scroll">
           <section
             className={`privacy-policy-document ${policy["privacy-policy-document"]}`}

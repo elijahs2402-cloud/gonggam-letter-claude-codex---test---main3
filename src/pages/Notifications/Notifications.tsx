@@ -77,7 +77,11 @@ export function NotificationsScreen({
       className={`mobile-prototype notification-screen ${styles["notification-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
       data-version={version}
     >
-      <Header title="알림" fallback={ROUTES.home} />
+      <Header
+        title="알림"
+        fallback={ROUTES.home}
+        headingTitle={notices.length > 0}
+      />
       <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         {notices.length ? (
           <section

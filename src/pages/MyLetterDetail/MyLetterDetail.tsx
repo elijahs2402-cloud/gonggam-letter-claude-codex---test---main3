@@ -212,7 +212,7 @@ export function MyLetterDetailScreen({ letterId }: { letterId?: string }) {
       </FocusShell>
     );
   return (
-    <FocusShell title="내가 보낸 편지" fallback={ROUTES.mailbox}>
+    <FocusShell title="내가 보낸 편지" fallback={ROUTES.mailbox} headingTitle>
       <section className={`letter-detail ${flow["letter-detail"]}`}>
         <p className={`detail-kicker ${flow["detail-kicker"]}`}>
           내가 보낸 편지

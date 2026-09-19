@@ -34,7 +34,7 @@ export function NotificationSettingsScreen({
     <main
       className={`mobile-prototype notification-settings-screen ${styles["notification-settings-screen"]}${stageClassName ? ` ${stageClassName}` : ""}`}
     >
-      <Header title="알림 설정" fallback={ROUTES.mySpace} />
+      <Header title="알림 설정" fallback={ROUTES.mySpace} headingTitle />
       <div className={`notification-scroll ${styles["notification-scroll"]}`}>
         <section
           className={`notification-settings-list ${styles["notification-settings-list"]}`}

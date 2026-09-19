@@ -57,7 +57,10 @@ export function TermsOfServiceScreen({
         >
           ←
         </button>
-        <span>서비스 이용약관</span>
+        {/* 본문에 화면 제목이 없어 머리글 제목을 화면 제목으로 읽게 한다(2026-09-19 접근성 점검) */}
+        <span role="heading" aria-level={1}>
+          서비스 이용약관
+        </span>
         <i aria-hidden="true" />
       </header>
 

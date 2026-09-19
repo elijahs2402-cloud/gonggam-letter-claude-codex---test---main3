@@ -88,6 +88,7 @@ export function SafetyManagementScreen({
     <Shell
       title="차단 및 신고 관리"
       fallback={ROUTES.mySpace}
+      headingTitle
       screenClassName={`safety-management-screen${stageClassName ? ` ${stageClassName}` : ""}`}
     >
       <section
