@@ -4556,3 +4556,76 @@ html[data-ios-standalone="true"] .my-space-scroll-region {
 .notification-empty h1 {
   font-size: var(--fs-section);
 }
+
+/* ==========================================================================
+   터치 영역 44px 확보 (규격 §34, 2026-09-19 사용자 승인)
+
+   보이는 모양은 그대로 두고, 보이지 않는 ::after 로 누르는 영역만 넓힌다.
+   (::after 는 배경·테두리가 없어 화면에 그려지지 않는다.)
+   ::after 는 버튼 테두리 안쪽을 기준으로 놓이므로, 테두리가 있는 버튼은 그 두께만큼 더 넓힌다.
+   점검 도구: gonggam-letter-work/tools/screenshot/touch-audit.mjs
+   ========================================================================== */
+
+/* 편지함 상세 — 답장 "신고하기" 글자 버튼 (48×18) */
+.my-letter-reply-report .flow-text-button {
+  position: relative;
+}
+.my-letter-reply-report .flow-text-button::after {
+  content: "";
+  position: absolute;
+  inset: -13px 0;
+}
+
+/* 나의 이름 — 입력한 이름 지우기 × (32×32, 이미 absolute · ::before 사용 중) */
+.anonymous-name-clear::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+}
+
+/* 이름 정하기 — "이름 추천 받기" (86×32) */
+.direct-nickname-recommend {
+  position: relative;
+}
+.direct-nickname-recommend::after {
+  content: "";
+  position: absolute;
+  inset: -7px 0;
+}
+
+/* 대화상자 아래 글자 버튼 — "계속 이용하기" 등 (342×35).
+   위 버튼과 10px 떨어져 있어 위로 4px · 아래로 5px 만 넓힌다. */
+.draft-exit-actions .flow-text-button {
+  position: relative;
+}
+.draft-exit-actions .flow-text-button::after {
+  content: "";
+  position: absolute;
+  inset: -4px 0 -5px;
+}
+
+/* 편지함 필터 (높이 36). 목록 상자 안쪽 여백(위 40 · 아래 8px) 안에서 위아래 5px 씩. */
+.mailbox-filter-chips button {
+  position: relative;
+}
+.mailbox-filter-chips button::after {
+  content: "";
+  position: absolute;
+  inset: -5px 0;
+}
+
+/* 앱 정보 — 약관 링크 두 개 (높이 41, 서로 붙어 있음). 바깥쪽으로만 4px. */
+.app-info-card > button {
+  position: relative;
+}
+.app-info-card > button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.app-info-card > button:first-of-type::after {
+  top: -4px;
+}
+.app-info-card > button:last-of-type::after {
+  bottom: -4px;
+}
