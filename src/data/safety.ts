@@ -1,48 +1,9 @@
-export type SafetySeverity = "none" | "notice" | "warning" | "high_risk";
-export type SafetyCategory =
-  | "personal_information"
-  | "external_contact"
-  | "meeting_request"
-  | "harassment"
-  | "hate"
-  | "sexual_content"
-  | "threat"
-  | "self_harm_risk"
-  | "suicide_risk"
-  | "abuse_risk"
-  | "violence_risk"
-  | "illegal_activity"
-  | "other";
-export type SafetyStatus =
-  | "not_checked"
-  | "clear"
-  | "needs_revision"
-  | "high_risk"
-  | "under_review"
-  | "blocked";
-export type ModerationStatus =
-  "not_required" | "pending" | "reviewing" | "approved" | "rejected";
-export type SafetyMatch = {
-  category: SafetyCategory;
-  severity: SafetySeverity;
-  matchedText?: string;
-  startIndex?: number;
-  endIndex?: number;
-  message: string;
-};
-export type SafetyReviewResult = {
-  id: string;
-  targetType: "letter" | "reply";
-  targetId: string;
-  checkedAt: string;
-  severity: SafetySeverity;
-  categories: SafetyCategory[];
-  matches: SafetyMatch[];
-  status: Exclude<SafetyStatus, "not_checked">;
-  engine: "local_rules" | "remote_service" | "manual";
-  version: string;
-};
-
+import type {
+  SafetySeverity,
+  SafetyCategory,
+  SafetyMatch,
+  SafetyReviewResult,
+} from "../types/safety";
 const createId = () =>
   `safety-${typeof crypto?.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`}`;
 const REVIEW_KEY = "gonggam_safety_reviews_v1";

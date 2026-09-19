@@ -1,6 +1,7 @@
 import { isUserBlocked } from "./blocks";
 import { isContentHidden } from "./contentVisibility";
-import { getLetters, type Letter } from "./letters";
+import { getLetters } from "./letters";
+import type { Letter } from "../types/letters";
 import { getLetterReturn } from "./letterReturns";
 import { seedSampleLetters } from "./sampleLetters";
 import { getReportForTarget } from "./reports";

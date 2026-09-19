@@ -7,7 +7,8 @@ import {
   getLetterById,
   getLetters,
 } from "../../data/letters";
-import { getReportsByUser, type Report } from "../../data/reports";
+import { getReportsByUser } from "../../data/reports";
+import type { Report } from "../../types/reports";
 import { formatDate } from "../../utils/datetime";
 import { ROUTES } from "../../routes/paths";
 import { Shell } from "../../components/safety/ReportShell";

@@ -1,9 +1,4 @@
-export type HiddenContent = {
-  userId: string;
-  targetType: "letter" | "reply";
-  targetId: string;
-  createdAt: string;
-};
+import type { HiddenContent } from "../types/contentVisibility";
 const KEY = "gonggam_hidden_content_v1";
 const read = (): HiddenContent[] => {
   try {

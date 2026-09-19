@@ -1,22 +1,4 @@
-export type LetterReturnReason =
-  | "no_time"
-  | "difficult_to_reply"
-  | "too_heavy"
-  | "unsafe_or_uncomfortable"
-  | "assigned_by_mistake"
-  | "other";
-export type MockLetterReturn = {
-  id: string;
-  letterId: string;
-  readerId: string;
-  reason?: LetterReturnReason;
-  detail?: string;
-  hadReplyDraft: boolean;
-  replyDraftDeleted: boolean;
-  status: "processing" | "completed" | "failed";
-  createdAt: string;
-  completedAt?: string;
-};
+import type { MockLetterReturn } from "../types/letterReturns";
 const KEY = "gonggam_mock_letter_returns_v1";
 const read = (): MockLetterReturn[] => {
   try {

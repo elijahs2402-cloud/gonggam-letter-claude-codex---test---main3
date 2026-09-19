@@ -1,4 +1,4 @@
-import type { Letter, LetterStatus } from "./letters";
+import type { Letter, LetterStatus } from "../types/letters";
 
 const copy: Record<LetterStatus, { label: string; description: string }> = {
   submitted: {

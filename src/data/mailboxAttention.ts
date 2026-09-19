@@ -1,29 +1,11 @@
 import { getReplyDraftsByWriter } from "./letterDraft";
 import { getLetterDraft } from "./letterDraft";
-import { getOpenDeliveryIssues, type DeliveryIssue } from "./deliveryIssues";
-import {
-  getLetters,
-  getUnreadReplyLettersByUser,
-  type Letter,
-} from "./letters";
-
-export type MailboxAttentionReason =
-  | "safety-review"
-  | "unread-replies"
-  | "delivery-failure"
-  | "assigned-letter"
-  | "reply-draft"
-  | "letter-draft";
-
-export type MailboxAttention = {
-  reasons: MailboxAttentionReason[];
-  unreadReplies: Letter[];
-  assignedLetters: Letter[];
-  replyDraftLetterIds: string[];
-  hasLetterDraft: boolean;
-  safetyNeedsReview: boolean;
-  deliveryIssues: DeliveryIssue[];
-};
+import { getOpenDeliveryIssues } from "./deliveryIssues";
+import { getLetters, getUnreadReplyLettersByUser } from "./letters";
+import type {
+  MailboxAttentionReason,
+  MailboxAttention,
+} from "../types/mailboxAttention";
 
 export function getMailboxAttention(
   userId: string,

@@ -1,35 +1,7 @@
-import { getCurrentUserId, type LetterStatus } from "./letters";
+import { getCurrentUserId } from "./letters";
+import type { LetterStatus } from "../types/letters";
 import { shouldFailDraftOperation } from "../utils/draftDevTools";
-
-export type DraftStage = "writing" | "review";
-
-export type LetterDraft = {
-  id: string;
-  userId: string;
-  content: string;
-  anonymousName?: string;
-  createdAt: string;
-  updatedAt: string;
-  stage: DraftStage;
-  source: "new-letter";
-  lastSafetyReviewId?: string;
-  lastSafetyStatus?: string;
-  lastSafetyCheckedAt?: string;
-};
-
-export type ReplyDraft = {
-  id: string;
-  letterId: string;
-  writerId: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  stage: DraftStage;
-  letterStatusAtSave?: LetterStatus;
-  lastSafetyReviewId?: string;
-  lastSafetyStatus?: string;
-  lastSafetyCheckedAt?: string;
-};
+import type { DraftStage, LetterDraft, ReplyDraft } from "../types/letterDraft";
 
 const LETTER_DRAFTS_KEY = "gonggam_letter_drafts_v1";
 const REPLY_DRAFTS_KEY = "gonggam_reply_drafts_v1";

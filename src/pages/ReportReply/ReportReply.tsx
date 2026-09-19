@@ -4,11 +4,8 @@ import { useState } from "react";
 import { blockUser } from "../../data/blocks";
 import { getCurrentUserId, getLetterById } from "../../data/letters";
 import { navigateTo, setPageTimeout } from "../../utils/navigation";
-import {
-  createReport,
-  getReportForTarget,
-  type ReportReason,
-} from "../../data/reports";
+import { createReport, getReportForTarget } from "../../data/reports";
+import type { ReportReason } from "../../types/reports";
 import { ROUTES, routeTo } from "../../routes/paths";
 import { Shell } from "../../components/safety/Shell";
 // 신고 화면 CSS Modules(편지 신고 ReportScreens.tsx 와 함께 쓴다).

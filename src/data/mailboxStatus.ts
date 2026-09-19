@@ -1,31 +1,6 @@
 import { getOpenDeliveryIssues } from "./deliveryIssues";
-import type { Letter } from "./letters";
-
-export type SentLetterDisplayKind =
-  | "safety_review"
-  | "moderation_review"
-  | "restricted"
-  | "send_failed"
-  | "reply_arrived_unread"
-  | "reply_opened"
-  | "withdrawn"
-  | "reply_writing"
-  | "assigned"
-  | "redistributed"
-  | "waiting"
-  | "sent"
-  | "deleted";
-
-export type SentLetterDisplayStatus = {
-  kind: SentLetterDisplayKind;
-  label: string;
-  description: string;
-  hasUnreadReply?: boolean;
-  requiresAttention?: boolean;
-  isRestricted?: boolean;
-  isDeleted?: boolean;
-  activityAt: string;
-};
+import type { Letter } from "../types/letters";
+import type { SentLetterDisplayStatus } from "../types/mailboxStatus";
 
 const fixtureStatus = (letter: Letter): SentLetterDisplayStatus | undefined => {
   const scenario = letter.prototypeListScenario;

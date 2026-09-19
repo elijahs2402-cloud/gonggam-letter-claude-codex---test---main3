@@ -11,8 +11,8 @@ import {
   getLetterById,
   saveLetter,
   transitionLetterStatus,
-  type Letter,
 } from "../../data/letters";
+import type { Letter } from "../../types/letters";
 import {
   deleteReplyDraft,
   getReplyDraft,

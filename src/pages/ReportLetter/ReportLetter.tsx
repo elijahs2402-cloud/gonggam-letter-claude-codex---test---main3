@@ -4,11 +4,8 @@ import { useState } from "react";
 import { blockUser } from "../../data/blocks";
 import { hideContent } from "../../data/contentVisibility";
 import { getCurrentUserId, getLetterById } from "../../data/letters";
-import {
-  createReport,
-  getReportForTarget,
-  type ReportReason,
-} from "../../data/reports";
+import { createReport, getReportForTarget } from "../../data/reports";
+import type { ReportReason } from "../../types/reports";
 import { navigateTo, setPageTimeout } from "../../utils/navigation";
 import { getListenEntryPath } from "../../data/waitingLetters";
 import { ROUTES, routeTo } from "../../routes/paths";

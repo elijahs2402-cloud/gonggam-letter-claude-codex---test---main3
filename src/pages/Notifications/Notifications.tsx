@@ -5,8 +5,8 @@ import { getLetterById } from "../../data/letters";
 import {
   getNotifications,
   markNotificationRead,
-  type MockNotification,
 } from "../../data/notifications";
+import type { MockNotification } from "../../types/notifications";
 import { navigateTo } from "../../utils/navigation";
 import { formatDate } from "../../utils/datetime";
 import { ROUTES } from "../../routes/paths";

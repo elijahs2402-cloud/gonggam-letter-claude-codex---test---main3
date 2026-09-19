@@ -1,4 +1,5 @@
-import { getLetters, saveLetter, type Letter } from "./letters";
+import { getLetters, saveLetter } from "./letters";
+import type { Letter } from "../types/letters";
 
 const SAMPLE_PREFIX = "sample-waiting-letter-";
 

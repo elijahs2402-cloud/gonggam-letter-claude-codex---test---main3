@@ -6,8 +6,8 @@ import {
   getMockAuthSnapshot,
   resolveMockLogin,
   retryMockLogin,
-  type MockAuthProvider,
 } from "../../data/mockAuth";
+import type { MockAuthProvider } from "../../types/mockAuth";
 import { navigateTo, replaceRoute } from "../../utils/navigation";
 import { assetUrl } from "../../utils/basePath";
 import { ROUTES } from "../../routes/paths";

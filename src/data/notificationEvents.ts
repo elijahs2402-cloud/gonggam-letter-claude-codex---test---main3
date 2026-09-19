@@ -3,14 +3,14 @@ import {
   getLetters,
   getMyLetters,
   getReplyDeadline,
-  type Letter,
 } from "./letters";
+import type { Letter } from "../types/letters";
 import {
   addNotification,
   getNotificationSettings,
   hasNotificationFor,
-  type MockNotificationType,
 } from "./notifications";
+import type { MockNotificationType } from "../types/notifications";
 import { routeTo } from "../routes/paths";
 
 /**

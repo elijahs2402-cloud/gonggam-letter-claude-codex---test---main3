@@ -1,10 +1,4 @@
-export type UserBlock = {
-  id: string;
-  blockerUserId: string;
-  blockedUserId: string;
-  createdAt: string;
-  source: "reply_report" | "letter_report" | "manual";
-};
+import type { UserBlock } from "../types/blocks";
 const KEY = "gonggam_blocks_v1";
 const read = (): UserBlock[] => {
   try {

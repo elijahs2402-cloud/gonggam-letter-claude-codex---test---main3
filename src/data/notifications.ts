@@ -1,34 +1,9 @@
 import { getCurrentUserId } from "./letters";
-
-/** Prototype-only in-app notification store. Replace with server + push APIs in production. */
-export type MockNotificationType =
-  | "reply_arrived"
-  | "letter_assigned"
-  | "reply_reminder"
-  | "report_received"
-  | "report_resolved";
-export type MockNotification = {
-  id: string;
-  userId: string;
-  type: MockNotificationType;
-  title: string;
-  message: string;
-  targetType?: "letter" | "reply" | "report";
-  targetId?: string;
-  targetRoute?: string;
-  isRead: boolean;
-  createdAt: string;
-  readAt?: string;
-};
-export type MockNotificationSettings = {
-  userId: string;
-  pushPermission: "not_requested" | "granted" | "denied";
-  replyArrived: boolean;
-  letterUpdates: boolean;
-  replyReminders: boolean;
-  safetyUpdates: boolean;
-  updatedAt: string;
-};
+import type {
+  MockNotificationType,
+  MockNotification,
+  MockNotificationSettings,
+} from "../types/notifications";
 
 const NOTIFICATIONS_KEY = "gonggam_mock_notifications_v1";
 const SETTINGS_KEY = "gonggam_mock_notification_settings_v1";

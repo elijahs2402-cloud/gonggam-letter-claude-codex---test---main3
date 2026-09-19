@@ -1,38 +1,12 @@
 import { getCurrentUserId, resetCurrentUserId } from "./letters";
 import { resetSampleLetters } from "./sampleLetters";
 import { ROUTES } from "../routes/paths";
-
-/**
- * Prototype-only authentication state. Replace this module with the real
- * authentication/session client when the production service is connected.
- * No credentials, provider tokens, email addresses, or real names are stored.
- */
-export type MockAuthState =
-  | "logged_out"
-  | "logging_in"
-  | "new_user"
-  | "existing_user"
-  | "login_failed"
-  | "logged_in"
-  | "withdrawn";
-
-export type MockAuthProvider = "apple" | "google" | "kakao";
-
-export type MockUserAccount = {
-  id: string;
-  authProvider: MockAuthProvider;
-  anonymousName?: string;
-  onboardingCompleted: boolean;
-  termsAccepted: boolean;
-  ageConfirmed: boolean;
-};
-
-export type MockAuthSnapshot = {
-  state: MockAuthState;
-  account?: MockUserAccount;
-  pendingProvider?: MockAuthProvider;
-  loginMode?: "new" | "existing" | "failure";
-};
+import type {
+  MockAuthState,
+  MockAuthProvider,
+  MockUserAccount,
+  MockAuthSnapshot,
+} from "../types/mockAuth";
 
 const AUTH_KEY = "gonggam_mock_auth_v1";
 const ONBOARDING_KEY = "gonggam_onboarding_v1";

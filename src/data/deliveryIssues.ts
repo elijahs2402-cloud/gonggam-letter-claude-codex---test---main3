@@ -1,13 +1,6 @@
 import { getCurrentUserId } from "./letters";
+import type { DeliveryIssue } from "../types/deliveryIssues";
 
-export type DeliveryIssue = {
-  id: string;
-  userId: string;
-  kind: "letter-send" | "reply-send";
-  letterId?: string;
-  createdAt: string;
-  resolvedAt?: string;
-};
 const KEY = "gonggam_delivery_issues_v1";
 
 function read(): DeliveryIssue[] {

@@ -5,8 +5,8 @@ import {
   getCurrentUserId,
   getLettersRepliedByUser,
   getMyLetters,
-  type Letter,
 } from "../../data/letters";
+import type { Letter } from "../../types/letters";
 import {
   getSentLetterDisplayStatus,
   sortSentLettersByActivity,

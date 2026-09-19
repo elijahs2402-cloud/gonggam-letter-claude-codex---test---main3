@@ -75,6 +75,7 @@
 │   ├── hooks/             # 임시 저장 자동 저장 Hook (draftGuards.ts)
 │   ├── constants/         # 문구 상수 (copy.ts)
 │   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
+│   ├── types/             # 데이터 모양(타입) — data/ 와 같은 이름의 파일에 모았다 (예: types/letters.ts 의 Letter)
 │   ├── utils/             # 화면 이동 · 화면 높이 · 키보드 · 상태 표시줄 · 날짜 · 개발용 도구(draftDevTools.ts)
 │   ├── styles/
 │   │   ├── global.css     # 전역 스타일 — main.tsx 가 불러옴 (맨 위에서 common.css 를 불러옴)
@@ -95,7 +96,7 @@
   - 한 파일에 여러 화면이 있는 곳은 이제 없고, 화면 파일 이름도 모두 `[Page]/[Page].tsx` 모양이다(2026-09-18). 화면 컴포넌트 이름도 `<폴더>Screen` 으로 맞췄다(예: `HomeScreen` · `TermsOfServiceScreen` · `ReportLetterScreen`).
   - `styles/` 는 `global.css` · `common.css` · `globals.css` 세 파일이다. 규격은 `globals.css` · `variables.css` · `fonts.css` 이다. `global.css`(단수, 약 4,500줄)는 화면별 규칙을 CSS Modules 로 옮기고 남은 전역 규칙이다. `globals.css` 로 합치거나 토큰·폰트를 `variables.css` · `fonts.css` 로 나누는 일은 불러오는 순서가 바뀌어 화면이 달라질 위험이 있어 **보류했다**(2026-09-17 결정).
   - 불러오는 순서: `main.tsx` → `global.css` → `common.css` → (외부 폰트 3개) → `globals.css`. `globals.css` 의 규칙은 `@layer` 안에 있어 레이어 밖의 앱 CSS 보다 우선순위가 낮다. 파일을 옮기거나 합칠 때 이 구조를 유지해야 화면이 바뀌지 않는다.
-  - 데이터 타입(`types/`)은 아직 각 `data/` 모듈 안에 함께 있다.
+  - 데이터 타입은 `types/` 에 모았다(2026-09-19). 파일 이름은 그 데이터를 다루는 `data/` 파일과 같다. 화면 부품의 props 타입처럼 한 파일 안에서만 쓰는 타입은 그 파일에 그대로 둔다.
 
 ## 4. 설치 방법
 
