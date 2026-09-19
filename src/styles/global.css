@@ -1276,9 +1276,10 @@ html[data-ios-standalone="true"] .intro-copy {
   }
 
   /* 이름 지우기 × 는 translateY(-50%) 로 세로 가운데에 놓여 있어, 위 눌림 규칙이 그 값을 덮으면
-     누르는 동안 버튼이 17px 아래로 미끄러졌다(2026-09-19 기기 제보). 가운데 맞춤을 유지한 채 1px 만 눌린다. */
+     누르는 동안 버튼이 17px 아래로 미끄러졌다(2026-09-19 기기 제보). 사용자 요청으로 × 는 눌림 모션 없이
+     제자리에 둔다. */
   .mobile-prototype .anonymous-name-clear:not(:disabled):active {
-    transform: translateY(calc(-50% + 1px));
+    transform: translateY(-50%);
   }
 }
 
