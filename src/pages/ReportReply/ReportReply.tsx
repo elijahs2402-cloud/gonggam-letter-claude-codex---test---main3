@@ -10,6 +10,7 @@ import { ROUTES, routeTo } from "../../routes/paths";
 import { Shell } from "../../components/safety/Shell";
 // 신고 화면 CSS Modules(편지 신고 ReportScreens.tsx 와 함께 쓴다).
 import reportForm from "../../components/safety/ReportForm.module.css";
+import { DETAIL_MAX_LENGTH } from "../../constants/limits";
 
 const reportReasons: ReadonlyArray<[ReportReason, string]> = [
   ["abusive", "모욕적이거나 공격적인 표현"],
@@ -247,11 +248,13 @@ function ReplyReportForm({
           <textarea
             id="figma-reply-report-detail"
             value={detail}
-            maxLength={200}
+            maxLength={DETAIL_MAX_LENGTH}
             onChange={(event) => setDetail(event.target.value)}
             placeholder="신고 사유를 자세히 입력해 주세요."
           />
-          <small>{detail.length} / 200</small>
+          <small>
+            {detail.length} / {DETAIL_MAX_LENGTH}
+          </small>
         </section>
         <label
           className={`figma-report-setting ${reportForm["figma-report-setting"]}${withBlock ? " is-selected" : ""}`}

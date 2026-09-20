@@ -6,6 +6,9 @@ import {
   useState,
 } from "react";
 
+// 입력을 멈춘 뒤 이만큼 지나면 저장한다. 글자마다 저장하면 저장이 너무 잦다.
+const AUTOSAVE_DELAY_MS = 700;
+
 export type DraftSaveState = "idle" | "saving" | "saved" | "error";
 
 export function useDraftAutosave<T>(
@@ -44,7 +47,7 @@ export function useDraftAutosave<T>(
   useEffect(() => {
     if (!enabled) return;
     dirty.current = true;
-    const timer = window.setTimeout(saveNow, 700);
+    const timer = window.setTimeout(saveNow, AUTOSAVE_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [value, enabled, saveNow]);
 

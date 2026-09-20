@@ -10,6 +10,11 @@ import { navigateBack } from "../../utils/navigation";
 import { ROUTES } from "../../routes/paths";
 // 이름 바꾸기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import nameSettings from "./AnonymousNameSettings.module.css";
+import { NAME_MAX_LENGTH } from "../../constants/limits";
+import { NAME_LENGTH_HELP } from "../../constants/copy";
+
+// '나의 이름을 바꿨어요' 알림이 떠 있는 시간.
+const TOAST_VISIBLE_MS = 3000;
 
 export function AnonymousNameSettingsScreen({
   stageClassName = "",
@@ -42,7 +47,7 @@ export function AnonymousNameSettingsScreen({
     setConfirm(false);
     setToast("나의 이름을 바꿨어요.");
     setIsToastLeaving(false);
-    window.setTimeout(() => setIsToastLeaving(true), 3000);
+    window.setTimeout(() => setIsToastLeaving(true), TOAST_VISIBLE_MS);
   };
   return (
     <main
@@ -115,7 +120,7 @@ export function AnonymousNameSettingsScreen({
               id="nickname-settings-input"
               type="text"
               value={name}
-              maxLength={10}
+              maxLength={NAME_MAX_LENGTH}
               onChange={(event) => {
                 setName(event.target.value);
                 setFailed(false);
@@ -137,9 +142,9 @@ export function AnonymousNameSettingsScreen({
           <div
             className={`anonymous-name-field__meta ${nameSettings["anonymous-name-field__meta"]}`}
           >
-            <span id="nickname-settings-note">10자 이내로 입력해주세요.</span>
+            <span id="nickname-settings-note">{NAME_LENGTH_HELP}</span>
             <span id="nickname-settings-count" aria-live="polite">
-              {name.length} / 10
+              {name.length} / {NAME_MAX_LENGTH}
             </span>
           </div>
         </section>

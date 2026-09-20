@@ -8,17 +8,28 @@ import { AuthShell } from "../../components/auth/AuthShell";
 // 환영 문구 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import welcome from "./ReturningWelcome.module.css";
 
+// 환영 인사가 뜨고 사라지기까지의 흐름(모두 화면이 그려진 뒤 기준).
+const REVEAL_DELAY_MS = 90; // 나타나기 시작
+const LEAVE_DELAY_MS = 2510; // 사라지기 시작
+const FINISH_DELAY_MS = 3230; // 다음 화면으로 이동
+
 export function ReturningWelcomeScreen() {
   const name = getMockAuthSnapshot().account?.anonymousName ?? "조용한 별빛";
   const [visible, setVisible] = useState(false);
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    const revealTimer = window.setTimeout(() => setVisible(true), 90);
-    const leaveTimer = window.setTimeout(() => setLeaving(true), 2510);
+    const revealTimer = window.setTimeout(
+      () => setVisible(true),
+      REVEAL_DELAY_MS,
+    );
+    const leaveTimer = window.setTimeout(
+      () => setLeaving(true),
+      LEAVE_DELAY_MS,
+    );
     const finishTimer = window.setTimeout(
       () => navigateTo(getPostLoginPath(ROUTES.home)),
-      3230,
+      FINISH_DELAY_MS,
     );
     return () => {
       window.clearTimeout(revealTimer);

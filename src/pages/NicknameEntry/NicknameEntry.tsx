@@ -10,6 +10,8 @@ import { ROUTES } from "../../routes/paths";
 import { AuthShell, AuthHeader } from "../../components/auth/AuthShell";
 // 닉네임 정하기 CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import nickname from "./NicknameEntry.module.css";
+import { NAME_MAX_LENGTH } from "../../constants/limits";
+import { NAME_LENGTH_HELP } from "../../constants/copy";
 
 export function NicknameEntryScreen() {
   const [name, setName] = useState("");
@@ -57,8 +59,10 @@ export function NicknameEntryScreen() {
                 id="direct-nickname-input"
                 type="text"
                 value={name}
-                maxLength={10}
-                onChange={(event) => setName(event.target.value.slice(0, 10))}
+                maxLength={NAME_MAX_LENGTH}
+                onChange={(event) =>
+                  setName(event.target.value.slice(0, NAME_MAX_LENGTH))
+                }
                 placeholder="이름을 입력해주세요"
                 aria-describedby="direct-nickname-help"
                 autoFocus
@@ -77,8 +81,10 @@ export function NicknameEntryScreen() {
             <div
               className={`direct-nickname-field__meta ${nickname["direct-nickname-field__meta"]}`}
             >
-              <p id="direct-nickname-help">10자 이내로 입력해주세요.</p>
-              <span aria-live="polite">{name.length} / 10</span>
+              <p id="direct-nickname-help">{NAME_LENGTH_HELP}</p>
+              <span aria-live="polite">
+                {name.length} / {NAME_MAX_LENGTH}
+              </span>
             </div>
           </div>
           <button

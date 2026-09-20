@@ -7,6 +7,7 @@ import type {
   MockUserAccount,
   MockAuthSnapshot,
 } from "../types/mockAuth";
+import { NAME_MAX_LENGTH } from "../constants/limits";
 
 const AUTH_KEY = "gonggam_mock_auth_v1";
 const ONBOARDING_KEY = "gonggam_onboarding_v1";
@@ -349,7 +350,7 @@ export function acceptTerms() {
   saveSnapshot({ ...snapshot, state: "new_user", account });
 }
 
-const MAX_ANONYMOUS_NAME_LENGTH = 10;
+const MAX_ANONYMOUS_NAME_LENGTH = NAME_MAX_LENGTH;
 // 최근에 내준 이름 몇 개를 기억할지. 직전 하나만 피하면 여러 번 눌렀을 때
 // 두세 번 전 이름이 돌아오는데, 사람 눈에는 짧은 구간의 반복이 유독 잘 보인다.
 const RECENT_NAME_LIMIT = 10;

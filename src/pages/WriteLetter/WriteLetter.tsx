@@ -15,6 +15,8 @@ import { FocusShell } from "../../components/letter/FocusShell";
 import { DraftExitDialog } from "../../components/letter/DraftExitDialog";
 // CSS Modules: 기존 전역 class 이름은 그대로 두고 모듈 class 를 함께 붙인다.
 import flow from "../../components/letter/LetterFlow.module.css";
+import { LETTER_MIN_LENGTH } from "../../constants/limits";
+import { LETTER_MIN_LENGTH_NOTICE } from "../../constants/copy";
 
 export function WriteLetterScreen() {
   const userId = getCurrentUserId();
@@ -66,8 +68,8 @@ export function WriteLetterScreen() {
   }
 
   function next() {
-    if (meaningfulContentLength < 10) {
-      setNotice("마음을 10자 이상 적어주세요.");
+    if (meaningfulContentLength < LETTER_MIN_LENGTH) {
+      setNotice(LETTER_MIN_LENGTH_NOTICE);
       return;
     }
     const draft = updateLetterDraft(userId, {
@@ -109,7 +111,7 @@ export function WriteLetterScreen() {
         className="flow-primary-button"
         type="button"
         onClick={next}
-        disabled={meaningfulContentLength < 10}
+        disabled={meaningfulContentLength < LETTER_MIN_LENGTH}
       >
         보내기 전 미리보기
       </button>
@@ -179,7 +181,7 @@ export function WriteLetterScreen() {
               setNotice("");
               setWriteState(nextContent.trim() ? "writing" : "empty");
             }}
-            placeholder="마음을 10자 이상 적어주세요."
+            placeholder={LETTER_MIN_LENGTH_NOTICE}
             rows={1}
           />
           <small

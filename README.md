@@ -73,7 +73,7 @@
 │   │   ├── account/ · mySpace/ · safety/ · notifications/   # 각 묶음 화면들이 함께 쓰는 머리글 · 틀
 │   │   │                  # 여러 화면이 함께 쓰는 CSS Modules 도 여기 있다: letter/LetterFlow · letter/ListenEntry · auth/Auth · account/Account · notifications/Notifications · safety/ReportForm
 │   ├── hooks/             # 임시 저장 자동 저장 Hook (draftGuards.ts)
-│   ├── constants/         # 문구 상수 (copy.ts)
+│   ├── constants/         # 문구 상수(copy.ts) · 길이 제한(limits.ts)
 │   ├── data/              # 목업 데이터·저장소 (localStorage) — API 로 교체할 곳
 │   ├── types/             # 데이터 모양(타입) — data/ 와 같은 이름의 파일에 모았다 (예: types/letters.ts 의 Letter)
 │   ├── utils/             # 화면 이동 · 화면 높이 · 키보드 · 상태 표시줄 · 날짜 · 개발용 도구(draftDevTools.ts)
